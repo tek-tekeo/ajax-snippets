@@ -1,0 +1,246 @@
+<?php
+/*
+Plugin Name: ajax snippets
+Description: アフィリエイトのリンクを取得しやすくする
+Author: tektekeo
+Version: 0.1
+Author URI: https://www.kouritsu30.com
+*/
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
+add_action('init', 'AjaxSneppets::init');
+define('VERSION','0.1');
+define('PLUGIN_ID','ajax_snippets');
+define('PLUGIN_DB_PREFIX', $wpdb->prefix . PLUGIN_ID . '_');
+
+register_activation_hook( __FILE__, 'jal_install' );
+//register_activation_hook( __FILE__, 'jal_install_data' );
+global $jal_db_version;
+$jal_db_version = '1.0';
+
+function jal_install()
+	{
+	        global $wpdb;
+
+	        $table_name = $wpdb->prefix . PLUGIN_ID . '_base';
+
+	        $charset_collate = $wpdb->get_charset_collate();
+
+          $sql = "CREATE TABLE $table_name (
+	                id int(11) NOT NULL AUTO_INCREMENT,
+	                name varchar(255) NOT NULL,
+									anken varchar(255) NOT NULL,
+                  affi_link varchar(1025) NOT NULL,
+									affi_img varchar(1025) NOT NULL,
+                  img_tag varchar(1025) NOT NULL,
+	                UNIQUE KEY id (id)
+	        )
+	        $charset_collate;";
+
+	        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	        dbDelta( $sql );
+
+          $table_name = $wpdb->prefix . PLUGIN_ID . '_detail';
+
+	        $sql = "CREATE TABLE $table_name (
+	                id int(11) NOT NULL AUTO_INCREMENT,
+                  base_id int(11) NOT NULL,
+	                item_name varchar(1025) DEFAULT '' NOT NULL,
+                  official_item_link varchar(1025) DEFAULT '' NOT NULL,
+                  amazon_asin varchar(255) DEFAULT '' NOT NULL,
+                  rakuten_id varchar(255) DEFAULT '' NOT NULL,
+	                UNIQUE KEY id (id)
+	        )
+	        $charset_collate;";
+          dbDelta( $sql );
+
+					$table_name = $wpdb->prefix . PLUGIN_ID . '_detail';
+
+	        $sql = "CREATE TABLE $table_name (
+	                id int(11) NOT NULL AUTO_INCREMENT,
+                  base_id int(11) NOT NULL,
+	                item_name varchar(1025) DEFAULT '' NOT NULL,
+                  official_item_link varchar(1025) DEFAULT '' NOT NULL,
+                  amazon_asin varchar(255) DEFAULT '' NOT NULL,
+                  rakuten_id varchar(255) DEFAULT '' NOT NULL,
+	                UNIQUE KEY id (id)
+	        )
+	        $charset_collate;";
+          dbDelta( $sql );
+
+					$table_name = $wpdb->prefix . PLUGIN_ID . '_log';
+
+					$sql = "CREATE TABLE $table_name (
+									id int(11) NOT NULL AUTO_INCREMENT,
+									item_id int(11) NOT NULL,
+									date DATE NOT NULL,
+									time TIME NOT NULL,
+									post_addr varchar(1025) DEFAULT '' NOT NULL,
+									place varchar(255) DEFAULT '' NOT NULL,
+									ip varchar(1025) DEFAULT '' NOT NULL,
+									UNIQUE KEY id (id)
+					)
+					$charset_collate;";
+					dbDelta( $sql );
+
+	        add_option( 'jal_db_version', $jal_db_version );
+	}
+
+class AjaxSneppets
+{
+    static function init()
+    {
+        return new self();
+    }
+
+    function __construct()
+    {
+
+        if (is_admin() && is_user_logged_in()) {
+            // メニュー追加
+            add_action('admin_menu', [$this, 'set_plugin_menu']);
+            add_action('admin_menu', [$this, 'set_plugin_sub_menu']);
+            //ビジュアルエディタへ追加
+            require_once abspath(__FILE__).'ajax-snippets-func.php';
+
+        }
+				//ショートコードを追加
+				require_once abspath(__FILE__).'ajax-snippets-shortcode.php';
+    }
+
+    function set_plugin_menu()
+    {
+        add_menu_page(
+            'Ajax Snippets',           /* ページタイトル*/
+            'Ajax Snippets',           /* メニュータイトル */
+            'manage_options',         /* 権限 */
+            'ajax-snippets',    /* ページを開いたときのURL */
+            [$this, 'show_about_plugin'],       /* メニューに紐づく画面を描画するcallback関数 */
+            'dashicons-format-gallery', /* アイコン see: https://developer.wordpress.org/resource/dashicons/#awards */
+            99                          /* 表示位置のオフセット */
+        );
+    }
+    function set_plugin_sub_menu() {
+
+        add_submenu_page(
+            'ajax-snippets',  /* 親メニューのslug */
+            '設定',
+            '設定',
+            'manage_options',
+            'custom-index-banner-config',
+            [$this, 'show_config_form']);
+    }
+    function show_about_plugin() {
+
+			$name = $_POST['name'];
+			$anken = $_POST['anken'];
+      $affi_code = $_POST['affi_code'];
+      $official_link = $_POST['official_link'];
+
+			if($affi_code && $name && $anken){
+				//phpの処理場、『"』が『\"』と自動変換されてしまい、preg_matchがうまく行かない。
+				//htmlspecialcharsを使った後に、stripslashesを使ったら、謎の文字数がカウントされてうまく変換できなかったので注意
+				$affi_code = stripslashes($affi_code);
+ 			$regex = '/href="(.+?)"/';
+
+			preg_match($regex,$affi_code, $a1);
+
+			preg_match('/width="(?P<width>\d{3})"/', $affi_code, $width);
+			preg_match('/height="(?P<height>\d{3})"/', $affi_code, $height);
+			$affi_link = $a1[1];
+
+			$regex = '/src="(.+?)"/';
+			preg_match_all($regex,$affi_code, $a3);
+
+			if(count($a3[0]) == 1){
+				$img_tag = $a3[1][0];
+				$affi_img = "none";
+			}else if(count($a3) == 2){
+				$affi_img = $a3[1][0];
+				$img_tag = $a3[1][1];
+			}else{
+
+			}
+
+
+        global $wpdb;
+        $table = PLUGIN_DB_PREFIX.'base';
+
+        $data = array('id'=>'','name'=>$name,'anken'=>$anken,'affi_link'=>$affi_link, 'affi_img'=>$affi_img,'img_tag'=>$img_tag);
+        $format = array('%d','%s','%s','%s','%s','%s');
+
+				$res = $wpdb->insert( $table, $data, $format );
+
+        if($res){
+          $base_id = $wpdb->insert_id;
+          $table = PLUGIN_DB_PREFIX.'detail';
+
+          $data = array('id'=>'','base_id'=>$base_id,'item_name'=>'トップ','official_item_link'=>$official_link,'amazon_asin'=>'','rakuten_id'=>'');
+          $format = array('%d','%d','%s','%s','%s','%s');
+          $res1 = $wpdb->insert( $table, $data, $format );
+          if($res1){
+            echo "<p style='color:red'>登録できました</p>";
+          }else{
+            echo "<p style='color:red'>個別だけミスったぽい</p>";
+          }
+        }else{
+          echo "<p style='color:red'>個別だけミスったぽい2</p>";
+        }
+      }else{
+				echo "<p style='color:red'>登録できてない</p>";
+			}
+      ?>
+<h1>広告主を登録</h1>
+<p>広告主のリスト情報</p>
+<form action="" method="post" name="form1">
+  <p><label>名前（日本語）：<input type="text" name="name" size="40"></label></p>
+	<p><label>名前（ローマ字、「phiten」とか）：<input type="text" name="anken" size="40"></label></p>
+  <p><label>アフィリンク(バナーつきとかそのままで)：<textarea cols="50" rows="10" name="affi_code"></textarea></label></p>
+    <p><label>オフィシャルリンク：<input type="text" name="official_link" size="150"></label></p>
+  <p><input type="submit" value="送信"></p>
+</form>
+<br><br>
+<h1>個別の商品ページを登録する(A8のみ)</h1>
+<p>商品別</p>
+      <?php
+      echo '<form action="" method="post" name="form2">';
+      echo "<select name='base_id'>";
+      $records = get_db_table_records(PLUGIN_DB_PREFIX.'base','');
+      foreach($records as $r){
+        echo "<option value={$r->id}>{$r->name}</option>";
+      }
+      　?>
+</select>
+<p><label>商品名（日本語）：<input type="text" name="item_name" size="40"></label></p>
+<p><label>商品ページURL：<input type="text" name="official_item_link" size="150"></label></p>
+<p><label>Amazonのasin：<input type="text" name="amazon_asin" size="150"></label></p>
+<p><label>楽天のid(例：phiten:111111)：<input type="text" name="rakuten_id" size="150"></label></p>
+<p><input type="submit" value="送信"></p>
+</form>
+      <?php
+      $base_id = $_POST['base_id'];
+      $item_name = $_POST['item_name'];
+      $official_item_link = $_POST['official_item_link'];
+      $amazon_asin = $_POST['amazon_asin'];
+      $rakuten_id = $_POST['rakuten_id'];
+      if($base_id && $item_name && $official_item_link && $amazon_asin && $rakuten_id){
+        global $wpdb;
+        $table = PLUGIN_DB_PREFIX.'detail';
+
+        $data = array('id'=>'','base_id'=>$base_id,'item_name'=>$item_name,'official_item_link'=>$official_item_link,'amazon_asin'=>$amazon_asin,'rakuten_id'=>$rakuten_id);
+        $format = array('%d','%d','%s','%s','%s','%s');
+        $res = $wpdb->insert( $table, $data, $format );
+        if($res){echo "商品ページ登録完了";}
+      }
+    }//show_about_pluginの終わり
+
+    function show_config_form() {
+
+      ?>
+      <h1>特に不要なページ</h1>
+      <?php
+    }
+
+} // end of class
