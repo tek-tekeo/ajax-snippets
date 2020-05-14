@@ -35,26 +35,13 @@ function jal_install()
                   affi_link varchar(1025) NOT NULL,
 									affi_img varchar(1025) NOT NULL,
                   img_tag varchar(1025) NOT NULL,
+									a8_shohin varchar(1025) DEFAULT '' NOT NULL,
 	                UNIQUE KEY id (id)
 	        )
 	        $charset_collate;";
 
 	        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	        dbDelta( $sql );
-
-          $table_name = $wpdb->prefix . PLUGIN_ID . '_detail';
-
-	        $sql = "CREATE TABLE $table_name (
-	                id int(11) NOT NULL AUTO_INCREMENT,
-                  base_id int(11) NOT NULL,
-	                item_name varchar(1025) DEFAULT '' NOT NULL,
-                  official_item_link varchar(1025) DEFAULT '' NOT NULL,
-                  amazon_asin varchar(255) DEFAULT '' NOT NULL,
-                  rakuten_id varchar(255) DEFAULT '' NOT NULL,
-	                UNIQUE KEY id (id)
-	        )
-	        $charset_collate;";
-          dbDelta( $sql );
 
 					$table_name = $wpdb->prefix . PLUGIN_ID . '_detail';
 
@@ -63,6 +50,7 @@ function jal_install()
                   base_id int(11) NOT NULL,
 	                item_name varchar(1025) DEFAULT '' NOT NULL,
                   official_item_link varchar(1025) DEFAULT '' NOT NULL,
+									affi_item_link varchar(1025) DEFAULT '' NOT NULL,
                   amazon_asin varchar(255) DEFAULT '' NOT NULL,
                   rakuten_id varchar(255) DEFAULT '' NOT NULL,
 	                UNIQUE KEY id (id)
@@ -138,6 +126,7 @@ class AjaxSneppets
 			$anken = $_POST['anken'];
       $affi_code = $_POST['affi_code'];
       $official_link = $_POST['official_link'];
+			$a8_shohin = $_POST['a8_shohin'];
 
 			if($affi_code && $name && $anken){
 				//phpの処理場、『"』が『\"』と自動変換されてしまい、preg_matchがうまく行かない。
@@ -168,17 +157,17 @@ class AjaxSneppets
         global $wpdb;
         $table = PLUGIN_DB_PREFIX.'base';
 
-        $data = array('id'=>'','name'=>$name,'anken'=>$anken,'affi_link'=>$affi_link, 'affi_img'=>$affi_img,'img_tag'=>$img_tag);
-        $format = array('%d','%s','%s','%s','%s','%s');
+        $data = array('id'=>'','name'=>$name,'anken'=>$anken,'affi_link'=>$affi_link, 'affi_img'=>$affi_img,'img_tag'=>$img_tag,'a8_shohin'=>$a8_shohin);
+        $format = array('%d','%s','%s','%s','%s','%s','%s');
 
 				$res = $wpdb->insert( $table, $data, $format );
 
         if($res){
           $base_id = $wpdb->insert_id;
           $table = PLUGIN_DB_PREFIX.'detail';
-
-          $data = array('id'=>'','base_id'=>$base_id,'item_name'=>'トップ','official_item_link'=>$official_link,'amazon_asin'=>'','rakuten_id'=>'');
-          $format = array('%d','%d','%s','%s','%s','%s');
+					$affi_item_link =$affi_link;//トップはアフィリンク共通
+          $data = array('id'=>'','base_id'=>$base_id,'item_name'=>'トップ','official_item_link'=>$official_link,'affi_item_link'=>$affi_item_link,'amazon_asin'=>'','rakuten_id'=>'');
+          $format = array('%d','%d','%s','%s','%s','%s','%s');
           $res1 = $wpdb->insert( $table, $data, $format );
           if($res1){
             echo "<p style='color:red'>登録できました</p>";
@@ -189,8 +178,9 @@ class AjaxSneppets
           echo "<p style='color:red'>個別だけミスったぽい2</p>";
         }
       }else{
-				echo "<p style='color:red'>登録できてない</p>";
+				echo "<p style='color:red'>入力内容不備</p>";
 			}
+
       ?>
 <h1>広告主を登録</h1>
 <p>広告主のリスト情報</p>
@@ -215,22 +205,52 @@ class AjaxSneppets
 </select>
 <p><label>商品名（日本語）：<input type="text" name="item_name" size="40"></label></p>
 <p><label>商品ページURL：<input type="text" name="official_item_link" size="150"></label></p>
+<p><label>アフィリエイトのURL：<input type="text" name="affi_item_link" size="150"></label></p>
 <p><label>Amazonのasin：<input type="text" name="amazon_asin" size="150"></label></p>
 <p><label>楽天のid(例：phiten:111111)：<input type="text" name="rakuten_id" size="150"></label></p>
 <p><input type="submit" value="送信"></p>
 </form>
       <?php
+
       $base_id = $_POST['base_id'];
       $item_name = $_POST['item_name'];
       $official_item_link = $_POST['official_item_link'];
       $amazon_asin = $_POST['amazon_asin'];
       $rakuten_id = $_POST['rakuten_id'];
-      if($base_id && $item_name && $official_item_link && $amazon_asin && $rakuten_id){
+			$affi_item_link = $_POST['affi_item_link'];
+      if($base_id && $item_name){
+
         global $wpdb;
+				$table = PLUGIN_DB_PREFIX.'base';
+
+				$sql = "SELECT B.a8_shohin FROM {$table} as B WHERE B.id = {$base_id}";
+				$results = $wpdb->get_results($sql,object);
+				// 結果を表示
+				foreach( $results as $result ) {
+					$a8_shohin= $result->a8_shohin;
+				}
+
+				//場合ワケ
+				if($a8_shohin != ""){
+					//a8の場合
+					if($official_item_link == ""){
+						echo "a8の商品リンク作成に必要な公式リンクを入力していない";die;
+					}else{
+						//a8の商品リンクが生成
+						$affi_item_link = $a8_shohin."&a8ejpredirect=" . urlencode($official_item_link);
+					}
+				}else{
+					//a8以外はしっかりとURLを書く必要がある
+					if(!$affi_item_link){
+						echo "a8以外の案件なのに、商品別のリンクを入力できていない";die;
+					}
+				}
+
+
         $table = PLUGIN_DB_PREFIX.'detail';
 
-        $data = array('id'=>'','base_id'=>$base_id,'item_name'=>$item_name,'official_item_link'=>$official_item_link,'amazon_asin'=>$amazon_asin,'rakuten_id'=>$rakuten_id);
-        $format = array('%d','%d','%s','%s','%s','%s');
+        $data = array('id'=>'','base_id'=>$base_id,'item_name'=>$item_name,'official_item_link'=>$official_item_link,'affi_item_link'=>$affi_item_link,'amazon_asin'=>$amazon_asin,'rakuten_id'=>$rakuten_id);
+        $format = array('%d','%d','%s','%s','%s','%s','%s');
         $res = $wpdb->insert( $table, $data, $format );
         if($res){echo "商品ページ登録完了";}
       }
@@ -244,6 +264,7 @@ class AjaxSneppets
     }
 
 } // end of class
+
 function redirect_system(){
 date_default_timezone_set('Asia/Tokyo');
 $url = $_SERVER["REQUEST_URI"];
@@ -311,8 +332,10 @@ if($match === 1){
   wp_redirect($dest_url, 302);
   }else{
   wp_redirect($dest_url, 302);
-  }
+}
+
   exit;
 }
 }
+
 add_action( 'template_redirect', 'redirect_system');
