@@ -244,3 +244,75 @@ class AjaxSneppets
     }
 
 } // end of class
+function redirect_system(){
+date_default_timezone_set('Asia/Tokyo');
+$url = $_SERVER["REQUEST_URI"];
+global $wpdb;
+$sql = "SELECT anken FROM ".PLUGIN_DB_PREFIX."base";
+$results = $wpdb->get_results($sql,object);
+$match = 0;
+if(count($results) == 0){
+
+  return false;
+}
+    foreach($results as $result){
+      $str = $result->anken."\?no=[0-9]+&pl=";
+      $match = preg_match("/$str/", $url);
+      if($match){
+        break;
+      }
+    }
+
+//取得したURLがアクセスさせたくないURLかどうかの比較
+//$match = preg_match("/ファイテン\?no=[0-9]+&pl=/", $url);
+
+if($match === 1){
+
+  $id = $_GET['no'];
+  $place = $_GET['pl'];
+  global $wpdb;
+  $sql = "SELECT B.affi_link,D.item_name, D.official_item_link FROM ".PLUGIN_DB_PREFIX."base As B INNER JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
+
+  $results = $wpdb->get_results($sql,object);
+  //遷移先のURLを獲得
+  foreach($results as $r){
+    if($r->item_name == "トップ"){
+      $dest_url = $r->affi_link;
+    }else{
+      $dest_url = $r->affi_link."&a8ejpredirect=" . urlencode($r->official_item_link);
+    }
+  }
+  $referer = $_SERVER['HTTP_REFERER'];
+	$ip_address = ip2long($_SERVER['REMOTE_ADDR']);
+
+  if($referer){
+
+  }else{
+    //ない場合はからのストリングを入れておく
+    $referer = "none";
+  }
+  if(!$ip){$ip="none";}
+      $data=array(
+                        "id"=>'',
+                        "item_id"=>$id,
+                        "date"=>date("Y-m-d"),
+                        "time"=>date("H:i:s"),
+                        "post_addr"=>$referer,
+                        "place"=>$place,
+                        "ip" => $ip_address
+                        );
+
+  $table = PLUGIN_DB_PREFIX.'log';
+
+  $format = array('%d','%d','%s','%s','%s','%s');
+  $res = $wpdb->insert( $table, $data, $format);
+
+  if($res){
+  wp_redirect($dest_url, 302);
+  }else{
+  wp_redirect($dest_url, 302);
+  }
+  exit;
+}
+}
+add_action( 'template_redirect', 'redirect_system');
