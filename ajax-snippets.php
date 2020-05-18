@@ -189,6 +189,7 @@ class AjaxSneppets
 	<p><label>名前（ローマ字、「phiten」とか）：<input type="text" name="anken" size="40"></label></p>
   <p><label>アフィリンク(バナーつきとかそのままで)：<textarea cols="50" rows="10" name="affi_code"></textarea></label></p>
     <p><label>オフィシャルリンク：<input type="text" name="official_link" size="150"></label></p>
+		<p><label>A8商品リンクの頭：<input type="text" name="a8_shohin" size="150"></label></p>
   <p><input type="submit" value="送信"></p>
 </form>
 <br><br>
