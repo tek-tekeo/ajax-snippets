@@ -279,7 +279,8 @@ if(count($results) == 0){
 }
 
     foreach($results as $result){
-      $str = "\/link\/".$result->anken."\?no=[0-9]+&pl=";
+//      $str = "\/link\/".$result->anken."\?no=[0-9]+&pl=";
+			$str = $result->anken."\?no=[0-9]+&pl=";
       $match = preg_match("/$str/", $url);
       if($match){
         break;

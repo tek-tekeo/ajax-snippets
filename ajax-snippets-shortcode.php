@@ -74,7 +74,8 @@ function AjaxRecordShortcodeLink($atts, $content = null) {
             $rep = "リンクエラー";
         }
       foreach($results as $r){
-        $url = home_url() . "/link/".$r->anken . "?no={$id}&pl={$pl}";
+        //$url = home_url() . "/link/".$r->anken . "?no={$id}&pl={$pl}";
+        $url = home_url() . $r->anken . "?no={$id}&pl={$pl}";
         if($ntab == 0){
           $a_tab = "rel=\"nofollow\"";
         }else{
