@@ -11,6 +11,7 @@
 <input type="button" id="normalLink" value="アフィリンク(直)" onclick="return false;"/>
 <input type="button" id="afRecordLink" value="アフィリンク(R)" onclick="return false;"/>
 <input type="button" id="afRecordBanner" value="バナーリンク(R)" onclick="return false;"/>
+<input type="button" id="singleReview" value="シングルレビュー" onclick="return false;"/>
 <p>候補一覧</p>
 <dl id="ajax-item-list" style="width:550px; height:200px;overflow-y: scroll;">
 
@@ -86,6 +87,17 @@ $(function () {
         return false;
       }
       var inputTag = val.attr('data-a8')+"&a8ejpredirect="+encodeURIComponent(val.attr('data-official'))+"";
+      top.tinymce.activeEditor.selection.setContent(inputTag);
+      top.tinymce.activeEditor.windowManager.close();
+      return false;
+    });
+    $(document).on('click','#singleReview',function(){
+      var val = $("input[name='q1']:checked");
+      var id = val.attr('data-id');
+      if(val.attr('data-id') == null){
+        return false;
+      }
+      var inputTag = "[singleReview detail_id="+id+" color='blue']";
       top.tinymce.activeEditor.selection.setContent(inputTag);
       top.tinymce.activeEditor.windowManager.close();
       return false;
