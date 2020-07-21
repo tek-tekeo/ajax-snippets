@@ -28,7 +28,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     $affi_img = $_POST['affi_img'];
     $affi_tag = $_POST['affi_tag'];
     $official_link = $_POST['official_link'];
-    $info = stripslashes($_POST['info']);
+    $info = stripslashes(nl2br($_POST['info']));
     $review = stripslashes($_POST['review']);
     $rchart = stripslashes($_POST['rchart']);
 //    $review = stripslashes($review);
@@ -66,7 +66,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   generate_textbox_tag('img_tag', $img_tag, __( '', THEME_NAME ));
 
   echo '<h2>'.__( 'テーブル情報', THEME_NAME ).'</h2>';
-  generate_textbox_tag('info', $info, __( '{"効果": 5, "安さ": 2, "実績": 4, "サービス": 5, "通いやすさ": 5}', THEME_NAME ));
+  generate_textarea_tag('info', $info, __( '{"効果": 5, "安さ": 2, "実績": 4, "サービス": 5, "通いやすさ": 5}', THEME_NAME ));
 
   echo '<h2>'.__( 'チャート情報', THEME_NAME ).'</h2>';
   generate_textbox_tag('rchart', $rchart, __( '{"効果": 5, "安さ": 2, "実績": 4, "サービス": 5, "通いやすさ": 5}', THEME_NAME ));
