@@ -52,3 +52,29 @@ function prepareAjax(){
 }
 add_action( "wp_ajax_prepareAjax" , "prepareAjax" );
 add_action( "wp_ajax_nopriv_prepareAjax" , "prepareAjax" );
+
+function getListBase(){
+	$name = $_POST['name'];
+  $sql = "SELECT * FROM ".PLUGIN_DB_PREFIX."base As P where P.name LIKE '%".$name."%'";
+		global $wpdb;
+	$results = $wpdb->get_results($sql,object);
+  if(count($results) == 0){
+    echo "みつからなかったパティーン";
+    die();
+  }
+
+	//名前検索
+	foreach( $results as $key => $r ) {
+$rep .=<<<EOT
+<dt><label><input type='radio' name='base_id' value="{$r->id}">{$r->name}<div style='display:none'>{$r->name}</div></label></dt>
+EOT;
+
+	}//名前検索によるforechの終了部分
+
+  echo $rep;
+  die();
+//    echo json_encode($returnObj);
+  //  die();
+}
+add_action( "wp_ajax_getListBase" , "getListBase" );
+add_action( "wp_ajax_nopriv_getListBase" , "getListBase" );

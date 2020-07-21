@@ -35,7 +35,8 @@ function jal_install()
                   affi_link varchar(1025) NOT NULL,
 									affi_img varchar(1025) NOT NULL,
                   img_tag varchar(1025) NOT NULL,
-									a8_shohin varchar(1025) DEFAULT '' NOT NULL,
+									rchart varchar(1025) DEFAULT '' NOT NULL,
+									info varchar(1025) DEFAULT '' NOT NULL,
 	                UNIQUE KEY id (id)
 	        )
 	        $charset_collate;";
@@ -96,7 +97,16 @@ class AjaxSneppets
         }
 				//ショートコードを追加
 				require_once abspath(__FILE__).'ajax-snippets-shortcode.php';
-    }
+				//スタイルシートの追加
+				 add_action( 'wp_enqueue_scripts', array( $this, 'register_gmapmaker_scripts' ) );
+		}
+		/**
+		* script関数の登録
+		*/
+		public function register_gmapmaker_scripts() {
+		wp_enqueue_script( 'chartjs','//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js', [ 'jquery' ] ,date('U'),true);
+		//	wp_enqueue_script( 'https://maps.googleapis.com/maps/api/js?v=weekly&key=AIzaSyAxLHeyTpEqFFQGceE5xiURS9R-xjckvGs&callback=initMap&libraries=places', [ 'jquery' ] ,date('U'),true);
+		}
 
     function set_plugin_menu()
     {
@@ -117,8 +127,8 @@ class AjaxSneppets
             '設定',
             '設定',
             'manage_options',
-            'custom-index-banner-config',
-            [$this, 'show_config_form']);
+            'base-config',
+            [$this, 'base_config_form']);
     }
     function show_about_plugin() {
 
@@ -257,11 +267,21 @@ class AjaxSneppets
       }
     }//show_about_pluginの終わり
 
-    function show_config_form() {
-
-      ?>
-      <h1>特に不要なページ</h1>
-      <?php
+    function base_config_form() {
+			?>
+			<h1>レビュー更新ページ</h1>
+			<?php
+			$action = isset($_GET['action']) ? $_GET['action'] : null;
+			if ($action == 'delete') {
+				//require_once abspath(__FILE__).'form-delete.php';
+			} else {
+				if (!isset($action)) {
+					 require_once abspath(__FILE__).'base-list.php';
+				} else {//入力フォームの表示
+					//require_once abspath(__FILE__).'form.php';
+					 require_once abspath(__FILE__).'base-form.php';
+				}
+			}
     }
 
 } // end of class
