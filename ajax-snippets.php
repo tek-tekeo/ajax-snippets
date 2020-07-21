@@ -37,6 +37,7 @@ function jal_install()
                   img_tag varchar(1025) NOT NULL,
 									rchart varchar(1025) DEFAULT '' NOT NULL,
 									info varchar(1025) DEFAULT '' NOT NULL,
+									review varchar(3000) DEFAULT '' NOT NULL,
 	                UNIQUE KEY id (id)
 	        )
 	        $charset_collate;";
