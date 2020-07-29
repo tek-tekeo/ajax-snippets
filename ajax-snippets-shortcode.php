@@ -139,7 +139,7 @@ function SingleReview($atts, $content = null){
   foreach($list as $l){
 
   $chart_ele = json_decode($l->rchart, true);
-  if(count($chart_ele) == 5){
+  if(count($chart_ele) >= 3){
     $chart_rate = implode(",", $chart_ele);
     $chart_factor = implode(",",array_keys($chart_ele));
     $chart_str = "[ajax_snippets_rchart factor='".$chart_factor."' rate='".$chart_rate."' name='{$l->name}' color='".$color."']";
