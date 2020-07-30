@@ -33,6 +33,8 @@ function jal_install()
 	                name varchar(255) NOT NULL,
 									anken varchar(255) NOT NULL,
                   affi_link varchar(1025) NOT NULL,
+									s_link varchar(1025) NOT NULL,
+									asp_name varchar(10) NOT NULL,
 									affi_img varchar(1025) NOT NULL,
                   img_tag varchar(1025) NOT NULL,
 									rchart varchar(1025) DEFAULT '' NOT NULL,
@@ -75,6 +77,29 @@ function jal_install()
 					$charset_collate;";
 					dbDelta( $sql );
 
+					$table_name = $wpdb->prefix . PLUGIN_ID . '_asp';
+
+					$table_search = $wpdb->get_row("SHOW TABLES FROM " . DB_NAME . " LIKE '" . $table_name . "'"); //「$wpdb->posts」テーブルがあるかどうか探す
+					if( $wpdb->num_rows != 1 ){ //結果を判別して条件分岐
+
+					 //テーブルがない場合の処理
+					 $sql = "CREATE TABLE $table_name (
+ 									asp_name varchar(20) DEFAULT '' NOT NULL,
+ 									connect_string varchar(128) DEFAULT '' NOT NULL,
+ 									UNIQUE KEY id (asp_name)
+ 					)
+ 					$charset_collate;";
+ 					dbDelta( $sql );
+ 						$data[0] = array('asp_name' => 'a8','connect_string'=>'&a8ejpredirect=');
+						$data[1] = array('asp_name' => 'afb','connect_string'=>'');
+						$data[2] = array('asp_name' => 'link-a','connect_string'=>'&mallurl1=');
+						$data[3] = array('asp_name' => 'dmm','connect_string'=>'?af_id=tekeo-001&ch=link_tool&ch_id=link&lurl=');
+						$data[4] = array('asp_name' => 'valuecommerce','connect_string'=>'');
+						foreach ($data as $d){
+							$res = $wpdb->insert( $table_name, $d );
+						}
+					}
+
 	        add_option( 'jal_db_version', $jal_db_version );
 	}
 
@@ -113,7 +138,7 @@ class AjaxSneppets
     {
         add_menu_page(
             'Ajax Snippets',           /* ページタイトル*/
-            'Ajax Snippets',           /* メニュータイトル */
+            'アフィリンクメーカー',           /* メニュータイトル */
             'manage_options',         /* 権限 */
             'ajax-snippets',    /* ページを開いたときのURL */
             [$this, 'show_about_plugin'],       /* メニューに紐づく画面を描画するcallback関数 */
@@ -193,17 +218,19 @@ if($match === 1){
   $id = $_GET['no'];
   $place = $_GET['pl'];
   global $wpdb;
-  $sql = "SELECT B.affi_link,D.item_name, D.official_item_link FROM ".PLUGIN_DB_PREFIX."base As B INNER JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
+  $sql = "SELECT B.affi_link, B.s_link, A.connect_string, D.item_name, D.official_item_link FROM ".PLUGIN_DB_PREFIX."base As B,".PLUGIN_DB_PREFIX."detail As D,".PLUGIN_DB_PREFIX."asp As A where B.id = D.base_id AND D.id={$id} AND B.asp_name=A.asp_name";
 
   $results = $wpdb->get_results($sql,object);
+
   //遷移先のURLを獲得
   foreach($results as $r){
     if($r->item_name == "トップ"){
       $dest_url = $r->affi_link;
     }else{
-      $dest_url = $r->affi_link."&a8ejpredirect=" . urlencode($r->official_item_link);
+      $dest_url = $r->s_link . $r->connect_string . urlencode($r->official_item_link);
     }
   }
+
   $referer = $_SERVER['HTTP_REFERER'];
 	$ip_address = ip2long($_SERVER['REMOTE_ADDR']);
 

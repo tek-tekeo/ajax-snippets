@@ -8,6 +8,8 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   $name = $_POST['name'];
   $anken = $_POST['anken'];
   $affi_link = $_POST['affi_link'];
+  $s_link = $_POST['s_link'];
+  $asp_name = $_POST['asp_name'];
   $affi_img = $_POST['affi_img'];
   $img_tag = $_POST['img_tag'];
   $official_link = $_POST['official_link'];
@@ -19,6 +21,8 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     $name = $_POST['name'];
     $anken = $_POST['anken'];
     $affi_link = $_POST['affi_link'];
+    $s_link = $_POST['s_link'];
+    $asp_name = $_POST['asp_name'];
     $affi_img = $_POST['affi_img'];
     $img_tag = $_POST['img_tag'];
     $official_link = $_POST['official_link'];
@@ -29,7 +33,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 
     $table = PLUGIN_DB_PREFIX.'base';
 
-    $data = array('name'=>$name, 'anken'=>$anken, 'affi_img' => $affi_img, 'affi_link' => $affi_link, 'img_tag' => $img_tag, 'info' => $info, 'review' => $review, 'rchart' => $rchart);
+    $data = array('name'=>$name, 'anken'=>$anken, 'affi_img' => $affi_img, 'affi_link' => $affi_link, 's_link'=>$s_link, 'asp_name'=>$asp_name,'img_tag' => $img_tag, 'info' => $info, 'review' => $review, 'rchart' => $rchart);
     //$format = array('%d','%d','%d','%s','%f');
 
     $res = $wpdb->insert( $table, $data );
@@ -45,6 +49,8 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
           $name ="";
           $anken ="";
           $affi_link ="";
+          $s_link="";
+          $asp_name="a8";
           $affi_img ="";
           $img_tag ="";
           $official_link ="";
@@ -71,6 +77,18 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 
   echo '<h2>'.__( 'アフィリンク(メイン)  ', THEME_NAME ).'</h2>';
   generate_textbox_tag('affi_link', $affi_link, __( 'https://t.afi-b.com/visit.php?guid=ON&a=E58490-s346143Q&p=1638166I', THEME_NAME ));
+
+  echo '<h2>'.__( 'アフィリンク(商品リンクの頭)  ', THEME_NAME ).'</h2>';
+  generate_textbox_tag('s_link', $s_link, __( 'なければ不要', THEME_NAME ));
+
+  echo '<h2>'.__( 'ASP提携 ', THEME_NAME ).'</h2>';
+  $sql1 = "SELECT asp_name FROM ".PLUGIN_DB_PREFIX."asp";
+  $results1 = $wpdb->get_results($sql1, OBJECT);
+  echo '<select name="asp_name">';
+  foreach($results1 as $r1){
+    echo "<option value={$r1->asp_name}>{$r1->asp_name}</option>";
+  }
+  echo "</select>";
 
   echo '<h2>'.__( 'バナーの画像', THEME_NAME ).'</h2>';
   generate_textbox_tag('affi_img', $affi_img, __( 'https://gorilla.clinic/', THEME_NAME ));
