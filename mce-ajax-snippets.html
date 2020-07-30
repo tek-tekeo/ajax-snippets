@@ -128,7 +128,7 @@ $(function () {
 
       //本番
       var place=Math.random().toString(36).slice(-8);
-      var inputTag = "[afRecord id="+id+" ntab=0 pl="+place+"][/afRecord]";
+      var inputTag = "[afRecord id="+id+" ntab=0 pl="+place+"]"+val.attr('name')+"[/afRecord]";
       top.tinymce.activeEditor.selection.setContent(inputTag);
       top.tinymce.activeEditor.windowManager.close();
       return false;
