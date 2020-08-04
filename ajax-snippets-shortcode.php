@@ -176,7 +176,12 @@ $rep .=<<<EOT
     </table>
     {$l->review}
 EOT;
+if ( current_user_can('administrator') || current_user_can('editor') || current_user_can('author')){
+    $kono_url = admin_url('')."admin.php?page=base-config&action=edit&base_id={$detail_id}";
+    $rep .= "<p><a href={$kono_url} target='_blank'>この案件を編集</a>(管理者向け)</p>";
+}
   }
+
   $rep = do_shortcode($rep);
   return $rep;
 }
