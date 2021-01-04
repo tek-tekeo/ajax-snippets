@@ -2,22 +2,24 @@
 
 if ( !defined( 'ABSPATH' ) ) exit; ?>
 
+<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=edit"; ?>">編集</a>
+<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=delete"; ?>">削除</a>
 <form name="form1" method="post" action="">
   <?php
   global $wpdb;
-  $name = $_POST['name'];
-  $anken = $_POST['anken'];
-  $affi_link = $_POST['affi_link'];
-  $s_link = $_POST['s_link'];
-  $asp_name = $_POST['asp_name'];
-  $affi_img = $_POST['affi_img'];
-  $img_tag = $_POST['img_tag'];
-  $official_link = $_POST['official_link'];
+  $name = $_POST['name']; //表示する名前　必須
+  $anken = $_POST['anken']; //URLのケツにつける案件コード　必須
+  $affi_link = $_POST['affi_link']; //アフィリエイトリンク　必須
+  $s_link = $_POST['s_link']; //商品リンク　任意
+  $asp_name = $_POST['asp_name']; //aspの名前 必須
+  $affi_img = $_POST['affi_img']; //アフィリエイトの画像
+  $img_tag = $_POST['img_tag']; //計測用のタグ
+  $official_link = $_POST['official_link']; //公式リンク　必須
   $info = stripslashes(nl2br($_POST['info']));
   $review = stripslashes($_POST['review']);
   $rchart = stripslashes($_POST['rchart']);
 
-  if(isset($_POST['name']) && $_POST['affi_link']){
+  if($name != '' && $anken != '' && $affi_link != '' && $asp_name != '' && $official_link !=''){
     $name = $_POST['name'];
     $anken = $_POST['anken'];
     $affi_link = $_POST['affi_link'];
@@ -29,7 +31,19 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     $info = stripslashes(nl2br($_POST['info']));
     $review = stripslashes($_POST['review']);
     $rchart = stripslashes($_POST['rchart']);
-//    $review = stripslashes($review);
+    $img = $_POST['img'];
+    $dev = $_POST['dev'];
+    $ios_link = $_POST['ios_link'];
+    $android_link = $_POST['android_link'];
+    $web_link = $_POST['web_link'];
+    $ios_affi_link = $_POST['ios_affi_link'];
+    $android_affi_link = $_POST['android_affi_link'];
+    $web_affi_link = $_POST['web_affi_link'];
+    $article = $_POST['article'];
+    $app_order = $_POST['app_order'];
+    $app_price = $_POST['app_price'];
+
+
 
     $table = PLUGIN_DB_PREFIX.'base';
 
@@ -42,9 +56,16 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         $table = PLUGIN_DB_PREFIX.'detail';
         $affi_item_link =$affi_link;//トップはアフィリンク共通
         $data = array('id'=>'','base_id'=>$base_id,'item_name'=>'トップ','official_item_link'=>$official_link,'affi_item_link'=>$affi_item_link,'amazon_asin'=>'','rakuten_id'=>'');
-        print_r($data);
+
         $res1 = $wpdb->insert( $table, $data);
         if($res1){
+          $table = PLUGIN_DB_PREFIX.'apps';
+          if($app_price=''){$app_price = '無料';}
+          if($app_order=''){$app_order = 0;}
+          $data = array('app_id'=>$base_id, 'img'=>$img, 'dev' => $dev, 'ios_link' => $ios_link, 'android_link'=>$android_link, 'web_link'=>$web_link,'ios_affi_link' => $ios_affi_link, 'android_affi_link'=>$android_affi_link, 'web_affi_link'=>$web_affi_link,'article' => $article, 'app_order' => $app_order, 'app_price' => $app_price);
+
+          $res = $wpdb->insert( $table, $data );
+
           echo "<p style='color:red'>DETAILトップの登録できました</p>";
           $name ="";
           $anken ="";
@@ -65,7 +86,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       echo "<h1 class='red'>変更なし</h1>";
     }
   }else{
-    echo "入力不備";
+    echo "<h1 class='red'>入力不備</h1>";
   }
   echo '<h1>親要素(base)の新規追加フォーム</h1>';
 
@@ -99,7 +120,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   echo '<h2>'.__( 'バナーの高さ', THEME_NAME ).'</h2>';
   generate_textbox_tag('img_height', $img_height, __( '250', THEME_NAME ));
 
-  echo '<h2>'.__( 'アフィイメージタグ', THEME_NAME ).'</h2>';
+  echo '<h2>'.__( 'アフィ、トラフィック用イメージタグ', THEME_NAME ).'</h2>';
   generate_textbox_tag('img_tag', $img_tag, __( '', THEME_NAME ));
 
   echo '<h2>'.__( '公式サイトのURL', THEME_NAME ).'</h2>';
@@ -108,75 +129,47 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   echo '<h2>'.__( 'テーブル情報', THEME_NAME ).'</h2>';
   generate_textarea_tag('info', $info, __( '{"効果": 5, "安さ": 2, "実績": 4, "サービス": 5, "通いやすさ": 5}', THEME_NAME ));
 
+  echo '<input type="submit" value="新規挿入">';
+
   echo '<h2>'.__( 'チャート情報', THEME_NAME ).'</h2>';
   generate_textbox_tag('rchart', $rchart, __( '{"効果": 5, "安さ": 2, "実績": 4, "サービス": 5, "通いやすさ": 5}', THEME_NAME ));
 
   generate_visuel_editor_tag('review', $review,  'review-text');
-  echo "<h1>名前、バナー、アフィリンクは最低必要</h1>";
+
+  echo '<p>以下、アプリがあればの情報</p>';
+  echo '<h2>'.__( 'アプリのアイコン画像URL', THEME_NAME ).'</h2>';
+  generate_textbox_tag('img', $img, __( '', THEME_NAME ));
+
+  echo '<h2>'.__( '開発元企業', THEME_NAME ).'</h2>';
+  generate_textbox_tag('dev', $dev, __( '', THEME_NAME ));
+
+  echo '<h2>'.__( 'iosのリンク先', THEME_NAME ).'</h2>';
+  generate_textbox_tag('ios_link', $ios_link, __( '', THEME_NAME ));
+
+  echo '<h2>'.__( 'androidのリンク先', THEME_NAME ).'</h2>';
+  generate_textbox_tag('android_link', $android_link, __( '', THEME_NAME ));
+
+  echo '<h2>'.__( 'webのリンク先', THEME_NAME ).'</h2>';
+  generate_textbox_tag('web_link', $web_link, __( '', THEME_NAME ));
+
+  echo '<h2>'.__( 'iosのアフィリンク先', THEME_NAME ).'</h2>';
+  generate_textbox_tag('ios_affi_link', $ios_affi_link, __( '', THEME_NAME ));
+
+  echo '<h2>'.__( 'androidのアフィリンク先', THEME_NAME ).'</h2>';
+  generate_textbox_tag('android_affi_link', $android_affi_link, __( '', THEME_NAME ));
+
+  echo '<h2>'.__( 'webのアフィリンク先', THEME_NAME ).'</h2>';
+  generate_textbox_tag('web_affi_link', $web_affi_link, __( '', THEME_NAME ));
+
+  echo '<h2>'.__( 'レビュー記事のURL', THEME_NAME ).'</h2>';
+  generate_textbox_tag('article', $article, __( '', THEME_NAME ));
+
+  echo '<h2>'.__( 'app_order', THEME_NAME ).'</h2>';
+  generate_textbox_tag('app_order', $app_order, __( '', THEME_NAME ));
+
+  echo '<h2>'.__( 'アプリの料金', THEME_NAME ).'</h2>';
+  generate_textbox_tag('app_price', $app_price, __( '', THEME_NAME ));
+
 ?>
-<input type="submit" value="新規挿入">
+
 </form>
-
-
-<h1>個別の商品ページを登録する(A8のみ)</h1>
-<p>商品別</p>
-      <?php
-      echo '<form action="" method="post" name="form2">';
-      echo "<select name='base_id'>";
-      $records = get_db_table_records(PLUGIN_DB_PREFIX.'base','');
-      foreach($records as $r){
-        echo "<option value={$r->id}>{$r->name}</option>";
-      }
-      　?>
-</select>
-<p><label>商品名（日本語）：<input type="text" name="item_name" size="40"></label></p>
-<p><label>商品ページURL：<input type="text" name="official_item_link" size="150"></label></p>
-<p><label>アフィリエイトのURL：<input type="text" name="affi_item_link" size="150"></label></p>
-<p><label>Amazonのasin：<input type="text" name="amazon_asin" size="150"></label></p>
-<p><label>楽天のid(例：phiten:111111)：<input type="text" name="rakuten_id" size="150"></label></p>
-<p><input type="submit" value="送信"></p>
-</form>
-      <?php
-
-      $base_id = $_POST['base_id'];
-      $item_name = $_POST['item_name'];
-      $official_item_link = $_POST['official_item_link'];
-      $amazon_asin = $_POST['amazon_asin'];
-      $rakuten_id = $_POST['rakuten_id'];
-			$affi_item_link = $_POST['affi_item_link'];
-      if($base_id && $item_name){
-
-        global $wpdb;
-				$table = PLUGIN_DB_PREFIX.'base';
-
-				$sql = "SELECT B.a8_shohin FROM {$table} as B WHERE B.id = {$base_id}";
-				$results = $wpdb->get_results($sql,object);
-				// 結果を表示
-				foreach( $results as $result ) {
-					$a8_shohin= $result->a8_shohin;
-				}
-
-				//場合ワケ
-				if($a8_shohin != ""){
-					//a8の場合
-					if($official_item_link == ""){
-						echo "a8の商品リンク作成に必要な公式リンクを入力していない";die;
-					}else{
-						//a8の商品リンクが生成
-						$affi_item_link = $a8_shohin."&a8ejpredirect=" . urlencode($official_item_link);
-					}
-				}else{
-					//a8以外はしっかりとURLを書く必要がある
-					if(!$affi_item_link){
-						echo "a8以外の案件なのに、商品別のリンクを入力できていない";die;
-					}
-				}
-
-
-        $table = PLUGIN_DB_PREFIX.'detail';
-
-        $data = array('id'=>'','base_id'=>$base_id,'item_name'=>$item_name,'official_item_link'=>$official_item_link,'affi_item_link'=>$affi_item_link,'amazon_asin'=>$amazon_asin,'rakuten_id'=>$rakuten_id);
-        $format = array('%d','%d','%s','%s','%s','%s','%s');
-        $res = $wpdb->insert( $table, $data, $format );
-        if($res){echo "商品ページ登録完了";}
-      }

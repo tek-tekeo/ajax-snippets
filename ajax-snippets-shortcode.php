@@ -133,7 +133,7 @@ function SingleReview($atts, $content = null){
      'color'=>'blue'
   ), $atts ) );
   global $wpdb;
-  $sql = "SELECT * FROM ".PLUGIN_DB_PREFIX."base as B,".PLUGIN_DB_PREFIX."detail as D where D.id={$detail_id} AND B.id=D.base_id";
+  $sql = "SELECT B.* FROM ".PLUGIN_DB_PREFIX."base as B,".PLUGIN_DB_PREFIX."detail as D where D.id={$detail_id} AND B.id=D.base_id";
   $list = $wpdb->get_results( $sql, object);
 
   foreach($list as $l){
@@ -160,7 +160,7 @@ EOT;
 
 $rep .=<<<EOT
     <div style="display:flex;align-items: flex-start;justify-content:space-evenly;width:100%">
-    <div style="text-align:center;width:30%">[afRecordBanner id={$detail_id}]</div>
+    <div style="text-align:center;width:30%">[afRecordBanner id={$l->id}]</div>
     <div style="width:50%;max-width:300px">
     {$chart_str}
     </div>
@@ -177,7 +177,7 @@ $rep .=<<<EOT
     {$l->review}
 EOT;
 if ( current_user_can('administrator') || current_user_can('editor') || current_user_can('author')){
-    $kono_url = admin_url('')."admin.php?page=base-config&action=edit&base_id={$detail_id}";
+    $kono_url = admin_url('')."admin.php?page=ajax-snippets&action=update&base_id={$l->id}";
     $rep .= "<p><a href={$kono_url} target='_blank'>この案件を編集</a>(管理者向け)</p>";
 }
   }
@@ -288,3 +288,71 @@ EOT;
 return $rep;
 }
 add_shortcode('ajax_snippets_rchart', 'Radercahrt');
+
+function appLinkGenerater($atts) {
+  extract( shortcode_atts( array(
+  'detail_id' =>'1',
+  'noaffi' =>'0'
+  ), $atts ) );
+  global $wpdb;
+//小要素のIDから親要素のアプリリンクを生成する。WEBの場合はWEBリンクを生成する
+
+  $sql = "SELECT base_id FROM ".PLUGIN_DB_PREFIX."detail where id={$detail_id}";
+  $res = $wpdb->get_results($sql,object);
+  foreach ($res as $key => $r) {
+    $base_id = $r->base_id;
+  }
+//ユーザーエージェントの取得
+  $ua = $_SERVER['HTTP_USER_AGENT'];
+  if ( preg_match('/Android/ui', $ua) ) {
+    //Android系の端末
+    $sql ="SELECT A.app_id, B.name, A.img, A.dev, A.android_link as link, A.android_affi_link as affi_link FROM ".PLUGIN_DB_PREFIX."apps as A, ".PLUGIN_DB_PREFIX."base as B where A.app_id={$base_id} AND B.id=A.app_id";
+$src = <<<EOT
+<img style="height: 40px; width: 135px;" src="https://nabettu.github.io/appreach/img/gplay_ja.png" alt="" />
+EOT;
+  }else if ( preg_match('/iPhone|iPod|iPad/ui', $ua) ) {
+    //iOS系の端末
+    $sql ="SELECT A.app_id, B.name, A.img, A.dev, A.ios_link as link, A.ios_affi_link as affi_link FROM ".PLUGIN_DB_PREFIX."apps as A, ".PLUGIN_DB_PREFIX."base as B where A.app_id={$base_id} AND B.id=A.app_id";
+$src = <<<EOT
+<img style="height: 40px; width: 135px;" src="https://nabettu.github.io/appreach/img/itune_ja.svg" alt="" />
+EOT;
+  }else{
+    //Webブラウザからのアクセス
+    $sql ="SELECT A.app_id, B.name, A.img, A.dev, A.web_link as link, A.web_affi_link as affi_link FROM ".PLUGIN_DB_PREFIX."apps as A, ".PLUGIN_DB_PREFIX."base as B where A.app_id={$base_id} AND B.id=A.app_id";
+$src = <<<EOT
+<div class="btn btn-light-blue">公式サイトで見てみる</div>
+EOT;
+  }
+
+  $results = $wpdb->get_results($sql,object);
+  foreach ($results as $key => $r) {
+    //アフィリンクがあってかつ、アフィリエイトを利用する場合
+    if($r->affi_link == "" || $noaffi == 1){
+      $app_href = $r->link;
+    }else{
+      $app_href = $r->affi_link;
+    }
+
+    // code...
+
+    $title = $r->name;
+    $dev = $r->dev;
+    $img = $r->img;
+
+  }
+
+$appLink = <<<EOT
+<a class="applink" href="{$app_href}" rel="nofollow">
+<div class="applink_box">
+<div class="applink_box_item1"><img src="{$img}" alt="{$title}のアイコン"/></div>
+<div class="applink_box_item2">
+<div class="fz-16px applink_box_title">{$title}</div>
+<div class="fz-12px">開発元：{$dev}</div>
+{$src}
+</div><!--applink_box_item2が終了-->
+</div>
+</a>
+EOT;
+      return $appLink;
+}
+add_shortcode('appLinkG', 'appLinkGenerater');

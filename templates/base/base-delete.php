@@ -1,7 +1,21 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) exit; ?>
-
+<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets"; ?>">追加</a>
+<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=edit"; ?>">編集</a>
 <?php
+
+$base_id = $_GET['base_id'];
+
+if(is_numeric($base_id)){
+  //base_idがGET送信されると、親要素も小要素も全て削除
+  global $wpdb;
+  $sql = "DELETE FROM ".PLUGIN_DB_PREFIX."base where id=".$base_id;
+  $results = $wpdb->get_results($sql,object);
+  $sql = "DELETE FROM ".PLUGIN_DB_PREFIX."detail where base_id=".$base_id;
+  $results = $wpdb->get_results($sql,object);
+  echo "削除が完了しました";
+}
+echo '<h1>親要素の削除ページ</h1>';
   echo '<h2>'.__( '名前', THEME_NAME ).'</h2>';
   generate_textbox_tag('parent', $parent, __( 'ゴリラクリニック', THEME_NAME ));
 
@@ -45,8 +59,15 @@ $(function () {
    $(document).on('click','input[name="base_id"]',function(){
      var val = $("input[name='base_id']:checked");
      var base_id = val.val();
-     var url = "<?php echo admin_url('')."admin.php?page=base-config&action=edit&base_id="; ?>";
-     window.location.href = url + base_id;
+     var result = confirm('削除を確定しますか？');
+
+      if(result) {
+        //はいを選んだときの処理
+         var url = "<?php echo admin_url('')."admin.php?page=ajax-snippets&action=delete&base_id="; ?>";
+          window.location.href = url + base_id;
+      } else {
+      //いいえを選んだときの処理
+      }
    });
 
    var timeout = null

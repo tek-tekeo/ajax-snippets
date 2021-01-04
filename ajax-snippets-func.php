@@ -31,20 +31,30 @@ function get_ajax_snippets( $keyword = null, $order_by = null ) {
 
 function prepareAjax(){
 	$text = $_POST['text'];
-	$sql = "SELECT B.name, B.affi_link, B.img_tag, D.id, D.item_name, D.official_item_link,D.amazon_asin, D.rakuten_id FROM ".PLUGIN_DB_PREFIX."base As B RIGHT JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.item_name LIKE '%".$text."%' OR B.name LIKE '%".$text."%'";
+	$sql = "SELECT B.name, B.affi_link, B.img_tag, B.s_link, B.asp_name, D.id, D.affi_item_link, D.item_name, D.official_item_link,D.amazon_asin, D.rakuten_id FROM ".PLUGIN_DB_PREFIX."base As B RIGHT JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.item_name LIKE '%".$text."%' OR B.name LIKE '%".$text."%'";
 		global $wpdb;
 	$results = $wpdb->get_results($sql,object);
             // 結果を表示
   $returnObj = array();
-	foreach( $results as $key => $result ) {
+	foreach( $results as $key => $r ) {
+    if($r->item_name == 'トップ'){
+      $r->affi_link = $r->affi_link;
+    }else if($r->s_link == '' && $r->asp_name == 'a8'){
+      $r->affi_link = $r->affi_link;
+    }else if($r->asp_name == 'a8'){
+      $r->affi_link = $r->s_link."&a8ejpredirect=".urlencode($r->official_item_link);
+    }else{
+      $r->affi_link = $r->affi_item_link;
+    }
         $returnObj[$key] = array(
-            'id' => $result->id,
-            'name' => $result->name,
-            'item' => $result->name ." ".$result->item_name,
-				'official' => $result->official_item_link,
-			'a8Link' => $result->affi_link,
-      'amazon' => $result->amazon_asin,
-      'rakuten' => $result->rakuten_id
+            'id' => $r->id,
+            'name' => $r->name,
+            'item' => $r->name ." ".$r->item_name,
+        'official' => $r->official_item_link,
+        'affilink' => $r->affi_link,
+			'aspname' => $r->asp_name,
+      'amazon' => $r->amazon_asin,
+      'rakuten' => $r->rakuten_id
         );
 	}
     echo json_encode($returnObj);
@@ -78,3 +88,41 @@ EOT;
 }
 add_action( "wp_ajax_getListBase" , "getListBase" );
 add_action( "wp_ajax_nopriv_getListBase" , "getListBase" );
+
+function getListChild(){
+  $name = $_POST['name'];
+  $sql = "SELECT B.name, D.item_name, D.id FROM ".PLUGIN_DB_PREFIX."base As B RIGHT JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.item_name LIKE '%".$name."%' OR B.name LIKE '%".$name."%'";
+		global $wpdb;
+	$results = $wpdb->get_results($sql,object);
+  if(count($results) == 0){
+    echo "みつからなかったパティーン";
+    die();
+  }
+
+	//名前検索
+	foreach( $results as $key => $r ) {
+$rep .=<<<EOT
+<dt>{$r->name} {$r->item_name}<input type='button' data-src='{$r->id}' name='child_id' value="変更"><input type='button' data-src='{$r->id}' name='child_id' value="削除"></dt>
+EOT;
+
+	}//名前検索によるforechの終了部分
+
+  echo $rep;
+  die();
+//    echo json_encode($returnObj);
+  //  die();
+}
+add_action( "wp_ajax_getListChild" , "getListChild" );
+add_action( "wp_ajax_nopriv_getListChild" , "getListChild" );
+
+function deleteChild(){
+  $id = $_POST['id'];
+  $sql = "DELETE FROM ".PLUGIN_DB_PREFIX."detail where id={$id}";
+  global $wpdb;
+	$results = $wpdb->get_results($sql,object);
+  die();
+//    echo json_encode($returnObj);
+  //  die();
+}
+add_action( "wp_ajax_deleteChild" , "deleteChild" );
+add_action( "wp_ajax_nopriv_deleteChild" , "deleteChild" );

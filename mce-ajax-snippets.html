@@ -1,124 +1,139 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>アフィリエイトプラグイン</title>
-</head>
-<body>
-<input type="text" id="item" placeholder="検索アイテム名を入力" autocomplete="off">
-<input type="button" id="AmazonLink" value="Amazonリンクを生成" onclick="return false;"/>
-<input type="button" id="a8Link" value="A8URLを生成" onclick="return false;"/>
-<input type="button" id="normalLink" value="アフィリンク(直)" onclick="return false;"/>
-<input type="button" id="afRecordLink" value="アフィリンク(R)" onclick="return false;"/>
-<input type="button" id="afRecordBanner" value="バナーリンク(R)" onclick="return false;"/>
-<input type="button" id="singleReview" value="シングルレビュー" onclick="return false;"/>
-<p>候補一覧</p>
-<dl id="ajax-item-list" style="width:550px; height:200px;overflow-y: scroll;">
 
-</dl>
+<head>
+  <meta charset="UTF-8">
+  <title>アフィリエイトプラグイン</title>
+</head>
+
+<body>
+  <input type="text" id="item" placeholder="検索アイテム名を入力" autocomplete="off">
+  <input type="button" id="AmazonLink" value="Amazonリンクを生成" onclick="return false;" />
+  <input type="button" id="a8Link" value="A8URLを生成" onclick="return false;" />
+  <input type="button" id="normalLink" value="アフィリンク(直)" onclick="return false;" />
+  <input type="button" id="afRecordLink" value="アフィリンク(R)" onclick="return false;" />
+  <input type="button" id="afRecordBanner" value="バナーリンク(R)" onclick="return false;" />
+  <input type="button" id="singleReview" value="シングルレビュー" onclick="return false;" />
+  <input type="button" id="appLink" value="アプリのリンク" onclick="return false;" />
+  <p>候補一覧</p>
+  <dl id="ajax-item-list" style="width:550px; height:200px;overflow-y: scroll;">
+
+  </dl>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script type="text/javascript">
-$(function () {
-  $(document).ready( function(){
-    ajaxLink();
-    $('input:visible').eq(0).focus();
-  });
-
-   function ajaxLink(){
-     var newText = $('#item').val();
-         // Ajax通信を開始する
-
-         $.ajax({
-             type: "POST",
-             data:{
-                  'action':"prepareAjax",
-                  'text':newText
-             },
-             url: '../../../wp-admin/admin-ajax.php',
-             success: function(e) {
-
-               jsonData = JSON.parse(e);
-
-               $alist = $('#ajax-item-list');
-               $alist.empty();
-               $.each( jsonData, function( i, val ){
-                 $alist.append("<dt><label><input type='radio' name='q1' data-amazon=\""+ val['amazon']+"\" data-rakuten=\""+ val['rakuten']+"\" data-a8=\""+ val['a8Link']+"\" data-id=\""+val['id']+"\" data-official=\""+val['official']+"\" value=\""+val['name']+"\">"+val['item']+"<div style='display:none'>"+val['item']+"</div></label></dt>");
-               });
-
-             },
-             error: function(e){
-                 console.log('失敗');
-             }
-         })
-   }
-
-  $(document).on('click','#cancel',function(){
-
-        top.tinymce.activeEditor.windowManager.close();
-        return false;
+  $(function () {
+    $(document).ready(function () {
+      ajaxLink();
+      $('input:visible').eq(0).focus();
     });
 
-    $(document).on('click','#AmazonLink',function(){
+    function ajaxLink() {
+      var newText = $('#item').val();
+      // Ajax通信を開始する
+
+      $.ajax({
+        type: "POST",
+        data: {
+          'action': "prepareAjax",
+          'text': newText
+        },
+        url: '../../../wp-admin/admin-ajax.php',
+        success: function (e) {
+
+          jsonData = JSON.parse(e);
+
+          $alist = $('#ajax-item-list');
+          $alist.empty();
+          $.each(jsonData, function (i, val) {
+            $alist.append("<dt><label><input type='radio' name='q1' data-amazon=\"" + val['amazon'] + "\" data-rakuten=\"" + val['rakuten'] + "\" data-affilink=\"" + val['affilink'] + "\" data-id=\"" + val['id'] + "\" data-official=\"" + val['official'] + "\" value=\"" + val['name'] + "\">" + val['item'] + "<div style='display:none'>" + val['item'] + "</div></label></dt>");
+          });
+
+        },
+        error: function (e) {
+          console.log('失敗');
+        }
+      })
+    }
+
+    $(document).on('click', '#cancel', function () {
+
+      top.tinymce.activeEditor.windowManager.close();
+      return false;
+    });
+
+    $(document).on('click', '#AmazonLink', function () {
       var val = $("input[name='q1']:checked");
       var kw = val.next().text();
       var amazon = val.attr('data-amazon');
       var rakuten = val.attr('data-rakuten');
       var inputTag;
 
-      if(amazon != null && amazon != ""){
-        inputTag = "[amazon asin=\""+amazon+"\" kw=\""+kw+"\" title=\""+kw+"\"";
-      }else if(rakuten != null && rakuten != ""){
-        inputTag = "[rakuten id=\""+rakuten+"\" kw=\""+kw+"\" title=\""+kw+"\"";
-      }else{
+      if (amazon != null && amazon != "") {
+        inputTag = "[amazon asin=\"" + amazon + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
+      } else if (rakuten != null && rakuten != "") {
+        inputTag = "[rakuten id=\"" + rakuten + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
+      } else {
         return false;
       }
 
-      var a8Link = val.attr('data-a8')+"&a8ejpredirect="+encodeURIComponent(val.attr('data-official'));
-      var inputTag = inputTag+" btn1_url=\""+a8Link+"\" btn1_text=\""+val.val()+"公式\"]";
+      var affiLink = val.attr('data-affilink');
+      var inputTag = inputTag + " btn1_url=\"" + affiLink + "\" btn1_text=\"" + val.val() + "公式\"]";
       top.tinymce.activeEditor.selection.setContent(inputTag);
       top.tinymce.activeEditor.windowManager.close();
       return false;
     });
 
-    $(document).on('click','#a8Link',function(){
+    $(document).on('click', '#a8Link', function () {
       var val = $("input[name='q1']:checked");
-      if(val.attr('data-id') == null){
+      if (val.attr('data-id') == null) {
         return false;
       }
-      var inputTag = val.attr('data-a8')+"&a8ejpredirect="+encodeURIComponent(val.attr('data-official'))+"";
+      var inputTag = val.attr('data-affilink');
       top.tinymce.activeEditor.selection.setContent(inputTag);
       top.tinymce.activeEditor.windowManager.close();
       return false;
     });
-    $(document).on('click','#singleReview',function(){
-      var val = $("input[name='q1']:checked");
-      var id = val.attr('data-id');
-      if(val.attr('data-id') == null){
-        return false;
-      }
-      var inputTag = "[singleReview detail_id="+id+" color='blue']";
-      top.tinymce.activeEditor.selection.setContent(inputTag);
-      top.tinymce.activeEditor.windowManager.close();
-      return false;
-    });
-
-    $(document).on('click','#normalLink',function(){
+    $(document).on('click', '#singleReview', function () {
       var val = $("input[name='q1']:checked");
       var id = val.attr('data-id');
-      if(val.attr('data-id') == null){
+      if (val.attr('data-id') == null) {
         return false;
       }
-      var inputTag = "[afLink id="+id+" re_url=0 noaf=0][/afLink]";
+      var inputTag = "[singleReview detail_id=" + id + " color='blue']";
       top.tinymce.activeEditor.selection.setContent(inputTag);
       top.tinymce.activeEditor.windowManager.close();
       return false;
     });
 
-    $(document).on('click','#afRecordLink',function(){
+    $(document).on('click', '#normalLink', function () {
       var val = $("input[name='q1']:checked");
       var id = val.attr('data-id');
-      if(val.attr('data-id') == null){
+      if (val.attr('data-id') == null) {
+        return false;
+      }
+      var inputTag = "[afLink id=" + id + " re_url=0 noaf=0][/afLink]";
+      top.tinymce.activeEditor.selection.setContent(inputTag);
+      top.tinymce.activeEditor.windowManager.close();
+      return false;
+    });
+
+    $(document).on('click', '#appLink', function () {
+      var val = $("input[name='q1']:checked");
+      var id = val.attr('data-id');
+      if (val.attr('data-id') == null) {
+        return false;
+      }
+      var inputTag = "[appLinkG app_id=" + id + " re_url=0 noaf=0 text='テキスト']";
+      top.tinymce.activeEditor.selection.setContent(inputTag);
+      top.tinymce.activeEditor.windowManager.close();
+      return false;
+    });
+
+    $(document).on('click', '#afRecordLink', function () {
+      var val = $("input[name='q1']:checked");
+      var id = val.attr('data-id');
+      if (val.attr('data-id') == null) {
         return false;
       }
       //コンテンツの取得(不要)
@@ -127,33 +142,34 @@ $(function () {
       // var count = ( content.match(new RegExp(re,"g")) || [] ).length;
 
       //本番
-      var place=Math.random().toString(36).slice(-8);
-      var inputTag = "[afRecord id="+id+" ntab=0 pl="+place+"]"+val.next().text()+"[/afRecord]";
+      var place = Math.random().toString(36).slice(-8);
+      var inputTag = "[afRecord id=" + id + " ntab=0 pl=" + place + "]" + val.next().text() + "[/afRecord]";
       top.tinymce.activeEditor.selection.setContent(inputTag);
       top.tinymce.activeEditor.windowManager.close();
       return false;
     });
-    $(document).on('click','#afRecordBanner',function(){
+    $(document).on('click', '#afRecordBanner', function () {
       var val = $("input[name='q1']:checked");
       var id = val.attr('data-id');
-      if(val.attr('data-id') == null){
+      if (val.attr('data-id') == null) {
         return false;
       }
 
       //本番
-      var place=Math.random().toString(36).slice(-8);
-      var inputTag = "[afRecordBanner id="+id+" ntab=0 pl="+place+"]";
+      var place = Math.random().toString(36).slice(-8);
+      var inputTag = "[afRecordBanner id=" + id + " ntab=0 pl=" + place + "]";
       top.tinymce.activeEditor.selection.setContent(inputTag);
       top.tinymce.activeEditor.windowManager.close();
       return false;
     });
 
 
-  $('#item').keyup(function(){
-    ajaxLink();
+    $('#item').keyup(function () {
+      ajaxLink();
 
     });
 
-});
+  });
 </script>
+
 </html>

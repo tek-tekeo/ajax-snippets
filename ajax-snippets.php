@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: ajax snippets
-Description: アフィリエイトのリンクを取得しやすくする
+Description: アフィリエイトのリンクを取得しやすくする(テーマはcocoonの必要がある)
 Author: tektekeo
 Version: 0.1
 Author URI: https://www.kouritsu30.com
@@ -98,7 +98,30 @@ function jal_install()
 						foreach ($data as $d){
 							$res = $wpdb->insert( $table_name, $d );
 						}
-					}
+          }
+
+          $table_name = $wpdb->prefix . PLUGIN_ID . '_apps';
+
+	        $charset_collate = $wpdb->get_charset_collate();
+
+          $sql = "CREATE TABLE $table_name (
+	                app_id int(11) NOT NULL AUTO_INCREMENT,
+									img varchar(255) NOT NULL,
+									dev varchar(255) NOT NULL,
+									ios_link varchar(1025) NOT NULL,
+									android_link varchar(1025) NOT NULL,
+									web_link varchar(1025) NOT NULL,
+									ios_affi_link varchar(1025) NOT NULL,
+									android_affi_link varchar(1025) NOT NULL,
+									web_affi_link varchar(1025) NOT NULL,
+									article varchar(1025) NOT NULL,
+									app_order int(11) NOT NULL,
+									app_price int(11) NOT NULL,
+                  UNIQUE KEY id (app_id)
+	        )
+          $charset_collate;";
+
+	        dbDelta( $sql );
 
 	        add_option( 'jal_db_version', $jal_db_version );
 	}
@@ -112,12 +135,12 @@ class AjaxSneppets
 
     function __construct()
     {
-
         if (is_admin() && is_user_logged_in()) {
             // メニュー追加
             add_action('admin_menu', [$this, 'set_plugin_menu']);
             add_action('admin_menu', [$this, 'set_plugin_sub_menu']);
-            //ビジュアルエディタへ追加
+            add_action('admin_menu', [$this, 'set_plugin_sub_menu']);
+            // //ビジュアルエディタへ追加
             require_once abspath(__FILE__).'ajax-snippets-func.php';
 
         }
@@ -130,6 +153,8 @@ class AjaxSneppets
 		* script関数の登録
 		*/
 		public function register_gmapmaker_scripts() {
+    wp_register_style( 'ajax-snippets-style', plugins_url( 'ajax-snippets/css/style.css' ) );
+    wp_enqueue_style( 'ajax-snippets-style' );
 		wp_enqueue_script( 'chartjs','//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js', [ 'jquery' ] ,date('U'),true);
 		//	wp_enqueue_script( 'https://maps.googleapis.com/maps/api/js?v=weekly&key=AIzaSyAxLHeyTpEqFFQGceE5xiURS9R-xjckvGs&callback=initMap&libraries=places', [ 'jquery' ] ,date('U'),true);
 		}
@@ -150,39 +175,45 @@ class AjaxSneppets
 
         add_submenu_page(
             'ajax-snippets',  /* 親メニューのslug */
-            '設定',
-            '設定',
+            '小要素の追加・変更',
+            '小要素の追加・変更',
             'manage_options',
-            'base-config',
-            [$this, 'base_config_form']);
+            'child-config',
+            [$this, 'child_form']);
     }
     function show_about_plugin() {
-			$action = isset($_GET['action']) ? $_GET['action'] : null;
-			if ($action == 'delete') {
-				//require_once abspath(__FILE__).'form-delete.php';
+      $action = isset($_GET['action']) ? $_GET['action'] : null;
+      if ($action == 'delete') {
+        //削除用のページ
+        require_once abspath(__FILE__).'templates/base/base-delete.php';
 			} else {
 				if (!isset($action)) {
-					 require_once abspath(__FILE__).'new-form.php';
-				} else {//入力フォームの表示
+          require_once ABSPATH . 'wp-content/plugins/ajax-snippets/templates/base/base-new-form.php';
+				} else if($action == "update"){
+          require_once ABSPATH . 'wp-content/plugins/ajax-snippets/templates/base/base-update.php';
+        }else {//入力フォームの表示
 					//require_once abspath(__FILE__).'form.php';
-					 require_once abspath(__FILE__).'new-form.php';
+          require_once ABSPATH . 'wp-content/plugins/ajax-snippets/templates/base/base-list.php';
 				}
 			}
     }//show_about_pluginの終わり
 
-    function base_config_form() {
+    function child_form() {
 			?>
-			<h1>レビュー更新ページ</h1>
 			<?php
 			$action = isset($_GET['action']) ? $_GET['action'] : null;
 			if ($action == 'delete') {
 				//require_once abspath(__FILE__).'form-delete.php';
 			} else {
 				if (!isset($action)) {
-					 require_once abspath(__FILE__).'base-list.php';
-				} else {//入力フォームの表示
+          require_once abspath(__FILE__).'templates/child/child-base-select.php';
+				} else if($action == 'add'){
+          require_once abspath(__FILE__).'templates/child/child-new-form.php';
+        } else if($action == 'update'){
+          require_once abspath(__FILE__).'templates/child/child-update.php';
+        }else {//入力フォームの表示
 					//require_once abspath(__FILE__).'form.php';
-					 require_once abspath(__FILE__).'base-form.php';
+
 				}
 			}
     }

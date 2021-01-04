@@ -1,0 +1,118 @@
+a.applink{
+  color:#555;
+  text-decoration: none;
+}
+div.applink_box{
+  display: flex;
+  background-color: #fafafa;
+  border: double 5px #e5e5e5;
+   padding: 5px;
+   max-width:500px;
+   margin-left:auto;
+   margin-right:auto;
+}
+div.applink_box_item1{
+  min-width:12%;
+}
+div.applink_box_item1 img{
+  border-radius: 10%;
+  width:100px;
+  height:100px;
+}
+div.applink_box_item2{
+  padding-left: 10px;
+}
+div.applink_box_item2 .applink_box_title:a{
+  color:red;
+}
+
+/*アプリのおすすめ*/
+ul.appreviews_app_supply, ul.app_target_info{
+  border: solid 2px #ffb03f;
+  padding: 0.5em 1em 0.5em 2.3em;
+  position: relative;
+  margin-top: 2em;
+}
+ul.appreviews_app_supply li, ul.app_target_info li{
+  line-height: 1.5;
+  padding: 0.5em 0;
+  list-style-type: none!important;
+}
+ul.appreviews_app_supply li:before {
+  /*リストのアイコン*/
+  font-family: FontAwesome;
+  content: "\f019";
+  position: absolute;
+  left : 1em; /*左端からのアイコンまでの距離*/
+  color: #ffb03f; /*アイコン色*/
+	font-weight: 900;
+}
+ul.appreviews_app_supply li:after {
+  /*タブ*/
+  background: #ffb03f;
+  color: #fff;
+  font-family: FontAwesome,'Avenir','Arial',sans-serif;
+  position: absolute;
+  left: -2px;
+  bottom: 100%;
+  padding: 1px 7px;
+  content: '\f164  \3059\3050\306b\8aad\3080';/*アイコンコード＋文字（Unicodeに変換）*/
+  letter-spacing: 0.05em;/*字間*/
+}
+
+ul.app_target_info li:before{
+  /*リストのアイコン*/
+  font-family: FontAwesome;
+  content: "\f019";
+  position: absolute;
+  left : 1em; /*左端からのアイコンまでの距離*/
+  color: #ffb03f; /*アイコン色*/
+  font-weight: 900;
+}
+ul.app_target_info li:after {
+  /*タブ*/
+  background: #ffb03f;
+  color: #fff;
+  font-family: FontAwesome,'Avenir','Arial',sans-serif;
+  position: absolute;
+  left: -2px;
+  bottom: 100%;
+  padding: 1px 7px;
+  content: '\f164  \63b2\8f09\4e2d\306e\30de\30f3\30ac\30a2\30d7\30ea';/*アイコンコード＋文字（Unicodeに変換）*/
+  letter-spacing: 0.05em;/*字間*/
+}
+
+/*おすすめマンガ*/
+ul.favo_manga {
+  border: solid 2px #ffb03f;
+  padding: 0.5em 1em 0.5em 2.3em;
+  position: relative;
+  margin-top: 2em;
+}
+ul.favo_manga li {
+  line-height: 1.2;
+  font-size:13px;
+  padding: 0.5em 0;
+  list-style-type: none!important;
+}
+ul.favo_manga li:before {
+  /*リストのアイコン*/
+  font-family: FontAwesome;
+  content: "\f058";
+  position: absolute;
+  left : 1em; /*左端からのアイコンまでの距離*/
+  color: #ffb03f; /*アイコン色*/
+	font-weight: 900;
+}
+ul.favo_manga li:after {
+  /*タブ*/
+  background: #ffb03f;
+  color: #fff;
+  font-family: FontAwesome,'Avenir','Arial',sans-serif;
+  position: absolute;
+  left: -2px;
+  bottom: 100%;
+  padding: 1px 7px;
+  content: '\f02d  \4eba\6c17\306e\30de\30f3\30ac\4e00\89a7';/*アイコンコード＋文字（Unicodeに変換）*/
+  letter-spacing: 0.05em;/*字間*/
+}
