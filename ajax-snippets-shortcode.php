@@ -133,7 +133,7 @@ function SingleReview($atts, $content = null){
      'color'=>'blue'
   ), $atts ) );
   global $wpdb;
-  $sql = "SELECT B.* FROM ".PLUGIN_DB_PREFIX."base as B,".PLUGIN_DB_PREFIX."detail as D where D.id={$detail_id} AND B.id=D.base_id";
+  $sql = "SELECT D.*,B.name FROM ".PLUGIN_DB_PREFIX."base as B,".PLUGIN_DB_PREFIX."detail as D where D.id={$detail_id} AND B.id=D.base_id";
   $list = $wpdb->get_results( $sql, object);
 
   foreach($list as $l){

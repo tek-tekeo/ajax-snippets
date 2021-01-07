@@ -15,9 +15,6 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   $affi_img = $_POST['affi_img']; //アフィリエイトの画像
   $img_tag = $_POST['img_tag']; //計測用のタグ
   $official_link = $_POST['official_link']; //公式リンク　必須
-  $info = stripslashes(nl2br($_POST['info']));
-  $review = stripslashes($_POST['review']);
-  $rchart = stripslashes($_POST['rchart']);
 
   if($name != '' && $anken != '' && $affi_link != '' && $asp_name != '' && $official_link !=''){
     $name = $_POST['name'];
@@ -28,9 +25,6 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     $affi_img = $_POST['affi_img'];
     $img_tag = $_POST['img_tag'];
     $official_link = $_POST['official_link'];
-    $info = stripslashes(nl2br($_POST['info']));
-    $review = stripslashes($_POST['review']);
-    $rchart = stripslashes($_POST['rchart']);
     $img = $_POST['img'];
     $dev = $_POST['dev'];
     $ios_link = $_POST['ios_link'];
@@ -47,7 +41,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 
     $table = PLUGIN_DB_PREFIX.'base';
 
-    $data = array('name'=>$name, 'anken'=>$anken, 'affi_img' => $affi_img, 'affi_link' => $affi_link, 's_link'=>$s_link, 'asp_name'=>$asp_name,'img_tag' => $img_tag, 'info' => $info, 'review' => $review, 'rchart' => $rchart);
+    $data = array('name'=>$name, 'anken'=>$anken, 'affi_img' => $affi_img, 'affi_link' => $affi_link, 's_link'=>$s_link, 'asp_name'=>$asp_name,'img_tag' => $img_tag);
     //$format = array('%d','%d','%d','%s','%f');
 
     $res = $wpdb->insert( $table, $data );
@@ -126,15 +120,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   echo '<h2>'.__( '公式サイトのURL', THEME_NAME ).'</h2>';
   generate_textbox_tag('official_link', $official_link, __( 'https://gorilla.clinic/', THEME_NAME ));
 
-  echo '<h2>'.__( 'テーブル情報', THEME_NAME ).'</h2>';
-  generate_textarea_tag('info', $info, __( '{"効果": 5, "安さ": 2, "実績": 4, "サービス": 5, "通いやすさ": 5}', THEME_NAME ));
-
   echo '<input type="submit" value="新規挿入">';
-
-  echo '<h2>'.__( 'チャート情報', THEME_NAME ).'</h2>';
-  generate_textbox_tag('rchart', $rchart, __( '{"効果": 5, "安さ": 2, "実績": 4, "サービス": 5, "通いやすさ": 5}', THEME_NAME ));
-
-  generate_visuel_editor_tag('review', $review,  'review-text');
 
   echo '<p>以下、アプリがあればの情報</p>';
   echo '<h2>'.__( 'アプリのアイコン画像URL', THEME_NAME ).'</h2>';

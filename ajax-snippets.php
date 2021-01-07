@@ -37,9 +37,6 @@ function jal_install()
 									asp_name varchar(10) NOT NULL,
 									affi_img varchar(1025) NOT NULL,
                   img_tag varchar(1025) NOT NULL,
-									rchart varchar(1025) DEFAULT '' NOT NULL,
-									info varchar(1025) DEFAULT '' NOT NULL,
-									review varchar(3000) DEFAULT '' NOT NULL,
 	                UNIQUE KEY id (id)
 	        )
 	        $charset_collate;";
@@ -57,6 +54,9 @@ function jal_install()
 									affi_item_link varchar(1025) DEFAULT '' NOT NULL,
                   amazon_asin varchar(255) DEFAULT '' NOT NULL,
                   rakuten_id varchar(255) DEFAULT '' NOT NULL,
+									rchart varchar(1025) DEFAULT '' NOT NULL,
+									info varchar(1025) DEFAULT '' NOT NULL,
+									review varchar(3000) DEFAULT '' NOT NULL,
 	                UNIQUE KEY id (id)
 	        )
 	        $charset_collate;";
@@ -291,7 +291,7 @@ if($match === 1){
   wp_redirect($dest_url, 302);
   }else{
   wp_redirect($dest_url, 302);
-}
+  }
 
   exit;
 }

@@ -46,10 +46,16 @@ function prepareAjax(){
     }else{
       $r->affi_link = $r->affi_item_link;
     }
+
+    if($r->item_name == 'トップ'){
+      $r->item_name='';
+    }else{
+      $r->item_name=' '.$r->item_name;
+    }
         $returnObj[$key] = array(
             'id' => $r->id,
             'name' => $r->name,
-            'item' => $r->name ." ".$r->item_name,
+            'item' => $r->name .$r->item_name,
         'official' => $r->official_item_link,
         'affilink' => $r->affi_link,
 			'aspname' => $r->asp_name,

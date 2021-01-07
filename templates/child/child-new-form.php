@@ -13,6 +13,9 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   $amazon_asin = $_POST['amazon_asin'];
   $rakuten_id = $_POST['rakuten_id'];
   $affi_item_link = $_POST['affi_item_link'];
+  $info = stripslashes(nl2br($_POST['info']));
+  $review = stripslashes($_POST['review']);
+  $rchart = stripslashes($_POST['rchart']);
 
   if($base_id !='' && $item_name !='' && $official_item_link !=''){
 
@@ -45,8 +48,8 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 
     $table = PLUGIN_DB_PREFIX.'detail';
 
-    $data = array('id'=>'','base_id'=>$base_id,'item_name'=>$item_name,'official_item_link'=>$official_item_link,'affi_item_link'=>$affi_item_link,'amazon_asin'=>$amazon_asin,'rakuten_id'=>$rakuten_id);
-    $format = array('%d','%d','%s','%s','%s','%s','%s');
+    $data = array('id'=>'','base_id'=>$base_id,'item_name'=>$item_name,'official_item_link'=>$official_item_link,'affi_item_link'=>$affi_item_link,'amazon_asin'=>$amazon_asin,'rakuten_id'=>$rakuten_id,'info' => $info, 'review' => $review, 'rchart' => $rchart);
+    $format = array('%d','%d','%s','%s','%s','%s','%s','%s','%s','%s');
     $res = $wpdb->insert( $table, $data, $format );
     if($res){echo "商品ページ登録完了";
       $base_id = '';
@@ -79,4 +82,13 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 <p>Amazonのasin：<input type="text" name="amazon_asin" size="150" value="<?php echo $amazon_asin;?>"></p>
 <p>楽天のid(例：phiten:111111)：<input type="text" name="rakuten_id" size="150" value="<?php echo $rakuten_id;?>"></p>
 <p><input type="submit" value="送信"></p>
+<?php
+  echo '<h2>'.__( 'テーブル情報', THEME_NAME ).'</h2>';
+  generate_textarea_tag('info', $info, __( '{"効果": 5, "安さ": 2, "実績": 4, "サービス": 5, "通いやすさ": 5}', THEME_NAME ));
+
+  echo '<h2>'.__( 'チャート情報', THEME_NAME ).'</h2>';
+  generate_textbox_tag('rchart', $rchart, __( '{"効果": 5, "安さ": 2, "実績": 4, "サービス": 5, "通いやすさ": 5}', THEME_NAME ));
+
+  generate_visuel_editor_tag('review', $review,  'review-text');
+?>
 </form>
