@@ -9,6 +9,7 @@ Author URI: https://www.kouritsu30.com
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+include_once dirname(__FILE__) . "/loader.php";
 
 add_action('init', 'AjaxSneppets::init');
 define('VERSION','0.1');

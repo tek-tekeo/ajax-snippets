@@ -1,11 +1,17 @@
 <?php //テンプレートフォーム
+use AjaxSnippets\Common\CreateForm as CF;
+use AjaxSnippets\Domain\Models\Dog;
 
 if ( !defined( 'ABSPATH' ) ) exit; ?>
 
-<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=edit"; ?>">編集</a>
-<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=delete"; ?>">削除</a>
-<form name="form1" method="post" action="">
   <?php
+
+
+  $check_base_insert=$_POST['base_insert'];
+  if ($check_base_insert != ""){
+    //TODO: 送信された場合の処理
+    // BM::addNewAnken($_POST);
+  }
   global $wpdb;
   $name = $_POST['name']; //表示する名前　必須
   $anken = $_POST['anken']; //URLのケツにつける案件コード　必須
@@ -82,80 +88,97 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   }else{
     echo "<h1 class='red'>入力不備</h1>";
   }
-  echo '<h1>親要素(base)の新規追加フォーム</h1>';
+  ?>
 
-  echo '<h2>'.__( '名前', THEME_NAME ).'</h2>';
-  generate_textbox_tag('name', $name, __( 'ゴリラクリニック', THEME_NAME ));
-
-  echo '<h2>'.__( '案件コード', THEME_NAME ).'</h2>';
-  generate_textbox_tag('anken', $anken, __( 'gorilla-hige', THEME_NAME ));
-
-  echo '<h2>'.__( 'アフィリンク(メイン)  ', THEME_NAME ).'</h2>';
-  generate_textbox_tag('affi_link', $affi_link, __( 'https://t.afi-b.com/visit.php?guid=ON&a=E58490-s346143Q&p=1638166I', THEME_NAME ));
-
-  echo '<h2>'.__( 'アフィリンク(商品リンクの頭)  ', THEME_NAME ).'</h2>';
-  generate_textbox_tag('s_link', $s_link, __( 'なければ不要', THEME_NAME ));
-
-  echo '<h2>'.__( 'ASP提携 ', THEME_NAME ).'</h2>';
-  $sql1 = "SELECT asp_name FROM ".PLUGIN_DB_PREFIX."asp";
-  $results1 = $wpdb->get_results($sql1, OBJECT);
-  echo '<select name="asp_name">';
-  foreach($results1 as $r1){
-    echo "<option value={$r1->asp_name}>{$r1->asp_name}</option>";
-  }
-  echo "</select>";
-
-  echo '<h2>'.__( 'バナーの画像', THEME_NAME ).'</h2>';
-  generate_textbox_tag('affi_img', $affi_img, __( 'https://gorilla.clinic/', THEME_NAME ));
-
-  echo '<h2>'.__( 'バナーの幅', THEME_NAME ).'</h2>';
-  generate_textbox_tag('img_width', $img_width, __( '300', THEME_NAME ));
-
-  echo '<h2>'.__( 'バナーの高さ', THEME_NAME ).'</h2>';
-  generate_textbox_tag('img_height', $img_height, __( '250', THEME_NAME ));
-
-  echo '<h2>'.__( 'アフィ、トラフィック用イメージタグ', THEME_NAME ).'</h2>';
-  generate_textbox_tag('img_tag', $img_tag, __( '', THEME_NAME ));
-
-  echo '<h2>'.__( '公式サイトのURL', THEME_NAME ).'</h2>';
-  generate_textbox_tag('official_link', $official_link, __( 'https://gorilla.clinic/', THEME_NAME ));
-
-  echo '<input type="submit" value="新規挿入">';
-
-  echo '<p>以下、アプリがあればの情報</p>';
-  echo '<h2>'.__( 'アプリのアイコン画像URL', THEME_NAME ).'</h2>';
-  generate_textbox_tag('img', $img, __( '', THEME_NAME ));
-
-  echo '<h2>'.__( '開発元企業', THEME_NAME ).'</h2>';
-  generate_textbox_tag('dev', $dev, __( '', THEME_NAME ));
-
-  echo '<h2>'.__( 'iosのリンク先', THEME_NAME ).'</h2>';
-  generate_textbox_tag('ios_link', $ios_link, __( '', THEME_NAME ));
-
-  echo '<h2>'.__( 'androidのリンク先', THEME_NAME ).'</h2>';
-  generate_textbox_tag('android_link', $android_link, __( '', THEME_NAME ));
-
-  echo '<h2>'.__( 'webのリンク先', THEME_NAME ).'</h2>';
-  generate_textbox_tag('web_link', $web_link, __( '', THEME_NAME ));
-
-  echo '<h2>'.__( 'iosのアフィリンク先', THEME_NAME ).'</h2>';
-  generate_textbox_tag('ios_affi_link', $ios_affi_link, __( '', THEME_NAME ));
-
-  echo '<h2>'.__( 'androidのアフィリンク先', THEME_NAME ).'</h2>';
-  generate_textbox_tag('android_affi_link', $android_affi_link, __( '', THEME_NAME ));
-
-  echo '<h2>'.__( 'webのアフィリンク先', THEME_NAME ).'</h2>';
-  generate_textbox_tag('web_affi_link', $web_affi_link, __( '', THEME_NAME ));
-
-  echo '<h2>'.__( 'レビュー記事のURL', THEME_NAME ).'</h2>';
-  generate_textbox_tag('article', $article, __( '', THEME_NAME ));
-
-  echo '<h2>'.__( 'app_order', THEME_NAME ).'</h2>';
-  generate_textbox_tag('app_order', $app_order, __( '', THEME_NAME ));
-
-  echo '<h2>'.__( 'アプリの料金', THEME_NAME ).'</h2>';
-  generate_textbox_tag('app_price', $app_price, __( '', THEME_NAME ));
-
-?>
-
+<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=edit"; ?>" style="font-size:20px;">編集ページへ</a>
+<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=delete"; ?>" style="font-size:20px;">削除ページへ</a>
+<p style="font-size:20px"><?=$attention_comment?></p>
+<form name="form1" method="post" action="">
+  <table class="input_column2_table">
+    <tbody><caption>親要素(base)の新規追加フォーム</caption>
+      <tr>
+      <th>名前</th>                     <td><?=CF::textBox('name', $name, 'required')?></td>
+      </tr>
+      <tr>
+      <th>案件コード</th>                <td><?=CF::textBox('anken', $anken, 'required')?></td>
+      </tr>
+      <tr>
+      <th>アフィリンク（メイン）</th>      <td><?=CF::textBox('affi_link',$affi_link, 'required')?></td>
+      </tr>
+      <tr>
+      <th>アフィリンク（商品リンクの頭）</th><td><?=CF::textBox('s_link', $s_link)?></td>
+      </tr>
+      <tr>
+      <th>提携ASP</th>                   <td><?=CF::sqlSelectBox(PLUGIN_DB_PREFIX."asp", 'asp_name', array('asp_name','asp_name'),'', 'required')?></td>
+      </tr>
+      <tr>
+      <th>バナー画像</th>                 <td><?=CF::textBox('affi_img', $affi_img)?></td>
+      </tr>
+      <tr>
+      <th>バナーの幅</th>                 <td><?=CF::numBox('img_width', $img_width, '300')?></td>
+      </tr>
+      <tr>
+      <th>バナーの高さ</th>               <td><?=CF::numBox('img_height', $img_width,'250')?></td>
+      </tr>
+      <tr>
+      <th>アフィ、トラッキングイメージタグ</th><td><?=CF::textBox('img_tag', $img_tag)?></td>
+      </tr>
+      <tr>
+      <th>公式サイトURL</th>               <td><?=CF::textBox('official_link', $official_link, 'required')?></td>
+      </tr>
+      <tr>
+      <th colspan=2><input type="submit" value="新規挿入" name="base_insert" style="width:100%;padding:30px"></th>
+      </tr>
+      <tr>
+      <th colspan=2>↓以下、アプリの情報がある場合のみ</th>
+      </tr>
+      <tr>
+      <th>アプリのアイコン画像URL</th><td><?=CF::imgUploadBox($img)?></td>
+      </tr>
+      <tr>
+      <th>開発企業</th><td><?=CF::textBox('dev', $dev)?></td>
+      </tr>
+      <tr>
+      <th>iosのリンク先</th><td><?=CF::textBox('ios_link', $ios_link)?></td>
+      </tr>
+      <tr>
+      <th>androidのリンク先</th><td><?=CF::textBox('android_link', $android_link)?></td>
+      </tr>
+      <tr>
+      <th>webのリンク先</th><td><?=CF::textBox('web_link', $web_link)?></td>
+      </tr>
+      <tr>
+      <th>iosのアフィリンク先</th><td><?=CF::textBox('ios_affi_link', $ios_affi_link)?></td>
+      </tr>
+      <tr>
+      <th>androidのアフィリンク先</th><td><?=CF::textBox('android_affi_link', $android_affi_link)?></td>
+      </tr>
+      <tr>
+      <th>webのアフィリンク先</th><td><?=CF::textBox('web_affi_link', $web_affi_link)?></td>
+      </tr>
+      <tr>
+      <th>レビュー記事のURL</th><td><?=CF::textBox('article', $article)?></td>
+      </tr>
+      <tr>
+      <th>アプリの表示順</th><td><?=CF::numBox('app_order', $app_order)?></td>
+      </tr>
+      <tr>
+      <th>アプリの料金</th><td><?=CF::textBox('app_price', $app_price)?></td>
+      </tr>
+    </tbody>
+  </table>
 </form>
+<style>
+  table.input_column2_table{
+    width:80%;
+    border:solid 1px #000;
+    padding:10px;
+  }
+  table.input_column2_table caption{
+    font-weight:bold;
+    font-size:20px;
+  }
+  table.input_column2_table tr td{
+    padding:10px;
+  }
+</style>
