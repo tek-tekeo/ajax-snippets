@@ -1,7 +1,6 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) exit; ?>
-<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets"; ?>">追加</a>
-<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=edit"; ?>">編集</a>
+
 <?php
 
 $base_id = $_GET['base_id'];
@@ -15,12 +14,17 @@ if(is_numeric($base_id)){
   $results = $wpdb->get_results($sql,object);
   echo "削除が完了しました";
 }
-echo '<h1>親要素の削除ページ</h1>';
-  echo '<h2>'.__( '名前', THEME_NAME ).'</h2>';
-  generate_textbox_tag('parent', $parent, __( 'ゴリラクリニック', THEME_NAME ));
-
 ?>
-<dl id="ajax-item-list" style="width:100%; height:300px;overflow-y: scroll;">
+
+<p style="font-size:20px">
+<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets"; ?>">追加</a>
+<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=edit"; ?>">編集</a>
+</p>
+
+<h1>親要素の削除ページ</h1>
+<h2>名前</h2>
+<input type="text" id="parent">
+<dl id="ajax-item-list" style="width:100%; overflow-y: scroll;">
 
 </dl>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
