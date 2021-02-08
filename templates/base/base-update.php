@@ -73,18 +73,6 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       <tr>
       <th>アフィ、トラッキングイメージタグ</th><td><?=CF::textBox('img_tag', $box_data['img_tag'])?></td>
       </tr>
-      <!-- <tr>
-      <th>公式サイトURL　必須</th>               <td><?=CF::textBox('official_link', $box_data['official_link'], 'required')?></td>
-      </tr>
-      <tr>
-      <th>テーブル情報</th>               <td><?=CF::textBox('info', $box_data['info'])?></td>
-      </tr>
-      <tr>
-      <th>チャート情報</th>               <td><?=CF::textBox('rchart', $box_data['rchart'])?></td>
-      </tr>
-      <tr>
-      <th>チャート情報</th>               <td><?=CF::textAreaBox('review', $box_data['review'], 'review-editor')?></td>
-      </tr> -->
       <tr>
       <th colspan=2><input type="submit" value="更新する" name="base_update" style="width:100%;padding:30px"></th>
       </tr>

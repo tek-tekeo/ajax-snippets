@@ -1,13 +1,12 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) exit; ?>
-	<h1>小要素の編集ページ</h1>
+<h1>小要素の編集ページ</h1>
+<p style="font-size:20px">
 <a href="<?php echo admin_url('')."admin.php?page=child-config&action=add"; ?>">追加</a>
-<?php
-  echo '<h2>'.__( '名前', THEME_NAME ).'</h2>';
-  generate_textbox_tag('child', $child, __( 'ゴリラクリニック', THEME_NAME ));
-
-?>
-<dl id="ajax-item-list" style="width:100%; height:300px;overflow-y: scroll;">
+</p>
+<h2>名前</h2>
+<input type="text" id='child'>
+<dl id="ajax-item-list" style="width:100%; overflow-y: scroll;">
 
 </dl>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

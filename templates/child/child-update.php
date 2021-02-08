@@ -1,10 +1,16 @@
 <?php //テンプレートフォーム
+use AjaxSnippets\Common\CreateForm as CF;
+use AjaxSnippets\Domain\Models\BaseModel;
+use AjaxSnippets\Domain\Models\Base;
+use AjaxSnippets\Domain\Models\Detail;
+use AjaxSnippets\Domain\Models\Apps;
 
 if ( !defined( 'ABSPATH' ) ) exit; ?>
-			<h1>小要素の更新ページ</h1>
-      <a href="<?php echo admin_url('')."admin.php?page=child-config&action=add"; ?>">追加</a>
-      <a href="<?php echo admin_url('')."admin.php?page=child-config"; ?>">編集</a>
-<form name="form1" method="post" action="">
+<h1>小要素の更新ページ</h1>
+<p style="font-size:20px">
+<a href="<?php echo admin_url('')."admin.php?page=child-config&action=add"; ?>">追加</a>
+<a href="<?php echo admin_url('')."admin.php?page=child-config"; ?>">編集</a>
+</p>
   <?php
   global $wpdb;
 
@@ -44,19 +50,17 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 
   }
 ?>
+<form method="post" action="">
 <p>商品名（日本語）：<input type="text" name="item_name" size="40" value="<?php echo $item_name;?>"></p>
 <p>商品ページURL：<input type="text" name="official_item_link" size="150" value="<?php echo $official_item_link;?>"></p>
 <p>アフィリエイトのURL(a8案件以外は必要になる)：<input type="text" name="affi_item_link" size="150" value="<?php echo $affi_item_link;?>" readonly></p>
 <p>Amazonのasin：<input type="text" name="amazon_asin" size="150" value="<?php echo $amazon_asin;?>"></p>
 <p>楽天のid(例：phiten:111111)：<input type="text" name="rakuten_id" size="150" value="<?php echo $rakuten_id;?>"></p>
 <p><input type="submit" value="送信"></p>
-<?php
-  echo '<h2>'.__( 'テーブル情報', THEME_NAME ).'</h2>';
-  generate_textarea_tag('info', $info, __( '{"効果": 5, "安さ": 2, "実績": 4, "サービス": 5, "通いやすさ": 5}', THEME_NAME ));
-
-  echo '<h2>'.__( 'チャート情報', THEME_NAME ).'</h2>';
-  generate_textbox_tag('rchart', $rchart, __( '{"効果": 5, "安さ": 2, "実績": 4, "サービス": 5, "通いやすさ": 5}', THEME_NAME ));
-
-  generate_visuel_editor_tag('review', $review,  'review-text');
-?>
+<h2>テーブル情報</h2>
+<?=CF::textBox('info', $info)?>
+<h2>チャート情報</h2>
+<?=CF::textBox('rchart', $rchart)?>
+<h2>レビュー</h2>
+<?=CF::textAreaBox('review', $review, 'review-editor')?>
 </form>
