@@ -145,6 +145,9 @@ function SingleReview($atts, $content = null){
   if(count($chart_ele) >= 3){
     $chart_rate = implode(",", $chart_ele);
     $chart_factor = implode(",",array_keys($chart_ele));
+    if($l->detail_img != "" && $l->item_name !="トップ"){
+      $l->name = $l->item_name;
+    }
     $chart_str = "[ajax_snippets_rchart factor='".$chart_factor."' rate='".$chart_rate."' name='{$l->name}' color='".$color."']";
   }else{
     $chart_str ="";
