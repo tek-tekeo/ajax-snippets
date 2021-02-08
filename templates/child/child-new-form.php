@@ -68,6 +68,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     echo '更新が不完全です';
   }
   $prev_value = file_get_contents( dirname(__FILE__) .'/prev_anken.txt');
+  $prev_value = (int)$prev_value;
   ?>
 <h1>小要素の新規登録</h1>
 <p style="font-size:20px">
@@ -78,7 +79,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   <table class="input_column2_table">
     <tbody><caption>個別の商品ページを登録する(A8のみ)</caption>
       <tr>
-      <th>追加する案件</th>                               <td><?=CF::sqlSelectBox(PLUGIN_DB_PREFIX.'base', 'base_id', array('id','name'), $prev_value, 'required')?></td>
+      <th>追加する案件</th>                               <td><?=CF::sqlSelectBox(PLUGIN_DB_PREFIX.'base', 'base_id', array('id','name'), $prev_value, true)?></td>
       </tr>
       <tr>
       <th>商品名（日本語）</th>                            <td><?=CF::textBox('item_name', $item_name, true)?></td>
