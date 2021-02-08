@@ -6,11 +6,7 @@ use AjaxSnippets\Domain\Models\Detail;
 use AjaxSnippets\Domain\Models\Apps;
 
 if ( !defined( 'ABSPATH' ) ) exit; ?>
-<h1>小要素の更新ページ</h1>
-<p style="font-size:20px">
-<a href="<?php echo admin_url('')."admin.php?page=child-config&action=add"; ?>">追加</a>
-<a href="<?php echo admin_url('')."admin.php?page=child-config"; ?>">編集</a>
-</p>
+
   <?php
   global $wpdb;
 
@@ -28,6 +24,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     $info = $r->info;
     $rchart = $r->rchart;
     $review = $r->review;
+    $detail_img = $r->detail_img;
   }
 
   if(isset($_POST['item_name']) && $_POST['official_item_link']){
@@ -36,12 +33,13 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     $affi_item_link = $_POST['affi_item_link'];
     $amazon_asin = $_POST['amazon_asin'];
     $rakuten_id = $_POST['rakuten_id'];
+    $detail_img = $_POST['img'];
     $info = stripslashes(nl2br($_POST['info']));
     $review = stripslashes($_POST['review']);
     $rchart = stripslashes($_POST['rchart']);
 
     $table = PLUGIN_DB_PREFIX.'detail';
-    $data = array('item_name'=>$item_name,'official_item_link'=>$official_item_link,'affi_item_link'=>$affi_item_link,'amazon_asin'=>$amazon_asin,'rakuten_id'=>$rakuten_id,'info' => $info, 'review' => $review, 'rchart' => $rchart);
+    $data = array('item_name'=>$item_name,'official_item_link'=>$official_item_link,'affi_item_link'=>$affi_item_link, 'detail_img'=>$detail_img, 'amazon_asin'=>$amazon_asin,'rakuten_id'=>$rakuten_id,'info' => $info, 'review' => $review, 'rchart' => $rchart);
     $where = array('id'=>$id);
     $res = $wpdb->update( $table, $data, $where );
     if($res){echo "<span style='color:red'>商品ページ登録完了</span>";}
@@ -50,17 +48,59 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 
   }
 ?>
-<form method="post" action="">
-<p>商品名（日本語）：<input type="text" name="item_name" size="40" value="<?php echo $item_name;?>"></p>
-<p>商品ページURL：<input type="text" name="official_item_link" size="150" value="<?php echo $official_item_link;?>"></p>
-<p>アフィリエイトのURL(a8案件以外は必要になる)：<input type="text" name="affi_item_link" size="150" value="<?php echo $affi_item_link;?>" readonly></p>
-<p>Amazonのasin：<input type="text" name="amazon_asin" size="150" value="<?php echo $amazon_asin;?>"></p>
-<p>楽天のid(例：phiten:111111)：<input type="text" name="rakuten_id" size="150" value="<?php echo $rakuten_id;?>"></p>
-<p><input type="submit" value="送信"></p>
-<h2>テーブル情報</h2>
-<?=CF::textBox('info', $info)?>
-<h2>チャート情報</h2>
-<?=CF::textBox('rchart', $rchart)?>
-<h2>レビュー</h2>
-<?=CF::textAreaBox('review', $review, 'review-editor')?>
+<h1>小要素の更新ページ</h1>
+<p style="font-size:20px">
+<a href="<?php echo admin_url('')."admin.php?page=child-config&action=add"; ?>">追加</a>
+<a href="<?php echo admin_url('')."admin.php?page=child-config"; ?>">編集</a>
+</p>
+<p style="font-size:20px; color:red"><?=$attention_comment?></p>
+<form method="POST" action="">
+  <table class="input_column2_table">
+    <tbody><caption>個別の商品ページを登録する(A8のみ)</caption>
+      <tr>
+      <th>商品名（日本語）</th>                            <td><?=CF::textBox('item_name', $item_name, true)?></td>
+      </tr>
+      <tr>
+      <th>商品ページURL</th>                              <td><?=CF::textBox('official_item_link', $official_item_link, true)?></td>
+      </tr>
+      <tr>
+      <th>アフィリエイトのURL<br>(a8案件以外は必要になる)</th><td><input type="text" name="affi_item_link" value="<?php echo $affi_item_link;?>" readonly></td>
+      </tr>
+      <tr>
+      <th>Amazonのasin</th>                             <td><?=CF::textBox('amazon_asin', $amazon_asin)?></td>
+      </tr>
+      <tr>
+      <th>楽天のid(例：phiten:111111)</th>               <td><?=CF::textBox('rakuten_id', $rakuten_id)?></td>
+      </tr>
+      <tr>
+      <th colspan=2><input type="submit" value="更新する" name="child_update" style="width:100%;padding:30px"></th>
+      </tr>
+      <tr>
+      <th>アイテム別写真<br>（レビュー時などこちらを優先）</th><td><?=CF::imgUploadBox($detail_img)?></td>
+      </tr>
+      <tr>
+      <th>テーブル情報<br>例){"料金":"500"}</th>           <td><?=CF::textBox('info', esc_html($info))?></td>
+      </tr>
+      <tr>
+      <th>チャート情報</th>                               <td><?=CF::textBox('rchart', esc_html($rchart))?></td>
+      </tr>
+      <tr>
+      <th>レビュー</th>                                  <td><?=CF::textAreaBox('review', $review, 'review-editor')?></td>
+      </tr>
+    </tbody>
+  </table>
 </form>
+<style>
+  table.input_column2_table{
+    width:80%;
+    border:solid 1px #000;
+    padding:10px;
+  }
+  table.input_column2_table caption{
+    font-weight:bold;
+    font-size:20px;
+  }
+  table.input_column2_table tr td{
+    padding:10px;
+  }
+</style>

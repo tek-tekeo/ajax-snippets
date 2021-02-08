@@ -103,7 +103,7 @@ function AjaxRecordShortcodeBanner($atts) {
        'ntab'=> '0'
     ), $atts ) );
     global $wpdb;
-    $sql = "SELECT B.anken, B.img_tag,B.affi_img FROM ".PLUGIN_DB_PREFIX."base As B INNER JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
+    $sql = "SELECT B.anken, B.img_tag,B.affi_img, D.detail_img FROM ".PLUGIN_DB_PREFIX."base As B INNER JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
 
     $results = $wpdb->get_results($sql,object);
         if(count($results) == 0){
@@ -115,6 +115,9 @@ function AjaxRecordShortcodeBanner($atts) {
           $a_tab = "rel=\"nofollow\"";
         }else{
           $a_tab = "rel=\"nofollow noopener\" target=\"_blank\"";
+        }
+        if($r->detail_img != ""){
+          $r->affi_img = $r->detail_img;
         }
 $rep .= <<<EOT
 <a href="{$url}" {$a_tab}><img border="0" width="300" height="250" alt="" src="{$r->affi_img}"></a><img border="0" width="1" height="1" src="{$r->img_tag}">
@@ -177,7 +180,7 @@ $rep .=<<<EOT
     {$l->review}
 EOT;
 if ( current_user_can('administrator') || current_user_can('editor') || current_user_can('author')){
-    $kono_url = admin_url('')."admin.php?page=ajax-snippets&action=update&base_id={$l->id}";
+    $kono_url = admin_url('')."admin.php?page=child-config&action=update&child_id={$l->id}";
     $rep .= "<p><a href={$kono_url} target='_blank'>この案件を編集</a>(管理者向け)</p>";
 }
   }

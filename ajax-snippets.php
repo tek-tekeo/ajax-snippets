@@ -53,6 +53,7 @@ function jal_install()
 	                item_name varchar(1025) DEFAULT '' NOT NULL,
                   official_item_link varchar(1025) DEFAULT '' NOT NULL,
 									affi_item_link varchar(1025) DEFAULT '' NOT NULL,
+                  detail_img varchar(1025) DEFAULT '' NOT NULL,
                   amazon_asin varchar(255) DEFAULT '' NOT NULL,
                   rakuten_id varchar(255) DEFAULT '' NOT NULL,
 									rchart varchar(1025) DEFAULT '' NOT NULL,
