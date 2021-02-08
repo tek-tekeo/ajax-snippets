@@ -1,14 +1,14 @@
 <?php
+
 if ( !defined( 'ABSPATH' ) ) exit; ?>
 <h1>親要素の編集を選択する</h1>
-<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets"; ?>">追加</a>
-<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=delete"; ?>">削除</a>
-<?php
-  echo '<h2>'.__( '名前', THEME_NAME ).'</h2>';
-  generate_textbox_tag('parent', $parent, __( 'ゴリラクリニック', THEME_NAME ));
-
-?>
-<dl id="ajax-item-list" style="width:100%; height:300px;overflow-y: scroll;">
+<p style="font-size:20px">
+<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets"; ?>">追加ページへ</a>
+<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=delete"; ?>">削除ページへ</a>
+</p>
+<h2>名前を入力</h2>
+<input type="text" id="parent">
+<dl id="ajax-item-list" style="width:100%; overflow-y: scroll;">
 
 </dl>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
