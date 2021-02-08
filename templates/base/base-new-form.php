@@ -42,7 +42,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 <a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=delete"; ?>" style="font-size:20px;">削除ページへ</a>
 </p>
 <p style="font-size:20px; color:red"><?=$attention_comment?></p>
-<form name="form1" method="post" action="">
+<form method="post" action="">
   <table class="input_column2_table">
     <tbody><caption>親要素(base)の新規追加フォーム</caption>
       <tr>

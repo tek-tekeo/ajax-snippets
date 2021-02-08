@@ -14,6 +14,13 @@ class BaseModel
     }
   }
 
+  static private function _getTableName()
+  {
+    global $wpdb;
+
+    return $wpdb->prefix . 'ajax_snippets_' . static::TABLE_NAME;
+  }
+
   public function exeInsert($data){
 
     global $wpdb;
@@ -50,13 +57,22 @@ class BaseModel
 
     return $sql;
   }
-  static private function _getTableName()
-  {
+
+  public function exeReplace($data, $where){
+
     global $wpdb;
+    //TODO: 挿入する配列の型が違う場合がある。NULLの時にどう処理するかわからん
+    $values = [];
+    $updateData =[];
+    foreach ($this->columns as $col) {
+      $updateData[$col] = $data[$col];
+    }
 
-    return $wpdb->prefix . 'ajax_snippets_' . static::TABLE_NAME;
+    $tableName = self::_getTableName();
+    //tabelにprimary keyが必要です
+    $rep = $wpdb->replace($tableName, $updateData);
+    return $rep;
   }
-
 }
 
 class Apps extends BaseModel
