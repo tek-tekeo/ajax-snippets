@@ -16,6 +16,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 
   foreach($results as $r){
     $id = $r->id;
+    $base_id = $r->base_id;
     $item_name = $r->item_name;
     $official_item_link = $r->official_item_link;
     $affi_item_link = $r->affi_item_link;
@@ -51,7 +52,8 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 <h1>小要素の更新ページ</h1>
 <p style="font-size:20px">
 <a href="<?php echo admin_url('')."admin.php?page=child-config&action=add"; ?>">追加</a>
-<a href="<?php echo admin_url('')."admin.php?page=child-config"; ?>">編集</a>
+<a href="<?php echo admin_url('')."admin.php?page=child-config"; ?>">小要素の一覧</a>
+<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=update&base_id=".$r->base_id; ?>">親要素の表示</a>
 </p>
 <p style="font-size:20px; color:red"><?=$attention_comment?></p>
 <form method="POST" action="">
@@ -64,7 +66,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       <th>商品ページURL</th>                              <td><?=CF::textBox('official_item_link', $official_item_link, true)?></td>
       </tr>
       <tr>
-      <th>アフィリエイトのURL<br>(a8案件以外は必要になる)</th><td><input type="text" name="affi_item_link" value="<?php echo $affi_item_link;?>" readonly></td>
+      <th>アフィリエイトのURL<br>(a8案件以外はこのURLになる)</th><td><?=CF::textBox('affi_item_link', $affi_item_link, true)?></td>
       </tr>
       <tr>
       <th>Amazonのasin</th>                             <td><?=CF::textBox('amazon_asin', $amazon_asin)?></td>

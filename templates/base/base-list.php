@@ -3,8 +3,9 @@
 if ( !defined( 'ABSPATH' ) ) exit; ?>
 <h1>親要素の編集を選択する</h1>
 <p style="font-size:20px">
-<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets"; ?>">追加ページへ</a>
+<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=add"; ?>">追加ページへ</a>
 <a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=delete"; ?>">削除ページへ</a>
+<a href="<?php echo admin_url('')."admin.php?page=child-config"; ?>" style="font-size:20px;">小要素一覧ページへ</a>
 </p>
 <h2>名前を入力</h2>
 <input type="text" id="parent">

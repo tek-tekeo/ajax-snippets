@@ -88,7 +88,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       <th>商品ページURL</th>                              <td><?=CF::textBox('official_item_link', $official_item_link, true)?></td>
       </tr>
       <tr>
-      <th>アフィリエイトのURL<br>(a8案件以外は必要になる)</th><td><input type="text" name="affi_item_link" value="<?php echo $affi_item_link;?>" readonly></td>
+      <th>アフィリエイトのURL<br>(a8案件以外は必要になる)</th><td><?=CF::textBox('affi_item_link', $affi_item_link, true)?></td>
       </tr>
       <tr>
       <th>Amazonのasin</th>                             <td><?=CF::textBox('amazon_asin', $amazon_asin)?></td>

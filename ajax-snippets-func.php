@@ -108,7 +108,7 @@ function getListChild(){
 	//名前検索
 	foreach( $results as $key => $r ) {
 $rep .=<<<EOT
-<dt>{$r->name} {$r->item_name}<input type='button' data-src='{$r->id}' name='child_id' value="変更"><input type='button' data-src='{$r->id}' name='child_id' value="削除"></dt>
+<dt><input type='button' data-src='{$r->id}' name='child_id' value="変更"><input type='button' data-src='{$r->id}' name='child_id' value="削除">{$r->name} {$r->item_name}</dt>
 EOT;
 
 	}//名前検索によるforechの終了部分

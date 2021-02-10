@@ -10,7 +10,8 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 <h1>親要素の個別編集画面</h1>
 <p style="font-size:20px">
 <a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=edit"; ?>">戻る</a>
-<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=delete"; ?>">削除</a>
+<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=delete"; ?>">削除画面へ</a>
+<a href="<?php echo admin_url('')."admin.php?page=child-config"; ?>" style="font-size:20px;">小要素一覧ページへ</a>
 </p>
 
 <?php

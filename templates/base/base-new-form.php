@@ -38,8 +38,9 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   }
   ?>
 <p>
-<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=edit"; ?>" style="font-size:20px;">編集ページへ</a>
+<a href="<?php echo admin_url('')."admin.php?page=ajax-snippets"; ?>" style="font-size:20px;">一覧へ戻る</a>
 <a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=delete"; ?>" style="font-size:20px;">削除ページへ</a>
+<a href="<?php echo admin_url('')."admin.php?page=child-config"; ?>" style="font-size:20px;">小要素一覧ページへ</a>
 </p>
 <p style="font-size:20px; color:red"><?=$attention_comment?></p>
 <form method="post" action="">

@@ -190,12 +190,13 @@ class AjaxSneppets
         require_once abspath(__FILE__).'templates/base/base-delete.php';
 			} else {
 				if (!isset($action)) {
-          require_once ABSPATH . 'wp-content/plugins/ajax-snippets/templates/base/base-new-form.php';
+          require_once ABSPATH . 'wp-content/plugins/ajax-snippets/templates/base/base-list.php';
+
 				} else if($action == "update"){
           require_once ABSPATH . 'wp-content/plugins/ajax-snippets/templates/base/base-update.php';
         }else {//入力フォームの表示
-					//require_once abspath(__FILE__).'form.php';
-          require_once ABSPATH . 'wp-content/plugins/ajax-snippets/templates/base/base-list.php';
+          //require_once abspath(__FILE__).'form.php';
+          require_once ABSPATH . 'wp-content/plugins/ajax-snippets/templates/base/base-new-form.php';
 				}
 			}
     }//show_about_pluginの終わり
@@ -251,13 +252,15 @@ if($match === 1){
   $id = $_GET['no'];
   $place = $_GET['pl'];
   global $wpdb;
-  $sql = "SELECT B.affi_link, B.s_link, A.connect_string, D.item_name, D.official_item_link FROM ".PLUGIN_DB_PREFIX."base As B,".PLUGIN_DB_PREFIX."detail As D,".PLUGIN_DB_PREFIX."asp As A where B.id = D.base_id AND D.id={$id} AND B.asp_name=A.asp_name";
+  $sql = "SELECT B.affi_link, B.s_link, B.asp_name, A.connect_string, D.affi_item_link, D.item_name, D.official_item_link FROM ".PLUGIN_DB_PREFIX."base As B,".PLUGIN_DB_PREFIX."detail As D,".PLUGIN_DB_PREFIX."asp As A where B.id = D.base_id AND D.id={$id} AND B.asp_name=A.asp_name";
 
   $results = $wpdb->get_results($sql,object);
 
   //遷移先のURLを獲得
   foreach($results as $r){
-    if($r->item_name == "トップ"){
+    if($r->asp_name != 'a8'){
+      $dest_url = $r->affi_item_link;
+    }else if($r->item_name == "トップ"){
       $dest_url = $r->affi_link;
     }else{
       $dest_url = $r->s_link . $r->connect_string . urlencode($r->official_item_link);
