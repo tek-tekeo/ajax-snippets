@@ -34,20 +34,20 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     }
 
     //場合ワケ
-    if($asp_name != ""){
-      //a8の場合
-      if($official_item_link == ""){
-        echo "a8の商品リンク作成に必要な公式リンクを入力していない";die;
-      }else{
-        //a8の商品リンクが生成
-        $affi_item_link = "A8案件なので不要";
-      }
-    }else{
-      //a8以外はしっかりとURLを書く必要がある
-      if(!$affi_item_link){
-        echo "a8以外の案件なのに、商品別のリンクを入力できていない";die;
-      }
-    }
+    // if($asp_name != ""){
+    //   //a8の場合
+    //   if($official_item_link == ""){
+    //     echo "a8の商品リンク作成に必要な公式リンクを入力していない";die;
+    //   }else{
+    //     //a8の商品リンクが生成
+    //     $affi_item_link = "A8案件なので不要";
+    //   }
+    // }else{
+    //   //a8以外はしっかりとURLを書く必要がある
+    //   if(!$affi_item_link){
+    //     echo "a8以外の案件なのに、商品別のリンクを入力できていない";die;
+    //   }
+    // }
 
 
     $table = PLUGIN_DB_PREFIX.'detail';
