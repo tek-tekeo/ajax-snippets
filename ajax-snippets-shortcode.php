@@ -362,3 +362,24 @@ EOT;
       return $appLink;
 }
 add_shortcode('appLinkG', 'appLinkGenerater');
+
+function GetAfLink($atts) {
+  extract( shortcode_atts( array(
+     'id' => '1',
+     'pl' => '0',
+     'ntab'=> '0'
+  ), $atts ) );
+  global $wpdb;
+  $sql = "SELECT B.anken, B.img_tag,B.affi_img, D.detail_img FROM ".PLUGIN_DB_PREFIX."base As B INNER JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
+
+  $results = $wpdb->get_results($sql,object);
+      if(count($results) == 0){
+          $rep = "リンクエラー";
+      }
+    foreach($results as $r){
+      $url = home_url() . "/".$r->anken . "?no={$id}&pl={$pl}";
+    }
+  return $url;
+}
+
+add_shortcode('getAfLink', 'GetAfLink');

@@ -52,16 +52,18 @@ function prepareAjax(){
     }else{
       $r->item_name=' '.$r->item_name;
     }
-        $returnObj[$key] = array(
-            'id' => $r->id,
-            'name' => $r->name,
-            'item' => $r->name .$r->item_name,
-        'official' => $r->official_item_link,
-        'affilink' => $r->affi_link,
-			'aspname' => $r->asp_name,
+    $affi_link = do_shortcode( '[getAfLink id='.$r->id.' ntab=0 pl=0uzu1v6b][/getAfLink]' );
+    $affi_link = htmlspecialchars($affi_link);
+    $returnObj[$key] = array(
+      'id' => $r->id,
+      'name' => $r->name,
+      'item' => $r->name .$r->item_name,
+      'official' => $r->official_item_link,
+      'affilink' => $affi_link,
+      'aspname' => $r->asp_name,
       'amazon' => $r->amazon_asin,
       'rakuten' => $r->rakuten_id
-        );
+    );
 	}
     echo json_encode($returnObj);
     die();

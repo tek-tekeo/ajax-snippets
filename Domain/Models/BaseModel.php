@@ -75,84 +75,84 @@ class BaseModel
   }
 }
 
-class Apps extends BaseModel
-{
-  const TABLE_NAME = "apps";
+// class Apps extends BaseModel
+// {
+//   const TABLE_NAME = "apps";
 
-  protected $casts = [
-    'app_id' => 'int'
-  ];
-  protected $columns = [
-    'app_id',
-    'img',
-    'dev',
-    'ios_link',
-    'android_link',
-    'web_link',
-    'ios_affi_link',
-    'android_affi_link',
-    'web_affi_link',
-    'article',
-    'app_order',
-    'app_price'
-  ];
-}
+//   protected $casts = [
+//     'app_id' => 'int'
+//   ];
+//   protected $columns = [
+//     'app_id',
+//     'img',
+//     'dev',
+//     'ios_link',
+//     'android_link',
+//     'web_link',
+//     'ios_affi_link',
+//     'android_affi_link',
+//     'web_affi_link',
+//     'article',
+//     'app_order',
+//     'app_price'
+//   ];
+// }
 
-class Base extends BaseModel
-{
-  const TABLE_NAME = "base";
+// class Base extends BaseModel
+// {
+//   const TABLE_NAME = "base";
 
-  protected $casts = [
-    'id' => 'int'
-  ];
-  protected $columns = [
-    'id',
-    'name',
-    'anken',
-    'affi_link',
-    's_link',
-    'asp_name',
-    'affi_img',
-    'img_tag'
-  ];
-}
+//   protected $casts = [
+//     'id' => 'int'
+//   ];
+//   protected $columns = [
+//     'id',
+//     'name',
+//     'anken',
+//     'affi_link',
+//     's_link',
+//     'asp_name',
+//     'affi_img',
+//     'img_tag'
+//   ];
+// }
 
-class Detail extends BaseModel
-{
-  const TABLE_NAME = "detail";
+// class Detail extends BaseModel
+// {
+//   const TABLE_NAME = "detail";
 
-  protected $casts = [
-    'id' => 'int',
-    'base_id' => 'int'
-  ];
-  protected $columns = [
-    'id',
-    'base_id',
-    'item_name',
-    'official_item_link',
-    'affi_item_link',
-    'amazon_asin',
-    'rakuten_id',
-    'rchart',
-    'info',
-    'review'
-  ];
-}
+//   protected $casts = [
+//     'id' => 'int',
+//     'base_id' => 'int'
+//   ];
+//   protected $columns = [
+//     'id',
+//     'base_id',
+//     'item_name',
+//     'official_item_link',
+//     'affi_item_link',
+//     'amazon_asin',
+//     'rakuten_id',
+//     'rchart',
+//     'info',
+//     'review'
+//   ];
+// }
 
-class AffiLog extends BaseModel
-{
-  const TABLE_NAME = "log";
+// class AffiLog extends BaseModel
+// {
+//   const TABLE_NAME = "log";
 
-  protected $casts = [
-    'id' => 'int'
-  ];
-  protected $columns = [
-    'id',
-    'item_id',
-    'date',
-    'time',
-    'post_addr',
-    'place',
-    'ip'
-  ];
-}
+//   protected $casts = [
+//     'id' => 'int'
+//   ];
+//   protected $columns = [
+//     'id',
+//     'item_id',
+//     'date',
+//     'time',
+//     'post_addr',
+//     'place',
+//     'ip'
+//   ];
+// }

@@ -8,6 +8,7 @@ use AjaxSnippets\Domain\Models\Apps;
 if ( !defined( 'ABSPATH' ) ) exit; ?>
 
 <?php
+
   $base_id = $_POST['base_id'];
   $item_name = $_POST['item_name'];
   $official_item_link = $_POST['official_item_link'];
