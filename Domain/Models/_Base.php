@@ -5,7 +5,7 @@ use AjaxSnippets\Domain\Models\BaseModel;
 
 class Base extends BaseModel
 {
-  const TABLE_NAME = "aa";
+  const TABLE_NAME = "base";
 
   protected $casts = [
     'id' => 'int'
