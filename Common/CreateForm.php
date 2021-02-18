@@ -73,14 +73,12 @@ class CreateForm{
 
   public function imgUploadBox($thumb){
     $imgUploadBox_path = plugins_url('ajax-snippets/js/imgUploadBox.js');
-    $str=<<<EOT
-    <input name="img" type="text" value="{$thumb}">
-    <input type="button" name="upladed_avatar_select" value="選択">
-    <input type="button" name="upladed_avatar_clear" value="クリア">
-    <div id="upladed_avatar_thumbnail" class="uploded-thumbnail">
-    </div>
-    <script src="{$imgUploadBox_path}" type="text/javaScript" charset="utf-8"></script>
-    EOT;
+    $str = "<input name=\"img\" type=\"text\" value=\"{$thumb}\">";
+    $str .= "<input type=\"button\" name=\"upladed_avatar_select\" value=\"選択\">";
+    $str .= "<input type=\"button\" name=\"upladed_avatar_clear\" value=\"クリア\">";
+    $str .= "<div id=\"upladed_avatar_thumbnail\" class=\"uploded-thumbnail\">";
+    $str .= "</div>";
+    $str .= "<script src=\"{$imgUploadBox_path}\" type=\"text/javaScript\" charset=\"utf-8\"></script>";
 
     return $str;
   }

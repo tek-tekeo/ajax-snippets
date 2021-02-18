@@ -9,14 +9,6 @@
 // }
 
 /**
- * 共通クラスの読み込み
- */
-$pattern = dirname(__FILE__) . '/Common/*.php';
-foreach (glob($pattern) as $filename) {
-    include_once $filename;
-}
-
-/**
  * ドメインの読み込み
  */
 $pattern = dirname(__FILE__) . '/Domain/Models/*.php';
@@ -79,7 +71,13 @@ foreach (glob($pattern) as $filename) {
 //     include_once $filename;
 // }
 
-
+/**
+ * 共通クラスの読み込み
+ */
+$pattern = dirname(__FILE__) . '/Common/*.php';
+foreach (glob($pattern) as $filename) {
+    include_once $filename;
+}
 
 
 // /**
