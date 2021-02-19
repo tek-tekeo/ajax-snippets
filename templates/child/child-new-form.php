@@ -132,32 +132,18 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       <tr>
       <th>アイテム別写真<br>（レビュー時などこちらを優先）</th><td><?=CF::imgUploadBox($detail_img)?></td>
       </tr>
-      <tr v-for="(tableInfo, index) in tableInfos" :key="`table-info-{$index}`">
-      <th>テーブル情報 {{ index }}</th>
+      <tr v-for="(tableInfo, index) in tableInfomation" :key="`table-info-{$index}`">
+      <th>テーブル情報 {{ index }}<span v-if="index == 0"><button @click="addFormItem">追加</button></span></th>
       <td>
-        <input type="text" name="info[factors][]" :value="tableInfo.factor" placeholder="要素名"/>
-        <input type="text" name="info[values][]" :value="tableInfo.value" placeholder="値"/>
-      </td>
-      </tr>
-      <tr>
-      <th>テーブル情報 <button @click="addFormItem">追加</button></div></th>
-      <td>
-        <input type="text" name="info[factors][]" value="" placeholder="要素名"/>
-        <input type="text" name="info[values][]" value="" placeholder="値"/>
+        <input type="text" name="info[factors][]" v-model:value="tableInfo.factor" placeholder="例）料金"/>
+        <input type="text" name="info[values][]" v-model:value="tableInfo.value" placeholder="例）1,000円"/>
       </td>
       </tr>
       <tr v-for="(rchart, index) in chartInfo" :key="`chart-info-{$index}`">
-      <th>チャート情報 {{ index }}</th>
+      <th>チャート情報 {{ index }}<span v-if="index == 0"><button @click="addChartItem">追加</button></span></th>
       <td>
-        <input type="text" name="rchart[factors][]" :value="rchart.factor" placeholder="要素名"/>
-        <input type="number" step="0.1" min="0" max="5" name="rchart[values][]" :value="rchart.value" placeholder="値"/>
-      </td>
-      </tr>
-      <tr>
-      <th>チャート情報 <button @click="addChartItem">追加</button></th>
-      <td>
-        <input type="text" name="rchart[factors][]" value="" placeholder="要素名"/>
-        <input type="number" step="0.1" name="rchart[values][]" value="" placeholder="値"/>
+        <input type="text" name="rchart[factors][]" v-model:value="rchart.factor" placeholder="要素名"/>
+        <input type="number" step="0.1" name="rchart[values][]" v-model:value="rchart.value" placeholder="値"/>
       </td>
       </tr>
       <tr>
@@ -173,17 +159,19 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     el: '#child-table-info',
     data() {
       return {
-        tableInfos: [],
+        tableInfomation: [],
         chartInfo:[],
       }
     },
     created: function(){
-      this.tableInfos = <?=$rchart?>;
+      this.tableInfomation = <?=$rchart?>;
+      this.tableInfomation.push({factor:'',value:''});
       this.chartInfo = <?=$rchart?>;
+      this.chartInfo.push({factor:'',value:''});
     },
     methods: {
       addFormItem(e) {
-        this.tableInfos.push({factor:'',value:''});
+        this.tableInfomation.push({factor:'',value:''});
         e.preventDefault();
       },
       addChartItem(e) {
