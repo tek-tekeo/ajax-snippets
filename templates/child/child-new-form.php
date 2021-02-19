@@ -16,9 +16,32 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   $amazon_asin = $_POST['amazon_asin'];
   $rakuten_id = $_POST['rakuten_id'];
   $affi_item_link = $_POST['affi_item_link'];
-  $info = stripslashes(nl2br($_POST['info']));
+  // $info = stripslashes(nl2br($_POST['info']));
   $review = stripslashes($_POST['review']);
-  $rchart = stripslashes($_POST['rchart']);
+  // $rchart = stripslashes($_POST['rchart']);
+  $post_info = $_POST['info'];
+  $info = array();
+  for($i = 0; $i <count($post_info['factors']); $i++){
+    if($post_info['factors'][$i] == '') continue;
+    $tmp_array = array(
+      'factor' => $post_info['factors'][$i],
+      'value' => $post_info['values'][$i]
+    );
+    array_push($info, $tmp_array);
+  }
+  $info = json_encode($info, JSON_UNESCAPED_UNICODE);
+
+  $post_rchart = $_POST['rchart'];
+  $rchart = array();
+  for($i = 0; $i <count($post_rchart['factors']); $i++){
+    if($post_rchart['factors'][$i] == '') continue;
+    $tmp_array = array(
+      'factor' => $post_rchart['factors'][$i],
+      'value' => $post_rchart['values'][$i]
+    );
+    array_push($rchart, $tmp_array);
+  }
+  $rchart = json_encode($rchart, JSON_UNESCAPED_UNICODE);
 
   if($base_id !='' && $item_name !='' && $official_item_link !=''){
 
@@ -64,12 +87,18 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       $rakuten_id = '';
       $affi_item_link = '';
       $detail_img = '';
+      $info = '';
+      $rchart = '';
     }
   }else{
     echo '更新が不完全です';
   }
   $prev_value = file_get_contents( dirname(__FILE__) .'/prev_anken.txt');
   $prev_value = (int)$prev_value;
+
+  if($info == '') $info="[]";
+  if($rchart == '') $rchart="[]";
+
   ?>
 <h1>小要素の新規登録</h1>
 <p style="font-size:20px">
@@ -77,7 +106,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 </p>
 
 <form method="POST" action="">
-  <table class="input_column2_table">
+  <table class="input_column2_table" id="child-table-info">
     <tbody><caption>個別の商品ページを登録する(A8のみ)</caption>
       <tr>
       <th>追加する案件</th>                               <td><?=CF::sqlSelectBox(PLUGIN_DB_PREFIX.'base', 'base_id', array('id','name'), $prev_value, true)?></td>
@@ -103,11 +132,33 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       <tr>
       <th>アイテム別写真<br>（レビュー時などこちらを優先）</th><td><?=CF::imgUploadBox($detail_img)?></td>
       </tr>
-      <tr>
-      <th>テーブル情報<br>例){"料金":"500"}</th>           <td><?=CF::textBox('info', $info)?></td>
+      <tr v-for="(tableInfo, index) in tableInfos" :key="`table-info-{$index}`">
+      <th>テーブル情報 {{ index }}</th>
+      <td>
+        <input type="text" name="info[factors][]" :value="tableInfo.factor" placeholder="要素名"/>
+        <input type="text" name="info[values][]" :value="tableInfo.value" placeholder="値"/>
+      </td>
       </tr>
       <tr>
-      <th>チャート情報</th>                               <td><?=CF::textBox('rchart', $rchart)?></td>
+      <th>テーブル情報 <button @click="addFormItem">追加</button></div></th>
+      <td>
+        <input type="text" name="info[factors][]" value="" placeholder="要素名"/>
+        <input type="text" name="info[values][]" value="" placeholder="値"/>
+      </td>
+      </tr>
+      <tr v-for="(rchart, index) in chartInfo" :key="`chart-info-{$index}`">
+      <th>チャート情報 {{ index }}</th>
+      <td>
+        <input type="text" name="rchart[factors][]" :value="rchart.factor" placeholder="要素名"/>
+        <input type="number" step="0.1" min="0" max="5" name="rchart[values][]" :value="rchart.value" placeholder="値"/>
+      </td>
+      </tr>
+      <tr>
+      <th>チャート情報 <button @click="addChartItem">追加</button></th>
+      <td>
+        <input type="text" name="rchart[factors][]" value="" placeholder="要素名"/>
+        <input type="number" step="0.1" name="rchart[values][]" value="" placeholder="値"/>
+      </td>
       </tr>
       <tr>
       <th>レビュー</th>                                  <td><?=CF::textAreaBox('review', $review, 'review-editor')?></td>
@@ -115,6 +166,43 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     </tbody>
   </table>
 </form>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+<script>
+  new Vue({
+    el: '#child-table-info',
+    data() {
+      return {
+        tableInfos: [],
+        chartInfo:[],
+      }
+    },
+    created: function(){
+      this.tableInfos = <?=$rchart?>;
+      this.chartInfo = <?=$rchart?>;
+    },
+    methods: {
+      addFormItem(e) {
+        this.tableInfos.push({factor:'',value:''});
+        e.preventDefault();
+      },
+      addChartItem(e) {
+        this.chartInfo.push({factor:'',value:''});
+        e.preventDefault();
+      },
+    }
+  });
+
+  jQuery(function(){
+    jQuery("input"). keydown(function(e) {
+            if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
+                return false;
+            } else {
+                return true;
+            }
+        });
+    });
+</script>
 <style>
   table.input_column2_table{
     width:80%;

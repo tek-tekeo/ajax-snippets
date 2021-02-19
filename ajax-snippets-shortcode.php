@@ -143,8 +143,8 @@ function SingleReview($atts, $content = null){
 
   $chart_ele = json_decode($l->rchart, true);
   if(count($chart_ele) >= 3){
-    $chart_rate = implode(",", $chart_ele);
-    $chart_factor = implode(",",array_keys($chart_ele));
+    $chart_rate = implode(",", array_column( $chart_ele, 'value' ));
+    $chart_factor = implode(",",array_column( $chart_ele, 'factor' ));
     if($l->detail_img != "" && $l->item_name !="トップ"){
       $l->name = $l->item_name;
     }
@@ -156,10 +156,10 @@ function SingleReview($atts, $content = null){
   $l->info = json_decode($l->info, true);//wpautop(stripslashes_deep());
   $l->review = wpautop(stripslashes_deep($l->review));
   foreach($l->info as $key => $d){
-    $d = stripslashes_deep($d);
+    $d['value'] = stripslashes_deep($d['value']);
 $table_elements .=<<<EOT
 <tr>
-<th>{$key}</th><td>$d</td>
+<th>{$d['factor']}</th><td>{$d['value']}</td>
 </tr>
 EOT;
   }

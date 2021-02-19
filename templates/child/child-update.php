@@ -29,15 +29,39 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   }
 
   if(isset($_POST['item_name']) && $_POST['official_item_link']){
+    $post_info = $_POST['info'];
+    $info = array();
+    for($i = 0; $i <count($post_info['factors']); $i++){
+      if($post_info['factors'][$i] == '') continue;
+      $tmp_array = array(
+        'factor' => $post_info['factors'][$i],
+        'value' => $post_info['values'][$i]
+      );
+      array_push($info, $tmp_array);
+    }
+    $info = json_encode($info, JSON_UNESCAPED_UNICODE);
+
+    $post_rchart = $_POST['rchart'];
+    $rchart = array();
+    for($i = 0; $i <count($post_rchart['factors']); $i++){
+      if($post_rchart['factors'][$i] == '') continue;
+      $tmp_array = array(
+        'factor' => $post_rchart['factors'][$i],
+        'value' => $post_rchart['values'][$i]
+      );
+      array_push($rchart, $tmp_array);
+    }
+    $rchart = json_encode($rchart, JSON_UNESCAPED_UNICODE);
+
     $item_name = $_POST['item_name'];
     $official_item_link = $_POST['official_item_link'];
     $affi_item_link = $_POST['affi_item_link'];
     $amazon_asin = $_POST['amazon_asin'];
     $rakuten_id = $_POST['rakuten_id'];
     $detail_img = $_POST['img'];
-    $info = stripslashes(nl2br($_POST['info']));
+    // $info = stripslashes(nl2br($_POST['info']));
     $review = stripslashes($_POST['review']);
-    $rchart = stripslashes($_POST['rchart']);
+    // $rchart = stripslashes($_POST['rchart']);
 
     $table = PLUGIN_DB_PREFIX.'detail';
     $data = array('item_name'=>$item_name,'official_item_link'=>$official_item_link,'affi_item_link'=>$affi_item_link, 'detail_img'=>$detail_img, 'amazon_asin'=>$amazon_asin,'rakuten_id'=>$rakuten_id,'info' => $info, 'review' => $review, 'rchart' => $rchart);
@@ -48,6 +72,10 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   }else{
 
   }
+
+  if($info == '') $info="[]";
+  if($rchart == '') $rchart="[]";
+
 ?>
 <h1>小要素の更新ページ</h1>
 <p style="font-size:20px">
@@ -57,7 +85,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 </p>
 <p style="font-size:20px; color:red"><?=$attention_comment?></p>
 <form method="POST" action="">
-  <table class="input_column2_table">
+  <table class="input_column2_table" id="child-table-info">
     <tbody><caption>個別の商品ページを登録する(A8のみ)</caption>
       <tr>
       <th>商品名（日本語）</th>                            <td><?=CF::textBox('item_name', $item_name, true)?></td>
@@ -80,18 +108,81 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       <tr>
       <th>アイテム別写真<br>（レビュー時などこちらを優先）</th><td><?=CF::imgUploadBox($detail_img)?></td>
       </tr>
-      <tr>
-      <th>テーブル情報<br>例){"料金":"500"}</th>           <td><?=CF::textBox('info', esc_html($info))?></td>
+      <tr v-for="(tableInfo, index) in tableInfos" :key="`table-info-{$index}`">
+      <th>テーブル情報 {{ index }}</th>
+      <td>
+        <input type="text" name="info[factors][]" :value="tableInfo.factor" placeholder="要素名"/>
+        <input type="text" name="info[values][]" :value="tableInfo.value" placeholder="値"/>
+      </td>
       </tr>
       <tr>
+      <th>テーブル情報 <button @click="addFormItem">追加</button></div></th>
+      <td>
+        <input type="text" name="info[factors][]" value="" placeholder="要素名"/>
+        <input type="text" name="info[values][]" value="" placeholder="値"/>
+      </td>
+      </tr>
+      <tr v-for="(rchart, index) in chartInfo" :key="`chart-info-{$index}`">
+      <th>チャート情報 {{ index }}</th>
+      <td>
+        <input type="text" name="rchart[factors][]" :value="rchart.factor" placeholder="要素名"/>
+        <input type="number" step="0.1" name="rchart[values][]" :value="rchart.value" placeholder="値"/>
+      </td>
+      </tr>
+      <tr>
+      <th>チャート情報 <button @click="addChartItem">追加</button></th>
+      <td>
+        <input type="text" name="rchart[factors][]" value="" placeholder="要素名"/>
+        <input type="number" step="0.1" min="0" max="5" name="rchart[values][]" value="" placeholder="値"/>
+      </td>
+      </tr>
+      <!-- <tr>
       <th>チャート情報</th>                               <td><?=CF::textBox('rchart', esc_html($rchart))?></td>
-      </tr>
+      </tr> -->
       <tr>
       <th>レビュー</th>                                  <td><?=CF::textAreaBox('review', $review, 'review-editor')?></td>
       </tr>
     </tbody>
   </table>
 </form>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+<script>
+  new Vue({
+    el: '#child-table-info',
+    data() {
+      return {
+        tableInfos: [],
+        chartInfo:[],
+      }
+    },
+    created: function(){
+      this.tableInfos = <?=$info?>;
+      this.chartInfo = <?=$rchart?>;
+
+    },
+    methods: {
+      addFormItem(e) {
+        this.tableInfos.push({factor:'',value:''});
+        e.preventDefault();
+      },
+      addChartItem(e) {
+        this.chartInfo.push({factor:'',value:''});
+        e.preventDefault();
+      },
+    }
+  });
+
+  jQuery(function(){
+    jQuery("input"). keydown(function(e) {
+            if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
+                return false;
+            } else {
+                return true;
+            }
+        });
+    });
+</script>
 <style>
   table.input_column2_table{
     width:80%;
