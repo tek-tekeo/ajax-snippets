@@ -144,7 +144,13 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     },
     created: function(){
       this.tableInfomation = <?=$info?>;
+      if(this.tableInfomation.length == 0){
+        this.tableInfomation.push({'factor':'', 'value':''});
+      }
       this.chartInfo = <?=$rchart?>;
+      if(this.chartInfo.length == 0){
+        this.chartInfo.push({'factor':'', 'value':''});
+      }
 
     },
     methods: {
