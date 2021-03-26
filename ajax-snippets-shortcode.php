@@ -8,7 +8,7 @@ function AjaxSniShortcodeLink($atts, $content = null) {
         're_url'=>'0'
     ), $atts ) );
     global $wpdb;
-    $sql = "SELECT B.name, B.affi_link, B.affi_img, B.img_tag, D.id, D.item_name, D.official_item_link FROM ".PLUGIN_DB_PREFIX."base As B RIGHT JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
+    $sql = "SELECT B.name, B.asp_name, B.affi_link, B.affi_img, B.img_tag, D.id, D.item_name, D.official_item_link FROM ".PLUGIN_DB_PREFIX."base As B RIGHT JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
 
     $results = $wpdb->get_results($sql,object);
         if(count($results) == 0){
@@ -28,7 +28,13 @@ function AjaxSniShortcodeLink($atts, $content = null) {
                       if($r->item_name == "トップ"){
                         $url = $r->affi_link;
                       }else{
-                        $url = $r->affi_link."&a8ejpredirect=" . urlencode($r->official_item_link);
+                        if($r->asp_name == "a8"){
+                          $url = $r->affi_link."&a8ejpredirect=" . urlencode($r->official_item_link);
+                        }else if($r->asp_name == "dmm"){
+                          $url = $r->official_item_link;
+                        }else{
+                          $url = $r->official_item_link;
+                        }
                       }
                     }
                 }
