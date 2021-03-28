@@ -214,6 +214,8 @@ $rgb = "54, 162, 232";
   $rgb = "247, 133, 133";
 }else if($color == 'gray'){
   $rgb = "128, 128, 128";
+}else if($color == 'orange'){
+  $rgb = "255, 155, 0";
 }
   $factor = explode(",", $factor);
   foreach($factor as $f){
