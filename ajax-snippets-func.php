@@ -134,3 +134,39 @@ function deleteChild(){
 }
 add_action( "wp_ajax_deleteChild" , "deleteChild" );
 add_action( "wp_ajax_nopriv_deleteChild" , "deleteChild" );
+
+function registChartItem(){
+	$json = json_encode($_POST['data'], JSON_UNESCAPED_UNICODE);
+  file_put_contents(dirname(__FILE__) .'/templates/child/prev_chart.txt', $json);
+  echo '完了';
+    die();
+}
+add_action( "wp_ajax_registChartItem" , "registChartItem" );
+add_action( "wp_ajax_nopriv_registChartItem" , "registChartItem" );
+
+function reUseChartItem(){
+	$prev_value = file_get_contents( dirname(__FILE__) .'/templates/child/prev_chart.txt');
+  // $prev_value = (int)$prev_value;
+  echo $prev_value;
+    die();
+}
+add_action( "wp_ajax_reUseChartItem" , "reUseChartItem" );
+add_action( "wp_ajax_nopriv_reUseChartItem" , "reUseChartItem" );
+
+function registTableItem(){
+	$json = json_encode($_POST['data'], JSON_UNESCAPED_UNICODE);
+  file_put_contents(dirname(__FILE__) .'/templates/child/prev_table.txt', $json);
+  echo '完了';
+    die();
+}
+add_action( "wp_ajax_registTableItem" , "registTableItem" );
+add_action( "wp_ajax_nopriv_registTableItem" , "registTableItem" );
+
+function reUseTableItem(){
+	$prev_value = file_get_contents( dirname(__FILE__) .'/templates/child/prev_table.txt');
+  // $prev_value = (int)$prev_value;
+  echo $prev_value;
+    die();
+}
+add_action( "wp_ajax_reUseTableItem" , "reUseTableItem" );
+add_action( "wp_ajax_nopriv_reUseTableItem" , "reUseTableItem" );

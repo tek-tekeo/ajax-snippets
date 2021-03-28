@@ -108,18 +108,22 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       <tr>
       <th>アイテム別写真<br>（レビュー時などこちらを優先）</th><td><?=CF::imgUploadBox($detail_img)?></td>
       </tr>
-      <tr v-for="(tableInfo, index) in tableInfomation" :key="`table-info-{$index}`">
-      <th>テーブル情報 {{ index }}<span v-if="index == 0"><button @click="addFormItem">追加</button></span></th>
-      <td>
-        <input type="text" name="info[factors][]" v-model:value="tableInfo.factor" placeholder="例）料金"/>
-        <input type="text" name="info[values][]" v-model:value="tableInfo.value" placeholder="例）1,000円"/>
-      </td>
-      </tr>
       <tr v-for="(rchart, index) in chartInfo" :key="`chart-info-{$index}`">
       <th>チャート情報 {{ index }}<span v-if="index == 0"><button @click="addChartItem">追加</button></span></th>
       <td>
         <input type="text" name="rchart[factors][]" v-model:value="rchart.factor" placeholder="要素名"/>
         <input type="number" step="0.1" name="rchart[values][]" v-model:value="rchart.value" placeholder="値"/>
+        <span v-if="index == 0"><button @click="registChartItem">データ登録</button></span>
+        <span v-if="index == 0"><button @click="reUseChartItem">再利用</button></span>
+      </td>
+      </tr>
+      <tr v-for="(tableInfo, index) in tableInfomation" :key="`table-info-{$index}`">
+      <th>テーブル情報 {{ index }}<span v-if="index == 0"><button @click="addFormItem">追加</button></span></th>
+      <td>
+        <input type="text" name="info[factors][]" v-model:value="tableInfo.factor" placeholder="例）料金"/>
+        <input type="text" name="info[values][]" v-model:value="tableInfo.value" placeholder="例）1,000円"/>
+        <span v-if="index == 0"><button @click="registTableItem">データ登録</button></span>
+        <span v-if="index == 0"><button @click="reUseTableItem">再利用</button></span>
       </td>
       </tr>
       <!-- <tr>
@@ -133,6 +137,8 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 </form>
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
   new Vue({
     el: '#child-table-info',
@@ -160,6 +166,76 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       },
       addChartItem(e) {
         this.chartInfo.push({factor:'',value:''});
+        e.preventDefault();
+      },
+      registChartItem(e) {
+        $.ajax({
+             type: "POST",
+             data:{
+                  'action':"registChartItem",
+                  'data': this.chartInfo
+             },
+             url: ajaxurl,
+             success: function(e) {
+               alert('チャート情報を登録した');
+
+             },
+             error: function(e){
+                 console.log('失敗');
+             }
+         });
+        e.preventDefault();
+      },
+      reUseChartItem(e) {
+        var _this = this;
+        $.ajax({
+             type: "GET",
+             data:{
+                  'action':"reUseChartItem"
+             },
+             url: ajaxurl,
+             success: function(e) {
+              _this.chartInfo = JSON.parse(e);
+             },
+             error: function(e){
+                 console.log('失敗');
+             }
+         });
+        e.preventDefault();
+      },
+      registTableItem(e) {
+        $.ajax({
+             type: "POST",
+             data:{
+                  'action':"registTableItem",
+                  'data': this.tableInfomation
+             },
+             url: ajaxurl,
+             success: function(e) {
+              alert('テーブル情報を登録した');
+
+             },
+             error: function(e){
+                 console.log('失敗');
+             }
+         });
+        e.preventDefault();
+      },
+      reUseTableItem(e) {
+        var _this = this;
+        $.ajax({
+             type: "GET",
+             data:{
+                  'action':"reUseTableItem"
+             },
+             url: ajaxurl,
+             success: function(e) {
+              _this.tableInfomation = JSON.parse(e);
+             },
+             error: function(e){
+                 console.log('失敗');
+             }
+         });
         e.preventDefault();
       },
     }
