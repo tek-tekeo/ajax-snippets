@@ -3,7 +3,7 @@
 Plugin Name: ajax snippets
 Description: アフィリエイトのリンクを取得しやすくする(テーマはcocoonの必要がある)
 Author: tektekeo
-Version: 0.1
+Version: 0.2
 Author URI: https://www.kouritsu30.com
 */
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 include_once dirname(__FILE__) . "/loader.php";
 
 add_action('init', 'AjaxSneppets::init');
-define('VERSION','0.1');
+define('VERSION','0.2');
 define('PLUGIN_ID','ajax_snippets');
 define('PLUGIN_DB_PREFIX', $wpdb->prefix . PLUGIN_ID . '_');
 
@@ -59,6 +59,7 @@ function jal_install()
 									rchart varchar(1025) DEFAULT '' NOT NULL,
 									info varchar(1025) DEFAULT '' NOT NULL,
 									review varchar(3000) DEFAULT '' NOT NULL,
+                  is_show_url tinyint DEFAULT 1 NOT NULL
 	                UNIQUE KEY id (id)
 	        )
 	        $charset_collate;";

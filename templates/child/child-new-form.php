@@ -16,6 +16,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   $amazon_asin = $_POST['amazon_asin'];
   $rakuten_id = $_POST['rakuten_id'];
   $affi_item_link = $_POST['affi_item_link'];
+  $is_show_url = $_POST['is_show_url'];
   // $info = stripslashes(nl2br($_POST['info']));
   $review = stripslashes($_POST['review']);
   // $rchart = stripslashes($_POST['rchart']);
@@ -57,23 +58,6 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       $asp_name= $result->asp_name;
     }
 
-    //場合ワケ
-    // if($asp_name != ""){
-    //   //a8の場合
-    //   if($official_item_link == ""){
-    //     echo "a8の商品リンク作成に必要な公式リンクを入力していない";die;
-    //   }else{
-    //     //a8の商品リンクが生成
-    //     $affi_item_link = "A8案件なので不要";
-    //   }
-    // }else{
-    //   //a8以外はしっかりとURLを書く必要がある
-    //   if(!$affi_item_link){
-    //     echo "a8以外の案件なのに、商品別のリンクを入力できていない";die;
-    //   }
-    // }
-
-
     $table = PLUGIN_DB_PREFIX.'detail';
 
     $data = array('id'=>'','base_id'=>$base_id,'item_name'=>$item_name,'official_item_link'=>$official_item_link,'affi_item_link'=>$affi_item_link, 'detail_img'=>$detail_img, 'amazon_asin'=>$amazon_asin,'rakuten_id'=>$rakuten_id,'info' => $info, 'review' => $review, 'rchart' => $rchart);
@@ -89,6 +73,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       $detail_img = '';
       $info = '';
       $rchart = '';
+      $is_show_url = 1;
     }
   }else{
     echo '更新が不完全です';
@@ -98,6 +83,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 
   if($info == '') $info="[]";
   if($rchart == '') $rchart="[]";
+  if ($is_show_url=="") $is_show_url = 1;
 
   ?>
 <h1>小要素の新規登録</h1>
@@ -128,6 +114,9 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       </tr>
       <tr>
       <th colspan=2><input type="submit" value="新規登録する" name="child_add" style="width:100%;padding:30px"></th>
+      </tr>
+      <tr>
+      <th>公式URLを表示する</th><td><?=CF::showUrlRadioBox('is_show_url', (int)$is_show_url)?></td>
       </tr>
       <tr>
       <th>アイテム別写真<br>（レビュー時などこちらを優先）</th><td><?=CF::imgUploadBox($detail_img)?></td>

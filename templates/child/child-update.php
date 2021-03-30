@@ -26,6 +26,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     $rchart = $r->rchart;
     $review = $r->review;
     $detail_img = $r->detail_img;
+    $is_show_url = $r->is_show_url;
   }
 
   if(isset($_POST['item_name']) && $_POST['official_item_link']){
@@ -59,12 +60,23 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     $amazon_asin = $_POST['amazon_asin'];
     $rakuten_id = $_POST['rakuten_id'];
     $detail_img = $_POST['img'];
+    $is_show_url = $_POST['is_show_url'];
     // $info = stripslashes(nl2br($_POST['info']));
     $review = stripslashes($_POST['review']);
     // $rchart = stripslashes($_POST['rchart']);
 
     $table = PLUGIN_DB_PREFIX.'detail';
-    $data = array('item_name'=>$item_name,'official_item_link'=>$official_item_link,'affi_item_link'=>$affi_item_link, 'detail_img'=>$detail_img, 'amazon_asin'=>$amazon_asin,'rakuten_id'=>$rakuten_id,'info' => $info, 'review' => $review, 'rchart' => $rchart);
+    $data = array('item_name'=>$item_name,
+                  'official_item_link'=>$official_item_link,
+                  'affi_item_link'=>$affi_item_link,
+                  'detail_img'=>$detail_img,
+                  'amazon_asin'=>$amazon_asin,
+                  'rakuten_id'=>$rakuten_id,
+                  'info' => $info,
+                  'review' => $review,
+                  'rchart' => $rchart,
+                  'is_show_url' => $is_show_url
+                );
     $where = array('id'=>$id);
     $res = $wpdb->update( $table, $data, $where );
     if($res){echo "<span style='color:red'>商品ページ登録完了</span>";}
@@ -106,6 +118,9 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       <th colspan=2><input type="submit" value="更新する" name="child_update" style="width:100%;padding:30px"></th>
       </tr>
       <tr>
+      <th>公式URLを表示する</th><td><?=CF::showUrlRadioBox('is_show_url', (int)$is_show_url)?></td>
+      </tr>
+      <tr>
       <th>アイテム別写真<br>（レビュー時などこちらを優先）</th><td><?=CF::imgUploadBox($detail_img)?></td>
       </tr>
       <tr v-for="(rchart, index) in chartInfo" :key="`chart-info-{$index}`">
@@ -126,9 +141,6 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         <span v-if="index == 0"><button @click="reUseTableItem">再利用</button></span>
       </td>
       </tr>
-      <!-- <tr>
-      <th>チャート情報</th>                               <td><?=CF::textBox('rchart', esc_html($rchart))?></td>
-      </tr> -->
       <tr>
       <th>レビュー</th>                                  <td><?=CF::textAreaBox('review', $review, 'review-editor')?></td>
       </tr>

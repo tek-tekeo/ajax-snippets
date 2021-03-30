@@ -170,6 +170,14 @@ $table_elements .=<<<EOT
 </tr>
 EOT;
   }
+  if($l->is_show_url){
+$isShowUrl =<<<EOT
+<tr>
+<th>公式サイト</th>
+<td>[afRecord id={$detail_id}]{$l->official_item_link}[/afRecord]</a></td>
+</tr>
+EOT;
+  }
 
 $rep .=<<<EOT
     <div style="display:flex;align-items: flex-start;justify-content:space-evenly;width:100%">
@@ -181,10 +189,7 @@ $rep .=<<<EOT
     <table class="simple-table">
     <tbody>
     {$table_elements}
-    <tr>
-    <th>公式サイト</th>
-    <td>[afRecord id={$detail_id}]{$l->official_item_link}[/afRecord]</a></td>
-    </tr>
+    {$isShowUrl}
     </tbody>
     </table>
     {$l->review}

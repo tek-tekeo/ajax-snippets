@@ -71,6 +71,19 @@ class CreateForm{
     return $selectbox_content;
   }
 
+  public function showUrlRadioBox(string $name, int $value): string
+  {
+    if($value === 0){
+      $checkStr .= '<input type="radio" name="'.$name.'" value="1">表示';
+      $checkStr .= '<input type="radio" name="'.$name.'" value="0" checked="checked">非表示';
+    }else{
+      $checkStr .= '<input type="radio" name="'.$name.'" value="1" checked="checked">表示';
+      $checkStr .= '<input type="radio" name="'.$name.'" value="0">非表示';
+    }
+
+    return $checkStr;
+  }
+
   public function imgUploadBox($thumb){
     $imgUploadBox_path = plugins_url('ajax-snippets/js/imgUploadBox.js');
     $str = "<input name=\"img\" type=\"text\" value=\"{$thumb}\">";
