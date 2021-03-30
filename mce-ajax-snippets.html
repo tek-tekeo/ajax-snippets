@@ -124,7 +124,7 @@
       if (val.attr('data-id') == null) {
         return false;
       }
-      var inputTag = "[appLinkG app_id=" + id + " re_url=0 noaf=0 text='テキスト']";
+      var inputTag = "[appLinkG detail_id=" + id + " re_url=0 noaf=0 text='テキスト']";
       top.tinymce.activeEditor.selection.setContent(inputTag);
       top.tinymce.activeEditor.windowManager.close();
       return false;
