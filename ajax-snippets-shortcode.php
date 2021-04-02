@@ -186,12 +186,14 @@ $rep .=<<<EOT
     {$chart_str}
     </div>
     </div>
+    <div class="scrollable-table">
     <table class="simple-table">
     <tbody>
     {$table_elements}
     {$isShowUrl}
     </tbody>
     </table>
+    </div>
     {$l->review}
 EOT;
 if ( current_user_can('administrator') || current_user_can('editor') || current_user_can('author')){
