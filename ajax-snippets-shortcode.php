@@ -163,7 +163,7 @@ function SingleReview($atts, $content = null){
   $l->info = json_decode($l->info, true);//wpautop(stripslashes_deep());
   $l->review = wpautop(stripslashes_deep($l->review));
   foreach((array)$l->info as $key => $d){
-    $d['value'] = stripslashes_deep($d['value']);
+    $d['value'] = nl2br(stripslashes_deep($d['value']));
 $table_elements .=<<<EOT
 <tr>
 <th>{$d['factor']}</th><td>{$d['value']}</td>

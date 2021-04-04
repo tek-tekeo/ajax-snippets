@@ -134,7 +134,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       <th>テーブル情報 {{ index }}<span v-if="index == 0"><button @click="addFormItem">追加</button></span></th>
       <td>
         <input type="text" name="info[factors][]" v-model:value="tableInfo.factor" placeholder="例）料金"/>
-        <input type="text" name="info[values][]" v-model:value="tableInfo.value" placeholder="例）1,000円"/>
+        <textarea rows="4" cols="40" name="info[values][]" v-model:value="tableInfo.value" placeholder="例）1,000円"></textarea>
         <span v-if="index == 0"><button @click="registTableItem">データ登録</button></span>
         <span v-if="index == 0"><button @click="reUseTableItem">再利用</button></span>
       </td>
@@ -174,6 +174,8 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         e.preventDefault();
       },
       registChartItem(e) {
+        e.preventDefault();
+        if(!window.confirm('更新しますか？')) return;
         $.ajax({
              type: "POST",
              data:{
@@ -189,9 +191,10 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
                  console.log('失敗');
              }
          });
-        e.preventDefault();
       },
       reUseChartItem(e) {
+        e.preventDefault();
+        if(!window.confirm('再利用しますか？')) return;
         var _this = this;
         $.ajax({
              type: "GET",
@@ -206,9 +209,10 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
                  console.log('失敗');
              }
          });
-        e.preventDefault();
       },
       registTableItem(e) {
+        e.preventDefault();
+        if(!window.confirm('更新しますか？')) return;
         $.ajax({
              type: "POST",
              data:{
@@ -223,9 +227,10 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
                  console.log('失敗');
              }
          });
-        e.preventDefault();
       },
       reUseTableItem(e) {
+        e.preventDefault();
+        if(!window.confirm('再利用しますか？')) return;
         var _this = this;
         $.ajax({
              type: "GET",
@@ -240,7 +245,6 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
                  console.log('失敗');
              }
          });
-        e.preventDefault();
       },
     }
   });
