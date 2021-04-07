@@ -60,7 +60,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 
     $table = PLUGIN_DB_PREFIX.'detail';
 
-    $data = array('id'=>'','base_id'=>$base_id,'item_name'=>$item_name,'official_item_link'=>$official_item_link,'affi_item_link'=>$affi_item_link, 'detail_img'=>$detail_img, 'amazon_asin'=>$amazon_asin,'rakuten_id'=>$rakuten_id,'info' => $info, 'review' => $review, 'rchart' => $rchart);
+    $data = array('id'=>'','base_id'=>$base_id,'item_name'=>$item_name,'official_item_link'=>$official_item_link,'affi_item_link'=>$affi_item_link, 'detail_img'=>$detail_img, 'amazon_asin'=>$amazon_asin,'rakuten_id'=>$rakuten_id,'info' => $info, 'review' => $review, 'rchart' => $rchart, 'is_show_url' => $is_show_url);
     $format = array('%d','%d','%s','%s','%s','%s','%s','%s','%s','%s','%s');
     $res = $wpdb->insert( $table, $data, $format );
     if($res){echo "商品ページ登録完了";

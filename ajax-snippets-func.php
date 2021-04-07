@@ -73,7 +73,7 @@ add_action( "wp_ajax_nopriv_prepareAjax" , "prepareAjax" );
 
 function getListBase(){
 	$name = $_POST['name'];
-  $sql = "SELECT * FROM ".PLUGIN_DB_PREFIX."base As P where P.name LIKE '%".$name."%'";
+  $sql = "SELECT * FROM ".PLUGIN_DB_PREFIX."base As P where P.name LIKE '%".$name."%' order by P.name asc";
 		global $wpdb;
 	$results = $wpdb->get_results($sql,object);
   if(count($results) == 0){
@@ -91,15 +91,13 @@ EOT;
 
   echo $rep;
   die();
-//    echo json_encode($returnObj);
-  //  die();
 }
 add_action( "wp_ajax_getListBase" , "getListBase" );
 add_action( "wp_ajax_nopriv_getListBase" , "getListBase" );
 
 function getListChild(){
   $name = $_POST['name'];
-  $sql = "SELECT B.name, D.item_name, D.id FROM ".PLUGIN_DB_PREFIX."base As B RIGHT JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.item_name LIKE '%".$name."%' OR B.name LIKE '%".$name."%'";
+  $sql = "SELECT B.name, D.item_name, D.id FROM ".PLUGIN_DB_PREFIX."base As B RIGHT JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.item_name LIKE '%".$name."%' OR B.name LIKE '%".$name."%' order by B.name asc, D.item_name asc";
 		global $wpdb;
 	$results = $wpdb->get_results($sql,object);
   if(count($results) == 0){
