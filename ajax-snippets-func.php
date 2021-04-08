@@ -31,7 +31,7 @@ function get_ajax_snippets( $keyword = null, $order_by = null ) {
 
 function prepareAjax(){
 	$text = $_POST['text'];
-	$sql = "SELECT B.name, B.affi_link, B.img_tag, B.s_link, B.asp_name, D.id, D.affi_item_link, D.item_name, D.official_item_link,D.amazon_asin, D.rakuten_id FROM ".PLUGIN_DB_PREFIX."base As B RIGHT JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.item_name LIKE '%".$text."%' OR B.name LIKE '%".$text."%'";
+	$sql = "SELECT B.name, B.affi_link, B.img_tag, B.s_link, B.asp_name, D.id, D.affi_item_link, D.item_name, D.official_item_link,D.amazon_asin, D.rakuten_id FROM ".PLUGIN_DB_PREFIX."base As B RIGHT JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.item_name LIKE '%".$text."%' OR B.name LIKE '%".$text."%' order by B.name asc, D.item_name asc";
 		global $wpdb;
 	$results = $wpdb->get_results($sql,object);
             // 結果を表示
