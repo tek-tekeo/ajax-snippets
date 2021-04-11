@@ -15,6 +15,7 @@
   <input type="button" id="afRecordBanner" value="バナーリンク(R)" onclick="return false;" />
   <input type="button" id="singleReview" value="シングルレビュー" onclick="return false;" />
   <input type="button" id="appLink" value="アプリのリンク" onclick="return false;" />
+  <input type="button" id="quoteLink" value="引用" onclick="return false;" />
   <p>候補一覧</p>
   <dl id="ajax-item-list" style="width:550px; height:350px;overflow-y: scroll;">
 
@@ -114,6 +115,19 @@
       }
       var inputTag = "[afLink id=" + id + " re_url=0 noaf=0][/afLink]";
       top.tinymce.activeEditor.selection.setContent(inputTag);
+      top.tinymce.activeEditor.windowManager.close();
+      return false;
+    });
+
+    $(document).on('click', '#quoteLink', function () {
+      var val = $("input[name='q1']:checked");
+      var id = val.attr('data-id');
+      if (val.attr('data-id') == null) {
+        return false;
+      }
+      var inputTag = "[afLink id=" + id + " re_url=1 noaf=1][/afLink]";
+      let blockquoteTag = '<blockquote class="ajax-snippets-quote" cite="' + inputTag + '">引用文<br><cite><a href="' + inputTag + '">公式サイト</a></cite></blockquote>';
+      top.tinymce.activeEditor.selection.setContent(blockquoteTag);
       top.tinymce.activeEditor.windowManager.close();
       return false;
     });

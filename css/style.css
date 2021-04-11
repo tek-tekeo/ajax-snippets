@@ -1,3 +1,10 @@
+blockquote.ajax-snippets-quote{
+  font-size:16px;
+}
+blockquote.ajax-snippets-quote cite:before{
+  content:"引用元：";
+}
+
 a.applink{
   color:#555;
   text-decoration: none;

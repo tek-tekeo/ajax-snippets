@@ -98,6 +98,7 @@ function jal_install()
 						$data[2] = array('asp_name' => 'link-a','connect_string'=>'&mallurl1=');
 						$data[3] = array('asp_name' => 'dmm','connect_string'=>'?af_id=tekeo-001&ch=link_tool&ch_id=link&lurl=');
 						$data[4] = array('asp_name' => 'valuecommerce','connect_string'=>'');
+            $data[4] = array('asp_name' => '独自','connect_string'=>'');
 						foreach ($data as $d){
 							$res = $wpdb->insert( $table_name, $d );
 						}
@@ -138,6 +139,7 @@ class AjaxSneppets
 
     function __construct()
     {
+      add_editor_style(plugins_url( 'ajax-snippets/css/style.css' ));
         if (is_admin() && is_user_logged_in()) {
             // メニュー追加
             add_action('admin_menu', [$this, 'set_plugin_menu']);
