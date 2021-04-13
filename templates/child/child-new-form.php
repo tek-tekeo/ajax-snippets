@@ -22,7 +22,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   // $rchart = stripslashes($_POST['rchart']);
   $post_info = $_POST['info'];
   $info = array();
-  for($i = 0; $i <count($post_info['factors']); $i++){
+  for($i = 0; $i <count((array)$post_info['factors']); $i++){
     if($post_info['factors'][$i] == '') continue;
     $tmp_array = array(
       'factor' => $post_info['factors'][$i],
@@ -34,7 +34,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 
   $post_rchart = $_POST['rchart'];
   $rchart = array();
-  for($i = 0; $i <count($post_rchart['factors']); $i++){
+  for($i = 0; $i <count((array)$post_rchart['factors']); $i++){
     if($post_rchart['factors'][$i] == '') continue;
     $tmp_array = array(
       'factor' => $post_rchart['factors'][$i],

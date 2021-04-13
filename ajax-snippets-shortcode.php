@@ -139,7 +139,8 @@ add_shortcode('afRecordBanner', 'AjaxRecordShortcodeBanner');
 function SingleReview($atts, $content = null){
   extract( shortcode_atts( array(
      'detail_id' => '1',
-     'color'=>'blue'
+     'color'=>'blue',
+     'title'=>'0'
   ), $atts ) );
   global $wpdb;
   $sql = "SELECT D.*,B.name FROM ".PLUGIN_DB_PREFIX."base as B,".PLUGIN_DB_PREFIX."detail as D where D.id={$detail_id} AND B.id=D.base_id";
@@ -155,7 +156,7 @@ function SingleReview($atts, $content = null){
     if($l->detail_img != "" && $l->item_name !="トップ"){
       $l->name = $l->item_name;
     }
-    $chart_str = "[ajax_snippets_rchart factor='".$chart_factor."' rate='".$chart_rate."' name='{$l->name}' color='".$color."']";
+    $chart_str = "[ajax_snippets_rchart factor='".$chart_factor."' rate='".$chart_rate."' name='{$l->name}' color='".$color."' title='".$title."']";
   }else{
     $chart_str ="";
   }
@@ -213,7 +214,8 @@ function Radercahrt($atts, $content = null){
      'name' => 'コイツ',
      'factor' => 'aaa,bbb,ccc,ddd,eee',
      'rate' => '3,3,3,3,3',
-     'color'=>'blue'
+     'color'=>'blue',
+     'title'=>'0'
   ), $atts ) );
 if($color == 'blue'){
 $rgb = "54, 162, 232";
@@ -230,6 +232,10 @@ $rgb = "54, 162, 232";
     if(next($factor)){
       $ff .= ",";
       }
+  }
+//タイトル指名があれば、名前を変更
+  if($title != '0'){
+    $name = $title;
   }
   $radar_id=mt_rand();
 $rep =<<<EOT
