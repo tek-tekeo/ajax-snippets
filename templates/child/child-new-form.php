@@ -121,8 +121,14 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       <tr>
       <th>アイテム別写真<br>（レビュー時などこちらを優先）</th><td><?=CF::imgUploadBox($detail_img)?></td>
       </tr>
+      <tr>
+      <th colspan="2">チャート</th>
+      </tr>
       <tr v-for="(rchart, index) in chartInfo" :key="`chart-info-{$index}`">
-      <th>チャート情報 {{ index }}<span v-if="index == 0"><button @click="addChartItem">追加</button></span></th>
+      <th>
+        <span v-if="index != 0"><button @click="removeChartItem($event, index)">削除</button></span>
+        <span v-if="index == 0"><button @click="addChartItem">追加</button></span>
+      </th>
       <td>
         <input type="text" name="rchart[factors][]" v-model:value="rchart.factor" placeholder="要素名"/>
         <input type="number" step="0.1" name="rchart[values][]" v-model:value="rchart.value" placeholder="値"/>
@@ -130,8 +136,14 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         <span v-if="index == 0"><button @click="reUseChartItem">再利用</button></span>
       </td>
       </tr>
-      <tr v-for="(tableInfo, index) in tableInfomation" :key="`table-info-{$index}`">
-      <th>テーブル情報 {{ index }}<span v-if="index == 0"><button @click="addFormItem">追加</button></span></th>
+      <tr>
+      <th colspan="2">テーブル</th>
+      </tr>
+      <tr v-for="(tableInfo, index) in tableInformation" :key="`table-info-{$index}`">
+      <th>
+        <span v-if="index != 0"><button @click="removeFormItem($event, index)">削除</button></span>
+        <span v-if="index == 0"><button @click="addFormItem">追加</button></span>
+      </th>
       <td>
         <input type="text" name="info[factors][]" v-model:value="tableInfo.factor" placeholder="例）料金"/>
         <textarea rows="4" cols="40" name="info[values][]" v-model:value="tableInfo.value" placeholder="例）1,000円"></textarea>
@@ -166,11 +178,19 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     },
     methods: {
       addFormItem(e) {
-        this.tableInfomation.push({factor:'',value:''});
+        this.tableInformation.push({factor:'',value:''});
+        e.preventDefault();
+      },
+      removeFormItem(e, index){
+        this.tableInformation.splice(index, 1);
         e.preventDefault();
       },
       addChartItem(e) {
         this.chartInfo.push({factor:'',value:''});
+        e.preventDefault();
+      },
+      removeChartItem(e, index){
+        this.chartInfo.splice(index, 1);
         e.preventDefault();
       },
       registChartItem(e) {
