@@ -181,19 +181,24 @@ EOT;
   }
 
 $rep .=<<<EOT
-    <div style="display:flex;align-items: flex-start;justify-content:space-evenly;width:100%">
-    <div style="text-align:center;width:30%">[afRecordBanner id={$l->id}]</div>
-    <div style="width:50%;max-width:300px">
+    <div class="singleReview">
+    <div class="firstItem">[afRecordBanner id={$l->id}]</div>
+    <div class="secondItem">
     {$chart_str}
     </div>
     </div>
-    <div class="scrollable-table">
+    <div class="scrollable-table scroll-hint" style="position: relative; overflow: auto;">
     <table class="simple-table">
     <tbody>
     {$table_elements}
     {$isShowUrl}
     </tbody>
     </table>
+    <div class="scroll-hint-icon-wrap" data-target="scrollable-icon">
+        <span class="scroll-hint-icon">
+          <div class="scroll-hint-text">スクロールできます</div>
+        </span>
+      </div></div>
     </div>
     {$l->review}
 EOT;
@@ -270,7 +275,7 @@ var options = {
             display: false
          },
   title: {
-            display: true,
+            display: false,
             text: '{$name}の評価'
         },
     scale: {

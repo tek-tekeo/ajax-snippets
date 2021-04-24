@@ -123,3 +123,20 @@ ul.favo_manga li:after {
   content: '\f02d  \4eba\6c17\306e\30de\30f3\30ac\4e00\89a7';/*アイコンコード＋文字（Unicodeに変換）*/
   letter-spacing: 0.05em;/*字間*/
 }
+
+.singleReview{
+  display:flex;
+  align-items: flex-start;
+  justify-content:space-evenly;
+  width:100%"
+}
+.singleReview .firstItem{
+  text-align:center;
+  width : -webkit-calc(100% / 3) ;
+  width : calc(100% / 3) ;
+}
+.singleReview .secondItem{
+  max-width:300px;
+  width : -webkit-calc(200% / 3) ;
+  width : calc(200% / 3) ;
+}

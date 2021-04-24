@@ -83,7 +83,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 
   if($info == '') $info="[]";
   if($rchart == '') $rchart="[]";
-  if ($is_show_url=="") $is_show_url = 1;
+  if ($is_show_url=="") $is_show_url = 0;
 
   ?>
 <h1>小要素の新規登録</h1>
@@ -137,7 +137,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       </td>
       </tr>
       <tr>
-      <th colspan="2">テーブル</th>
+      <th colspan="2">テーブル{{info}}</th>
       </tr>
       <tr v-for="(tableInfo, index) in tableInformation" :key="`table-info-{$index}`">
       <th>
@@ -166,13 +166,14 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     el: '#child-table-info',
     data() {
       return {
-        tableInfomation: [],
+        tableInformation: [],
         chartInfo:[],
+        info:null
       }
     },
     created: function(){
-      this.tableInfomation = <?=$rchart?>;
-      this.tableInfomation.push({factor:'',value:''});
+      this.tableInformation = <?=$rchart?>;
+      this.tableInformation.push({factor:'',value:''});
       this.chartInfo = <?=$rchart?>;
       this.chartInfo.push({factor:'',value:''});
     },
@@ -237,7 +238,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
              type: "POST",
              data:{
                   'action':"registTableItem",
-                  'data': this.tableInfomation
+                  'data': this.tableInformation
              },
              url: ajaxurl,
              success: function(e) {
@@ -259,7 +260,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
              },
              url: ajaxurl,
              success: function(e) {
-              _this.tableInfomation = JSON.parse(e);
+              _this.tableInformation = JSON.parse(e);
              },
              error: function(e){
                  console.log('失敗');
