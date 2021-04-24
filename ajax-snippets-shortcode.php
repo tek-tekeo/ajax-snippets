@@ -182,23 +182,23 @@ EOT;
 
 $rep .=<<<EOT
     <div class="singleReview">
-    <div class="firstItem">[afRecordBanner id={$l->id}]</div>
-    <div class="secondItem">
-    {$chart_str}
-    </div>
+      <div class="firstItem">[afRecordBanner id={$l->id}]</div>
+      <div class="secondItem">
+        {$chart_str}
+      </div>
     </div>
     <div class="scrollable-table scroll-hint" style="position: relative; overflow: auto;">
-    <table class="simple-table">
-    <tbody>
-    {$table_elements}
-    {$isShowUrl}
-    </tbody>
-    </table>
-    <div class="scroll-hint-icon-wrap" data-target="scrollable-icon">
+      <table class="simple-table">
+      <tbody>
+      {$table_elements}
+      {$isShowUrl}
+      </tbody>
+      </table>
+      <div class="scroll-hint-icon-wrap" data-target="scrollable-icon">
         <span class="scroll-hint-icon">
           <div class="scroll-hint-text">スクロールできます</div>
         </span>
-      </div></div>
+      </div>
     </div>
     {$l->review}
 EOT;
