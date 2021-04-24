@@ -25,57 +25,59 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     $info = $r->info;
     $rchart = $r->rchart;
     $review = $r->review;
+    $info = str_replace('\\\"', '"', $info, $count);
     $detail_img = $r->detail_img;
     $is_show_url = $r->is_show_url;
   }
 
-  if(isset($_POST['item_name']) && $_POST['official_item_link']){
-    $post_info = $_POST['info'];
-    $info = array();
-    for($i = 0; $i <count($post_info['factors']); $i++){
-      if($post_info['factors'][$i] == '') continue;
-      $tmp_array = array(
-        'factor' => $post_info['factors'][$i],
-        'value' => $post_info['values'][$i]
-      );
-      array_push($info, $tmp_array);
-    }
-    $info = json_encode($info, JSON_UNESCAPED_UNICODE);
+  if(isset($_POST['child_update'])){
+    // $post_info = $_POST['info'];
+    // $info = array();
+    // for($i = 0; $i <count($post_info['factors']); $i++){
+    //   if($post_info['factors'][$i] == '') continue;
+    //   $tmp_array = array(
+    //     'factor' => $post_info['factors'][$i],
+    //     'value' => $post_info['values'][$i]
+    //   );
+    //   array_push($info, $tmp_array);
+    // }
+    // $info = json_encode($info, JSON_UNESCAPED_UNICODE);
 
-    $post_rchart = $_POST['rchart'];
-    $rchart = array();
-    for($i = 0; $i <count($post_rchart['factors']); $i++){
-      if($post_rchart['factors'][$i] == '') continue;
-      $tmp_array = array(
-        'factor' => $post_rchart['factors'][$i],
-        'value' => $post_rchart['values'][$i]
-      );
-      array_push($rchart, $tmp_array);
-    }
-    $rchart = json_encode($rchart, JSON_UNESCAPED_UNICODE);
+    // $post_rchart = $_POST['rchart'];
+    // $rchart = array();
+    // for($i = 0; $i <count($post_rchart['factors']); $i++){
+    //   if($post_rchart['factors'][$i] == '') continue;
+    //   $tmp_array = array(
+    //     'factor' => $post_rchart['factors'][$i],
+    //     'value' => $post_rchart['values'][$i]
+    //   );
+    //   array_push($rchart, $tmp_array);
+    // }
+    // $rchart = json_encode($rchart, JSON_UNESCAPED_UNICODE);
 
-    $item_name = $_POST['item_name'];
-    $official_item_link = $_POST['official_item_link'];
-    $affi_item_link = $_POST['affi_item_link'];
-    $amazon_asin = $_POST['amazon_asin'];
-    $rakuten_id = $_POST['rakuten_id'];
-    $detail_img = $_POST['img'];
-    $is_show_url = $_POST['is_show_url'];
+    // $item_name = $_POST['item_name'];
+    // $official_item_link = $_POST['official_item_link'];
+    // $affi_item_link = $_POST['affi_item_link'];
+    // $amazon_asin = $_POST['amazon_asin'];
+    // $rakuten_id = $_POST['rakuten_id'];
+    // $detail_img = $_POST['img'];
+    // $is_show_url = $_POST['is_show_url'];
     // $info = stripslashes(nl2br($_POST['info']));
     $review = stripslashes($_POST['review']);
     // $rchart = stripslashes($_POST['rchart']);
 
     $table = PLUGIN_DB_PREFIX.'detail';
-    $data = array('item_name'=>$item_name,
-                  'official_item_link'=>$official_item_link,
-                  'affi_item_link'=>$affi_item_link,
-                  'detail_img'=>$detail_img,
-                  'amazon_asin'=>$amazon_asin,
-                  'rakuten_id'=>$rakuten_id,
-                  'info' => $info,
+    $data = array(
+                  // 'item_name'=>$item_name,
+                  // 'official_item_link'=>$official_item_link,
+                  // 'affi_item_link'=>$affi_item_link,
+                  // 'detail_img'=>$detail_img,
+                  // 'amazon_asin'=>$amazon_asin,
+                  // 'rakuten_id'=>$rakuten_id,
+                  // 'info' => $info,
                   'review' => $review,
-                  'rchart' => $rchart,
-                  'is_show_url' => $is_show_url
+                  // 'rchart' => $rchart,
+                  // 'is_show_url' => $is_show_url
                 );
     $where = array('id'=>$id);
     $res = $wpdb->update( $table, $data, $where );
@@ -96,32 +98,37 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 <a href="<?php echo admin_url('')."admin.php?page=ajax-snippets&action=update&base_id=".$r->base_id; ?>">親要素の表示</a>
 </p>
 <p style="font-size:20px; color:red"><?=$attention_comment?></p>
-<form method="POST" action="">
-  <table class="input_column2_table" id="child-table-info">
+<form id="child-table-info" @submit="updateInformation" method="POST" action="">
+  <table class="input_column2_table">
     <tbody><caption>個別の商品ページを登録する(A8のみ)</caption>
       <tr>
-      <th>商品名（日本語）</th>                            <td><?=CF::textBox('item_name', $item_name, true)?></td>
+      <th>商品名（日本語）</th>                            <td><?=CF::vueTextBox('item_name', $item_name, true)?></td>
       </tr>
       <tr>
-      <th>商品ページURL</th>                              <td><?=CF::textBox('official_item_link', $official_item_link, true)?></td>
+      <th>商品ページURL</th>                              <td><?=CF::vueTextBox('official_item_link', $official_item_link, true)?></td>
       </tr>
       <tr>
-      <th>アフィリエイトのURL<br>(a8案件以外はこのURLになる)</th><td><?=CF::textBox('affi_item_link', $affi_item_link, true)?></td>
+      <th>アフィリエイトのURL<br>(a8案件以外はこのURLになる)</th><td><?=CF::vueTextBox('affi_item_link', $affi_item_link, true)?></td>
       </tr>
       <tr>
-      <th>Amazonのasin</th>                             <td><?=CF::textBox('amazon_asin', $amazon_asin)?></td>
+      <th>Amazonのasin</th>                             <td><?=CF::vueTextBox('amazon_asin', $amazon_asin)?></td>
       </tr>
       <tr>
-      <th>楽天のid(例：phiten:111111)</th>               <td><?=CF::textBox('rakuten_id', $rakuten_id)?></td>
+      <th>楽天のid(例：phiten:111111)</th>               <td><?=CF::vueTextBox('rakuten_id', $rakuten_id)?></td>
       </tr>
       <tr>
-      <th colspan=2><input type="submit" value="更新する" name="child_update" style="width:100%;padding:30px"></th>
+      <th colspan=2><input type="submit" value="更新する" style="width:100%;padding:30px"></th>
       </tr>
       <tr>
-      <th>公式URLを表示する</th><td><?=CF::showUrlRadioBox('is_show_url', (int)$is_show_url)?></td>
+      <th>公式URLを表示する</th><td>
+        <?=CF::vueShowUrlRadioBox('is_show_url', (int)$is_show_url)?>
+      </td>
       </tr>
       <tr>
-      <th>アイテム別写真<br>（レビュー時などこちらを優先）</th><td><?=CF::imgUploadBox($detail_img)?></td>
+      <th>アイテム別写真<br>（レビュー時などこちらを優先）</th>
+      <td>
+        <?=CF::vueImgUploadBox($detail_img)?>
+        </td>
       </tr>
       <tr>
       <th colspan="2">チャート</th>
@@ -153,26 +160,54 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         <span v-if="index == 0"><button @click="reUseTableItem">再利用</button></span>
       </td>
       </tr>
-      <tr>
-      <th>レビュー</th>                                  <td><?=CF::textAreaBox('review', $review, 'review-editor')?></td>
-      </tr>
     </tbody>
   </table>
+</form>
+<form method="post">
+<table>
+<tr>
+  <th>レビュー</th>                                  <td><?=CF::textAreaBox('review', $review, 'review-editor')?></td>
+  </tr>
+  <tr>
+  <th colspan=2><input type="submit" value="レビューを更新" name="child_update" value="1" style="width:100%;padding:30px"></th>
+  </tr>
+</table>
 </form>
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/vue-toasted"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
+  Vue.use(Toasted);
+
   new Vue({
     el: '#child-table-info',
     data() {
       return {
+        id:'',
+        item_name:'',
+        official_item_link:'',
+        affi_item_link:'',
+        amazon_asin:'',
+        rakuten_id:'',
+        detail_img:'',
+        is_show_url:'',
+        review:'',
         tableInformation: [],
         chartInfo:[],
       }
     },
     created: function(){
+      this.id = "<?=$id?>";
+      this.item_name = "<?=$item_name?>";
+      this.official_item_link ="<?=$official_item_link?>";
+      this.affi_item_link ="<?=$affi_item_link?>";
+      this.amazon_asin ="<?=$amazon_asin?>";
+      this.rakuten_id ="<?=$rakuten_id?>";
+      this.detail_img ="<?=$detail_img?>";
+      this.is_show_url ="<?=$is_show_url?>";
+      this.review = "<?=$revieww?>";
       this.tableInformation = <?=$info?>;
       if(this.tableInformation.length == 0){
         this.tableInformation.push({'factor':'', 'value':''});
@@ -198,6 +233,51 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       },
       removeChartItem(e, index){
         this.chartInfo.splice(index, 1);
+        e.preventDefault();
+      },
+      updateInformation(e){
+        let _this = this;
+        let chartInfoConvert = JSON.stringify(this.chartInfo);
+
+        let form_data = new FormData;
+        form_data.append('action', 'updateItemInfo');
+        this.chartInfo.forEach(function(ele) {
+          form_data.append('rchart[factors][]', ele.factor);
+          form_data.append('rchart[values][]', ele.value);
+        });
+        this.tableInformation.forEach(function(ele) {
+          form_data.append('info[factors][]', ele.factor);
+          form_data.append('info[values][]', ele.value);
+        });
+        form_data.append('item_name', this.item_name);
+        form_data.append('official_item_link', this.official_item_link);
+        form_data.append('affi_item_link', this.affi_item_link);
+        form_data.append('amazon_asin', this.amazon_asin);
+        form_data.append('rakuten_id', this.rakuten_id);
+        form_data.append('detail_img', this.detail_img);
+        form_data.append('is_show_url', this.is_show_url);
+        form_data.append('review', this.review);
+        form_data.append('id', this.id);
+
+        axios.post(ajaxurl, form_data).then(function(response){
+          if(response.data){
+            var options = {
+              position: 'top-center',
+              duration: 2000,
+              fullWidth: true,
+              type: 'success'
+            }
+            _this.$toasted.show('更新完了',options);
+          }else{
+            var options = {
+              position: 'top-center',
+              duration: 2000,
+              fullWidth: true,
+              type: 'error'
+            }
+            _this.$toasted.show('更新してない',options);
+          }
+        })
         e.preventDefault();
       },
       registChartItem(e) {

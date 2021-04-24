@@ -168,3 +168,62 @@ function reUseTableItem(){
 }
 add_action( "wp_ajax_reUseTableItem" , "reUseTableItem" );
 add_action( "wp_ajax_nopriv_reUseTableItem" , "reUseTableItem" );
+
+function updateItemInfo(){
+  global $wpdb;
+
+  $post_info = $_POST['info'];
+  $info = array();
+  for($i = 0; $i <count($post_info['factors']); $i++){
+    if($post_info['factors'][$i] == '') continue;
+    $tmp_array = array(
+      'factor' => $post_info['factors'][$i],
+      'value' => $post_info['values'][$i]
+    );
+    array_push($info, $tmp_array);
+  }
+  $info = json_encode($info, JSON_UNESCAPED_UNICODE);
+
+  $post_rchart = $_POST['rchart'];
+  $rchart = array();
+  for($i = 0; $i <count($post_rchart['factors']); $i++){
+    if($post_rchart['factors'][$i] == '') continue;
+    $tmp_array = array(
+      'factor' => $post_rchart['factors'][$i],
+      'value' => $post_rchart['values'][$i]
+    );
+    array_push($rchart, $tmp_array);
+  }
+  $rchart = json_encode($rchart, JSON_UNESCAPED_UNICODE);
+
+  $id = $_POST['id'];
+  $item_name = $_POST['item_name'];
+  $official_item_link = $_POST['official_item_link'];
+  $affi_item_link = $_POST['affi_item_link'];
+  $amazon_asin = $_POST['amazon_asin'];
+  $rakuten_id = $_POST['rakuten_id'];
+  $detail_img = $_POST['detail_img'];
+  $is_show_url = $_POST['is_show_url'];
+  // $review = stripslashes($_POST['review']);
+
+  $table = PLUGIN_DB_PREFIX.'detail';
+
+  $data = array('item_name'=>$item_name,
+                'official_item_link'=>$official_item_link,
+                'affi_item_link'=>$affi_item_link,
+                'detail_img'=>$detail_img,
+                'amazon_asin'=>$amazon_asin,
+                'rakuten_id'=>$rakuten_id,
+                'info' => $info,
+                // 'review' => $review,
+                'rchart' => $rchart,
+                'is_show_url' => $is_show_url
+              );
+  $where = array('id'=>$id);
+  $res = $wpdb->update( $table, $data, $where );
+
+  echo $res;
+  die();
+}
+add_action( "wp_ajax_updateItemInfo" , "updateItemInfo" );
+add_action( "wp_ajax_nopriv_updateItemInfo" , "updateItemInfo" );
