@@ -16,7 +16,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     $base_id = $base_insert->exeInsert($_POST);
 
     $_POST['base_id'] = $base_id;
-    $_POST['item_name'] = "トップ";
+    $_POST['item_name'] = "000";
     $_POST['affi_item_link'] = $_POST['affi_link'];
     $_POST['official_item_link'] = $_POST['official_link'];
 
