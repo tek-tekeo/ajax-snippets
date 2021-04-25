@@ -37,7 +37,7 @@ function prepareAjax(){
             // 結果を表示
   $returnObj = array();
 	foreach( $results as $key => $r ) {
-    if($r->item_name == 'トップ'){
+    if($r->item_name == '000'){
       $r->affi_link = $r->affi_link;
     }else if($r->s_link == '' && $r->asp_name == 'a8'){
       $r->affi_link = $r->affi_link;
@@ -47,7 +47,7 @@ function prepareAjax(){
       $r->affi_link = $r->affi_item_link;
     }
 
-    if($r->item_name == 'トップ'){
+    if($r->item_name == '000'){
       $r->item_name='';
     }else{
       $r->item_name=' '.$r->item_name;
