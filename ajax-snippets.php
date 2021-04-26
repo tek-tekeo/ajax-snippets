@@ -195,7 +195,7 @@ class AjaxSneppets
             'ajax-snippets',    /* ページを開いたときのURL */
             [$this, 'show_about_plugin'],       /* メニューに紐づく画面を描画するcallback関数 */
             'dashicons-format-gallery', /* アイコン see: https://developer.wordpress.org/resource/dashicons/#awards */
-            99                          /* 表示位置のオフセット */
+            4                          /* 表示位置のオフセット */
         );
     }
     function set_plugin_sub_menu() {
