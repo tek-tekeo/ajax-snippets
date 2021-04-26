@@ -80,6 +80,27 @@ function jal_install()
 					$charset_collate;";
 					dbDelta( $sql );
 
+          $table_name = $wpdb->prefix . PLUGIN_ID . '_tag_link';
+
+					$sql = "CREATE TABLE $table_name (
+									id int(11) NOT NULL AUTO_INCREMENT,
+									item_id int(11) NOT NULL,
+                  tag_id int(11) NOT NULL,
+									PRIMARY KEY id (id)
+					)
+					$charset_collate;";
+					dbDelta( $sql );
+
+          $table_name = $wpdb->prefix . PLUGIN_ID . '_tag';
+
+					$sql = "CREATE TABLE $table_name (
+									id int(11) NOT NULL AUTO_INCREMENT,
+									tag_name varchar(255) DEFAULT '' NOT NULL,
+									PRIMARY KEY id (id)
+					)
+					$charset_collate;";
+					dbDelta( $sql );
+
 					$table_name = $wpdb->prefix . PLUGIN_ID . '_asp';
 
 					$table_search = $wpdb->get_row("SHOW TABLES FROM " . DB_NAME . " LIKE '" . $table_name . "'"); //「$wpdb->posts」テーブルがあるかどうか探す

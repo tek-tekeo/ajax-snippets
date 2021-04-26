@@ -30,6 +30,10 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     $is_show_url = $r->is_show_url;
   }
 
+  $sql = "SELECT DISTINCT T.*, sum(L.id) as is_checked FROM `wp_ajax_snippets_tag` as T LEFT OUTER JOIN `wp_ajax_snippets_tag_link` as L ON T.id=L.tag_id group by T.id order by T.id asc";
+  $tags = $wpdb->get_results($sql, OBJECT);
+  $tags = json_encode($tags,JSON_UNESCAPED_UNICODE);
+
   if(isset($_POST['child_update'])){
     // $post_info = $_POST['info'];
     // $info = array();
@@ -160,6 +164,21 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         <span v-if="index == 0"><button @click="reUseTableItem">再利用</button></span>
       </td>
       </tr>
+      <tr>
+      <th>タグ</th>
+      <td>
+            <label class="check_lb"  v-for="(tag, index) in tags" :key="`tag-{$index}`">
+              <input
+                :id="index"
+                type="checkbox"
+                name="tags"
+                :checked="tag.is_checked"
+                v-model="tag.is_checked"
+              >
+              {{ tag.tag_name }}
+            </label>
+        </td>
+      </tr>
     </tbody>
   </table>
 </form>
@@ -196,6 +215,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         review:'',
         tableInformation: [],
         chartInfo:[],
+        tags:[],
       }
     },
     created: function(){
@@ -209,6 +229,8 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       this.is_show_url ="<?=$is_show_url?>";
       this.review = "<?=$revieww?>";
       this.tableInformation = <?=$info?>;
+      this.tags = <?=$tags?>;
+      // this.tag_links = <?=$tag_links?>;
       if(this.tableInformation.length == 0){
         this.tableInformation.push({'factor':'', 'value':''});
       }
@@ -249,6 +271,11 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
           form_data.append('info[factors][]', ele.factor);
           form_data.append('info[values][]', ele.value);
         });
+        this.tags.forEach(function(ele) {
+          if(ele.is_checked){
+            form_data.append('tags[]', ele.id);
+          }
+        });
         form_data.append('item_name', this.item_name);
         form_data.append('official_item_link', this.official_item_link);
         form_data.append('affi_item_link', this.affi_item_link);
@@ -260,6 +287,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         form_data.append('id', this.id);
 
         axios.post(ajaxurl, form_data).then(function(response){
+          console.log(response.data);
           if(response.data){
             var options = {
               position: 'top-center',

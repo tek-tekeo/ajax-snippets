@@ -140,3 +140,8 @@ ul.favo_manga li:after {
   width : -webkit-calc(200% / 3) ;
   width : calc(200% / 3) ;
 }
+
+/* ラベル横並び */
+.check_lb {
+  display:block;
+}

@@ -196,6 +196,7 @@ function updateItemInfo(){
   }
   $rchart = json_encode($rchart, JSON_UNESCAPED_UNICODE);
 
+
   $id = $_POST['id'];
   $item_name = $_POST['item_name'];
   $official_item_link = $_POST['official_item_link'];
@@ -222,7 +223,23 @@ function updateItemInfo(){
   $where = array('id'=>$id);
   $res = $wpdb->update( $table, $data, $where );
 
-  echo $res;
+  $table = PLUGIN_DB_PREFIX.'tag_link';
+  $tags = $_POST['tags'];
+  $where = array('item_id'=> $id);
+  $res1 =$wpdb->delete( $table, $where );
+
+  foreach($tags as $tag){
+    $data = array('id'=>'',
+                  'item_id'=>$id,
+                  'tag_id'=>$tag
+                  );
+    $res2 = $wpdb->insert($table, $data);
+  }
+  if($res == true || $res1 == true || $res2 == true){
+    echo true;
+  }else{
+    echo false;
+  }
   die();
 }
 add_action( "wp_ajax_updateItemInfo" , "updateItemInfo" );
