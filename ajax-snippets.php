@@ -96,6 +96,7 @@ function jal_install()
 					$sql = "CREATE TABLE $table_name (
 									id int(11) NOT NULL AUTO_INCREMENT,
 									tag_name varchar(255) DEFAULT '' NOT NULL,
+                  tag_order int(11) NOT NULL,
 									PRIMARY KEY id (id)
 					)
 					$charset_collate;";
