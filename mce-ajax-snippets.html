@@ -101,7 +101,7 @@
       if (val.attr('data-id') == null) {
         return false;
       }
-      var inputTag = "[singleReview detail_id=" + id + " color='blue']";
+      var inputTag = "[singleReview detail_id=" + id + " is_review=0 color='blue']";
       top.tinymce.activeEditor.selection.setContent(inputTag);
       top.tinymce.activeEditor.windowManager.close();
       return false;

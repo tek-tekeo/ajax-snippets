@@ -140,7 +140,8 @@ function SingleReview($atts, $content = null){
   extract( shortcode_atts( array(
      'detail_id' => '1',
      'color'=>'blue',
-     'title'=>'0'
+     'title'=>'0',
+     'is_review' => '0'
   ), $atts ) );
   global $wpdb;
   $sql = "SELECT D.*,B.name FROM ".PLUGIN_DB_PREFIX."base as B,".PLUGIN_DB_PREFIX."detail as D where D.id={$detail_id} AND B.id=D.base_id";
@@ -200,8 +201,8 @@ $rep .=<<<EOT
         </span>
       </div>
     </div>
-    {$l->review}
 EOT;
+if($is_review) $rep .=$l->review;
 if ( current_user_can('administrator') || current_user_can('editor') || current_user_can('author')){
     $kono_url = admin_url('')."admin.php?page=child-config&action=update&child_id={$l->id}";
     $rep .= "<p><a href={$kono_url} target='_blank'>この案件を編集</a>(管理者向け)</p>";
@@ -419,7 +420,7 @@ function TagRanking($atts){
  ), $atts ) );
 
  global $wpdb;
- $sql = "SELECT DISTINCT item_id FROM ".PLUGIN_DB_PREFIX."tag_link where tag_id in (".$id.") group by item_id having count(*) >= ".count(explode(",", $id))." LIMIT 10";
+ $sql = "SELECT DISTINCT item_id FROM ".PLUGIN_DB_PREFIX."tag_link where tag_id in (".$id.") group by item_id having count(*) >= ".count(explode(",", $id));
  $tags = $wpdb->get_results($sql, OBJECT);
 
  $disp_array = array();
