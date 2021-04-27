@@ -416,7 +416,8 @@ add_shortcode('getAfLink', 'GetAfLink');
 
 function TagRanking($atts){
   extract( shortcode_atts( array(
-    'id' => '1'
+    'id' => '1',
+    'is_review'=>'1'
  ), $atts ) );
 
  global $wpdb;
@@ -443,7 +444,7 @@ function TagRanking($atts){
 
  foreach($disp_array as $ar){
    $rep .= "<h3>".$ar['name']."</h3>";
-  $rep .= "[singleReview detail_id=".$ar['id']."]";
+  $rep .= "[singleReview detail_id=".$ar['id']." is_review=".$is_review."]";
  }
  $rep = do_shortcode($rep);
  return $rep;
