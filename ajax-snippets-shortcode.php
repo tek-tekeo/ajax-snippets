@@ -433,7 +433,8 @@ function TagRanking($atts){
    $values = json_decode($chart->rchart, true);
 
    $sum = 0;
-   foreach($values as $v){
+
+   foreach((array)$values as $v){
     $sum = $sum + $v['value'];
    }
 
