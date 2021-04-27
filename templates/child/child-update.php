@@ -121,7 +121,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       <th>楽天のid(例：phiten:111111)</th>               <td><?=CF::vueTextBox('rakuten_id', $rakuten_id)?></td>
       </tr>
       <tr>
-      <th colspan=2><input type="submit" value="更新する" style="width:100%;padding:30px"></th>
+      <th colspan=2><input type="submit" value="更新する" style="position:fixed;width:200px;top:400px;right:40px;padding:30px;"></th>
       </tr>
       <tr>
       <th>公式URLを表示する</th><td>
