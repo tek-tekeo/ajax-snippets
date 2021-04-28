@@ -30,7 +30,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     $is_show_url = $r->is_show_url;
   }
 
-  $sql = "SELECT DISTINCT T.*, sum(L.id) as is_checked FROM `wp_ajax_snippets_tag` as T LEFT OUTER JOIN `wp_ajax_snippets_tag_link` as L ON T.id=L.tag_id AND L.item_id=".$id." group by T.id order by T.tag_order asc";
+  $sql = "SELECT DISTINCT T.*, sum(L.id) as is_checked FROM `wp_ajax_snippets_tag` as T LEFT OUTER JOIN `wp_ajax_snippets_tag_link` as L ON T.id=L.tag_id AND L.item_id=".$id." group by T.id order by T.tag_order asc, T.tag_name asc";
   $tags = $wpdb->get_results($sql, OBJECT);
   $tags = json_encode($tags,JSON_UNESCAPED_UNICODE);
 
