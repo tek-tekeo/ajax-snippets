@@ -32,7 +32,6 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 
   $sql = "SELECT DISTINCT T.*, sum(L.id) as is_checked FROM `wp_ajax_snippets_tag` as T LEFT OUTER JOIN `wp_ajax_snippets_tag_link` as L ON T.id=L.tag_id AND L.item_id=".$id." group by T.id order by T.tag_order asc, T.id asc";
   $tags = $wpdb->get_results($sql, OBJECT);
-  print_r($tags);
   $tags = json_encode($tags,JSON_UNESCAPED_UNICODE);
 
   if(isset($_POST['child_update'])){
