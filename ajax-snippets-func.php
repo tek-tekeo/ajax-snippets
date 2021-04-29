@@ -244,3 +244,25 @@ function updateItemInfo(){
 }
 add_action( "wp_ajax_updateItemInfo" , "updateItemInfo" );
 add_action( "wp_ajax_nopriv_updateItemInfo" , "updateItemInfo" );
+
+function updateTags(){
+  global $wpdb;
+
+  $table = PLUGIN_DB_PREFIX.'tag';
+  $tag_info = $_POST['tags'];
+
+  $res =$wpdb->query("DELETE FROM ".$table);
+  for($i = 0; $i <count($tag_info['id']); $i++){
+    $data = array(
+      'id'=>$tag_info['id'][$i],
+      'tag_name' => $tag_info['tag_name'][$i],
+      'tag_order' => $tag_info['tag_order'][$i]
+    );
+    $res = $wpdb->insert($table, $data);
+  }
+
+  echo $res;
+  die();
+}
+add_action( "wp_ajax_updateTags" , "updateTags" );
+add_action( "wp_ajax_nopriv_updateTags" , "updateTags" );

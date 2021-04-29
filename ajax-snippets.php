@@ -166,7 +166,8 @@ class AjaxSneppets
             // メニュー追加
             add_action('admin_menu', [$this, 'set_plugin_menu']);
             add_action('admin_menu', [$this, 'set_plugin_sub_menu']);
-            add_action('admin_menu', [$this, 'set_plugin_sub_menu']);
+            add_action('admin_menu', [$this, 'set_plugin_tag_menu']);
+            add_action('admin_menu', [$this, 'set_plugin_log_menu']);
             // //ビジュアルエディタへ追加
             require_once abspath(__FILE__).'ajax-snippets-func.php';
 
@@ -208,6 +209,26 @@ class AjaxSneppets
             'child-config',
             [$this, 'child_form']);
     }
+    function set_plugin_tag_menu() {
+
+      add_submenu_page(
+          'ajax-snippets',  /* 親メニューのslug */
+          'タグの設定',
+          'タグの設定',
+          'manage_options',
+          'tag-config',
+          [$this, 'tag_form']);
+    }
+    function set_plugin_log_menu() {
+
+      add_submenu_page(
+          'ajax-snippets',  /* 親メニューのslug */
+          'クリック履歴',
+          'クリック履歴',
+          'manage_options',
+          'click-log',
+          [$this, 'click_log']);
+    }
     function show_about_plugin() {
       $action = isset($_GET['action']) ? $_GET['action'] : null;
       if ($action == 'delete') {
@@ -244,6 +265,13 @@ class AjaxSneppets
 
 				}
 			}
+    }
+    function tag_form() {
+      require_once abspath(__FILE__).'templates/tag/tag-config.php';
+    }
+
+    function click_log() {
+      require_once abspath(__FILE__).'templates/log/click-log.php';
     }
 
 } // end of class
