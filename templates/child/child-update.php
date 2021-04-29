@@ -131,7 +131,13 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       <tr>
       <th>アイテム別写真<br>（レビュー時などこちらを優先）</th>
       <td>
-        <?=CF::vueImgUploadBox($detail_img)?>
+      <input type="text" v-model="detail_img">
+      <button @click="upload_img">選択</button>
+      <button @click="delete_img">クリア</button>
+      <br>
+      <img :src="detail_img" width="100px">
+      <!-- {{ detail_img }} -->
+        <!-- <?=CF::vueImgUploadBox($detail_img)?> -->
         </td>
       </tr>
       <tr>
@@ -239,8 +245,38 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         this.chartInfo.push({'factor':'', 'value':''});
       }
 
+      var custom_uploader;
+
     },
     methods: {
+      upload_img(e){
+        let _this = this;
+        custom_uploader = wp.media({
+        title: "画像を選択してください。",
+        /* ライブラリの一覧は画像のみにする */
+        library: {
+          type: "image"
+        },
+        button: {
+          text: "画像の選択"
+        },
+        /* 選択できる画像は 1 つだけにする */
+        multiple: false
+        });
+        custom_uploader.open();
+        custom_uploader.on("select",function(){
+          let images = custom_uploader.state().get("selection");
+          images.each(function (file) {
+            console.log(file.attributes.sizes.full.url);
+            _this.detail_img = file.attributes.sizes.full.url;
+          });
+        });
+        e.preventDefault();
+      },
+      delete_img(e){
+        this.detail_img = "";
+        e.preventDefault();
+      },
       addFormItem(e) {
         this.tableInformation.push({factor:'',value:''});
         e.preventDefault();
