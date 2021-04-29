@@ -52,7 +52,8 @@ function prepareAjax(){
     }else{
       $r->item_name=' '.$r->item_name;
     }
-    $affi_link = do_shortcode( '[getAfLink id='.$r->id.' ntab=0 pl=0uzu1v6b][/getAfLink]' );
+    $rnd =uniqid(bin2hex(random_bytes(1)));
+    $affi_link = do_shortcode( '[getAfLink id='.$r->id.' ntab=0 pl='.$rnd.'][/getAfLink]' );
     $affi_link = htmlspecialchars($affi_link);
     $returnObj[$key] = array(
       'id' => $r->id,

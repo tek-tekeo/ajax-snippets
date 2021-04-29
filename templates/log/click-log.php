@@ -10,7 +10,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   <?php
   global $wpdb;
 
-  $sql = "SELECT B.name, D.item_name, L.* FROM ".PLUGIN_DB_PREFIX."log as L, ".PLUGIN_DB_PREFIX."detail as D, ".PLUGIN_DB_PREFIX."base as B where D.id=L.item_id AND B.id=D.base_id order by date desc";
+  $sql = "SELECT B.name, D.item_name, L.* FROM ".PLUGIN_DB_PREFIX."log as L, ".PLUGIN_DB_PREFIX."detail as D, ".PLUGIN_DB_PREFIX."base as B where D.id=L.item_id AND B.id=D.base_id order by date desc, time desc";
   $results = $wpdb->get_results($sql, OBJECT);
 
   $logs = json_encode($results, JSON_UNESCAPED_UNICODE);
