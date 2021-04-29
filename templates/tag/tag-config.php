@@ -77,7 +77,6 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 
         let form_data = new FormData;
         form_data.append('action', 'updateTags');
-        form_data.append('tags',this.tags);
         this.tags.forEach(function(ele) {
           form_data.append('tags[id][]', ele.id);
           form_data.append('tags[tag_name][]', ele.tag_name);
