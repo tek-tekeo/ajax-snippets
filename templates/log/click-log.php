@@ -42,7 +42,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
           <td>{{ log.date +" "+ log.time }}</td>
           <td>{{ log.name +" "+ log.item_name }}</td>
           <td>{{ log.post_addr }}</td>
-          <td>{{ log.place }}</td>
+          <td><a :href="clickURL(log.place)" target="_blank">{{ log.place }}</a></td>
         </tr>
         <tr v-show="ankenLogs.length!==0">
           <th>案件</th>
@@ -51,7 +51,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         </tr>
         <tr v-for="(ankenlog, index) in ankenLogs" :key="`ankenlog-name-{$index}`">
           <td>{{ ankenlog.name +" "+ ankenlog.item_name }}</td>
-          <td><a :href="clickURL(ankenlog.place)">{{ ankenlog.place }}</a></td>
+          <td><a :href="clickURL(ankenlog.place)" target="_blank">{{ ankenlog.place }}</a></td>
           <td>{{ ankenlog.clickCount }}</td>
         </tr>
     </tbody>
@@ -94,7 +94,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
               fullWidth: false,
               type: 'success'
             }
-            _this.$toasted.show('日付順',options);
+            _this.$toasted.show('クリック数順',options);
           }else{
             var options = {
               position: 'top-center',
