@@ -106,38 +106,44 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   <table class="input_column2_table">
     <tbody><caption>個別の商品ページを登録する(A8のみ)</caption>
       <tr>
-      <th>商品名（日本語）</th>                            <td><?=CF::vueTextBox('item_name', $item_name, true)?></td>
+        <th>商品名（日本語）</th>
+        <td><?=CF::vueTextBox('item_name', $item_name, true)?></td>
       </tr>
       <tr>
-      <th>商品ページURL</th>                              <td><?=CF::vueTextBox('official_item_link', $official_item_link, true)?></td>
+        <th>商品ページURL</th>
+        <td><?=CF::vueTextBox('official_item_link', $official_item_link, true)?></td>
       </tr>
       <tr>
-      <th>アフィリエイトのURL<br>(a8案件以外はこのURLになる)</th><td><?=CF::vueTextBox('affi_item_link', $affi_item_link, true)?></td>
+        <th>アフィリエイトのURL<br>(a8案件以外はこのURLになる)</th>
+        <td><?=CF::vueTextBox('affi_item_link', $affi_item_link, true)?></td>
       </tr>
       <tr>
-      <th>Amazonのasin</th>                             <td><?=CF::vueTextBox('amazon_asin', $amazon_asin)?></td>
+        <th>Amazonのasin</th>
+        <td><?=CF::vueTextBox('amazon_asin', $amazon_asin)?></td>
       </tr>
       <tr>
-      <th>楽天のid(例：phiten:111111)</th>               <td><?=CF::vueTextBox('rakuten_id', $rakuten_id)?></td>
+        <th>楽天のid(例：phiten:111111)</th>
+        <td><?=CF::vueTextBox('rakuten_id', $rakuten_id)?></td>
       </tr>
       <tr>
-      <th colspan=2><input type="submit" value="更新する" style="position:fixed;width:200px;top:400px;right:40px;padding:30px;"></th>
+        <th colspan=2><input type="submit" value="更新する" style="position:fixed;width:200px;top:400px;right:40px;padding:30px;"></th>
       </tr>
       <tr>
-      <th>公式URLを表示する</th><td>
-        <?=CF::vueShowUrlRadioBox('is_show_url', (int)$is_show_url)?>
-      </td>
+        <th>公式URLを表示する</th>
+        <td>
+          <?=CF::vueShowUrlRadioBox('is_show_url', (int)$is_show_url)?>
+        </td>
       </tr>
       <tr>
-      <th>アイテム別写真<br>（レビュー時などこちらを優先）</th>
-      <td>
-      <input type="text" v-model="detail_img">
-      <button @click="upload_img">選択</button>
-      <button @click="delete_img">クリア</button>
-      <br>
-      <img :src="detail_img" width="100px">
-      <!-- {{ detail_img }} -->
-        <!-- <?=CF::vueImgUploadBox($detail_img)?> -->
+        <th>アイテム別写真<br>（レビュー時などこちらを優先）</th>
+        <td>
+          <input type="text" v-model="detail_img">
+          <button @click="upload_img">選択</button>
+          <button @click="delete_img">クリア</button>
+          <br>
+          <img :src="detail_img" width="100px">
+          <!-- {{ detail_img }} -->
+            <!-- <?=CF::vueImgUploadBox($detail_img)?> -->
         </td>
       </tr>
       <tr>

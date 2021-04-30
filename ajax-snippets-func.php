@@ -267,3 +267,31 @@ function updateTags(){
 }
 add_action( "wp_ajax_updateTags" , "updateTags" );
 add_action( "wp_ajax_nopriv_updateTags" , "updateTags" );
+
+function logDateTime(){
+  global $wpdb;
+
+  $sql = "SELECT B.name, D.item_name, L.* FROM ".PLUGIN_DB_PREFIX."log as L, ".PLUGIN_DB_PREFIX."detail as D, ".PLUGIN_DB_PREFIX."base as B where D.id=L.item_id AND B.id=D.base_id order by date desc, time desc limit 50";
+  $results = $wpdb->get_results($sql, OBJECT);
+
+  $logs = json_encode($results, JSON_UNESCAPED_UNICODE);
+
+  echo $logs;
+  die();
+}
+add_action( "wp_ajax_logDateTime" , "logDateTime" );
+add_action( "wp_ajax_nopriv_logDateTime" , "logDateTime" );
+
+function logAnken(){
+  global $wpdb;
+
+  $sql = "SELECT B.name, D.item_name, L.* FROM ".PLUGIN_DB_PREFIX."log as L, ".PLUGIN_DB_PREFIX."detail as D, ".PLUGIN_DB_PREFIX."base as B where D.id=L.item_id AND B.id=D.base_id order by date desc, time desc limit 5";
+  $results = $wpdb->get_results($sql, OBJECT);
+
+  $logs = json_encode($results, JSON_UNESCAPED_UNICODE);
+
+  echo $logs;
+  die();
+}
+add_action( "wp_ajax_logAnken" , "logAnken" );
+add_action( "wp_ajax_nopriv_logAnken" , "logAnken" );

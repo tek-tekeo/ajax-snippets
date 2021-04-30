@@ -323,13 +323,8 @@ if($match === 1){
   $referer = $_SERVER['HTTP_REFERER'];
 	$ip_address = ip2long($_SERVER['REMOTE_ADDR']);
 
-  if($referer){
-
-  }else{
-    //ない場合はからのストリングを入れておく
-    $referer = "none";
-  }
-  if(!$ip){$ip="none";}
+  if($referer && !strpos($referer,'preview')){
+    if(!$ip){$ip="none";}
       $data=array(
                         "id"=>'',
                         "item_id"=>$id,
@@ -344,6 +339,11 @@ if($match === 1){
 
   $format = array('%d','%d','%s','%s','%s','%s');
   $res = $wpdb->insert( $table, $data, $format);
+  }else{
+    //ない場合はからのストリングを入れておく
+    // $referer = "none";
+  }
+
 
   if($res){
   wp_redirect($dest_url, 302);

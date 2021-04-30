@@ -10,22 +10,29 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   <?php
   global $wpdb;
 
-  $sql = "SELECT B.name, D.item_name, L.* FROM ".PLUGIN_DB_PREFIX."log as L, ".PLUGIN_DB_PREFIX."detail as D, ".PLUGIN_DB_PREFIX."base as B where D.id=L.item_id AND B.id=D.base_id order by date desc, time desc";
+  $sql = "SELECT B.name, D.item_name, L.* FROM ".PLUGIN_DB_PREFIX."log as L, ".PLUGIN_DB_PREFIX."detail as D, ".PLUGIN_DB_PREFIX."base as B where D.id=L.item_id AND B.id=D.base_id order by date desc, time desc limit 50";
   $results = $wpdb->get_results($sql, OBJECT);
 
   $logs = json_encode($results, JSON_UNESCAPED_UNICODE);
 
 ?>
-<h1>小要素の更新ページ</h1>
-<form id="log-info" method="POST" action="">
+<h1>クリック履歴</h1>
+<div id="log-info">
+  <table>
+    <tbody>
+      <tr>
+        <th>
+          <button @click="dateTime" style="padding:10px;">日付順</button>
+        </th>
+        <th>
+          <button @click="ankenCount" style="padding:10px;">クリックが多い案件</button>
+        </th>
+      </tr>
+    </tbody>
+  </table>
   <table class="input_column2_table">
     <tbody>
       <caption>クリック履歴</caption>
-        <tr>
-          <th colspan=2>
-            <button @click="addFormItem" style="padding:30px;">追加</button>
-          </th>
-        </tr>
         <tr>
           <th>日付</th>
           <th>案件</th>
@@ -38,9 +45,15 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
           <td>{{ log.post_addr }}</td>
           <td>{{ log.place }}</td>
         </tr>
+        <tr v-for="(ankenlog, index) in ankenLogs" :key="`ankenlog-name-{$index}`">
+          <td>{{ ankenlog.date +" "+ ankenlog.time }}</td>
+          <td>{{ ankenlog.name +" "+ ankenlog.item_name }}</td>
+          <td>{{ ankenlog.post_addr }}</td>
+          <td>{{ ankenlog.place }}</td>
+        </tr>
     </tbody>
   </table>
-</form>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -53,47 +66,32 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     el: '#log-info',
     data() {
       return {
-        logs:<?=$logs?>
+        logs:<?=$logs?>,
+        ankenLogs:[],
+        articleLogs:[],
+        positionLogs:[]
       }
     },
     methods: {
-      addFormItem(e) {
-        let id = this.tags.map(function(o){
-          return o.id;
-        });
-        let newId = 1;
-        if (Math.max.apply(null,id) > 0){
-          newId = Math.max.apply(null,id) + 1;
-        }
-        this.tags.push({id:newId,tag_name:'', tag_order:''});
+      ankenCount(e){
         e.preventDefault();
       },
-      removeTagItem(e, index){
-        this.tags.splice(index, 1);
-        e.preventDefault();
-      },
-      updateInformation(e){
+      dateTime(e){
         let _this = this;
-        let chartInfoConvert = JSON.stringify(this.chartInfo);
-
         let form_data = new FormData;
-        form_data.append('action', 'updateTags');
-        form_data.append('tags',this.tags);
-        this.tags.forEach(function(ele) {
-          form_data.append('tags[id][]', ele.id);
-          form_data.append('tags[tag_name][]', ele.tag_name);
-          form_data.append('tags[tag_order][]', ele.tag_order);
-        });
+        form_data.append('action', 'logDateTime');
 
         axios.post(ajaxurl, form_data).then(function(response){
+          console.log(response.data);
           if(response.data){
+            _this.logs = response.data;
             var options = {
               position: 'top-center',
-              duration: 2000,
-              fullWidth: true,
+              duration: 750,
+              fullWidth: false,
               type: 'success'
             }
-            _this.$toasted.show('更新完了',options);
+            _this.$toasted.show('日付順',options);
           }else{
             var options = {
               position: 'top-center',
@@ -101,7 +99,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
               fullWidth: true,
               type: 'error'
             }
-            _this.$toasted.show('更新してない',options);
+            _this.$toasted.show('ソート失敗',options);
           }
         })
         e.preventDefault();
