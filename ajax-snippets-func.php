@@ -285,7 +285,10 @@ add_action( "wp_ajax_nopriv_logDateTime" , "logDateTime" );
 function logAnken(){
   global $wpdb;
 
-  $sql = "SELECT B.name, D.item_name, L.* FROM ".PLUGIN_DB_PREFIX."log as L, ".PLUGIN_DB_PREFIX."detail as D, ".PLUGIN_DB_PREFIX."base as B where D.id=L.item_id AND B.id=D.base_id order by date desc, time desc limit 5";
+  $sql = "SELECT B.name, D.item_name, L.place, COUNT(*) as clickCount FROM "
+          .PLUGIN_DB_PREFIX."log as L, "
+          .PLUGIN_DB_PREFIX."base as B, "
+          .PLUGIN_DB_PREFIX."detail as D where D.id=L.item_id AND B.id=D.base_id group by L.place, B.name, D.item_name order by COUNT(*) desc";
   $results = $wpdb->get_results($sql, OBJECT);
 
   $logs = json_encode($results, JSON_UNESCAPED_UNICODE);
