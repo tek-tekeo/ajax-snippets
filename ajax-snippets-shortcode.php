@@ -25,8 +25,9 @@ function AjaxSniShortcodeLink($atts, $content = null) {
                     if($all_affi == 0){
                         $url = $r->official_item_link;
                     }else{
-                      if($r->item_name == "000"){
+                      if($r->item_name == "000" || $r->official_item_link=="top"){
                         $url = $r->affi_link;
+                        $r->official_item_link == $r->affi_link;
                       }else{
                         if($r->asp_name == "a8"){
                           $url = $r->affi_link."&a8ejpredirect=" . urlencode($r->official_item_link);
