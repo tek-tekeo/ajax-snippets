@@ -25,9 +25,8 @@ function AjaxSniShortcodeLink($atts, $content = null) {
                     if($all_affi == 0){
                         $url = $r->official_item_link;
                     }else{
-                      if($r->item_name == "000" || $r->official_item_link=="top"){
+                      if($r->item_name == "000" || $r->affi_item_link=="top"){
                         $url = $r->affi_link;
-                        $r->official_item_link = $r->affi_link;
                       }else{
                         if($r->asp_name == "a8"){
                           $url = $r->affi_link."&a8ejpredirect=" . urlencode($r->official_item_link);
@@ -145,7 +144,7 @@ function SingleReview($atts, $content = null){
      'is_review' => '0'
   ), $atts ) );
   global $wpdb;
-  $sql = "SELECT D.*,B.name FROM ".PLUGIN_DB_PREFIX."base as B,".PLUGIN_DB_PREFIX."detail as D where D.id={$detail_id} AND B.id=D.base_id";
+  $sql = "SELECT D.*,B.name, B.affi_link FROM ".PLUGIN_DB_PREFIX."base as B,".PLUGIN_DB_PREFIX."detail as D where D.id={$detail_id} AND B.id=D.base_id";
   $list = $wpdb->get_results( $sql, object);
 
   foreach($list as $l){
