@@ -1,6 +1,7 @@
 <?php
-
+use AjaxSnippets\Common\AffiLinkForm as AF;
 //ショートコード 集
+//基本となるリンク作成
 function AjaxSniShortcodeLink($atts, $content = null) {
     extract( shortcode_atts( array(
        'id' => '1',
@@ -8,9 +9,10 @@ function AjaxSniShortcodeLink($atts, $content = null) {
         're_url'=>'0'
     ), $atts ) );
     global $wpdb;
-    $sql = "SELECT B.name, B.asp_name, B.affi_link, B.affi_img, B.img_tag, B.s_link, D.id, D.item_name,D.affi_item_link, D.official_item_link FROM ".PLUGIN_DB_PREFIX."base As B RIGHT JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
+    $sql = "SELECT B.name, B.asp_name, B.affi_link, B.affi_img, B.img_tag, B.s_link, B.s_img_tag, D.id, D.item_name,D.affi_item_link, D.official_item_link FROM ".PLUGIN_DB_PREFIX."base As B RIGHT JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
 
     $results = $wpdb->get_results($sql,object);
+
         if(count($results) == 0){
             $rep = "リンクエラー";
         }
@@ -28,6 +30,9 @@ function AjaxSniShortcodeLink($atts, $content = null) {
                       if($r->item_name == "000" || $r->affi_item_link=="top"){
                         $url = $r->affi_link;
                       }else{
+                        if(!empty($r->s_img_tag)){
+                          $r->img_tag = $r->s_img_tag;
+                        }
                         if($r->asp_name == "a8"){
                           $url = $r->s_link."&a8ejpredirect=" . urlencode($r->official_item_link);
                         }else if($r->asp_name == "dmm"){
@@ -72,6 +77,7 @@ function AjaxRecordShortcodeLink($atts, $content = null) {
        'pl' => '0',
        'ntab' => '0'
     ), $atts ) );
+
     global $wpdb;
     $sql = "SELECT B.anken, B.img_tag, D.official_item_link FROM ".PLUGIN_DB_PREFIX."base As B INNER JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
 
@@ -87,15 +93,15 @@ function AjaxRecordShortcodeLink($atts, $content = null) {
         }else{
           $a_tab = "rel=\"nofollow noopener\" target=\"_blank\"";
         }
-
+        $info = AF::getAffiInfo($id, 0);
         //テキストなしリンク
         if(empty($content)){
 $rep .= <<<EOT
-<a href="{$url}" {$a_tab}> {$r->official_item_link}</a><img border="0" width="1" height="1" src="{$r->img_tag}">
+<a href="{$info['url']}" {$a_tab}> {$r->official_item_link}</a><img border="0" width="1" height="1" src="{$info['img_tag']}">
 EOT;
         }else{
 $rep .= <<<EOT
-<a href="{$url}" {$a_tab}>{$content}</a><img border="0" width="1" height="1" src="{$r->img_tag}">
+<a href="{$info['url']}" {$a_tab}>{$content}</a><img border="0" width="1" height="1" src="{$info['img_tag']}">
 EOT;
         }
 }
@@ -108,6 +114,7 @@ function AjaxRecordShortcodeBanner($atts) {
        'pl' => '0',
        'ntab'=> '0'
     ), $atts ) );
+
     global $wpdb;
     $sql = "SELECT B.anken, B.img_tag,B.affi_img, D.detail_img FROM ".PLUGIN_DB_PREFIX."base As B INNER JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
 
@@ -117,7 +124,7 @@ function AjaxRecordShortcodeBanner($atts) {
         }
       foreach($results as $r){
         $url = home_url() . "/".$r->anken . "?no={$id}&pl={$pl}";
-        if($ntab == 0){
+        if($ntab != 0){
           $a_tab = "rel=\"nofollow\"";
         }else{
           $a_tab = "rel=\"nofollow noopener\" target=\"_blank\"";
@@ -125,9 +132,16 @@ function AjaxRecordShortcodeBanner($atts) {
         if($r->detail_img != ""){
           $r->affi_img = $r->detail_img;
         }
+        $info = AF::getAffiInfo($id, 0);
+
 $rep .= <<<EOT
-<a href="{$url}" {$a_tab}><img border="0" width="300" height="250" alt="" src="{$r->affi_img}"></a><img border="0" width="1" height="1" src="{$r->img_tag}">
+<a href="{$info['url']}" {$a_tab}><img border="0" width="300" height="250" alt="" src="{$info['affi_img']}"></a>
 EOT;
+        if(!empty($info['img_tag'])){
+$rep .= <<<EOT
+<img border="0" width="1" height="1" src="{$info['img_tag']}">
+EOT;
+        }
         }
     return $rep;
 }

@@ -38,6 +38,7 @@ function jal_install()
 									asp_name varchar(10) NOT NULL,
 									affi_img varchar(1025) NOT NULL,
                   img_tag varchar(1025) NOT NULL,
+                  s_img_tag varchar(1025) NOT NULL,
 	                UNIQUE KEY id (id)
 	        )
 	        $charset_collate;";
@@ -59,7 +60,7 @@ function jal_install()
 									rchart varchar(1025) DEFAULT '' NOT NULL,
 									info varchar(1025) DEFAULT '' NOT NULL,
 									review varchar(3000) DEFAULT '' NOT NULL,
-                  is_show_url tinyint DEFAULT 1 NOT NULL
+                  is_show_url tinyint DEFAULT 1 NOT NULL,
 	                UNIQUE KEY id (id)
 	        )
 	        $charset_collate;";
