@@ -28,6 +28,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     $info = str_replace('\\\"', '"', $info, $count);
     $detail_img = $r->detail_img;
     $is_show_url = $r->is_show_url;
+    $same_parent = $r->same_parent;
   }
 
   $sql = "SELECT DISTINCT T.*, sum(L.id) as is_checked FROM `wp_ajax_snippets_tag` as T LEFT OUTER JOIN `wp_ajax_snippets_tag_link` as L ON T.id=L.tag_id AND L.item_id=".$id." group by T.id order by T.tag_order asc, T.id asc";
@@ -111,7 +112,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       </tr>
       <tr>
         <th>商品ページURL</th>
-        <td><?=CF::vueTextBox('official_item_link', $official_item_link, true)?></td>
+        <td><?=CF::vueTextBox('official_item_link', $official_item_link, true)?><?=CF::vueToggleBox('same_parent')?>(親と同じ場合はチェック)</td>
       </tr>
       <tr>
         <th>アフィリエイトのURL<br>(a8案件以外はこのURLになる)</th>
@@ -131,7 +132,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       <tr>
         <th>公式URLを表示する</th>
         <td>
-          <?=CF::vueShowUrlRadioBox('is_show_url', (int)$is_show_url)?>
+          <?=CF::vueRadioBox('is_show_url')?>
         </td>
       </tr>
       <tr>
@@ -228,6 +229,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         tableInformation: [],
         chartInfo:[],
         tags:[],
+        same_parent:''
       }
     },
     created: function(){
@@ -239,7 +241,8 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       this.rakuten_id ="<?=$rakuten_id?>";
       this.detail_img ="<?=$detail_img?>";
       this.is_show_url ="<?=$is_show_url?>";
-      this.review = "<?=$revieww?>";
+      this.review = "<?=$review?>";
+      this.same_parent = "<?=$same_parent?>";
       this.tableInformation = <?=$info?>;
       this.tags = <?=$tags?>;
       // this.tag_links = <?=$tag_links?>;
@@ -325,6 +328,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         form_data.append('rakuten_id', this.rakuten_id);
         form_data.append('detail_img', this.detail_img);
         form_data.append('is_show_url', this.is_show_url);
+        form_data.append('same_parent', this.same_parent);
         form_data.append('review', this.review);
         form_data.append('id', this.id);
 

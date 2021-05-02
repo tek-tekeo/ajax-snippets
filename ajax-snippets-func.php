@@ -206,6 +206,7 @@ function updateItemInfo(){
   $rakuten_id = $_POST['rakuten_id'];
   $detail_img = $_POST['detail_img'];
   $is_show_url = $_POST['is_show_url'];
+  $same_parent = $_POST['same_parent'];
   // $review = stripslashes($_POST['review']);
 
   $table = PLUGIN_DB_PREFIX.'detail';
@@ -219,7 +220,8 @@ function updateItemInfo(){
                 'info' => $info,
                 // 'review' => $review,
                 'rchart' => $rchart,
-                'is_show_url' => $is_show_url
+                'is_show_url' => $is_show_url,
+                'same_parent' => $same_parent
               );
   $where = array('id'=>$id);
   $res = $wpdb->update( $table, $data, $where );

@@ -88,12 +88,18 @@ class CreateForm{
 
     return $checkStr;
   }
-  public function vueShowUrlRadioBox(string $name, int $value): string
+  public function vueRadioBox(string $name): string
   {
-      $checkStr .= '<label><input type="radio" name="'.$name.'" v-model="is_show_url" value="1">表示</label>';
-      $checkStr .= '<label><input type="radio" name="'.$name.'" v-model="is_show_url" value="0">非表示</label>';
+      $checkStr .= '<label><input type="radio" name="'.$name.'" v-model="'.$name.'" value="1">表示</label>';
+      $checkStr .= '<label><input type="radio" name="'.$name.'" v-model="'.$name.'" value="0">非表示</label>';
 
     return $checkStr;
+  }
+
+  public function vueToggleBox(string $name): string
+  {
+    $toggleStr = '<input type="checkbox" v-model="'.$name.'" true-value="1" false-value="0">';
+    return $toggleStr;
   }
 
   public function imgUploadBox($thumb){
