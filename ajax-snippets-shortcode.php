@@ -124,7 +124,7 @@ function AjaxRecordShortcodeBanner($atts) {
         }
       foreach($results as $r){
         $url = home_url() . "/".$r->anken . "?no={$id}&pl={$pl}";
-        if($ntab != 0){
+        if($ntab == 0){
           $a_tab = "rel=\"nofollow\"";
         }else{
           $a_tab = "rel=\"nofollow noopener\" target=\"_blank\"";
