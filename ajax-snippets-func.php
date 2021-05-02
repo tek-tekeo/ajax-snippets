@@ -298,3 +298,20 @@ function logAnken(){
 }
 add_action( "wp_ajax_logAnken" , "logAnken" );
 add_action( "wp_ajax_nopriv_logAnken" , "logAnken" );
+
+function logArticle(){
+  global $wpdb;
+
+  $sql = "SELECT L.post_addr, L.place, COUNT(*) as clickCount FROM "
+          .PLUGIN_DB_PREFIX."log as L, "
+          .PLUGIN_DB_PREFIX."base as B, "
+          .PLUGIN_DB_PREFIX."detail as D where D.id=L.item_id AND B.id=D.base_id group by L.post_addr, B.name, D.item_name order by COUNT(*) desc";
+  $results = $wpdb->get_results($sql, OBJECT);
+
+  $logs = json_encode($results, JSON_UNESCAPED_UNICODE);
+
+  echo $logs;
+  die();
+}
+add_action( "wp_ajax_logArticle" , "logArticle" );
+add_action( "wp_ajax_nopriv_logArticle" , "logArticle" );

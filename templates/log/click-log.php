@@ -24,7 +24,10 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
           <button @click="dateTime" style="padding:10px;">日付順</button>
         </th>
         <th>
-          <button @click="ankenCount" style="padding:10px;">クリックが多い案件</button>
+          <button @click="ankenCount" style="padding:10px;">案件&場所</button>
+        </th>
+        <th>
+          <button @click="articleSort" style="padding:10px;">クリックが多い記事</button>
         </th>
       </tr>
     </tbody>
@@ -54,6 +57,16 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
           <td><a :href="clickURL(ankenlog.place)" target="_blank">{{ ankenlog.place }}</a></td>
           <td>{{ ankenlog.clickCount }}</td>
         </tr>
+        <tr v-show="articleLogs.length!==0">
+          <th>URL</th>
+          <th>クリック箇所</th>
+          <th>クリック数</th>
+        </tr>
+        <tr v-for="(ankenLog, index) in articleLogs" :key="`articleLog-name-{$index}`">
+          <td>{{ ankenLog.post_addr }}</td>
+          <td><a :href="clickURL(ankenLog.place)" target="_blank">{{ ankenLog.place }}</a></td>
+          <td>{{ ankenLog.clickCount }}</td>
+        </tr>
     </tbody>
   </table>
 </div>
@@ -78,6 +91,36 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     methods: {
       clickURL: function(place){
         return "<?=home_url()?>"+"/wp-admin/edit.php?s="+place;
+      },
+      articleSort(e){
+        let _this = this;
+        let form_data = new FormData;
+        form_data.append('action', 'logArticle');
+
+        axios.post(ajaxurl, form_data).then(function(response){
+          console.log(response.data);
+          if(response.data){
+            _this.articleLogs = response.data;
+            _this.ankenLogs = [];
+            _this.logs = [];
+            var options = {
+              position: 'top-center',
+              duration: 750,
+              fullWidth: false,
+              type: 'success'
+            }
+            _this.$toasted.show('クリック数順',options);
+          }else{
+            var options = {
+              position: 'top-center',
+              duration: 2000,
+              fullWidth: true,
+              type: 'error'
+            }
+            _this.$toasted.show('ソート失敗',options);
+          }
+        })
+        e.preventDefault();
       },
       ankenCount(e){
         let _this = this;
