@@ -75,6 +75,9 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       <th>アフィ、トラッキングイメージタグ</th><td><?=CF::textBox('img_tag', $box_data['img_tag'])?></td>
       </tr>
       <tr>
+      <th>商品リンクイメージタグ</th><td><?=CF::textBox('s_img_tag', $box_data['s_img_tag'])?></td>
+      </tr>
+      <tr>
       <th colspan=2><input type="submit" value="更新する" name="base_update" style="width:100%;padding:30px"></th>
       </tr>
       <tr>

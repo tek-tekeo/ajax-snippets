@@ -74,6 +74,9 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       <th>アフィ、トラッキングイメージタグ</th><td><?=CF::textBox('img_tag', $_POST['img_tag'])?></td>
       </tr>
       <tr>
+      <th>商品リンクイメージタグ</th><td><?=CF::textBox('s_img_tag', $_POST['s_img_tag'])?></td>
+      </tr>
+      <tr>
       <th>公式サイトURL　必須</th>               <td><?=CF::textBox('official_link', $_POST['official_link'], 'required')?></td>
       </tr>
       <tr>

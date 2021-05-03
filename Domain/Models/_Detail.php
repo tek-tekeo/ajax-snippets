@@ -21,6 +21,7 @@ class Detail extends BaseModel
     'rakuten_id',
     'rchart',
     'info',
-    'review'
+    'review',
+    'same_parent'
   ];
 }

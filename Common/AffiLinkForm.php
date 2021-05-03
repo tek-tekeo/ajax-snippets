@@ -15,8 +15,14 @@ class AffiLinkForm{
     $results = $wpdb->get_results($sql,object);
 
         if(count($results) == 0){
-            $rep = "err";
-            return $rep;
+          $repArray = array(
+            'name'=>'リンクエラー',
+            'official_item_link'=>'',
+            'img_tag'=>'',
+            'affi_img'=>'',
+            'url'=>'#',
+          );
+          return $repArray;
         }
 
     //アフィリエイトリンクにするかどうか？『0:しない』『1:する』
@@ -51,6 +57,7 @@ class AffiLinkForm{
       }
       $repArray = array(
         'name'=>$r->name,
+        'official_item_link'=>$r->official_item_link,
         'img_tag'=>$img_tag,
         'affi_img'=>$r->affi_img,
         'url'=>$url,

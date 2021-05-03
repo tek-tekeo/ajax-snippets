@@ -78,6 +78,28 @@ function AjaxRecordShortcodeLink($atts, $content = null) {
        'ntab' => '0'
     ), $atts ) );
 
+    $info = AF::getAffiInfo($id, 0);
+
+  if(empty($content)){
+$rep =<<<EOT
+<affiliate-link title=" {$info['official_item_link']}" affiurl="{$info['url']}" place="{$pl}" id="{$id}"></affiliate-link>
+EOT;
+  }else{
+$rep =<<<EOT
+<affiliate-link title="{$content}" affiurl="{$info['url']}" place="{$pl}" id="{$id}"></affiliate-link>
+EOT;
+  }
+if(!empty($info['img_tag'])){
+$rep .=<<<EOT
+<img border="0" width="1" height="1" src="{$info['img_tag']}">
+EOT;
+}
+
+  wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js');
+  wp_enqueue_script( 'axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js');
+  wp_enqueue_script( 'vueClick', plugins_url('ajax-snippets/js/vueClick.js'));
+  return $rep;
+  die();
     global $wpdb;
     $sql = "SELECT B.anken, B.img_tag, D.official_item_link FROM ".PLUGIN_DB_PREFIX."base As B INNER JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
 
@@ -114,7 +136,22 @@ function AjaxRecordShortcodeBanner($atts) {
        'pl' => '0',
        'ntab'=> '0'
     ), $atts ) );
+    $info = AF::getAffiInfo($id, 0);
 
+$rep =<<<EOT
+<affiliate-banner-link title="{$info['affi_img']}" affiurl="{$info['url']}" place="{$pl}" id="{$id}"></affiliate-banner-link>
+EOT;
+if(!empty($info['img_tag'])){
+$rep .=<<<EOT
+<img border="0" width="1" height="1" src="{$info['img_tag']}">
+EOT;
+}
+
+  wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js');
+  wp_enqueue_script( 'axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js');
+  wp_enqueue_script( 'vueClick', plugins_url('ajax-snippets/js/vueClick.js'));
+  return $rep;
+  die();
     global $wpdb;
     $sql = "SELECT B.anken, B.img_tag,B.affi_img, D.detail_img FROM ".PLUGIN_DB_PREFIX."base As B INNER JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
 

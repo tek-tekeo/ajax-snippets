@@ -45,7 +45,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
           <td>{{ log.date +" "+ log.time }}</td>
           <td>{{ log.name +" "+ log.item_name }}</td>
           <td>{{ log.post_addr }}</td>
-          <td><a :href="clickURL(log.place)" target="_blank">{{ log.place }}</a></td>
+          <td><a :href="clickURL(log.place)" @click="clickRecord" target="_blank">{{ log.place }}</a></td>
         </tr>
         <tr v-show="ankenLogs.length!==0">
           <th>案件</th>
@@ -92,13 +92,19 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       clickURL: function(place){
         return "<?=home_url()?>"+"/wp-admin/edit.php?s="+place;
       },
+      clickRecord: async function(e){
+        this.test();
+      },
+      test: function(){
+        console.log('hogerintyo');
+      },
       articleSort(e){
         let _this = this;
         let form_data = new FormData;
         form_data.append('action', 'logArticle');
 
         axios.post(ajaxurl, form_data).then(function(response){
-          console.log(response.data);
+          console.log(ajaxurl);
           if(response.data){
             _this.articleLogs = response.data;
             _this.ankenLogs = [];
@@ -150,7 +156,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         })
         e.preventDefault();
       },
-      dateTime(e){
+      async dateTime(e){
         let _this = this;
         let form_data = new FormData;
         form_data.append('action', 'logDateTime');

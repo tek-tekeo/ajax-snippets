@@ -18,6 +18,7 @@ class Base extends BaseModel
     's_link',
     'asp_name',
     'affi_img',
-    'img_tag'
+    'img_tag',
+    's_img_tag'
   ];
 }
