@@ -45,7 +45,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
           <td>{{ log.date +" "+ log.time }}</td>
           <td>{{ log.name +" "+ log.item_name }}</td>
           <td>{{ log.post_addr }}</td>
-          <td><a :href="clickURL(log.place)" @click="clickRecord" target="_blank">{{ log.place }}</a></td>
+          <td><a :href="clickURL(log.place)" target="_blank">{{ log.place }}</a></td>
         </tr>
         <tr v-show="ankenLogs.length!==0">
           <th>案件</th>
@@ -92,12 +92,6 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       clickURL: function(place){
         return "<?=home_url()?>"+"/wp-admin/edit.php?s="+place;
       },
-      clickRecord: async function(e){
-        this.test();
-      },
-      test: function(){
-        console.log('hogerintyo');
-      },
       articleSort(e){
         let _this = this;
         let form_data = new FormData;
@@ -137,6 +131,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
           if(response.data){
             _this.ankenLogs = response.data;
             _this.logs = [];
+            _this.articleLogs = [];
             var options = {
               position: 'top-center',
               duration: 750,
@@ -165,6 +160,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
           if(response.data){
             _this.logs = response.data;
             _this.ankenLogs = [];
+            _this.articleLogs = [];
             var options = {
               position: 'top-center',
               duration: 750,
