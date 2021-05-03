@@ -70,7 +70,7 @@ Vue.component('affiliate-banner-link', {
       form_data.append('pl', this.place);
       form_data.append('id', this.id);
 
-      axios.post('/Wordpress2021/wp-admin/admin-ajax.php', form_data).then(function (response) {
+      axios.post('/wp-admin/admin-ajax.php', form_data).then(function (response) {
         console.log(response.data);
       });
     }
