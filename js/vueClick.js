@@ -78,4 +78,4 @@ Vue.component('affiliate-banner-link', {
   template: '<a :href="affiurl" @click="clickRecord" rel="nofollow noopener" target="_blank"><img border="0" width="300" height="250" alt="" :src="title"></a>'
 });
 
-new Vue({ el: '#container' });
+new Vue({ el: '#content-in' });
