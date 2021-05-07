@@ -241,7 +241,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       this.rakuten_id ="<?=$rakuten_id?>";
       this.detail_img ="<?=$detail_img?>";
       this.is_show_url ="<?=$is_show_url?>";
-      this.review = "<?=$review?>";
+      // this.review = "<?=$review?>";
       this.same_parent = "<?=$same_parent?>";
       this.tableInformation = <?=$info?>;
       this.tags = <?=$tags?>;
