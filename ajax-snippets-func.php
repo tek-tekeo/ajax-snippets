@@ -318,33 +318,33 @@ function logArticle(){
 add_action( "wp_ajax_logArticle" , "logArticle" );
 add_action( "wp_ajax_nopriv_logArticle" , "logArticle" );
 
-function logRecord(){
-  global $wpdb;
+// function logRecord(){
+//   global $wpdb;
 
-  $id = $_POST['id'];
-  $place = $_POST['pl'];
-  $referer = $_SERVER['HTTP_REFERER'];
-	$ip_address = ip2long($_SERVER['REMOTE_ADDR']);
+//   $id = $_POST['id'];
+//   $place = $_POST['pl'];
+//   $referer = $_SERVER['HTTP_REFERER'];
+// 	$ip_address = ip2long($_SERVER['REMOTE_ADDR']);
 
-  if($referer && !strpos($referer,'preview')){
-    if(!$ip){$ip="none";}
-      $data=array(
-                        "id"=>'',
-                        "item_id"=>$id,
-                        "date"=>date_i18n("Y-m-d"),
-                        "time"=>date_i18n("H:i:s"),
-                        "post_addr"=>$referer,
-                        "place"=>$place,
-                        "ip" => $ip_address
-                        );
+//   if($referer && !strpos($referer,'preview')){
+//     if(!$ip){$ip="none";}
+//       $data=array(
+//                         "id"=>'',
+//                         "item_id"=>$id,
+//                         "date"=>date_i18n("Y-m-d"),
+//                         "time"=>date_i18n("H:i:s"),
+//                         "post_addr"=>$referer,
+//                         "place"=>$place,
+//                         "ip" => $ip_address
+//                         );
 
-  $table = PLUGIN_DB_PREFIX.'log';
+//   $table = PLUGIN_DB_PREFIX.'log';
 
-  $format = array('%d','%d','%s','%s','%s','%s');
-  $res = $wpdb->insert( $table, $data, $format);
-                      }
-  echo $res;
-  die();
-}
-add_action( "wp_ajax_logRecord" , "logRecord" );
-add_action( "wp_ajax_nopriv_logRecord" , "logRecord" );
+//   $format = array('%d','%d','%s','%s','%s','%s');
+//   $res = $wpdb->insert( $table, $data, $format);
+//                       }
+//   echo $res;
+//   die();
+// }
+// add_action( "wp_ajax_logRecord" , "logRecord" );
+// add_action( "wp_ajax_nopriv_logRecord" , "logRecord" );

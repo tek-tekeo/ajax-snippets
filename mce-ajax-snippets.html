@@ -69,17 +69,23 @@
       var amazon = val.attr('data-amazon');
       var rakuten = val.attr('data-rakuten');
       var inputTag;
+      var id = val.attr('data-id');
+      if (val.attr('data-id') == null) {
+        return false;
+      }
+      var affiLink = val.attr('data-affilink');
 
       if (amazon != null && amazon != "") {
         inputTag = "[amazon asin=\"" + amazon + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
+        inputTag = inputTag + " detail_id=\"" + affiLink + "\" btn1_text=\"" + val.val() + "公式\"]";
       } else if (rakuten != null && rakuten != "") {
-        inputTag = "[rakuten id=\"" + rakuten + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
+        inputTag = "[rakuten2 id=\"" + rakuten + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
+        var place = Math.random().toString(36).slice(-8);
+        inputTag = inputTag + " detail_id=" + id + " pl=" + place + "]";
       } else {
         return false;
       }
 
-      var affiLink = val.attr('data-affilink');
-      var inputTag = inputTag + " btn1_url=\"" + affiLink + "\" btn1_text=\"" + val.val() + "公式\"]";
       top.tinymce.activeEditor.selection.setContent(inputTag);
       top.tinymce.activeEditor.windowManager.close();
       return false;

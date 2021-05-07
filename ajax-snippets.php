@@ -163,6 +163,8 @@ class AjaxSneppets
     function __construct()
     {
       add_editor_style(plugins_url( 'ajax-snippets/css/style.css' ));
+      //axiosを使用するときのグローバルパスを追加
+      wp_enqueue_script( 'url-path-php', plugins_url('ajax-snippets/url_path.php'));
         if (is_admin() && is_user_logged_in()) {
             // メニュー追加
             add_action('admin_menu', [$this, 'set_plugin_menu']);
@@ -357,3 +359,47 @@ if($match === 1){
 }
 
 add_action( 'template_redirect', 'redirect_system');
+
+/* ================================ *
+   WP REST APIのオリジナルエンドポイント追加
+ * ================================ */
+function click_log_endpoint(){
+
+  //エンドポイントを登録
+  register_rest_route( 'wp/custom', '/record', array(
+      'methods' => 'POST',
+      //エンドポイントにアクセスした際に実行される関数
+      'callback' => 'clickLogs',
+      'permission_callback' => '__return_true',
+  ));
+
+}
+add_action('rest_api_init', 'click_log_endpoint');
+
+function clickLogs(){
+  global $wpdb;
+
+  $id = $_POST['id'];
+  $place = $_POST['pl'];
+  $referer = $_SERVER['HTTP_REFERER'];
+	$ip_address = ip2long($_SERVER['REMOTE_ADDR']);
+
+  if($referer && !strpos($referer,'preview')){
+    if(!$ip){$ip="none";}
+      $data=array(
+                        "id"=>'',
+                        "item_id"=>$id,
+                        "date"=>date_i18n("Y-m-d"),
+                        "time"=>date_i18n("H:i:s"),
+                        "post_addr"=>$referer,
+                        "place"=>$place,
+                        "ip" => $ip_address
+                        );
+
+  $table = PLUGIN_DB_PREFIX.'log';
+
+  $format = array('%d','%d','%s','%s','%s','%s');
+  $res = $wpdb->insert( $table, $data, $format);
+                      }
+  return $res;
+}
