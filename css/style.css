@@ -234,10 +234,6 @@
 .btn-wrap-circle .ajaxSnippetsAffiliateLink > a {
   background: #999;
 }
-.btn-l, .ranking-item-link-buttons a,
-.btn-wrap.btn-wrap-l .ajaxSnippetsAffiliateLink > a {
-  font-size: 14px;
-}
 
 blockquote.ajax-snippets-quote{
   font-size:16px;
