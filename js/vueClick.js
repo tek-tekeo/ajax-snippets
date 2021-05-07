@@ -41,7 +41,7 @@ Vue.component('affiliate-link', {
       });
     }
   },
-  template: '<a :href="affiurl" @click="clickRecord" rel="nofollow noopener" target="_blank">{{ title }}</a>'
+  template: '<a :href="affiurl" @click="clickRecord" rel="nofollow noopener" target="_blank" v-html="title"></a>'
 });
 
 Vue.component('affiliate-banner-link', {

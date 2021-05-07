@@ -86,6 +86,7 @@ $rep =<<<EOT
 <affiliate-link title=" {$info['official_item_link']}" affiurl="{$info['url']}" place="{$pl}" id="{$id}"></affiliate-link>
 EOT;
   }else{
+    $content = esc_html($content);
 $rep =<<<EOT
 <span class="ajaxSnippetsAffiliateLink">
 <affiliate-link title="{$content}" affiurl="{$info['url']}" place="{$pl}" id="{$id}"></affiliate-link>
