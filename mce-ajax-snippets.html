@@ -77,7 +77,7 @@
 
       if (amazon != null && amazon != "") {
         inputTag = "[amazon asin=\"" + amazon + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
-        inputTag = inputTag + " detail_id=\"" + affiLink + "\" btn1_text=\"" + val.val() + "公式\"]";
+        inputTag = inputTag + " btn1_url=\"" + affiLink + "\" btn1_text=\"" + val.val() + "公式\"]";
       } else if (rakuten != null && rakuten != "") {
         inputTag = "[rakuten2 id=\"" + rakuten + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
         var place = Math.random().toString(36).slice(-8);
