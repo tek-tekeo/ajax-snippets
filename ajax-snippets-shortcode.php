@@ -232,14 +232,14 @@ EOT;
 $isShowUrl =<<<EOT
 <tr>
 <th>公式サイト</th>
-<td>[afRecord id={$detail_id}]{$l->official_item_link}[/afRecord]</td>
+<td>[afRecord id={$detail_id} pl=single]{$l->official_item_link}[/afRecord]</td>
 </tr>
 EOT;
   }
 
 $rep .=<<<EOT
     <div class="singleReview">
-      <div class="firstItem">[afRecordBanner id={$l->id}]</div>
+      <div class="firstItem">[afRecordBanner id={$l->id} pl=singleImg]</div>
       <div class="secondItem">
         {$chart_str}
       </div>
