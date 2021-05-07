@@ -82,12 +82,12 @@ function AjaxRecordShortcodeLink($atts, $content = null) {
 
   if(empty($content)){
 $rep =<<<EOT
-<div class="ajaxSnippetsAffiliateLink">
+<span class="ajaxSnippetsAffiliateLink">
 <affiliate-link title=" {$info['official_item_link']}" affiurl="{$info['url']}" place="{$pl}" id="{$id}"></affiliate-link>
 EOT;
   }else{
 $rep =<<<EOT
-<div class="ajaxSnippetsAffiliateLink">
+<span class="ajaxSnippetsAffiliateLink">
 <affiliate-link title="{$content}" affiurl="{$info['url']}" place="{$pl}" id="{$id}"></affiliate-link>
 EOT;
   }
@@ -96,7 +96,7 @@ $rep .=<<<EOT
 <img border="0" width="1" height="1" src="{$info['img_tag']}">
 EOT;
 }
-$rep .='</div>';
+$rep .='</span>';
 
   wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js');
   wp_enqueue_script( 'axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js');
@@ -142,7 +142,7 @@ function AjaxRecordShortcodeBanner($atts) {
     $info = AF::getAffiInfo($id, 0);
 
 $rep =<<<EOT
-<div class="ajaxSnippetsAffiliateLink">
+<span class="ajaxSnippetsAffiliateLink">
 <affiliate-banner-link title="{$info['affi_img']}" affiurl="{$info['url']}" place="{$pl}" id="{$id}"></affiliate-banner-link>
 EOT;
 if(!empty($info['img_tag'])){
@@ -150,7 +150,7 @@ $rep .=<<<EOT
 <img border="0" width="1" height="1" src="{$info['img_tag']}">
 EOT;
 }
-$rep .='</div>';
+$rep .='</span>';
 
   wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js');
   wp_enqueue_script( 'axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js');
@@ -897,7 +897,7 @@ function rakuten_product_link_shortcode2($atts){
           $affiText = do_shortcode($affiText);
 
 $rep =<<<EOT
-<div class="ajaxSnippetsAffiliateLink">
+<span class="ajaxSnippetsAffiliateLink">
 <rakuten-banner-link imgsrc="{$ImageUrl}" imgalt="{$TitleAttr}" imgwidth="{$ImageWidth}" imgheight="{$ImageHeight}" affiurl="{$info['url']}" place="{$pl}" id="{$detail_id}"></rakuten-banner-link>
 EOT;
 if(!empty($info['img_tag'])){
@@ -905,7 +905,7 @@ $rep .=<<<EOT
 <img border="0" width="1" height="1" src="{$info['img_tag']}">
 EOT;
 }
-$rep .='</div>';
+$rep .='</span>';
 
           $image_only_class = null;
           if ($image_only) {
