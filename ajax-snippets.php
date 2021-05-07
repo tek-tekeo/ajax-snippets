@@ -61,6 +61,7 @@ function jal_install()
 									info varchar(1025) DEFAULT '' NOT NULL,
 									review varchar(3000) DEFAULT '' NOT NULL,
                   is_show_url tinyint DEFAULT 1 NOT NULL,
+                  same_parent tinyint DEFAULT 0 NOT NULL,
 	                UNIQUE KEY id (id)
 	        )
 	        $charset_collate;";
