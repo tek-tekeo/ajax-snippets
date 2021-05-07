@@ -235,6 +235,12 @@
   background: #999;
 }
 
+@media screen and (max-width: 834px) {
+  .btn-wrap.btn-wrap-l .ajaxSnippetsAffiliateLink > a {
+    font-size: 14px;
+  }
+}
+
 blockquote.ajax-snippets-quote{
   font-size:16px;
 }
