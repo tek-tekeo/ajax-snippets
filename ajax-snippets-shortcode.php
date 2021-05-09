@@ -80,8 +80,8 @@ function AjaxRecordShortcodeLink($atts, $content = null) {
     ), $atts ) );
 
     $info = AF::getAffiInfo($id, 0);
-    $tagStart = $btn_color == "" ? '<span class="ajaxSnippetsAffiliateLink">':'<div class="btn-wrap btn-wrap-'.$btn_color.' btn-wrap-l ajaxSnippetsAffiliateLink">';
-    $tagEnd = $btn_color == "" ? '</span>':'</div>';
+    $tagStart = $btn_color == "" ? '<span class="ajaxSnippetsAffiliateLink">':'<span class="btn-wrap btn-wrap-'.$btn_color.' btn-wrap-l ajaxSnippetsAffiliateLink">';
+    $tagEnd = $btn_color == "" ? '</span>':'</span>';
   if(empty($content)){
 $rep =<<<EOT
 <affiliate-link title=" {$info['official_item_link']}" affiurl="{$info['url']}" place="{$pl}" id="{$id}"></affiliate-link>
