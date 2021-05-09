@@ -75,20 +75,20 @@ function AjaxRecordShortcodeLink($atts, $content = null) {
     extract( shortcode_atts( array(
        'id' => '1',
        'pl' => '0',
-       'ntab' => '0'
+       'ntab' => '0',
+       'btn_color'=>''
     ), $atts ) );
 
     $info = AF::getAffiInfo($id, 0);
-
+    $tagStart = $btn_color == "" ? '<span class="ajaxSnippetsAffiliateLink">':'<div class="btn-wrap btn-wrap-'.$btn_color.' btn-wrap-l ajaxSnippetsAffiliateLink">';
+    $tagEnd = $btn_color == "" ? '</span>':'</div>';
   if(empty($content)){
 $rep =<<<EOT
-<span class="ajaxSnippetsAffiliateLink">
 <affiliate-link title=" {$info['official_item_link']}" affiurl="{$info['url']}" place="{$pl}" id="{$id}"></affiliate-link>
 EOT;
   }else{
     $content = esc_html($content);
 $rep =<<<EOT
-<span class="ajaxSnippetsAffiliateLink">
 <affiliate-link title="{$content}" affiurl="{$info['url']}" place="{$pl}" id="{$id}"></affiliate-link>
 EOT;
   }
@@ -97,7 +97,7 @@ $rep .=<<<EOT
 <img border="0" width="1" height="1" src="{$info['img_tag']}">
 EOT;
 }
-$rep .='</span>';
+$rep = $tagStart . $rep . $tagEnd;
 
   wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js');
   wp_enqueue_script( 'axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js');
