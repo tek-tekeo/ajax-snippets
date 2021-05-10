@@ -164,8 +164,7 @@ class AjaxSneppets
     function __construct()
     {
       add_editor_style(plugins_url( 'ajax-snippets/css/style.css' ));
-      //axiosを使用するときのグローバルパスを追加
-      wp_enqueue_script( 'url-path-php', plugins_url('ajax-snippets/url_path.php'));
+
         if (is_admin() && is_user_logged_in()) {
             // メニュー追加
             add_action('admin_menu', [$this, 'set_plugin_menu']);
@@ -188,6 +187,8 @@ class AjaxSneppets
     wp_register_style( 'ajax-snippets-style', plugins_url( 'ajax-snippets/css/style.css' ) );
     wp_enqueue_style( 'ajax-snippets-style' );
 		wp_enqueue_script( 'chartjs','//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js', [ 'jquery' ] ,date('U'),true);
+    //axiosを使用するときのグローバルパスを追加
+    wp_enqueue_script( 'url-path-php', plugins_url('ajax-snippets/url_path.php'));
 		//	wp_enqueue_script( 'https://maps.googleapis.com/maps/api/js?v=weekly&key=AIzaSyAxLHeyTpEqFFQGceE5xiURS9R-xjckvGs&callback=initMap&libraries=places', [ 'jquery' ] ,date('U'),true);
 		}
 
