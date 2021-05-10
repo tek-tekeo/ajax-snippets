@@ -40,12 +40,14 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
           <th>案件</th>
           <th>投稿記事</th>
           <th>クリック場所</th>
+          <th>IP</th>
         </tr>
         <tr v-for="(log, index) in logs" :key="`log-name-{$index}`">
           <td>{{ log.date +" "+ log.time }}</td>
           <td>{{ log.name +" "+ log.item_name }}</td>
           <td>{{ log.post_addr }}</td>
           <td><a :href="clickURL(log.place)" target="_blank">{{ log.place }}</a></td>
+          <td>{{ log.ip }}</td>
         </tr>
         <tr v-show="ankenLogs.length!==0">
           <th>案件</th>

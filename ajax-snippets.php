@@ -122,7 +122,7 @@ function jal_install()
 						$data[2] = array('asp_name' => 'link-a','connect_string'=>'&mallurl1=');
 						$data[3] = array('asp_name' => 'dmm','connect_string'=>'?af_id=tekeo-001&ch=link_tool&ch_id=link&lurl=');
 						$data[4] = array('asp_name' => 'valuecommerce','connect_string'=>'');
-            $data[4] = array('asp_name' => '独自','connect_string'=>'');
+            $data[5] = array('asp_name' => '独自','connect_string'=>'');
 						foreach ($data as $d){
 							$res = $wpdb->insert( $table_name, $d );
 						}
@@ -184,12 +184,12 @@ class AjaxSneppets
 		* script関数の登録
 		*/
 		function ajax_register_scripts() {
-      wp_enqueue_script( 'url-path-php', plugins_url('ajax-snippets/url_path.php'));
-      wp_enqueue_style( 'ajax-snippets-style', plugins_url( 'ajax-snippets/css/style.css' ) );
+      wp_enqueue_script( 'url-path-php', plugins_url('ajax-snippets/url_path.php'),array(),false,true);
+      wp_enqueue_style( 'ajax-snippets-style', plugins_url( 'ajax-snippets/css/style.css' ) , array(), false,'all');
       wp_enqueue_script( 'chartjs','//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js', [ 'jquery' ] ,date('U'),true);
-      wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js', ['url-path-php'],date('U'),true);
+      wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js', array(),date('U'),true);
       wp_enqueue_script( 'axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js', ['vue'],date('U'),true);
-      wp_enqueue_script( 'vueClick', plugins_url('ajax-snippets/js/vueClick.js'), ['axios'],date('U'),true);
+      wp_enqueue_script( 'vueClick', plugins_url('ajax-snippets/js/vueClick.js'), ['axios'],false,true);
     }
 
     function set_plugin_menu()
