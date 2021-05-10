@@ -99,9 +99,7 @@ EOT;
 }
 $rep = $tagStart . $rep . $tagEnd;
 
-  wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js');
-  wp_enqueue_script( 'axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js');
-  wp_enqueue_script( 'vueClick', plugins_url('ajax-snippets/js/vueClick.js'));
+
   return $rep;
   die();
     global $wpdb;
@@ -153,9 +151,6 @@ EOT;
 }
 $rep .='</span>';
 
-  wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js');
-  wp_enqueue_script( 'axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js');
-  wp_enqueue_script( 'vueClick', plugins_url('ajax-snippets/js/vueClick.js'));
   return $rep;
   die();
     global $wpdb;

@@ -163,9 +163,11 @@ class AjaxSneppets
 
     function __construct()
     {
-      add_editor_style(plugins_url( 'ajax-snippets/css/style.css' ));
-
+      //スクリプト 、スタイルシートの追加
+      add_action( 'wp_enqueue_scripts', [$this, 'ajax_register_scripts']);
         if (is_admin() && is_user_logged_in()) {
+          //管理画面はエディタースタイルシートを追加
+          add_editor_style(plugins_url( 'ajax-snippets/css/style.css' ));
             // メニュー追加
             add_action('admin_menu', [$this, 'set_plugin_menu']);
             add_action('admin_menu', [$this, 'set_plugin_sub_menu']);
@@ -177,20 +179,18 @@ class AjaxSneppets
         }
 				//ショートコードを追加
 				require_once abspath(__FILE__).'ajax-snippets-shortcode.php';
-				//スタイルシートの追加
-				 add_action( 'wp_enqueue_scripts', array( $this, 'register_gmapmaker_scripts' ) );
 		}
 		/**
 		* script関数の登録
 		*/
-		public function register_gmapmaker_scripts() {
-    wp_register_style( 'ajax-snippets-style', plugins_url( 'ajax-snippets/css/style.css' ) );
-    wp_enqueue_style( 'ajax-snippets-style' );
-		wp_enqueue_script( 'chartjs','//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js', [ 'jquery' ] ,date('U'),true);
-    //axiosを使用するときのグローバルパスを追加
-    wp_enqueue_script( 'url-path-php', plugins_url('ajax-snippets/url_path.php'));
-		//	wp_enqueue_script( 'https://maps.googleapis.com/maps/api/js?v=weekly&key=AIzaSyAxLHeyTpEqFFQGceE5xiURS9R-xjckvGs&callback=initMap&libraries=places', [ 'jquery' ] ,date('U'),true);
-		}
+		function ajax_register_scripts() {
+      wp_enqueue_script( 'url-path-php', plugins_url('ajax-snippets/url_path.php'));
+      wp_enqueue_style( 'ajax-snippets-style', plugins_url( 'ajax-snippets/css/style.css' ) );
+      wp_enqueue_script( 'chartjs','//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js', [ 'jquery' ] ,date('U'),true);
+      wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js', ['url-path-php'],date('U'),true);
+      wp_enqueue_script( 'axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js', ['vue'],date('U'),true);
+      wp_enqueue_script( 'vueClick', plugins_url('ajax-snippets/js/vueClick.js'), ['axios'],date('U'),true);
+    }
 
     function set_plugin_menu()
     {
