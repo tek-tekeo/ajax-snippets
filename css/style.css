@@ -145,3 +145,11 @@ ul.favo_manga li:after {
 .check_lb {
   display:block;
 }
+
+/* 楽天リンクのボタンcss */
+@media screen and (max-width: 834px){
+  .product-item-buttons > * > .ajaxSnippetsAffiliateLink > a {
+      width: auto;
+      font-size: 11px;
+  }
+}
