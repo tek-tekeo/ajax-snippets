@@ -146,6 +146,9 @@ ul.favo_manga li:after {
   display:block;
 }
 
+.btn-wrap.ajaxSnippetsAffiliateLink > a{
+  margin:0;
+}
 /* 楽天リンクのボタンcss */
 @media screen and (max-width: 834px){
   .product-item-buttons > * > .ajaxSnippetsAffiliateLink > a {
