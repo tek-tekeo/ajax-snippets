@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 
   $sql = "SELECT B.name, D.item_name, L.* FROM ".PLUGIN_DB_PREFIX."log as L, ".PLUGIN_DB_PREFIX."detail as D, ".PLUGIN_DB_PREFIX."base as B where D.id=L.item_id AND B.id=D.base_id order by date desc, time desc limit 50";
   $results = $wpdb->get_results($sql, OBJECT);
-
+  $now = (string)date("Y-m-d");
   $logs = json_encode($results, JSON_UNESCAPED_UNICODE);
 ?>
 <h1>クリック履歴</h1>
@@ -21,13 +21,29 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     <tbody>
       <tr>
         <th>
-          <button @click="dateTime" style="padding:10px;">日付順</button>
+          日時指定
+        </th>
+        <th>
+          <input type="date" v-model="startDate" />
+        </th>
+        <th>
+          <input type="date" v-model="endDate" />
+        </th>
+        <th>
+          <input type="number" v-model="limit" />
+        </th>
+      </tr>
+      <tr>
+        <th>
+          <button @click="dateTime" style="padding:10px;">日時順</button>
         </th>
         <th>
           <button @click="ankenCount" style="padding:10px;">案件&場所</button>
         </th>
         <th>
           <button @click="articleSort" style="padding:10px;">クリックが多い記事</button>
+        </th>
+        <th>
         </th>
       </tr>
     </tbody>
@@ -84,6 +100,9 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     el: '#log-info',
     data() {
       return {
+        startDate:"<?=date('Y-m-01')?>",
+        endDate:"<?=date('Y-m-d')?>",
+        limit:100,
         logs:<?=$logs?>,
         ankenLogs:[],
         articleLogs:[],
@@ -98,6 +117,8 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         let _this = this;
         let form_data = new FormData;
         form_data.append('action', 'logArticle');
+        form_data.append('startDate', this.startDate);
+        form_data.append('endDate', this.endDate);
 
         axios.post(ajaxurl, form_data).then(function(response){
           console.log(ajaxurl);
@@ -128,6 +149,8 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         let _this = this;
         let form_data = new FormData;
         form_data.append('action', 'logAnken');
+        form_data.append('startDate', this.startDate);
+        form_data.append('endDate', this.endDate);
 
         axios.post(ajaxurl, form_data).then(function(response){
           if(response.data){
@@ -157,8 +180,12 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         let _this = this;
         let form_data = new FormData;
         form_data.append('action', 'logDateTime');
+        form_data.append('startDate', this.startDate);
+        form_data.append('endDate', this.endDate);
+        form_data.append('limit', this.limit);
 
         axios.post(ajaxurl, form_data).then(function(response){
+
           if(response.data){
             _this.logs = response.data;
             _this.ankenLogs = [];
