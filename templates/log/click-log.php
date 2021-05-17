@@ -44,6 +44,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
           <button @click="articleSort" style="padding:10px;">クリックが多い記事</button>
         </th>
         <th>
+        <!-- <button @click="dateClick" style="padding:10px;">1日のクリック数</button> -->
         </th>
       </tr>
     </tbody>

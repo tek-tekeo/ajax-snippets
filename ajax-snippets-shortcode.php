@@ -94,7 +94,7 @@ EOT;
   }
 if(!empty($info['img_tag'])){
 $rep .=<<<EOT
-<img border="0" width="1" height="1" src="{$info['img_tag']}">
+<img border="0" width="1" height="1" src="{$info['img_tag']}" alt="">
 EOT;
 }
 $rep = $tagStart . $rep . $tagEnd;
@@ -146,7 +146,7 @@ $rep =<<<EOT
 EOT;
 if(!empty($info['img_tag'])){
 $rep .=<<<EOT
-<img border="0" width="1" height="1" src="{$info['img_tag']}">
+<img border="0" width="1" height="1" src="{$info['img_tag']}" alt="">
 EOT;
 }
 $rep .='</span>';
