@@ -316,9 +316,11 @@ if($match === 1){
 
   //遷移先のURLを獲得
   foreach($results as $r){
-    if($r->asp_name != 'a8'){
+    if($r->same_parent == "1"){
+      $dest_url = $r->affi_link;
+    }else if($r->asp_name != 'a8'){
       $dest_url = $r->affi_item_link;
-    }else if($r->item_name == "000" || $r->affi_item_link=="top" || $r->same_parent == "1"){
+    }else if($r->item_name == "000" || $r->affi_item_link=="top"){
       $dest_url = $r->affi_link;
     }else{
       $dest_url = $r->s_link . $r->connect_string . urlencode($r->official_item_link);
