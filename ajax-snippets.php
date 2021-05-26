@@ -316,6 +316,7 @@ if($match === 1){
 
   //遷移先のURLを獲得
   foreach($results as $r){
+    print_r($r->same_parent);die;
     if($r->same_parent == "1"){
       $dest_url = $r->affi_link;
     }else if($r->asp_name != 'a8'){
