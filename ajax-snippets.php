@@ -310,14 +310,13 @@ if($match === 1){
   $id = $_GET['no'];
   $place = $_GET['pl'];
   global $wpdb;
-  $sql = "SELECT B.affi_link, B.s_link, B.asp_name, A.connect_string, D.affi_item_link, D.item_name, D.official_item_link FROM ".PLUGIN_DB_PREFIX."base As B,".PLUGIN_DB_PREFIX."detail As D,".PLUGIN_DB_PREFIX."asp As A where B.id = D.base_id AND D.id={$id} AND B.asp_name=A.asp_name";
+  $sql = "SELECT B.affi_link, B.s_link, B.asp_name, A.connect_string, D.affi_item_link, D.item_name, D.official_item_link, D.same_parent FROM ".PLUGIN_DB_PREFIX."base As B,".PLUGIN_DB_PREFIX."detail As D,".PLUGIN_DB_PREFIX."asp As A where B.id = D.base_id AND D.id={$id} AND B.asp_name=A.asp_name";
 
   $results = $wpdb->get_results($sql,object);
 
   //遷移先のURLを獲得
   foreach($results as $r){
-    print_r($r->same_parent);die;
-    if($r->same_parent == "1"){
+  if($r->same_parent == "1"){
       $dest_url = $r->affi_link;
     }else if($r->asp_name != 'a8'){
       $dest_url = $r->affi_item_link;
