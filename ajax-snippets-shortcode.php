@@ -541,7 +541,12 @@ function rakuten_product_link_shortcode2($atts){
   'pl'=>0
   ), $atts, 'rakuten' ) );
 
-  $id = sanitize_shortcode_value($id);
+  $info = AF::getAffiInfo($detail_id, 0);
+  $affiText = "[afRecord id={$detail_id} pl={$pl}]".$info['name']."公式"."[/afRecord]";
+  $affiText = do_shortcode($affiText);
+
+  // $id = sanitize_shortcode_value($id);
+  $id = $info['rakuten_id'];
 
   if ($no) {
     $search = $no;
@@ -563,7 +568,6 @@ function rakuten_product_link_shortcode2($atts){
 
   $shop = sanitize_shortcode_value($shop);
   $sort = sanitize_shortcode_value($sort);
-
 
   //楽天アプリケーションID
   $rakuten_application_id = trim(get_rakuten_application_id());
@@ -825,9 +829,7 @@ function rakuten_product_link_shortcode2($atts){
           ///////////////////////////////////////////
           // 検索ボタンの作成
           ///////////////////////////////////////////
-          $info = AF::getAffiInfo($detail_id, 0);
-          $affiText = "[afRecord id={$detail_id} pl={$pl}]".$info['name']."公式"."[/afRecord]";
-          $affiText = do_shortcode($affiText);
+
 
           $args = array(
             'keyword' => $keyword,

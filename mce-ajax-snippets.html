@@ -47,7 +47,7 @@
           $alist = $('#ajax-item-list');
           $alist.empty();
           $.each(jsonData, function (i, val) {
-            $alist.append("<dt><label><input type='radio' name='q1' data-amazon=\"" + val['amazon'] + "\" data-rakuten=\"" + val['rakuten'] + "\" data-affilink=\"" + val['affilink'] + "\" data-id=\"" + val['id'] + "\" data-official=\"" + val['official'] + "\" value=\"" + val['name'] + "\">" + val['item'] + "<div style='display:none'>" + val['item'] + "</div></label></dt>");
+            $alist.append("<dt><label><input type='radio' name='q1' data-amazon=\"" + val['amazon'] + "\" data-rakuten=\"" + val['rakuten'] + "\" data-affilink=\"" + val['affilink'] + "\" data-id=\"" + val['id'] + "\" data-official=\"" + val['official'] + "\" value=\"" + val['name'] + "\">" + val['item'] + "<div style='display:none'>" + val['item'] + "</div></label>　<a href=\"../../../wp-admin/admin.php?page=child-config&action=update&child_id=" + val['id'] + "\" target=\"_blank\">編集</a></div></dt>");
           });
 
         },
@@ -132,7 +132,8 @@
         return false;
       }
       var inputTag = "[afLink id=" + id + " re_url=1 noaf=1][/afLink]";
-      let blockquoteTag = '<blockquote class="ajax-snippets-quote" cite="' + inputTag + '">引用文<br><cite><a href="' + inputTag + '">公式サイト</a></cite></blockquote>';
+
+      let blockquoteTag = '<blockquote class="ajax-snippets-quote" cite="' + inputTag + '"><div>評価：[star rate="5" max="5" number="1"]</div><div><span class="bold">タイトル</span></div><p class="fz-14px">引用文</p><cite><a href="' + inputTag + '">公式サイト</a></cite></blockquote>';
       top.tinymce.activeEditor.selection.setContent(blockquoteTag);
       top.tinymce.activeEditor.windowManager.close();
       return false;

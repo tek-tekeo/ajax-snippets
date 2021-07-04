@@ -10,17 +10,19 @@ class AffiLinkForm{
 
   public function getAffiInfo($id, $noaf){
     global $wpdb;
-    $sql = "SELECT B.name, B.asp_name, B.affi_link, B.affi_img, B.img_tag, B.s_link, B.s_img_tag, D.id, D.item_name,D.affi_item_link, D.detail_img, D.official_item_link, D.same_parent FROM ".PLUGIN_DB_PREFIX."base As B RIGHT JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
+    $sql = "SELECT B.name, B.asp_name, B.affi_link, B.affi_img, B.img_tag, B.s_link, B.s_img_tag, D.id, D.item_name,D.affi_item_link, D.rakuten_id, D.detail_img, D.official_item_link, D.same_parent FROM ".PLUGIN_DB_PREFIX."base As B RIGHT JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
 
     $results = $wpdb->get_results($sql,object);
 
         if(count($results) == 0){
           $repArray = array(
             'name'=>'リンクエラー',
+            'item_name'=>'',
             'official_item_link'=>'',
             'img_tag'=>'',
             'affi_img'=>'',
             'url'=>'#',
+            'rakuten_id'=>''
           );
           return $repArray;
         }
@@ -59,8 +61,10 @@ class AffiLinkForm{
         'name'=>$r->name,
         'official_item_link'=>$r->official_item_link,
         'img_tag'=>$img_tag,
+        'item_name'=>$r->item_name,
         'affi_img'=>$r->affi_img,
         'url'=>$url,
+        'rakuten_id'=>$r->rakuten_id
       );
     return $repArray;
   }
