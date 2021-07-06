@@ -44,7 +44,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
           <button @click="articleSort" style="padding:10px;">クリックが多い記事</button>
         </th>
         <th>
-        <!-- <button @click="dateClick" style="padding:10px;">1日のクリック数</button> -->
+        <button @click="dateClick" style="padding:10px;">1日のクリック数</button>
         </th>
       </tr>
     </tbody>
@@ -86,6 +86,14 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
           <td><a :href="clickURL(ankenLog.place)" target="_blank">{{ ankenLog.place }}</a></td>
           <td>{{ ankenLog.clickCount }}</td>
         </tr>
+        <tr v-show="dateClick.length!==0">
+          <th>日付</th>
+          <th>クリック数</th>
+        </tr>
+        <tr v-for="(dateClick, index) in dateClicks" :key="`dateClick-name-{$index}`">
+          <td>{{ dateClick.date }}</td>
+          <td>{{ dateClick.clickCount }}</td>
+        </tr>
     </tbody>
   </table>
 </div>
@@ -107,12 +115,46 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         logs:<?=$logs?>,
         ankenLogs:[],
         articleLogs:[],
-        positionLogs:[]
+        positionLogs:[],
+        dateClicks:[]
       }
     },
     methods: {
       clickURL: function(place){
         return "<?=home_url()?>"+"/wp-admin/edit.php?s="+place;
+      },
+      dateClick(e){
+        let _this = this;
+        let form_data = new FormData;
+        form_data.append('action', 'clickCount');
+        form_data.append('startDate', this.startDate);
+        form_data.append('endDate', this.endDate);
+
+        axios.post(ajaxurl, form_data).then(function(response){
+          console.log(response.data);
+          if(response.data){
+            _this.articleLogs = [];
+            _this.ankenLogs = [];
+            _this.logs = [];
+            _this.dateClicks = response.data;
+            var options = {
+              position: 'top-center',
+              duration: 750,
+              fullWidth: false,
+              type: 'success'
+            }
+            _this.$toasted.show('クリック数h表示',options);
+          }else{
+            var options = {
+              position: 'top-center',
+              duration: 2000,
+              fullWidth: true,
+              type: 'error'
+            }
+            _this.$toasted.show('ソート失敗',options);
+          }
+        })
+        e.preventDefault();
       },
       articleSort(e){
         let _this = this;
@@ -127,6 +169,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
             _this.articleLogs = response.data;
             _this.ankenLogs = [];
             _this.logs = [];
+            _this.dateClicks = [];
             var options = {
               position: 'top-center',
               duration: 750,
@@ -158,6 +201,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
             _this.ankenLogs = response.data;
             _this.logs = [];
             _this.articleLogs = [];
+            _this.dateClicks = [];
             var options = {
               position: 'top-center',
               duration: 750,
@@ -191,6 +235,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
             _this.logs = response.data;
             _this.ankenLogs = [];
             _this.articleLogs = [];
+            _this.dateClicks = [];
             var options = {
               position: 'top-center',
               duration: 750,
