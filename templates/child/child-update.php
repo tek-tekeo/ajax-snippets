@@ -124,7 +124,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       </tr>
       <tr>
         <th>楽天のid(例：phiten:111111)</th>
-        <td><?=CF::vueTextBox('rakuten_id', $rakuten_id)?></td>
+        <td><?=CF::vueTextBox('rakuten_id', $rakuten_id)?><a v-bind:href="`https://search.rakuten.co.jp/search/mall/${item_name}`" target="_blank">楽天で調べる</a></td>
       </tr>
       <tr>
         <th colspan=2><input type="submit" value="更新する" style="position:fixed;width:200px;top:400px;right:40px;padding:30px;"></th>
@@ -229,7 +229,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         tableInformation: [],
         chartInfo:[],
         tags:[],
-        same_parent:''
+        same_parent:'',
       }
     },
     created: function(){
