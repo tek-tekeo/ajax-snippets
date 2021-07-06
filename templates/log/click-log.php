@@ -86,7 +86,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
           <td><a :href="clickURL(ankenLog.place)" target="_blank">{{ ankenLog.place }}</a></td>
           <td>{{ ankenLog.clickCount }}</td>
         </tr>
-        <tr v-show="dateClick.length!==0">
+        <tr v-show="dateClicks.length!==0">
           <th>日付</th>
           <th>クリック数</th>
         </tr>
@@ -143,7 +143,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
               fullWidth: false,
               type: 'success'
             }
-            _this.$toasted.show('クリック数h表示',options);
+            _this.$toasted.show('クリック数を表示',options);
           }else{
             var options = {
               position: 'top-center',
