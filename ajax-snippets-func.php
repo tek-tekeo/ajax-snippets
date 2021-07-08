@@ -327,9 +327,9 @@ function clickCount(){
   global $wpdb;
   $startDate = $_POST['startDate'];
   $endDate = $_POST['endDate'];
-  $sql = "SELECT L.date, count(DISTINCT L.place) as clickCount FROM "
-          .PLUGIN_DB_PREFIX."log as L, "
-          .PLUGIN_DB_PREFIX."detail as D where D.id=L.item_id AND L.date between '".$startDate."' AND '".$endDate."' group by L.date order by L.date desc";
+  $sql = "SELECT L.date, count(DISTINCT L.ip) as clickCount FROM "
+          .PLUGIN_DB_PREFIX."log as L ".
+          "where L.date between '".$startDate."' AND '".$endDate."' group by L.date order by L.date desc";
   $results = $wpdb->get_results($sql, OBJECT);
 
   $logs = json_encode($results, JSON_UNESCAPED_UNICODE);
