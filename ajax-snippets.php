@@ -123,6 +123,8 @@ function jal_install()
 						$data[3] = array('asp_name' => 'dmm','connect_string'=>'?af_id=tekeo-001&ch=link_tool&ch_id=link&lurl=');
 						$data[4] = array('asp_name' => 'valuecommerce','connect_string'=>'');
             $data[5] = array('asp_name' => '独自','connect_string'=>'');
+            $data[6] = array('asp_name' => 'felmat','connect_string'=>'');
+            
 						foreach ($data as $d){
 							$res = $wpdb->insert( $table_name, $d );
 						}
