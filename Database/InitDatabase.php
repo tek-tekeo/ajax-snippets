@@ -1,0 +1,244 @@
+<?php
+namespace AjaxSnippets\Database;
+
+use AjaxSnippets\Domain\Models\Asps;
+
+class InitDatabase
+{
+  //一つしかインスタンスを持てないように制約
+  private static $singleton;
+
+  private $charsetCollate;
+  private $repository;
+
+  private function __construct(){
+    global $wpdb;
+
+    $this->repository = $wpdb;
+    $this->charsetCollate = $this->repository->get_charset_collate();
+  }
+  
+  //インスタンスを一つしか持てないように制約
+  public static function getInstance()
+  {
+    //self::は自クラスを表す。自クラスのsingletonがあればそのまま返す
+    if (!isset(self::$singleton)) {
+        self::$singleton = new InitDatabase();
+    }
+    return self::$singleton;
+  }
+
+  //テーブル作成の呼び出し
+  public function handle()
+  {
+    $installed_ver = get_option( "jal_db_version" );
+    if ( $installed_ver != VERSION ) {
+      $this->initBaseTable();
+      $this->initDetailTable();
+      $this->initLogTable();
+      $this->initTagLinkTable();
+      $this->initTagTable();
+      $this->initAppsTable();
+      $this->initAspTable();
+      add_option( 'jal_db_version', VERSION);
+    }
+  }
+
+  private function initBaseTable()
+  {
+    $sql = $this->createSqlOfBaseTable();
+    dbDelta($sql);
+  }
+  private function initDetailTable()
+  {
+    $sql = $this->createSqlOfDetailTable();
+    dbDelta($sql);
+  }
+  private function initLogTable()
+  {
+    $sql = $this->createSqlOfLogTable();
+    dbDelta($sql);
+  }
+  private function initTagLinkTable()
+  {
+    $sql = $this->createSqlOfTagLinkTable();
+    dbDelta($sql);
+  }
+  private function initTagTable()
+  {
+    $sql = $this->createSqlOfTagTable();
+    dbDelta($sql);
+  }
+  private function initAppsTable()
+  {
+    $sql = $this->createSqlOfAppsTable();
+    dbDelta($sql);
+
+  }
+  private function initAspTable()
+  {
+    $sql = $this->createSqlOfAspTable();
+    dbDelta($sql);
+    $this->addAspInitInfo();
+  }
+
+  //名称からDBのテーブル名を取得
+  private function getTableName(string $tableName): string
+  {
+    return $this->repository->prefix . PLUGIN_DB_PREFIX . $tableName;
+  }
+
+  //ベース（親）データのクエリを取得
+  private function createSqlOfBaseTable()
+  {
+    $tableName = $this->getTableName('base');
+
+    $sql = "
+      CREATE TABLE {$tableName} (
+      id int(11) NOT NULL AUTO_INCREMENT,
+      name varchar(255) NOT NULL,
+      anken varchar(255) NOT NULL,
+      affi_link varchar(1025) NOT NULL,
+      s_link varchar(1025) NOT NULL,
+      asp_name varchar(10) NOT NULL,
+      affi_img varchar(1025) NOT NULL,
+      img_tag varchar(1025) NOT NULL,
+      s_img_tag varchar(1025) NOT NULL,
+      UNIQUE KEY id (id)
+      ){$this->charsetCollate};";
+
+    return $sql;
+  }
+
+  //詳細（子）データのクエリを取得
+  private function createSqlOfDetailTable()
+  {
+    $tableName = $this->getTableName('detail');
+
+    $sql = "
+      CREATE TABLE {$tableName} (
+      id int(11) NOT NULL AUTO_INCREMENT,
+      base_id int(11) NOT NULL,
+      item_name varchar(1025) DEFAULT '' NOT NULL,
+      official_item_link varchar(1025) DEFAULT '' NOT NULL,
+      affi_item_link varchar(1025) DEFAULT '' NOT NULL,
+      detail_img varchar(1025) DEFAULT '' NOT NULL,
+      amazon_asin varchar(255) DEFAULT '' NOT NULL,
+      rakuten_id varchar(255) DEFAULT '' NOT NULL,
+      rchart varchar(1025) DEFAULT '' NOT NULL,
+      info varchar(1025) DEFAULT '' NOT NULL,
+      review varchar(3000) DEFAULT '' NOT NULL,
+      is_show_url tinyint DEFAULT 1 NOT NULL,
+      same_parent tinyint DEFAULT 0 NOT NULL,
+      UNIQUE KEY id (id)
+      ){$this->charsetCollate};";
+
+    return $sql;
+  }
+
+  //ログデータのクエリを取得
+  private function createSqlOfLogTable()
+  {
+    $tableName = $this->getTableName('log');
+
+    $sql = "
+    CREATE TABLE {$tableName} (
+    id int(11) NOT NULL AUTO_INCREMENT,
+    item_id int(11) NOT NULL,
+    date DATE NOT NULL,
+    time TIME NOT NULL,
+    post_addr varchar(1025) DEFAULT '' NOT NULL,
+    place varchar(255) DEFAULT '' NOT NULL,
+    ip varchar(1025) DEFAULT '' NOT NULL,
+    UNIQUE KEY id (id)
+    ){$this->charsetCollate};";
+
+    return $sql;
+  }
+
+  //タグリンクのデータのクエリを取得
+  private function createSqlOfTagLinkTable()
+  {
+    $tableName = $this->getTableName('tag_link');
+
+    $sql = "
+      CREATE TABLE {$tableName} (
+      id int(11) NOT NULL AUTO_INCREMENT,
+      item_id int(11) NOT NULL,
+      tag_id int(11) NOT NULL,
+      PRIMARY KEY id (id)
+      ){$this->charsetCollate};";
+
+    return $sql;
+  }
+
+  //タグデータのクエリを取得
+  private function createSqlOfTagTable()
+  {
+    $tableName = $this->getTableName('tag');
+
+    $sql = "
+      CREATE TABLE {$tableName} (
+      id int(11) NOT NULL AUTO_INCREMENT,
+      tag_name varchar(255) DEFAULT '' NOT NULL,
+      tag_order int(11) NOT NULL,
+      PRIMARY KEY id (id)
+      ){$this->charsetCollate};";
+
+    return $sql;
+  }
+
+  //アプリのデータのクエリを取得
+  private function createSqlOfAppsTable()
+  {
+    $tableName = $this->getTableName('apps');
+
+    $sql = "
+      CREATE TABLE {$tableName} (
+      app_id int(11) NOT NULL AUTO_INCREMENT,
+      img varchar(255) NOT NULL,
+      dev varchar(255) NOT NULL,
+      ios_link varchar(1025) NOT NULL,
+      android_link varchar(1025) NOT NULL,
+      web_link varchar(1025) NOT NULL,
+      ios_affi_link varchar(1025) NOT NULL,
+      android_affi_link varchar(1025) NOT NULL,
+      web_affi_link varchar(1025) NOT NULL,
+      article varchar(1025) NOT NULL,
+      app_order int(11) NOT NULL,
+      app_price int(11) NOT NULL,
+      UNIQUE KEY id (app_id)
+      ){$this->charsetCollate};";
+
+    return $sql;
+  }
+
+  //ASPのデータのクエリを取得
+  private function createSqlOfAspTable()
+  {
+    $tableName = $this->getTableName('asp');
+
+    $sql = "
+      CREATE TABLE {$tableName} (
+      id int(11) NOT NULL AUTO_INCREMENT,
+      asp_name varchar(20) DEFAULT '' NOT NULL,
+      connect_string varchar(128) DEFAULT '' NOT NULL,
+      UNIQUE KEY id (id)
+      ){$this->charsetCollate};";
+
+    return $sql;
+  }
+
+  private function addAspInitInfo()
+    {
+      echo 'insert したてい';
+        // User::create([
+        //     'name' => '管理者',
+        //     'name_kana' => 'カンリシャ',
+        //     'email' => 'hoge@hoge.com',
+        //     'password' => 'password',
+        //     'company_name' => '会社',
+        //     'company_name_kana' => 'カイシャ'
+        // ]);
+    }
+}
