@@ -1,0 +1,47 @@
+version: "3.2"
+services:
+  wpdb:
+    image: mysql:5.7
+    container_name: "mysql57"
+    volumes:
+      - ./wpdb/mysql:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_alfkj
+      MYSQL_DATABASE: wordpress_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: passw0rd
+
+  wordpress:
+    image: wordpress:latest
+    container_name: "wordpress"
+    volumes:
+      - ./:/var/www/html/wp-content/plugins/ajaxSnippets
+      - ./themes/cocoon-master:/var/www/html/wp-content/themes/cocoon-master # テーマcocoonを入れる
+      # - ./php/php.ini:/usr/local/etc/php/conf.d/php.ini
+    restart: always
+    depends_on:
+      - wpdb
+    ports:
+      - 3000:80
+    environment:
+      WORDPRESS_DB_HOST: wpdb:3306
+      WORDPRESS_DB_NAME: wordpress_db
+      WORDPRESS_DB_USER: user
+      WORDPRESS_DB_PASSWORD: passw0rd
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: "phpmyadmin"
+    restart: always
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=wpdb #mysqlサービス名を指定
+      - PMA_USER=user
+      - PMA_PASSWORD=passw0rd
+    links:
+      - wpdb
+    ports:
+      - 8888:80
+    volumes:
+      - ./phpmyadmin/sessions:/sessions

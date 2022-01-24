@@ -1,1 +1,4 @@
 /templates/child/prev_*.txt
+/wpdb
+/themes
+/phpmyadmin
