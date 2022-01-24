@@ -1,12 +1,12 @@
 <?php
 
-// /**
-//  * データベースの読み込み
-//  */
-// $pattern = dirname(__FILE__) . '/Database/*.php';
-// foreach (glob($pattern) as $filename) {
-//     include_once $filename;
-// }
+/**
+ * データベースの読み込み
+ */
+$pattern = dirname(__FILE__) . '/Database/*.php';
+foreach (glob($pattern) as $filename) {
+    include_once $filename;
+}
 
 /**
  * ドメインの読み込み
@@ -20,6 +20,23 @@ foreach (glob($pattern) as $filename) {
 //     include_once $filename;
 // }
 
+//ドメインサービスの読み込み
+$pattern = dirname(__FILE__) . '/Domain/Services/*.php';
+foreach (glob($pattern) as $filename) {
+    include_once $filename;
+}
+
+/**
+ * アプリケーションの読み込み
+ */
+$pattern = dirname(__FILE__) . '/Application/*/I*.php';
+foreach (glob($pattern) as $filename) {
+    include_once $filename;
+}
+$pattern = dirname(__FILE__) . '/Application/*/*.php';
+foreach (glob($pattern) as $filename) {
+    include_once $filename;
+}
 // /**
 //  * ミドルウェアの読み込み
 //  */
@@ -47,17 +64,17 @@ foreach (glob($pattern) as $filename) {
 //     include_once $filename;
 // }
 
-// /**
-//  * インフラの読み込み
-//  */
-// $pattern = dirname(__FILE__) . '/Infrastructure/*.php';
-// foreach (glob($pattern) as $filename) {
-//     include_once $filename;
-// }
-// $pattern = dirname(__FILE__) . '/Infrastructure/*/*.php';
-// foreach (glob($pattern) as $filename) {
-//     include_once $filename;
-// }
+/**
+ * インフラの読み込み
+ */
+$pattern = dirname(__FILE__) . '/Infrastructure/*.php';
+foreach (glob($pattern) as $filename) {
+    include_once $filename;
+}
+$pattern = dirname(__FILE__) . '/Infrastructure/*/*.php';
+foreach (glob($pattern) as $filename) {
+    include_once $filename;
+}
 
 // /**
 //  * プレゼンテーションの読み込み
@@ -99,7 +116,7 @@ foreach (glob($pattern) as $filename) {
 // /**
 //  * WPの関数
 //  */
-// include_once dirname(__FILE__) . "/../../../wp-admin/includes/upgrade.php";
+include_once dirname(__FILE__) . "/../../../wp-admin/includes/upgrade.php";
 // include_once dirname(__FILE__) . "/../../../wp-includes/pluggable.php";
 // include_once dirname(__FILE__) . "/../../../wp-admin/includes/class-wp-filesystem-base.php";
 
