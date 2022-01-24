@@ -58,11 +58,11 @@ foreach (glob($pattern) as $filename) {
 // }
 
 
-// include_once(dirname(__FILE__) . '/ServiceProviders/BaseServiceProvider.php');
-// $pattern = dirname(__FILE__) . '/ServiceProviders/*.php';
-// foreach (glob($pattern) as $filename) {
-//     include_once $filename;
-// }
+include_once(dirname(__FILE__) . '/ServiceProviders/BaseServiceProvider.php');
+$pattern = dirname(__FILE__) . '/ServiceProviders/*.php';
+foreach (glob($pattern) as $filename) {
+    include_once $filename;
+}
 
 /**
  * インフラの読み込み
