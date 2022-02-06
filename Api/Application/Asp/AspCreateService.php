@@ -1,20 +1,20 @@
 <?php
-namespace AjaxSnippets\Application\AppServices\Asp;
+namespace AjaxSnippets\Api\Application\Asp;
 
-use AjaxSneppets\Domain\Models\Asp;
-use AjaxSneppets\Domain\Models\AspId;
-use AjaxSnippets\Domain\Services\AspService;
-use AjaxSnippets\Infrastructure\Repository\IAspRepository;
-use AjaxSnippets\Application\AppServices\Asp\AspCreateCommand;
+use AjaxSnippets\Api\Domain\Models\Asp;
+use AjaxSnippets\Api\Domain\Models\AspId;
+use AjaxSnippets\Api\Domain\Services\AspService;
+use AjaxSnippets\Api\Domain\Models\IAspRepository;
+use AjaxSnippets\Api\Application\Asp\AspCreateCommand;
 
 class AspCreateService implements IAspCreateService
 {
-  private IAspRepository $aspRepository;
-  private AspService $aspService;
+  private $aspRepository;
+  private $aspService;
 
   public function __construct(
-    IAspRepository $aspRepository,
-    AspService $aspService
+    AspService $aspService,
+    IAspRepository $aspRepository
   )
   {
     $this->aspRepository = $aspRepository;

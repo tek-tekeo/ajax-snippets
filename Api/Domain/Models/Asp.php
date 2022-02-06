@@ -1,7 +1,7 @@
 <?php
-namespace AjaxSneppets\Domain\Models;
+namespace AjaxSnippets\Api\Domain\Models;
 
-use AjaxSnippets\Domain\Services\AspService;
+use AjaxSnippets\Api\Domain\Models\AspId;
 
 // use AjaxSnippets\Domain\Models\BaseModel;
 
@@ -58,19 +58,6 @@ class Asp
       return 'エラーです';
     }
     $this->connectString = $connectString;
-  }
-}
-
-class AspId
-{
-  public int $id;
-  public function __construct(int $id = null)
-  {
-    if($id === null){
-      $this->id = 0; //0を設定していると自動でauto incrementしてくれる
-    }else{
-      $this->id = $id;
-    }
   }
 }
 

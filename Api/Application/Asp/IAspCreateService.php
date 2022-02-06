@@ -1,5 +1,5 @@
 <?php
-namespace AjaxSnippets\Application\AppServices\Asp;
+namespace AjaxSnippets\Api\Application\Asp;
 
 interface IAspCreateService
 {

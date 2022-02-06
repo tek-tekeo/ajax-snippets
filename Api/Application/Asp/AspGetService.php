@@ -1,14 +1,13 @@
 <?php
-namespace AjaxSnippets\Application\AppServices\Asp;
+namespace AjaxSnippets\Api\Application\Asp;
 
-use AjaxSneppets\Domain\Models\Asp;
-use AjaxSneppets\Domain\Models\AspId;
-use AjaxSnippets\Domain\Services\AspService;
-use AjaxSnippets\Infrastructure\Repository\IAspRepository;
+use AjaxSnippets\Api\Domain\Models\Asp;
+use AjaxSnippets\Api\Domain\Models\AspId;
+use AjaxSnippets\Api\Domain\Models\IAspRepository;
 
 class AspGetService implements IAspGetService
 {
-  private IAspRepository $aspRepository;
+  private $aspRepository;
 
   public function __construct(
     IAspRepository $aspRepository
@@ -17,15 +16,21 @@ class AspGetService implements IAspGetService
     $this->aspRepository = $aspRepository;
   }
 
-  public function handle(int $id)
+  public function handle(AspGetCommand $cmd)
   {
-    $aspId = new AspId($id);
+    $aspId = new AspId($cmd->id);
     $asp = $this->aspRepository->AspFindById($aspId);
     
     if($asp == null){
       return null;
     }
     return new AspData($asp); //クライアントが直接ドメインオブジェクト　Asp()を操作できないように、DTOで対応する
+  }
+
+  public function getAll()
+  {
+    $asps = $this->aspRepository->getAll();
+    return $asps;
   }
 
 }
