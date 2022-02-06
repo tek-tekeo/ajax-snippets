@@ -79,7 +79,7 @@ class InitDatabase
   {
     $sql = $this->createSqlOfAspTable();
     dbDelta($sql);
-    $this->addAspInitInfo();
+    // $this->addAspInitInfo();
   }
 
   //名称からDBのテーブル名を取得
