@@ -100,27 +100,27 @@ foreach (glob($pattern) as $filename) {
 // /**
 //  * コントローラーの読み込み
 //  */
-// $pattern = dirname(__FILE__) . '/Controllers/*.php';
-// foreach (glob($pattern) as $filename) {
-//     include_once $filename;
-// }
+$pattern = dirname(__FILE__) . '/Controllers/*.php';
+foreach (glob($pattern) as $filename) {
+    include_once $filename;
+}
 
-// /**
-//  * 設定ファイル
-//  */
-// $pattern = dirname(__FILE__) . "/Configs/*.php";
-// foreach (glob($pattern) as $filename) {
-//     include_once $filename;
-// }
+/**
+ * 設定ファイル
+ */
+$pattern = dirname(__FILE__) . "/Configs/*.php";
+foreach (glob($pattern) as $filename) {
+    include_once $filename;
+}
 
 // /**
 //  * WPの関数
 //  */
 include_once dirname(__FILE__) . "/../../../wp-admin/includes/upgrade.php";
-// include_once dirname(__FILE__) . "/../../../wp-includes/pluggable.php";
-// include_once dirname(__FILE__) . "/../../../wp-admin/includes/class-wp-filesystem-base.php";
+include_once dirname(__FILE__) . "/../../../wp-includes/pluggable.php";
+include_once dirname(__FILE__) . "/../../../wp-admin/includes/class-wp-filesystem-base.php";
 
-// /**
-//  * ルーティング設定読み込み
-//  */
-// include_once dirname(__FILE__) . '/routes.php';
+/**
+ * ルーティング設定読み込み
+ */
+include_once dirname(__FILE__) . '/routes.php';

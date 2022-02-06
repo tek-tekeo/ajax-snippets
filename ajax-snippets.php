@@ -1,183 +1,96 @@
 <?php
+use AjaxSnippets\Route;
+use AjaxSnippets\Api\Infrastructure\Repository\Test;
+use AjaxSnippets\Api\Domain\Models\IAspRepository;
+use AjaxSnippets\Api\Infrastructure\Repository\AspRepository;
+use AjaxSnippets\Database\InitDatabase;
+use AjaxSnippets\Configs\ConfigInitializer;
+use AjaxSnippets\Api\Domain\Models\AspId;
+use AjaxSnippets\Api\Domain\Services\AspService;
+use AjaxSnippets\Api\Controllers\AAAController;
+use AjaxSnippets\Api\Application\Asp\AspDeleteService;
+use AjaxSnippets\Api\Application\Asp\AspCreateService;
+use AjaxSnippets\Api\Application\Asp\AspGetService;
+use AjaxSnippets\Api\Application\Asp\AspUpdateService;
+use AjaxSnippets\Api\Controllers\AspController;
+use AjaxSnippets\Api\Infrastructure\Repository\ParentNodeRepository;
+
+require_once 'vendor/autoload.php';
+
 /*
-Plugin Name: ajax snippets
+Plugin Name: Affiliate Link Maker
 Description: アフィリエイトのリンクを取得しやすくする(テーマはcocoonの必要がある)
 Author: tektekeo
 Version: 0.2
-Author URI: https://www.kouritsu30.com
+Author URI: https://pachi.tokyo
 */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
-include_once dirname(__FILE__) . "/loader.php";
+// if ( ! defined( 'ABSPATH' ) ) {
+// 	exit; // Exit if accessed directly.
+// }
 
-add_action('init', 'AjaxSneppets::init');
-define('VERSION','0.2');
+global $wpdb;
+define('VERSION','0.4');
 define('PLUGIN_ID','ajax_snippets');
 define('PLUGIN_DB_PREFIX', $wpdb->prefix . PLUGIN_ID . '_');
 
-register_activation_hook( __FILE__, 'jal_install' );
-//register_activation_hook( __FILE__, 'jal_install_data' );
-global $jal_db_version;
-$jal_db_version = '1.0';
+include_once dirname(__FILE__) . "/loader.php";
 
-function jal_install()
-	{
-	        global $wpdb;
+$containerBuilder = new DI\ContainerBuilder();
+$containerBuilder->addDefinitions(dirname(__FILE__) .'/diconfig.php'); //プラグインのディレクトリパスは　plugin_dir_path( __FILE__ )
+$diContainer = $containerBuilder->build();
 
-	        $table_name = $wpdb->prefix . PLUGIN_ID . '_base';
+// $a = $diContainer->get('AjaxSnippets\Api\Controllers\BaseController');
+// var_dump($a->test());die;
+// $initializer = ConfigInitializer::getInstance();
+// $initializer->handle();
+// die;
 
-	        $charset_collate = $wpdb->get_charset_collate();
+//エンドポイント一覧
+function createEndPoints()
+{
+  //親要素関連
+  Route::get('/base', 'AjaxSnippets\Api\Controllers\BaseController@index'); //全件取得
+  Route::get('/base/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\BaseController@get'); //指定ID検索
+  Route::put('/base/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\BaseController@update');
+  
+  //子要素関連
 
-          $sql = "CREATE TABLE $table_name (
-	                id int(11) NOT NULL AUTO_INCREMENT,
-	                name varchar(255) NOT NULL,
-									anken varchar(255) NOT NULL,
-                  affi_link varchar(1025) NOT NULL,
-									s_link varchar(1025) NOT NULL,
-									asp_name varchar(10) NOT NULL,
-									affi_img varchar(1025) NOT NULL,
-                  img_tag varchar(1025) NOT NULL,
-                  s_img_tag varchar(1025) NOT NULL,
-	                UNIQUE KEY id (id)
-	        )
-	        $charset_collate;";
+  //Asp関連
+  Route::post('/asps', 'AjaxSnippets\Api\Controllers\AspController@create');
+  Route::put('/asps/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AspController@update');
+  Route::get('/asps', 'AjaxSnippets\Api\Controllers\AspController@index');
+  Route::get('/asps/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AspController@get');
+  Route::delete('/asps/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AspController@delete');
 
-	        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-	        dbDelta( $sql );
+  //タグ関連
 
-					$table_name = $wpdb->prefix . PLUGIN_ID . '_detail';
-
-	        $sql = "CREATE TABLE $table_name (
-	                id int(11) NOT NULL AUTO_INCREMENT,
-                  base_id int(11) NOT NULL,
-	                item_name varchar(1025) DEFAULT '' NOT NULL,
-                  official_item_link varchar(1025) DEFAULT '' NOT NULL,
-									affi_item_link varchar(1025) DEFAULT '' NOT NULL,
-                  detail_img varchar(1025) DEFAULT '' NOT NULL,
-                  amazon_asin varchar(255) DEFAULT '' NOT NULL,
-                  rakuten_id varchar(255) DEFAULT '' NOT NULL,
-									rchart varchar(1025) DEFAULT '' NOT NULL,
-									info varchar(1025) DEFAULT '' NOT NULL,
-									review varchar(3000) DEFAULT '' NOT NULL,
-                  is_show_url tinyint DEFAULT 1 NOT NULL,
-                  same_parent tinyint DEFAULT 0 NOT NULL,
-	                UNIQUE KEY id (id)
-	        )
-	        $charset_collate;";
-          dbDelta( $sql );
-
-					$table_name = $wpdb->prefix . PLUGIN_ID . '_log';
-
-					$sql = "CREATE TABLE $table_name (
-									id int(11) NOT NULL AUTO_INCREMENT,
-									item_id int(11) NOT NULL,
-									date DATE NOT NULL,
-									time TIME NOT NULL,
-									post_addr varchar(1025) DEFAULT '' NOT NULL,
-									place varchar(255) DEFAULT '' NOT NULL,
-									ip varchar(1025) DEFAULT '' NOT NULL,
-									UNIQUE KEY id (id)
-					)
-					$charset_collate;";
-					dbDelta( $sql );
-
-          $table_name = $wpdb->prefix . PLUGIN_ID . '_tag_link';
-
-					$sql = "CREATE TABLE $table_name (
-									id int(11) NOT NULL AUTO_INCREMENT,
-									item_id int(11) NOT NULL,
-                  tag_id int(11) NOT NULL,
-									PRIMARY KEY id (id)
-					)
-					$charset_collate;";
-					dbDelta( $sql );
-
-          $table_name = $wpdb->prefix . PLUGIN_ID . '_tag';
-
-					$sql = "CREATE TABLE $table_name (
-									id int(11) NOT NULL AUTO_INCREMENT,
-									tag_name varchar(255) DEFAULT '' NOT NULL,
-                  tag_order int(11) NOT NULL,
-									PRIMARY KEY id (id)
-					)
-					$charset_collate;";
-					dbDelta( $sql );
-
-					$table_name = $wpdb->prefix . PLUGIN_ID . '_asp';
-
-					$table_search = $wpdb->get_row("SHOW TABLES FROM " . DB_NAME . " LIKE '" . $table_name . "'"); //「$wpdb->posts」テーブルがあるかどうか探す
-					if( $wpdb->num_rows != 1 ){ //結果を判別して条件分岐
-
-					 //テーブルがない場合の処理
-					 $sql = "CREATE TABLE $table_name (
- 									asp_name varchar(20) DEFAULT '' NOT NULL,
- 									connect_string varchar(128) DEFAULT '' NOT NULL,
- 									UNIQUE KEY id (asp_name)
- 					)
- 					$charset_collate;";
- 					dbDelta( $sql );
- 						$data[0] = array('asp_name' => 'a8','connect_string'=>'&a8ejpredirect=');
-						$data[1] = array('asp_name' => 'afb','connect_string'=>'');
-						$data[2] = array('asp_name' => 'link-a','connect_string'=>'&mallurl1=');
-						$data[3] = array('asp_name' => 'dmm','connect_string'=>'?af_id=tekeo-001&ch=link_tool&ch_id=link&lurl=');
-						$data[4] = array('asp_name' => 'valuecommerce','connect_string'=>'');
-            $data[5] = array('asp_name' => '独自','connect_string'=>'');
-            $data[6] = array('asp_name' => 'felmat','connect_string'=>'');
-            
-						foreach ($data as $d){
-							$res = $wpdb->insert( $table_name, $d );
-						}
-          }
-
-          $table_name = $wpdb->prefix . PLUGIN_ID . '_apps';
-
-	        $charset_collate = $wpdb->get_charset_collate();
-
-          $sql = "CREATE TABLE $table_name (
-	                app_id int(11) NOT NULL AUTO_INCREMENT,
-									img varchar(255) NOT NULL,
-									dev varchar(255) NOT NULL,
-									ios_link varchar(1025) NOT NULL,
-									android_link varchar(1025) NOT NULL,
-									web_link varchar(1025) NOT NULL,
-									ios_affi_link varchar(1025) NOT NULL,
-									android_affi_link varchar(1025) NOT NULL,
-									web_affi_link varchar(1025) NOT NULL,
-									article varchar(1025) NOT NULL,
-									app_order int(11) NOT NULL,
-									app_price int(11) NOT NULL,
-                  UNIQUE KEY id (app_id)
-	        )
-          $charset_collate;";
-
-	        dbDelta( $sql );
-
-	        add_option( 'jal_db_version', $jal_db_version );
-	}
+  //ログ関連
+}
 
 class AjaxSneppets
 {
-    static function init()
+  static private $instance = null;
+
+    static function init() : self
     {
-        return new self();
+      return new self();
     }
 
-    function __construct()
+    private function __construct()
     {
       //スクリプト 、スタイルシートの追加
       add_action( 'wp_enqueue_scripts', [$this, 'ajax_register_scripts']);
         if (is_admin() && is_user_logged_in()) {
           //管理画面はエディタースタイルシートを追加
           add_editor_style(plugins_url( 'ajax-snippets/css/style.css' ));
-            // メニュー追加
-            add_action('admin_menu', [$this, 'set_plugin_menu']);
-            add_action('admin_menu', [$this, 'set_plugin_sub_menu']);
-            add_action('admin_menu', [$this, 'set_plugin_tag_menu']);
-            add_action('admin_menu', [$this, 'set_plugin_log_menu']);
-            // //ビジュアルエディタへ追加
-            require_once abspath(__FILE__).'ajax-snippets-func.php';
-
+          // メニュー追加
+          add_action('admin_menu', [$this, 'set_plugin_menu']);
+          add_action('admin_menu', [$this, 'set_plugin_sub_menu']);
+          add_action('admin_menu', [$this, 'set_plugin_tag_menu']);
+          add_action('admin_menu', [$this, 'set_plugin_log_menu']);
+          add_action('admin_menu', [$this, 'asp_menu']);
+          // //ビジュアルエディタへ追加
+          require_once abspath(__FILE__).'ajax-snippets-func.php';
         }
 				//ショートコードを追加
 				require_once abspath(__FILE__).'ajax-snippets-shortcode.php';
@@ -194,56 +107,73 @@ class AjaxSneppets
       wp_enqueue_script( 'vueClick', plugins_url('ajax-snippets/js/vueClick.js'), ['axios'],false,true);
     }
 
-    function set_plugin_menu()
+    public function asp_menu()
     {
-        add_menu_page(
-            'Ajax Snippets',           /* ページタイトル*/
-            'アフィリンクメーカー',           /* メニュータイトル */
-            'manage_options',         /* 権限 */
-            'ajax-snippets',    /* ページを開いたときのURL */
-            [$this, 'show_about_plugin'],       /* メニューに紐づく画面を描画するcallback関数 */
-            'dashicons-format-gallery', /* アイコン see: https://developer.wordpress.org/resource/dashicons/#awards */
-            6                          /* 表示位置のオフセット */
-        );
-    }
-    function set_plugin_sub_menu() {
-
-        add_submenu_page(
-            'ajax-snippets',  /* 親メニューのslug */
-            '小要素の追加・変更',
-            '小要素の追加・変更',
-            'manage_options',
-            'child-config',
-            [$this, 'child_form']);
-    }
-    function set_plugin_tag_menu() {
-
       add_submenu_page(
-          'ajax-snippets',  /* 親メニューのslug */
-          'タグの設定',
-          'タグの設定',
-          'manage_options',
-          'tag-config',
-          [$this, 'tag_form']);
+        'ajax-snippets',  /* 親メニューのslug */
+        'ASPの追加・変更・削除',
+        'ASPの設定',
+        'manage_options',
+        'asp-config',
+        function(){
+          require_once abspath(__FILE__).'AdminViews/AspView.php';
+        }
+      );
     }
-    function set_plugin_log_menu() {
 
-      add_submenu_page(
-          'ajax-snippets',  /* 親メニューのslug */
-          'クリック履歴',
-          'クリック履歴',
-          'manage_options',
-          'click-log',
-          [$this, 'click_log']);
+    public function set_plugin_menu()
+    {
+      add_menu_page(
+        'Ajax Snippets',           /* ページタイトル*/
+        'アフィリンクメーカー',           /* メニュータイトル */
+        'manage_options',         /* 権限 */
+        'ajax-snippets',    /* ページを開いたときのURL */
+        [$this, 'show_about_plugin'],       /* メニューに紐づく画面を描画するcallback関数 */
+        'dashicons-format-gallery', /* アイコン see: https://developer.wordpress.org/resource/dashicons/#awards */
+        6                          /* 表示位置のオフセット */
+      );
     }
-    function show_about_plugin() {
+    public function set_plugin_sub_menu()
+    {
+      add_submenu_page(
+        'ajax-snippets',  /* 親メニューのslug */
+        '小要素の追加・変更',
+        '小要素の追加・変更',
+        'manage_options',
+        'child-config',
+        [$this, 'child_form']
+      );
+    }
+    public function set_plugin_tag_menu()
+    {
+      add_submenu_page(
+        'ajax-snippets',  /* 親メニューのslug */
+        'タグの設定',
+        'タグの設定',
+        'manage_options',
+        'tag-config',
+        [$this, 'tag_form']
+      );
+    }
+    public function set_plugin_log_menu()
+    {
+      add_submenu_page(
+        'ajax-snippets',  /* クリック履歴 */
+        'クリック履歴',
+        'クリック履歴',
+        'manage_options',
+        'click-log',
+        [$this, 'click_log']);
+    }
+    public function show_about_plugin() {
       $action = isset($_GET['action']) ? $_GET['action'] : null;
       if ($action == 'delete') {
         //削除用のページ
         require_once abspath(__FILE__).'templates/base/base-delete.php';
 			} else {
 				if (!isset($action)) {
-          require_once ABSPATH . 'wp-content/plugins/ajax-snippets/templates/base/base-list.php';
+          require_once abspath(__FILE__).'AdminViews/BaseView.php';
+          // require_once ABSPATH . 'wp-content/plugins/ajax-snippets/templates/base/base-list.php';
 
 				} else if($action == "update"){
           require_once ABSPATH . 'wp-content/plugins/ajax-snippets/templates/base/base-update.php';
@@ -273,15 +203,21 @@ class AjaxSneppets
 				}
 			}
     }
-    function tag_form() {
+    public function tag_form() {
       require_once abspath(__FILE__).'templates/tag/tag-config.php';
     }
 
-    function click_log() {
+    public function click_log() {
       require_once abspath(__FILE__).'templates/log/click-log.php';
     }
 
 } // end of class
+
+/* プラグインの有効化 */
+add_action('activated_plugin', [InitDatabase::getInstance(), 'handle']); //singletonパターンなので、一つのみ生成するときは「::」で参照する
+
+add_action('init', 'AjaxSneppets::init');
+
 
 function redirect_system(){
 date_default_timezone_set('Asia/Tokyo');
@@ -372,7 +308,7 @@ add_action( 'template_redirect', 'redirect_system');
 function click_log_endpoint(){
 
   //エンドポイントを登録
-  register_rest_route( 'wp/custom', '/record', array(
+  register_rest_route( 'wp/custom', '/record/(?P<id>\d)', array(
       'methods' => 'POST',
       //エンドポイントにアクセスした際に実行される関数
       'callback' => 'clickLogs',
@@ -381,6 +317,8 @@ function click_log_endpoint(){
 
 }
 add_action('rest_api_init', 'click_log_endpoint');
+add_action('rest_api_init', 'createEndPoints');
+
 
 function clickLogs(){
   global $wpdb;
@@ -408,4 +346,20 @@ function clickLogs(){
   $res = $wpdb->insert( $table, $data, $format);
                       }
   return $res;
+}
+
+add_action('rest_api_init', function() {
+  register_rest_route( 'myapi/v1', '/test2/(?P<id>[a-zA-Z0-9-]+)', array(
+    'methods' => 'GET',
+    'callback' => 'func_test2',
+    'permission_callback' => function() { return true; }
+  ));
+});
+function func_test2($date) {
+  // ここに何らかの処理
+  $id = $date['id'];
+  $return['id'] = $id;
+  $return['title']='title';
+  $return['body']='body';
+  return new WP_REST_Response( $return, 200 );
 }
