@@ -32,6 +32,16 @@ class BaseElsGetService implements IBaseElsGetService
     return new BaseData($parent, $app); //クライアントが直接ドメインオブジェクト　Asp()を操作できないように、DTOで対応する
   }
 
+  public function getBaseFindByName(string $name)
+  {
+    $parents = $this->parentNodeRepository->ParentFindByName($name);
+    $parentsData = array();
+    foreach($parents as $p){
+      array_push($parentsData, new ParentListData($p));
+    }
+    return $parentsData;
+  }
+
   public function getAll()
   {
     $parents = $this->parentNodeRepository->getAllParent();

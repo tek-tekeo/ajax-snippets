@@ -113,7 +113,7 @@ class App
 
   public function setAppId(int $appId)
   {
-    //インクリメントなので重複チェックは不要
+    $this->appId = $appId;
   }
 
   public function setImg(string $img)

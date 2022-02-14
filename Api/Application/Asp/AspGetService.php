@@ -1,9 +1,9 @@
 <?php
 namespace AjaxSnippets\Api\Application\Asp;
 
-use AjaxSnippets\Api\Domain\Models\Asp;
-use AjaxSnippets\Api\Domain\Models\AspId;
-use AjaxSnippets\Api\Domain\Models\IAspRepository;
+use AjaxSnippets\Api\Domain\Models\Asps\Asp;
+use AjaxSnippets\Api\Domain\Models\Asps\AspId;
+use AjaxSnippets\Api\Domain\Models\Asps\IAspRepository;
 
 class AspGetService implements IAspGetService
 {
@@ -30,7 +30,12 @@ class AspGetService implements IAspGetService
   public function getAll()
   {
     $asps = $this->aspRepository->getAll();
-    return $asps;
+    $aspsData = array();
+    foreach($asps as $asp){
+      $aspData = new AspData($asp);
+      array_push($aspsData, $aspData);
+    }
+    return $aspsData;
   }
 
 }

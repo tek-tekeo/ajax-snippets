@@ -1,8 +1,8 @@
 <?php
-namespace AjaxSnippets\Api\Domain\Models;
+namespace AjaxSnippets\Api\Domain\Models\Asps;
 
-use AjaxSnippets\Api\Domain\Models\AspId;
-use AjaxSnippets\Api\Domain\Models\Asp;
+use AjaxSnippets\Api\Domain\Models\Asps\AspId;
+use AjaxSnippets\Api\Domain\Models\Asps\Asp;
 
 interface IAspRepository
 {

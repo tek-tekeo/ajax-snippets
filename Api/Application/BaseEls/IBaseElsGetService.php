@@ -1,13 +1,10 @@
 <?php
 namespace AjaxSnippets\Api\Application\BaseEls;
 
-use AjaxSnippets\Api\Domain\Models\BaseEls\ParentNode;
-use AjaxSnippets\Api\Domain\Models\BaseEls\App;
-
-
 interface IBaseElsGetService
 {
   public function handle(BaseElsGetCommand $cmd);
+  public function getBaseFindByName(string $name);
   public function getAll();
 }
 

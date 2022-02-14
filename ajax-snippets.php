@@ -1,19 +1,6 @@
 <?php
 use AjaxSnippets\Route;
-use AjaxSnippets\Api\Infrastructure\Repository\Test;
-use AjaxSnippets\Api\Domain\Models\IAspRepository;
-use AjaxSnippets\Api\Infrastructure\Repository\AspRepository;
 use AjaxSnippets\Database\InitDatabase;
-use AjaxSnippets\Configs\ConfigInitializer;
-use AjaxSnippets\Api\Domain\Models\AspId;
-use AjaxSnippets\Api\Domain\Services\AspService;
-use AjaxSnippets\Api\Controllers\AAAController;
-use AjaxSnippets\Api\Application\Asp\AspDeleteService;
-use AjaxSnippets\Api\Application\Asp\AspCreateService;
-use AjaxSnippets\Api\Application\Asp\AspGetService;
-use AjaxSnippets\Api\Application\Asp\AspUpdateService;
-use AjaxSnippets\Api\Controllers\AspController;
-use AjaxSnippets\Api\Infrastructure\Repository\ParentNodeRepository;
 
 require_once 'vendor/autoload.php';
 
@@ -24,9 +11,9 @@ Author: tektekeo
 Version: 0.2
 Author URI: https://pachi.tokyo
 */
-// if ( ! defined( 'ABSPATH' ) ) {
-// 	exit; // Exit if accessed directly.
-// }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 global $wpdb;
 define('VERSION','0.4');
@@ -39,8 +26,8 @@ $containerBuilder = new DI\ContainerBuilder();
 $containerBuilder->addDefinitions(dirname(__FILE__) .'/diconfig.php'); //プラグインのディレクトリパスは　plugin_dir_path( __FILE__ )
 $diContainer = $containerBuilder->build();
 
-// $a = $diContainer->get('AjaxSnippets\Api\Controllers\BaseController');
-// var_dump($a->test());die;
+// $a = $diContainer->get('AjaxSnippets\Api\Controllers\TagLinkController');
+// var_dump($a);die;
 // $initializer = ConfigInitializer::getInstance();
 // $initializer->handle();
 // die;
@@ -50,20 +37,40 @@ function createEndPoints()
 {
   //親要素関連
   Route::get('/base', 'AjaxSnippets\Api\Controllers\BaseController@index'); //全件取得
+  Route::post('/base/search', 'AjaxSnippets\Api\Controllers\BaseController@search'); //名前検索
+  Route::post('/base', 'AjaxSnippets\Api\Controllers\BaseController@create'); //新規追加
   Route::get('/base/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\BaseController@get'); //指定ID検索
   Route::put('/base/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\BaseController@update');
   
-  //子要素関連
-
+  
   //Asp関連
-  Route::post('/asps', 'AjaxSnippets\Api\Controllers\AspController@create');
-  Route::put('/asps/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AspController@update');
-  Route::get('/asps', 'AjaxSnippets\Api\Controllers\AspController@index');
-  Route::get('/asps/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AspController@get');
-  Route::delete('/asps/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AspController@delete');
+  Route::post('/asp', 'AjaxSnippets\Api\Controllers\AspController@create');
+  Route::put('/asp/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AspController@update');
+  Route::get('/asp', 'AjaxSnippets\Api\Controllers\AspController@index');
+  Route::get('/asp/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AspController@get');
+  Route::delete('/asp/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AspController@delete');
 
+  //子要素関連
+  Route::post('/detail', 'AjaxSnippets\Api\Controllers\DetailController@create'); //新規追加
+  Route::get('/detail', 'AjaxSnippets\Api\Controllers\DetailController@index'); //全件取得
+  Route::post('/detail/search', 'AjaxSnippets\Api\Controllers\DetailController@search'); //名前検索
+  Route::get('/detail/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\DetailController@get'); //指定ID検索
+  Route::put('/detail/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\DetailController@update');
+  
   //タグ関連
-
+  Route::post('/tag', 'AjaxSnippets\Api\Controllers\TagController@create');
+  Route::put('/tag/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\TagController@update');
+  Route::get('/tag', 'AjaxSnippets\Api\Controllers\TagController@index');
+  Route::get('/tag/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\TagController@get');
+  Route::delete('/tag/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\TagController@delete');
+  
+  //タグ - 子要素 関連
+  Route::post('/taglink', 'AjaxSnippets\Api\Controllers\TagLinkController@create');
+  Route::put('/taglink/(?P<itemId>\d+)', 'AjaxSnippets\Api\Controllers\TagLinkController@update');
+  // Route::get('/taglink', 'AjaxSnippets\Api\Controllers\TagLinkController@index');
+  Route::get('/taglink/(?P<itemId>\d+)', 'AjaxSnippets\Api\Controllers\TagLinkController@get');
+  Route::delete('/taglink/(?P<itemId>\d+)', 'AjaxSnippets\Api\Controllers\TagLinkController@delete');
+  
   //ログ関連
 }
 
@@ -116,7 +123,7 @@ class AjaxSneppets
         'manage_options',
         'asp-config',
         function(){
-          require_once abspath(__FILE__).'AdminViews/AspView.php';
+          // require_once abspath(__FILE__).'AdminViews/AspView.php';
         }
       );
     }
@@ -172,7 +179,8 @@ class AjaxSneppets
         require_once abspath(__FILE__).'templates/base/base-delete.php';
 			} else {
 				if (!isset($action)) {
-          require_once abspath(__FILE__).'AdminViews/BaseView.php';
+          require_once abspath(__FILE__).'AdminViews/App.php';
+          // require_once abspath(__FILE__).'AdminViews/BaseView.php';
           // require_once ABSPATH . 'wp-content/plugins/ajax-snippets/templates/base/base-list.php';
 
 				} else if($action == "update"){

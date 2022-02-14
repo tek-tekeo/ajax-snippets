@@ -40,6 +40,31 @@ class ParentNodeRepository implements IParentNodeRepository
     return null;
   }
 
+  public function ParentFindByName(string $name) : array
+  {
+    $res = $this->db->get_results("SELECT * FROM ".$this->table."  WHERE name LIKE '%".$name."%'");
+    $parents = array();
+    if(!$res == null){
+      foreach($res as $r){
+      $parent = new ParentNode(
+        $r->id,
+        $r->name,
+        $r->anken,
+        $r->affi_link,
+        $r->s_link,
+        $r->asp_name,
+        $r->affi_img,
+        $r->img_tag,
+        $r->s_img_tag
+      );
+      array_push($parents, $parent);
+    }
+    return $parents;
+  }
+  return array();
+  }
+
+
   public function getAllParent() : array
   {
     $res = $this->db->get_results("SELECT * FROM ".$this->table);
@@ -64,7 +89,7 @@ class ParentNodeRepository implements IParentNodeRepository
     return array();
   }
 
-  public function saveParent(ParentNode $parent) : bool
+  public function saveParent(ParentNode $parent) : int
   {
     $res = $this->db->replace( 
       $this->table, 
@@ -91,6 +116,7 @@ class ParentNodeRepository implements IParentNodeRepository
         '%s' 
       )
     );
-    return $res;
+    
+    return $this->db->insert_id;
   }
 }

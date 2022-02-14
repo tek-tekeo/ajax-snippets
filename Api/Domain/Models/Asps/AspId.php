@@ -1,5 +1,5 @@
 <?php
-namespace AjaxSnippets\Api\Domain\Models;
+namespace AjaxSnippets\Api\Domain\Models\Asps;
 
 class AspId
 {

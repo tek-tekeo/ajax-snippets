@@ -56,11 +56,11 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         <v-col>{{asp.id}}</v-col>
         <v-col>
           <v-text-field
-            v-model="asp.asp_name"
+            v-model="asp.aspName"
           ></v-text-field>       
         </v-col>
         <v-col>
-          <v-text-field v-model="asp.connect_string"></v-text-field> 
+          <v-text-field v-model="asp.connectString"></v-text-field> 
       </v-col>
       </v-row>
     </v-main>
@@ -87,7 +87,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     async created(){
       try {
         // TODO: URL
-        const res = await axios.get('asps');
+        const res = await axios.get('asp');
         this.asps = res.data;
       } catch (err) {
         // TODO: エラー処理
@@ -96,9 +96,9 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     },
     methods:{
       async createNewAsp(){
-        const res = await axios.post('asps',{
-          'asp_name':this.aspName,
-          'connect_string':this.connectString
+        const res = await axios.post('asp',{
+          'aspName':this.aspName,
+          'connectString':this.connectString
         });
         if(res.data && res.status == '200'){
           var options = {
@@ -108,7 +108,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
             type: 'success'
           }
           this.$toasted.show('追加完了',options);
-          const newAsps = await axios.get('asps');
+          const newAsps = await axios.get('asp');
           this.asps = newAsps.data;
         }else{
           var options = {
@@ -122,9 +122,9 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       },
       async updateAsp(id){
         const asp = this.asps.find((asp) => asp.id == id);
-          const res = await axios.put('asps/' + asp.id,{
-            'asp_name':asp.asp_name,
-            'connect_string':asp.connect_string
+          const res = await axios.put('asp/' + asp.id,{
+            'aspName':asp.aspName,
+            'connectString':asp.connectString
           });
           if(res.data && res.status == '200'){
           var options = {
@@ -134,7 +134,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
             type: 'success'
           }
           this.$toasted.show('更新完了',options);
-          const newAsps = await axios.get('asps');
+          const newAsps = await axios.get('asp');
           this.asps = newAsps.data;
         }else{
           var options = {

@@ -1,8 +1,8 @@
 <?php
 namespace AjaxSnippets\Api\Domain\Services;
 
-use AjaxSnippets\Api\Domain\Models\Asp;
-use AjaxSnippets\Api\Domain\Models\IAspRepository;
+use AjaxSnippets\Api\Domain\Models\Asps\Asp;
+use AjaxSnippets\Api\Domain\Models\Asps\IAspRepository;
 
 class AspService
 {

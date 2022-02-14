@@ -1,9 +1,9 @@
 <?php
 namespace AjaxSnippets\Api\Application\Asp;
 
-use AjaxSnippets\Api\Domain\Models\Asp;
-use AjaxSnippets\Api\Domain\Models\AspId;
-use AjaxSnippets\Api\Domain\Models\IAspRepository;
+use AjaxSnippets\Api\Domain\Models\Asps\Asp;
+use AjaxSnippets\Api\Domain\Models\Asps\AspId;
+use AjaxSnippets\Api\Domain\Models\Asps\IAspRepository;
 use AjaxSnippets\Api\Application\Asp\IAspDeleteService;
 use AjaxSnippets\Api\Application\Asp\AspDeleteCommand;
 

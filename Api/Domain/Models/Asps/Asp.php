@@ -1,9 +1,7 @@
 <?php
-namespace AjaxSnippets\Api\Domain\Models;
+namespace AjaxSnippets\Api\Domain\Models\Asps;
 
-use AjaxSnippets\Api\Domain\Models\AspId;
-
-// use AjaxSnippets\Domain\Models\BaseModel;
+use AjaxSnippets\Api\Domain\Models\Asps\AspId;
 
 class Asp
 {

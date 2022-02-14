@@ -3,7 +3,7 @@ namespace AjaxSnippets\Api\Domain\Models\BaseEls;
 
 class ParentNode
 {
-  public $id;
+  private $id;
   private $name;
   private $anken;
   private $affiLink;
@@ -15,14 +15,14 @@ class ParentNode
 
   public function __construct(
     int $id = null,
-    string $name,
-    string $anken,
-    string $affiLink,
-    string $sLink,
-    string $aspName,
-    string $affiImg,
-    string $imgTag,
-    string $sImgTag
+    string $name = null,
+    string $anken = null,
+    string $affiLink = null,
+    string $sLink = null,
+    string $aspName = null,
+    string $affiImg = null,
+    string $imgTag = null,
+    string $sImgTag = null
   )
   {
     if($id === null){

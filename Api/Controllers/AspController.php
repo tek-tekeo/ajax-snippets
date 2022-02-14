@@ -3,12 +3,6 @@ namespace AjaxSnippets\Api\Controllers;
 
 use \WP_REST_Request;
 use \WP_REST_Response;
-use AjaxSneppets\Api\Domain\Models\Asp;
-use AjaxSneppets\Api\Domain\Models\AspId;
-use AjaxSnippets\Api\Domain\Services\AspService;
-use AjaxSnippets\Api\Domain\Models\IAspRepository;
-use AjaxSnippets\Api\Infrastructure\Repository\AspRepository;
-use AjaxSnippets\Api\Infrastructure\Repository\ImMemoryAspRepository;
 use AjaxSnippets\Api\Application\Asp\IAspCreateService;
 use AjaxSnippets\Api\Application\Asp\IAspUpdateService;
 use AjaxSnippets\Api\Application\Asp\IAspGetService;
@@ -17,9 +11,6 @@ use AjaxSnippets\Api\Application\Asp\AspDeleteCommand;
 use AjaxSnippets\Api\Application\Asp\AspUpdateCommand;
 use AjaxSnippets\Api\Application\Asp\AspCreateCommand;
 use AjaxSnippets\Api\Application\Asp\AspGetCommand;
-use AjaxSnippets\ServiceProviders\AspServiceProvider;
-use AjaxSnippets\Configs\ConfigInitializer;
-
 
 class AspController
 {
@@ -51,8 +42,8 @@ class AspController
   public function create(WP_REST_Request $req) : WP_REST_Response
   {
     $cmd = new AspCreateCommand(
-      $req->get_param('asp_name'),
-      $req->get_param('connect_string')
+      $req->get_param('aspName'),
+      $req->get_param('connectString')
     );
     $res = $this->aspCreateService->handle($cmd);
     return new WP_REST_Response($res, 200);
@@ -62,8 +53,8 @@ class AspController
   {
     $cmd = new AspUpdateCommand(
       $req->get_param('id'),
-      $req->get_param('asp_name'),
-      $req->get_param('connect_string')
+      $req->get_param('aspName'),
+      $req->get_param('connectString')
     );
     $res = $this->aspUpdateService->handle($cmd);
     return new WP_REST_Response($res, 200);
