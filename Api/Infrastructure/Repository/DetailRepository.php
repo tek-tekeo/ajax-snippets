@@ -4,6 +4,7 @@ namespace AjaxSnippets\Api\Infrastructure\Repository;
 use AjaxSnippets\Api\Domain\Models\Details\IDetailRepository;
 use AjaxSnippets\Api\Domain\Models\Details\Detail;
 use AjaxSnippets\Api\Domain\Models\BaseEls\ParentNode;
+use Exception;
 
 class DetailRepository implements IDetailRepository
 {
@@ -51,7 +52,7 @@ class DetailRepository implements IDetailRepository
     return array();
   }
 
-  public function DetailFindById(int $detailId)
+  public function DetailFindById(int $detailId): ?Detail
   {
     $res = $this->db->get_row("SELECT * FROM ".$this->table." WHERE id=".$detailId);
     if(!$res == null){				
@@ -72,6 +73,7 @@ class DetailRepository implements IDetailRepository
       );
       return $detail;
     }
+    throw new Exception('Detail IDに該当するデータが存在しません。');
     return null;
   }
 

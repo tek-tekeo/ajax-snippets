@@ -78,9 +78,9 @@ class AspRepository implements IAspRepository
     return null;
   }
 
-  public function AspFindByName(Asp $asp)
+  public function AspFindByName(string $aspName): ?Asp
   {
-    $res = $this->db->get_row("SELECT * FROM ".PLUGIN_DB_PREFIX."asp WHERE asp_name = ".$asp->getAspName());
+    $res = $this->db->get_row("SELECT * FROM ".PLUGIN_DB_PREFIX."asp WHERE asp_name = '".$aspName."'");
     if(!$res == null){
       $asp = new Asp(
         new AspId($res->id),
@@ -89,6 +89,7 @@ class AspRepository implements IAspRepository
       );
       return $asp;
     }
+    throw new \Exception('名前に該当するASPが存在しません。');
     return null;
   }
 }

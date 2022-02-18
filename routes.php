@@ -15,47 +15,47 @@ class Route
     // 
   }
 
-  static public function get(string $path, string $callback)
+  static public function get(string $path, string $callback, bool $adminPermission = true)
   {
     // エンドポイントの登録
-    self::registerMethods($path, $callback, 'GET');
+    self::registerMethods($path, $callback, 'GET', $adminPermission);
   }
 
-  static public function post(string $path, string $callback)
+  static public function post(string $path, string $callback, bool $adminPermission =true)
   {
     // エンドポイントの登録
-    self::registerMethods($path, $callback, 'POST');
+    self::registerMethods($path, $callback, 'POST', $adminPermission);
   }
 
-  static public function put(string $path, string $callback)
+  static public function put(string $path, string $callback, bool $adminPermission =true)
   {
     // エンドポイントの登録
-    self::registerMethods($path, $callback, 'PUT');
+    self::registerMethods($path, $callback, 'PUT', $adminPermission);
   }
 
-  static public function delete(string $path, string $callback)
+  static public function delete(string $path, string $callback, bool $adminPermission =true)
   {
     // エンドポイントの登録
-    self::registerMethods($path, $callback, 'DELETE');
+    self::registerMethods($path, $callback, 'DELETE', $adminPermission);
   }
 
-  static public function resource(string $path, string $callbackClass)
+  static public function resource(string $path, string $callbackClass, bool $adminPermission =true)
   {
     // index, show
-    self::get($path, $callbackClass . '@index');
-    self::get($path . '/(?P<id>\d+)', $callbackClass . '@show');
+    self::get($path, $callbackClass . '@index', $adminPermission);
+    self::get($path . '/(?P<id>\d+)', $callbackClass . '@show', $adminPermission);
 
     // create
-    self::post($path, $callbackClass . '@create');
+    self::post($path, $callbackClass . '@create', $adminPermission);
 
     // update
-    self::put($path . '/(?P<id>\d+)', $callbackClass . '@update');
+    self::put($path . '/(?P<id>\d+)', $callbackClass . '@update', $adminPermission);
 
     // delete
-    self::delete($path . '/(?P<id>\d)', $callbackClass . '@delete');
+    self::delete($path . '/(?P<id>\d)', $callbackClass . '@delete', $adminPermission);
   }
 
-  static private function registerMethods(string $path, string $callback, string $method)
+  static private function registerMethods(string $path, string $callback, string $method, bool $adminPermission =true)
   {
     $requestMethod = '';
     
@@ -80,11 +80,19 @@ class Route
     $options = [
       'methods' => $requestMethod,
       'callback' => self::parseMethod($callback),
-      'permission_callback' => '__return_true',//Closure::fromCallable([new Authorization(), 'handle'])
+      'permission_callback' => self::rest_permission($adminPermission),//Closure::fromCallable([new Authorization(), 'handle'])
     ];
 
     // エンドポイントの登録
     register_rest_route(self::API_BASE_PATH, $path, $options);
+  }
+
+  static private function rest_permission(bool $adminPermission)
+  {
+    if(!$adminPermission){
+      return '__return_true';
+    }
+    return !current_user_can('manage_options');
   }
 
   static private function parseMethod(string $method): Closure

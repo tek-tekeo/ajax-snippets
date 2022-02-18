@@ -37,6 +37,7 @@ class ParentNodeRepository implements IParentNodeRepository
       );
       return $parent;
     }
+    throw new \Exception('idに該当する親要素がありません。');
     return null;
   }
 
@@ -64,6 +65,25 @@ class ParentNodeRepository implements IParentNodeRepository
   return array();
   }
 
+  public function ParentFindByAnkenName(string $anken)
+  {
+    $res = $this->db->get_row("SELECT * FROM ".$this->table." WHERE anken='".$anken."'");
+    if(!$res == null){
+      $parent = new ParentNode(
+        $res->id,
+        $res->name,
+        $res->anken,
+        $res->affi_link,
+        $res->s_link,
+        $res->asp_name,
+        $res->affi_img,
+        $res->img_tag,
+        $res->s_img_tag
+      );
+      return $parent;
+    }
+    return null;
+  }
 
   public function getAllParent() : array
   {

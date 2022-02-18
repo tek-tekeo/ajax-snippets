@@ -86,6 +86,14 @@ class ParentNode
     return $this->sImgTag;
   }
 
+  public function checkName(string $name):bool
+  {
+    if($name != $this->name()){
+      return true;
+    }
+    throw new \Exception('detail idに対して案件名が違っている');
+  }
+
   public function setId(int $id)
   {
     //インクリメントなので重複チェックは不要

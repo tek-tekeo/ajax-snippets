@@ -10,5 +10,5 @@ interface IAspRepository
     public function delete(Asp $asp) : bool;
     public function getAll():array;
     public function AspFindById(AspId $aspId);
-    public function AspFindByName(Asp $asp);
+    public function AspFindByName(string $aspName) : ?Asp;
 }

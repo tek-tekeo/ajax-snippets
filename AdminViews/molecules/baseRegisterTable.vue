@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-    <v-col cols="5">
+    <v-col cols="6">
       <v-row>
         <v-col>
         <wp-text-box
@@ -87,7 +87,7 @@
         </v-col>
       </v-row>
     </v-col>
-    <v-col cols="5">
+    <v-col cols="6">
       <v-row>
         <v-col>
           <wp-text-box

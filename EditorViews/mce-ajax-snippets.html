@@ -4,10 +4,88 @@
 <head>
   <meta charset="UTF-8">
   <title>アフィリエイトプラグイン</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
 </head>
 
 <body>
-  <input type="text" id="item" placeholder="検索アイテム名を入力" autocomplete="off">
+  <div id="vue-edit-page">
+    <v-app>
+      <v-main>
+        <v-container fluid>
+          <wp-search-text-box
+            label="名前で検索"
+            @search-text="searchText"
+          >
+          </wp-search-text-box>
+          
+          <v-btn
+          color="primary"
+          @click="itemInfo"
+          small
+          >
+          
+          情報
+          </v-btn>
+
+          <v-btn
+          color="primary"
+          @click="shohinLink"
+          small
+          >
+          商品カード
+          </v-btn>
+
+          <v-btn
+          color="primary"
+          @click="textLink"
+          small
+          >
+          テキストリンク
+          </v-btn>
+
+          <v-btn
+          color="primary"
+          @click="singleReview"
+          small
+          >
+          シングルレビュー
+          </v-btn>
+
+          <v-btn
+          color="primary"
+          @click="appLink"
+          small
+          >
+          アプリのリンク
+          </v-btn>
+
+          <v-btn
+          color="primary"
+          @click="quoteLink"
+          small
+          >
+          引用文
+          </v-btn>
+          <v-radio-group v-model="itemNo"> 
+            <v-virtual-scroll
+            :items="searchList"
+            height="400"
+            item-height="40"
+            >
+            <template v-slot:default="{ item }">
+                <v-radio
+                  :label="item.parent.name +' '+ item.itemName"
+                  :value="item.id"
+                ></v-radio>
+            </template>
+          </v-virtual-scroll>
+        </v-radio-group>
+        </v-container>
+      </v-main>
+    </v-app>
+  <!-- <input type="text" id="item" placeholder="検索アイテム名を入力" autocomplete="off">
   <input type="button" id="AmazonLink" value="Amazonリンクを生成" onclick="return false;" />
   <input type="button" id="a8Link" value="A8URLを生成" onclick="return false;" />
   <input type="button" id="normalLink" value="アフィリンク(直)" onclick="return false;" />
@@ -19,9 +97,103 @@
   <p>候補一覧</p>
   <dl id="ajax-item-list" style="width:550px; height:350px;overflow-y: scroll;">
 
-  </dl>
+  </dl> -->
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+<script src="https://unpkg.com/http-vue-loader"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<script src="https://unpkg.com/vue-toasted"></script>
+<script type="text/javascript">
+  var site_url = '<?= site_url(); ?>';
+</script>
+<script>
+  Vue.use(Toasted);
+  axios.defaults.baseURL = 'http://localhost:3000/?rest_route=/ajax_snippets_path/v1/';
+  new Vue({
+    el: '#vue-edit-page',
+    vuetify: new Vuetify(),
+    components: {
+      'WpSearchTextBox': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/atoms/wpSearchTextBox.vue')
+    },
+    data() {
+      return {
+        searchList:[],
+        itemNo:null,
+      }
+    },
+    async created(){
+      try {
+        const res = await axios.get('detail');
+        this.searchList = res.data;
+      } catch (err) {
+        // TODO: エラー処理
+        console.log(err);
+      }
+    },
+    methods:{
+      async searchText(name){
+        try {
+        // TODO: URL
+        const res = await axios.post('/base/search',{
+          'name':name
+        });
+        this.baseList = res.data;
+        } catch (err) {
+          // TODO: エラー処理
+          console.log(err);
+        }
+      },
+      async itemInfo(){
+        const list = JSON.parse(JSON.stringify(this.searchList));
+        const item = list.find((s)=>s.id = this.itemNo);
+
+        top.tinymce.activeEditor.selection.setContent(JSON.stringify(item));
+        top.tinymce.activeEditor.windowManager.close();
+      },
+      async shohinLink(){
+        const list = JSON.parse(JSON.stringify(this.searchList));
+        const item = list.find((s)=>s.id = this.itemNo);
+
+        const kw = item.parent.name+' ' + item.itemName;
+        if (item.rakutenId != "") {
+          inputTag = "[rakuten2 id=\"" + item.rakutenId + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
+          var place = Math.random().toString(36).slice(-8);
+          inputTag = inputTag + " detail_id=" + item.id + " pl=" + place + "]";
+        }else if (item.amazonAsin != "") {
+          inputTag = "[amazon asin=\"" + item.amazonAsin + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
+          inputTag = inputTag + " btn1_url=\"" + item.affiLink + "\" btn1_text=\"" + item.parent.name + "公式\"]";
+        } else {
+          return false;
+        }
+
+        top.tinymce.activeEditor.selection.setContent(inputTag);
+        this.itemNo = null;
+        top.tinymce.activeEditor.windowManager.close();
+      },
+      async textLink(){
+        const list = JSON.parse(JSON.stringify(this.searchList));
+        const item = list.find((s)=>s.id = this.itemNo);
+
+        top.tinymce.activeEditor.selection.setContent(inputTag);
+        this.itemNo = null;
+        top.tinymce.activeEditor.windowManager.close();
+      },
+      async singleReview(){
+
+      },
+      async appLink(){
+        
+      },
+      async quoteLink(){
+        
+      }
+    }
+  });
+</script>
+
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script type="text/javascript">
   $(function () {
     $(document).ready(function () {
@@ -191,6 +363,6 @@
     });
 
   });
-</script>
+</script> -->
 
 </html>

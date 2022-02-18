@@ -11,32 +11,32 @@ foreach (glob($pattern) as $filename) {
 /**
  * ドメインの読み込み
  */
-$pattern = dirname(__FILE__) . '/Domain/Models/*.php';
-foreach (glob($pattern) as $filename) {
-    include_once $filename;
-}
+// $pattern = dirname(__FILE__) . '/Domain/Models/*.php';
+// foreach (glob($pattern) as $filename) {
+//     include_once $filename;
+// }
 // $pattern = dirname(__FILE__) . '/Domain/Params/*/*.php';
 // foreach (glob($pattern) as $filename) {
 //     include_once $filename;
 // }
 
 //ドメインサービスの読み込み
-$pattern = dirname(__FILE__) . '/Domain/Services/*.php';
-foreach (glob($pattern) as $filename) {
-    include_once $filename;
-}
+// $pattern = dirname(__FILE__) . '/Domain/Services/*.php';
+// foreach (glob($pattern) as $filename) {
+//     include_once $filename;
+// }
 
 /**
  * アプリケーションの読み込み
  */
-$pattern = dirname(__FILE__) . '/Application/*/I*.php';
-foreach (glob($pattern) as $filename) {
-    include_once $filename;
-}
-$pattern = dirname(__FILE__) . '/Application/*/*.php';
-foreach (glob($pattern) as $filename) {
-    include_once $filename;
-}
+// $pattern = dirname(__FILE__) . '/Application/*/I*.php';
+// foreach (glob($pattern) as $filename) {
+//     include_once $filename;
+// }
+// $pattern = dirname(__FILE__) . '/Application/*/*.php';
+// foreach (glob($pattern) as $filename) {
+//     include_once $filename;
+// }
 // /**
 //  * ミドルウェアの読み込み
 //  */
@@ -58,23 +58,23 @@ foreach (glob($pattern) as $filename) {
 // }
 
 
-include_once(dirname(__FILE__) . '/ServiceProviders/BaseServiceProvider.php');
-$pattern = dirname(__FILE__) . '/ServiceProviders/*.php';
-foreach (glob($pattern) as $filename) {
-    include_once $filename;
-}
+// include_once(dirname(__FILE__) . '/ServiceProviders/BaseServiceProvider.php');
+// $pattern = dirname(__FILE__) . '/ServiceProviders/*.php';
+// foreach (glob($pattern) as $filename) {
+//     include_once $filename;
+// }
 
 /**
  * インフラの読み込み
  */
-$pattern = dirname(__FILE__) . '/Infrastructure/*.php';
-foreach (glob($pattern) as $filename) {
-    include_once $filename;
-}
-$pattern = dirname(__FILE__) . '/Infrastructure/*/*.php';
-foreach (glob($pattern) as $filename) {
-    include_once $filename;
-}
+// $pattern = dirname(__FILE__) . '/Infrastructure/*.php';
+// foreach (glob($pattern) as $filename) {
+//     include_once $filename;
+// }
+// $pattern = dirname(__FILE__) . '/Infrastructure/*/*.php';
+// foreach (glob($pattern) as $filename) {
+//     include_once $filename;
+// }
 
 // /**
 //  * プレゼンテーションの読み込み

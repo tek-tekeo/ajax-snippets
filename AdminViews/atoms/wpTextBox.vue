@@ -6,6 +6,8 @@
       @input="changeValue"
       hide-details="auto"
       :rules="rules"
+      :prepend-icon="prependIcon"
+      :readonly="readonly"
     ></v-text-field>
   </div>
 </template>
@@ -40,6 +42,14 @@ module.exports = {
      default: ""
     },
     required:{
+      type: Boolean,
+      default: false
+    },
+    prependIcon:{
+      type: String,
+      default:""
+    },
+    readonly:{
       type: Boolean,
       default: false
     }

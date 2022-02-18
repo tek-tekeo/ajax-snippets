@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row dense>
-      <v-col cols="5">
+      <v-col cols="6">
         <wp-select-box
           label="親要素の指定"
           :items="selectList"
@@ -9,7 +9,7 @@
         >
         </wp-select-box>
       </v-col>
-      <v-col cols="5">
+      <v-col cols="6">
         <wp-text-box
           label="商品名 必須"
           v-model="detail.itemName"
@@ -19,7 +19,7 @@
       </v-col>
       </v-row>
       <v-row>
-        <v-col cols="5">
+        <v-col cols="6">
           <wp-text-box
             label="商品ページのURL"
             v-model="detail.officialItemLink"
@@ -31,7 +31,7 @@
             color="red"
           ></v-checkbox>
         </v-col>
-        <v-col cols="5">
+        <v-col cols="6">
           <wp-text-box
             label="アフィリエイトURL(a8以外のURL)"
             v-model="detail.affiItemLink"
@@ -39,13 +39,13 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="5">
+        <v-col cols="6">
           <wp-text-box
             label="AmazonのAsin"
             v-model="detail.amazonAsin"
           ></wp-text-box>   
         </v-col>
-        <v-col cols="5">
+        <v-col cols="6">
           <wp-text-box
             label="楽天のid(例：phiten:111111)"
             v-model="detail.rakutenId"
@@ -61,14 +61,14 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="5">
+        <v-col cols="6">
           <v-checkbox
             v-model="detail.isShowUrl"
             label="公式URLを表示"
             color="blue"
           ></v-checkbox>
         </v-col>
-        <v-col cols="5">
+        <v-col cols="6">
           <wp-media-upload
             label="アイテム別の画像"
             v-model="detail.detailImg"
@@ -80,6 +80,8 @@
         <wp-multi-list
           v-model="detail.rchart"
           theme="チャート情報"
+          @reuse-items="reuseRItems"
+          @store-items="storeRItems"
         ></wp-multi-list>
       </v-col>
      </v-row>
@@ -88,6 +90,8 @@
         <wp-multi-list
           v-model="detail.info"
           theme="テーブル情報"
+          @reuse-items="reuseIItems"
+          @store-items="storeIItems"
         ></wp-multi-list>
       </v-col>
      </v-row>
@@ -126,8 +130,24 @@ module.exports = {
     deleteDetail(){
       
     },
-    updateDetail(){
+    async updateDetail(){
       this.$emit("updated-item", this.base);
+    },
+    async reuseRItems(){
+      const res = await axios.get('detail/rchart');
+      this.$set(this.detail, 'rchart', res.data);
+    },
+    async storeRItems(target){
+      const res = await axios.post('detail/rchart', 
+        {'json':JSON.stringify(target)}
+      );
+    },
+    async reuseIItems(){
+      const res = await axios.get('detail/info');
+      this.$set(this.detail, 'info', res.data);
+    },
+    async storeIItems(target){
+      const res = await axios.post('detail/info', {'json':JSON.stringify(target)});
     }
   },
   computed:{

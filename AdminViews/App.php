@@ -23,6 +23,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
         <v-card flat>
           <router-view></router-view>
         </v-card>
+      </v-container>
     </v-main>
   </v-app>
 

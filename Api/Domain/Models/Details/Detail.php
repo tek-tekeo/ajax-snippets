@@ -2,6 +2,7 @@
 namespace AjaxSnippets\Api\Domain\Models\Details;
 
 use AjaxSnippets\Api\Domain\Models\BaseEls\ParentNode;
+use AjaxSnippets\Api\Domain\Models\Asps\Asp;
 
 class Detail
 {  													
@@ -18,6 +19,7 @@ class Detail
   private string $review;
   private int $isShowUrl;
   private int $sameParent;
+  private Asp $asp;
 
   public function __construct(
     int $id,
@@ -120,6 +122,29 @@ class Detail
     return $this->sameParent;
   }
 
+  public function getAsp():Asp
+  {
+    return $this->asp;
+  }
+
+  public function getRedirectUrl():string
+  {
+    if($this->sameParent() == true || $this->getAsp() == null){
+      $url = $this->parent()->affiLink();
+    }else if($this->parent()->aspName() != 'a8'){
+      //a8以外の場合
+      $url = $this->affiItemLink();
+    }else{
+      $url = $this->parent()->sLink() . $this->getAsp()->getConnectString() . urlencode($this->officialItemLink);
+    }
+
+    return $url;
+  }
+
+  public function setAsp(Asp $asp)
+  {
+    $this->asp = $asp;
+  }
   public function setId(int $appId)
   {
     //インクリメントなので重複チェックは不要

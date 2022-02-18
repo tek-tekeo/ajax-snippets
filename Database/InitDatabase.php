@@ -1,8 +1,6 @@
 <?php
 namespace AjaxSnippets\Database;
 
-use AjaxSnippets\Domain\Models\Asps;
-
 class InitDatabase
 {
   //一つしかインスタンスを持てないように制約

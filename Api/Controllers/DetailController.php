@@ -101,4 +101,35 @@ class DetailController
   //   $res = $this->aspDeleteService->handle($cmd);
   //   return new WP_REST_Response( $res, 200 );
   // }
+
+  public function storeRchart(WP_REST_Request $req) : WP_REST_Response
+  {
+    $json = $req->get_param('json');
+    $storePath = plugin_dir_path( __FILE__ ) . '../Store/rchart_prev_chart.txt';
+    $res = file_put_contents($storePath, $json);
+    return new WP_REST_Response($res, 200);
+  }
+  
+  public function storeInfo(WP_REST_Request $req) : WP_REST_Response
+  {
+    $json = $req->get_param('json');
+    $storePath = plugin_dir_path( __FILE__ ) . '../Store/info_prev_chart.txt';
+    $res = file_put_contents($storePath, $json);
+    return new WP_REST_Response($res, 200);
+  }
+
+  public function getRchart() : WP_REST_Response
+  {
+    $getPath = plugin_dir_path( __FILE__ ) . '../Store/rchart_prev_chart.txt';
+    $res = file_get_contents($getPath);
+    return new WP_REST_Response(json_decode($res), 200);
+  }
+  
+  public function getInfo() : WP_REST_Response
+  {
+    $getPath = plugin_dir_path( __FILE__ ) . '../Store/info_prev_chart.txt';
+    $res = file_get_contents($getPath);
+    return new WP_REST_Response(json_decode($res), 200);
+  }
+
 }

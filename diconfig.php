@@ -11,6 +11,8 @@ use AjaxSnippets\Api\Domain\Models\Tags\ITagRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\TagRepository;
 use AjaxSnippets\Api\Domain\Models\TagLinks\ITagLinkRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\TagLinkRepository;
+use AjaxSnippets\Api\Domain\Models\Logs\ILogRepository;
+use AjaxSnippets\Api\Infrastructure\Repository\LogRepository;
 
 use AjaxSnippets\Api\Application\Asp\IAspCreateService;
 use AjaxSnippets\Api\Application\Asp\AspCreateService;
@@ -40,6 +42,7 @@ return [
   IDetailRepository::class => DI\autowire(DetailRepository::class),
   IAspRepository::class => DI\autowire(AspRepository::class),
   ITagRepository::class => DI\autowire(TagRepository::class),
+  ILogRepository::class => DI\autowire(LogRepository::class),
   ITagLinkRepository::class => DI\autowire(TagLinkRepository::class),
   IAspDeleteService::class => DI\autowire(AspDeleteService::class),
   IAspCreateService::class => DI\autowire(AspCreateService::class),

@@ -27,12 +27,17 @@
           削除する
         </v-btn>
       </v-col>
-      <v-col cols="10">
+      <v-col cols="8">
         <base-register-table
           :base="base"
           :asp-list="aspList"
         >
         </base-register-table>
+        <analize-affi-code
+          :asp="base.aspName"
+          @analize-code="AnalizeCode"
+        >
+        </analize-affi-code>
       </v-col>
     </v-row>
   </v-container>
@@ -42,9 +47,12 @@
 module.exports = {
   components: {
     'BaseRegisterTable': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/molecules/baseRegisterTable.vue'),
+    'AnalizeAffiCode': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/molecules/analizeAffiCode.vue'),
   },
   data(){
     return {
+      affiCode:'',
+      affiSCode:'',
       base:{},
       aspList:[]
     }
@@ -58,6 +66,15 @@ module.exports = {
     this.base = res[1].data;
   },
   methods:{
+    async AnalizeCode(code){
+      this.$set(this.base, 'affiLink', code.affiLink);
+      this.$set(this.base, 'affiImg', code.affiImg);
+      this.$set(this.base, 'imgTag', code.imgTag);
+      this.$set(this.base, 'affiImgWidth', code.affiImgWidth);
+      this.$set(this.base, 'affiImgHeight', code.affiImgHeight);
+      this.$set(this.base, 'sLink', code.sLink);
+      this.$set(this.base, 'sImgTag', code.sImgTag);
+    },
     async updateBase(){
       const res = await axios.put('base/'+this.base.id,this.base);
       if(res.data && res.status == '200'){
@@ -81,6 +98,9 @@ module.exports = {
     async deleteBase(){
       //TODO: 削除処理
       console.log('削除しました');
+    },
+    async analizeAffi(){
+      console.log('分析');
     }
   }
 }

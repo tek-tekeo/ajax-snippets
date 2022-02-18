@@ -17,7 +17,6 @@
           更新する
         </v-btn>
 
-
         <v-btn
           fixed
           bottom
@@ -99,6 +98,7 @@ module.exports = {
     async updateDetail(){
       this.validate();
       if(!this.valid){return;}
+
       let _this = this.detail;
       const res1 = await axios.delete('taglink/' + this.detail.id);
       const tagLink = this.selectedTagIds.map(async function(tagId){
@@ -107,7 +107,7 @@ module.exports = {
         );
       });
 
-      const res = await axios.post('detail',this.detail);
+      const res = await axios.put('detail/'+this.$route.params['id'],this.detail);
       if(res.data && res.status == '200'){
         var options = {
           position: 'top-center',
