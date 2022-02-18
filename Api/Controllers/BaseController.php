@@ -47,8 +47,6 @@ class BaseController
 
   public function create(WP_REST_Request $req) : WP_REST_Response
   {
-    // return new WP_REST_Response('ok', 200);
-
     $cmd = new BaseElsCreateCommand(
       new ParentNode(
         (int)$req->get_param('id'),
@@ -59,7 +57,9 @@ class BaseController
         (string)$req->get_param('aspName'),
         (string)$req->get_param('affiImg'),
         (string)$req->get_param('imgTag'),
-        (string)$req->get_param('sImgTag')
+        (string)$req->get_param('sImgTag'),
+        (int)$req->get_param('affiImgWidth'),
+        (int)$req->get_param('affiImgHeight')
       ),
       new App(
         (int)$req->get_param('appId'),
@@ -93,7 +93,9 @@ class BaseController
         (string)$req->get_param('aspName'),
         (string)$req->get_param('affiImg'),
         (string)$req->get_param('imgTag'),
-        (string)$req->get_param('sImgTag')
+        (string)$req->get_param('sImgTag'),
+        (int)$req->get_param('affiImgWidth'),
+        (int)$req->get_param('affiImgHeight')
       ),
       new App(
         (int)$req->get_param('appId'),

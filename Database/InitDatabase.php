@@ -102,6 +102,8 @@ class InitDatabase
       affi_img varchar(1025) NOT NULL,
       img_tag varchar(1025) NOT NULL,
       s_img_tag varchar(1025) NOT NULL,
+      affi_img_width int(11) DEFAULT 300 NOT NULL,
+      affi_img_height int(11) DEFAULT 250 NOT NULL,
       UNIQUE KEY id (id)
       ){$this->charsetCollate};";
 

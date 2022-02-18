@@ -33,7 +33,9 @@ class ParentNodeRepository implements IParentNodeRepository
         $res->asp_name,
         $res->affi_img,
         $res->img_tag,
-        $res->s_img_tag
+        $res->s_img_tag,
+        $res->affi_img_width,
+        $res->affi_img_height
       );
       return $parent;
     }
@@ -56,7 +58,9 @@ class ParentNodeRepository implements IParentNodeRepository
         $r->asp_name,
         $r->affi_img,
         $r->img_tag,
-        $r->s_img_tag
+        $r->s_img_tag,
+        $r->affi_img_width,
+        $r->affi_img_height
       );
       array_push($parents, $parent);
     }
@@ -78,7 +82,9 @@ class ParentNodeRepository implements IParentNodeRepository
         $res->asp_name,
         $res->affi_img,
         $res->img_tag,
-        $res->s_img_tag
+        $res->s_img_tag,
+        $res->affi_img_width,
+        $res->affi_img_height
       );
       return $parent;
     }
@@ -100,7 +106,9 @@ class ParentNodeRepository implements IParentNodeRepository
           $r->asp_name,
           $r->affi_img,
           $r->img_tag,
-          $r->s_img_tag
+          $r->s_img_tag,
+          $r->affi_img_width,
+          $r->affi_img_height
         );
         array_push($parents, $parent);
       }
@@ -123,6 +131,8 @@ class ParentNodeRepository implements IParentNodeRepository
         'affi_img' => $parent->affiImg(),
         'img_tag' => $parent->imgTag(),
         's_img_tag' => $parent->sImgTag(),
+        'affi_img_width' => $parent->affiImgWidth(),
+        'affi_img_height' => $parent->affiImgHeight()
       ), 
       array( 
         '%d',
@@ -133,7 +143,9 @@ class ParentNodeRepository implements IParentNodeRepository
         '%s', 
         '%s', 
         '%s', 
-        '%s' 
+        '%s',
+        '%d',
+        '%d'
       )
     );
     

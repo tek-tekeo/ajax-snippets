@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 global $wpdb;
-define('VERSION','0.4');
+define('VERSION','0.5');
 define('PLUGIN_ID','ajax_snippets');
 define('PLUGIN_DB_PREFIX', $wpdb->prefix . PLUGIN_ID . '_');
 

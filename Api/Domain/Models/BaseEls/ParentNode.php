@@ -12,17 +12,21 @@ class ParentNode
   private $affiImg;
   private $imgTag;
   private $sImgTag;
+  private $affiImgWidth;
+  private $affiImgHeight;
 
   public function __construct(
     int $id = null,
-    string $name = null,
+    string $name= null,
     string $anken = null,
     string $affiLink = null,
     string $sLink = null,
     string $aspName = null,
     string $affiImg = null,
     string $imgTag = null,
-    string $sImgTag = null
+    string $sImgTag = null,
+    int $affiImgWidth = null,
+    int $affiImgHeight = null
   )
   {
     if($id === null){
@@ -38,6 +42,8 @@ class ParentNode
     $this->affiImg = $affiImg;
     $this->imgTag = $imgTag;
     $this->sImgTag = $sImgTag;
+    $this->affiImgWidth = $affiImgWidth;
+    $this->affiImgHeight = $affiImgHeight;
   }
 
   //以下、ドメインの知識のみ
@@ -84,6 +90,16 @@ class ParentNode
   public function sImgTag()
   {
     return $this->sImgTag;
+  }
+
+  public function affiImgWidth()
+  {
+    return $this->affiImgWidth;
+  }
+
+  public function affiImgHeight()
+  {
+    return $this->affiImgHeight;
   }
 
   public function checkName(string $name):bool

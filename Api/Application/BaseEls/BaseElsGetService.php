@@ -82,6 +82,8 @@ class BaseData
     $this->affiImg = $parent->affiImg();
     $this->imgTag = $parent->imgTag();
     $this->sImgTag = $parent->sImgTag();
+    $this->affiImgWidth = $parent->affiImgWidth();
+    $this->affiImgHeight = $parent->affiImgHeight();
     $this->appId = $app->appId();
     $this->img = $app->img();
     $this->dev = $app->dev();
