@@ -61,6 +61,10 @@ class AjaxSneppets
             )
           ]);
         }
+        /****************
+         パーマリンク設定を『投稿名』『カスタム構造』などにする必要がある
+        ***************/
+        add_action( 'template_redirect', [RedirectSystem::getInstance(), 'handle']);
 				//ショートコードを追加
 				require_once abspath(__FILE__).'ajax-snippets-shortcode.php';
 		}
@@ -80,17 +84,11 @@ class AjaxSneppets
 
 /* プラグインの有効化 */
 add_action('activated_plugin', [InitDatabase::getInstance(), 'handle']); //singletonパターンなので、一つのみ生成するときは「::」で参照する
-
 /*　編集画面のボタン設定 */
 add_action('admin_init', [AjaxSnippetsMce::getInstance(), 'handle']); 
-
-/****************
- パーマリンク設定を『投稿名』『カスタム構造』などにする必要がある
- ***************/
-add_action( 'template_redirect', [RedirectSystem::getInstance(), 'handle']);
-
 /*プラグインの初期化 */
 add_action('init', 'AjaxSneppets::init');
+
 
 //エンドポイント一覧
 function createEndPoints()
@@ -120,6 +118,7 @@ function createEndPoints()
   Route::post('/detail/info', 'AjaxSnippets\Api\Controllers\DetailController@storeInfo');
   Route::get('/detail/rchart', 'AjaxSnippets\Api\Controllers\DetailController@getRchart');
   Route::get('/detail/info', 'AjaxSnippets\Api\Controllers\DetailController@getInfo');
+  Route::post('/detail/editor', 'AjaxSnippets\Api\Controllers\DetailController@getEditorList'); //編集画面に表示する用のリスト
   
   //タグ関連
   Route::post('/tag', 'AjaxSnippets\Api\Controllers\TagController@create');

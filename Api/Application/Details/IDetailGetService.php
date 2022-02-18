@@ -9,6 +9,7 @@ interface IDetailGetService
 {
   public function handle(DetailGetCommand $cmd);
   public function getDetailsFindByName(string $name);
+  public function getEditorAnkenList(string $name);
 }
 
 class DetailGetCommand

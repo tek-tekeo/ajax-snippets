@@ -11,7 +11,7 @@ function AjaxSniShortcodeLink($atts, $content = null) {
     global $wpdb;
     $sql = "SELECT B.name, B.asp_name, B.affi_link, B.affi_img, B.img_tag, B.s_link, B.s_img_tag, D.id, D.item_name,D.affi_item_link, D.official_item_link FROM ".PLUGIN_DB_PREFIX."base As B RIGHT JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
 
-    $results = $wpdb->get_results($sql,object);
+    $results = $wpdb->get_results($sql,OBJECT);
 
         if(count($results) == 0){
             $rep = "リンクエラー";
@@ -105,7 +105,7 @@ $rep = $tagStart . $rep . $tagEnd;
     global $wpdb;
     $sql = "SELECT B.anken, B.img_tag, D.official_item_link FROM ".PLUGIN_DB_PREFIX."base As B INNER JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
 
-    $results = $wpdb->get_results($sql,object);
+    $results = $wpdb->get_results($sql,OBJECT);
         if(count($results) == 0){
             $rep = "リンクエラー";
         }
@@ -156,7 +156,7 @@ $rep .='</span>';
     global $wpdb;
     $sql = "SELECT B.anken, B.img_tag,B.affi_img, D.detail_img FROM ".PLUGIN_DB_PREFIX."base As B INNER JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
 
-    $results = $wpdb->get_results($sql,object);
+    $results = $wpdb->get_results($sql,OBJECT);
         if(count($results) == 0){
             $rep = "リンクエラー";
         }
@@ -197,7 +197,7 @@ function SingleReview($atts, $content = null){
   ), $atts ) );
   global $wpdb;
   $sql = "SELECT D.*,B.name, B.affi_link FROM ".PLUGIN_DB_PREFIX."base as B,".PLUGIN_DB_PREFIX."detail as D where D.id={$detail_id} AND B.id=D.base_id";
-  $list = $wpdb->get_results( $sql, object);
+  $list = $wpdb->get_results( $sql, OBJECT);
 
   foreach($list as $l){
 
@@ -386,7 +386,7 @@ function appLinkGenerater($atts) {
 //小要素のIDから親要素のアプリリンクを生成する。WEBの場合はWEBリンクを生成する
 
   $sql = "SELECT base_id FROM ".PLUGIN_DB_PREFIX."detail where id={$detail_id}";
-  $res = $wpdb->get_results($sql,object);
+  $res = $wpdb->get_results($sql,OBJECT);
   foreach ($res as $key => $r) {
     $base_id = $r->base_id;
   }
@@ -412,7 +412,7 @@ $src = <<<EOT
 EOT;
   }
 
-  $results = $wpdb->get_results($sql,object);
+  $results = $wpdb->get_results($sql,OBJECT);
   foreach ($results as $key => $r) {
     //アフィリンクがあってかつ、アフィリエイトを利用する場合
     if($r->affi_link == "" || $noaffi == 1){
@@ -454,7 +454,7 @@ function GetAfLink($atts) {
   global $wpdb;
   $sql = "SELECT B.anken, B.img_tag,B.affi_img, D.detail_img FROM ".PLUGIN_DB_PREFIX."base As B INNER JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
 
-  $results = $wpdb->get_results($sql,object);
+  $results = $wpdb->get_results($sql,OBJECT);
       if(count($results) == 0){
           $rep = "リンクエラー";
       }

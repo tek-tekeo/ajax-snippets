@@ -5,6 +5,7 @@ use AjaxSnippets\Api\Domain\Models\Details\Detail;
 use AjaxSnippets\Api\Domain\Models\Details\IDetailRepository;
 use AjaxSnippets\Api\Domain\Models\BaseEls\ParentNode;
 use AjaxSnippets\Api\Domain\Models\BaseEls\IParentNodeRepository;
+use AjaxSnippets\Api\Domain\Models\Asps\IAspRepository;
 
 class DetailGetService implements IDetailGetService
 {
@@ -13,11 +14,13 @@ class DetailGetService implements IDetailGetService
 
   public function __construct(
     IDetailRepository $detailRepository,
-    IParentNodeRepository $parentNodeRepository
+    IParentNodeRepository $parentNodeRepository,
+    IAspRepository $aspRepository
   )
   {
     $this->detailRepository = $detailRepository;
     $this->parentNodeRepository = $parentNodeRepository;
+    $this->aspRepository = $aspRepository;
   }
 
   public function handle(DetailGetCommand $cmd)
@@ -38,6 +41,18 @@ class DetailGetService implements IDetailGetService
       $parent = $this->parentNodeRepository->ParentFindById($d->parent()->id());
       $d->setParent($parent);
       return new DetailData($d);
+    }, $details);
+  }
+
+  public function getEditorAnkenList(string $name){
+    $details = $this->detailRepository->DetailFindByName($name);
+
+    return array_map(function($d){
+      $parent = $this->parentNodeRepository->ParentFindById($d->parent()->id());
+      $d->setParent($parent);
+      $asp = $this->aspRepository->AspFindByName($d->parent()->aspName());
+      $d->setAsp($asp);
+      return new EditDetailData($d);
     }, $details);
   }
 }
@@ -62,4 +77,19 @@ class DetailData
     $this->sameParent = (bool)$detail->sameParent();
     $this->review = $detail->review();
   }
+}
+
+class EditDetailData
+{
+  public function __construct(Detail $detail)
+  {
+    $this->id = $detail->id();
+    $this->name = $detail->parent()->name() . ' ' . $detail->itemName();
+    $this->officialItemLink = $detail->officialItemLink();
+    $this->affiLink = $detail->getRedirectUrl();
+    $this->aspName = $detail->getAsp()->getAspName();
+    $this->amazonAsin = $detail->amazonAsin();
+    $this->rakutenId = $detail->rakutenId();
+  }
+  
 }

@@ -92,6 +92,13 @@ class DetailController
   {
     $cmd = new DetailGetCommand((int)$req->get_param('id'));
     $res = $this->detailGetService->handle($cmd);
+
+    return new WP_REST_Response($res, 200);
+  }
+
+  public function getEditorList(WP_REST_Request $req): WP_REST_Response
+  {
+    $res = $this->detailGetService->getEditorAnkenList((string)$req->get_param('name'));
     return new WP_REST_Response($res, 200);
   }
 

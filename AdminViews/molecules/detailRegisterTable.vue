@@ -106,6 +106,15 @@
         </wp-check-box>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col>
+        <wp-text-area
+          label="レビュー"
+          v-model="detail.review"
+        >
+        </wp-text-area>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -118,6 +127,7 @@ module.exports = {
     'WpMultiList': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/molecules/wpMultiList.vue'),
     'WpMediaUpload': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/molecules/wpMediaUpload.vue'),
     'WpCheckBox': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/atoms/wpCheckBox.vue'),
+    'WpTextArea': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/atoms/wpTextArea.vue'),
   },
   data(){
     return {
@@ -128,7 +138,7 @@ module.exports = {
       this.$emit("selected-tags", this.selectedTagIds);
     },
     deleteDetail(){
-      
+      //TODO削除処理
     },
     async updateDetail(){
       this.$emit("updated-item", this.base);

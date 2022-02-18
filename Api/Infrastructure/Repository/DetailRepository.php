@@ -92,9 +92,9 @@ class DetailRepository implements IDetailRepository
         'rakuten_id' => $detail->rakutenId(),
         'rchart' => $detail->rchart(),
         'info' => $detail->info(),
+        'review' => $detail->review(),
         'is_show_url' => $detail->isShowUrl(),
-        'same_parent' => $detail->sameParent(),
-        'review' => $detail->review()
+        'same_parent' => $detail->sameParent()
       ), 
       array( 
         '%d',

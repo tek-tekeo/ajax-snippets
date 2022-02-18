@@ -19,56 +19,65 @@
             @search-text="searchText"
           >
           </wp-search-text-box>
-          
+
           <v-btn
-          color="primary"
-          @click="itemInfo"
-          small
+            color="primary"
+            @click="itemInfo"
+            small
           >
-          
-          情報
+            情報
           </v-btn>
 
           <v-btn
-          color="primary"
-          @click="shohinLink"
-          small
+            color="blue-grey"
+            class="ma-2 white--text"
+            @click="shohinLink"
+            small
           >
-          商品カード
+            商品カード
           </v-btn>
 
           <v-btn
-          color="primary"
-          @click="textLink"
-          small
+            color="success"
+            @click="textLink"
+            small
           >
-          テキストリンク
+            テキストリンク
           </v-btn>
 
           <v-btn
-          color="primary"
-          @click="singleReview"
-          small
+            color="info"
+            @click="bannerLink"
+            small
           >
-          シングルレビュー
+            バナー
           </v-btn>
 
           <v-btn
-          color="primary"
-          @click="appLink"
-          small
+            color="blue-grey"
+            class="ma-2 white--text"
+            @click="singleReview"
+            small
           >
-          アプリのリンク
+            レビューBOX
           </v-btn>
 
           <v-btn
-          color="primary"
+            color="indigo"
+            class="ma-2 white--text"
+            @click="appLink"
+            small
+          >
+            アプリ
+          </v-btn>
+          <v-btn
           @click="quoteLink"
           small
           >
-          引用文
+            引用
           </v-btn>
           <v-radio-group v-model="itemNo"> 
+            {{itemNo}}
             <v-virtual-scroll
             :items="searchList"
             height="400"
@@ -76,7 +85,7 @@
             >
             <template v-slot:default="{ item }">
                 <v-radio
-                  :label="item.parent.name +' '+ item.itemName"
+                  :label="item.name"
                   :value="item.id"
                 ></v-radio>
             </template>
@@ -85,28 +94,13 @@
         </v-container>
       </v-main>
     </v-app>
-  <!-- <input type="text" id="item" placeholder="検索アイテム名を入力" autocomplete="off">
-  <input type="button" id="AmazonLink" value="Amazonリンクを生成" onclick="return false;" />
-  <input type="button" id="a8Link" value="A8URLを生成" onclick="return false;" />
-  <input type="button" id="normalLink" value="アフィリンク(直)" onclick="return false;" />
-  <input type="button" id="afRecordLink" value="アフィリンク(R)" onclick="return false;" />
-  <input type="button" id="afRecordBanner" value="バナーリンク(R)" onclick="return false;" />
-  <input type="button" id="singleReview" value="シングルレビュー" onclick="return false;" />
-  <input type="button" id="appLink" value="アプリのリンク" onclick="return false;" />
-  <input type="button" id="quoteLink" value="引用" onclick="return false;" />
-  <p>候補一覧</p>
-  <dl id="ajax-item-list" style="width:550px; height:350px;overflow-y: scroll;">
-
-  </dl> -->
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
 <script src="https://unpkg.com/http-vue-loader"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 <script src="https://unpkg.com/vue-toasted"></script>
-<script type="text/javascript">
-  var site_url = '<?= site_url(); ?>';
-</script>
+
 <script>
   Vue.use(Toasted);
   axios.defaults.baseURL = 'http://localhost:3000/?rest_route=/ajax_snippets_path/v1/';
@@ -124,7 +118,9 @@
     },
     async created(){
       try {
-        const res = await axios.get('detail');
+        const res = await axios.post('/detail/editor',{
+          'name':''
+        });
         this.searchList = res.data;
       } catch (err) {
         // TODO: エラー処理
@@ -135,234 +131,81 @@
       async searchText(name){
         try {
         // TODO: URL
-        const res = await axios.post('/base/search',{
+        const res = await axios.post('/detail/editor',{
           'name':name
         });
-        this.baseList = res.data;
+        this.searchList = res.data;
         } catch (err) {
           // TODO: エラー処理
           console.log(err);
         }
       },
-      async itemInfo(){
+      returnItem(){
         const list = JSON.parse(JSON.stringify(this.searchList));
-        const item = list.find((s)=>s.id = this.itemNo);
-
-        top.tinymce.activeEditor.selection.setContent(JSON.stringify(item));
+        const item = list.find((s)=>s.id == this.itemNo);
+        return item;
+      },
+      randomNo(){
+        return  Math.random().toString(36).slice(-8);
+      },
+      closeTinymce(input){
+        top.tinymce.activeEditor.selection.setContent(input);
+        this.itemNo = null;
         top.tinymce.activeEditor.windowManager.close();
+        return;
+      },
+      async itemInfo(){
+        const item = this.returnItem();
+        const input = JSON.stringify(item);
+        this.closeTinymce(input);
       },
       async shohinLink(){
-        const list = JSON.parse(JSON.stringify(this.searchList));
-        const item = list.find((s)=>s.id = this.itemNo);
-
-        const kw = item.parent.name+' ' + item.itemName;
+        if(this.itemNo == null){return;}
+        const item = this.returnItem();
+        const kw = item.name;
         if (item.rakutenId != "") {
           inputTag = "[rakuten2 id=\"" + item.rakutenId + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
-          var place = Math.random().toString(36).slice(-8);
-          inputTag = inputTag + " detail_id=" + item.id + " pl=" + place + "]";
+          inputTag = inputTag + " detail_id=" + item.id + " pl=" + this.randomNo() + "]";
         }else if (item.amazonAsin != "") {
           inputTag = "[amazon asin=\"" + item.amazonAsin + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
           inputTag = inputTag + " btn1_url=\"" + item.affiLink + "\" btn1_text=\"" + item.parent.name + "公式\"]";
         } else {
           return false;
         }
-
-        top.tinymce.activeEditor.selection.setContent(inputTag);
-        this.itemNo = null;
-        top.tinymce.activeEditor.windowManager.close();
+        this.closeTinymce(inputTag);
       },
       async textLink(){
-        const list = JSON.parse(JSON.stringify(this.searchList));
-        const item = list.find((s)=>s.id = this.itemNo);
-
-        top.tinymce.activeEditor.selection.setContent(inputTag);
-        this.itemNo = null;
-        top.tinymce.activeEditor.windowManager.close();
+        if(this.itemNo == null){return;}
+        const item = this.returnItem();
+        console.log(item.affiLink);
+        var inputTag = "[afRecord id=" + item.id + " ntab=1 pl=" + this.randomNo() + "]" + item.name + "[/afRecord]";
+        this.closeTinymce(inputTag);
+      },
+      async bannerLink(){
+        if(this.itemNo == null){return;}
+        const inputTag = "[afRecordBanner id=" + this.itemNo + " ntab=1 pl=" + this.randomNo() + "]";
+        this.closeTinymce(inputTag);
       },
       async singleReview(){
-
+        if(this.itemNo == null){return;}
+        let inputTag = "[singleReview detail_id=" + this.itemNo + " is_review=0 color='blue']";
+        this.closeTinymce(inputTag);
       },
       async appLink(){
+        if(this.itemNo == null){return;}
+        let inputTag = "[appLinkG detail_id=" + this.itemNo + " re_url=0 noaf=0 text='テキスト']";
+        this.closeTinymce(inputTag);
         
       },
       async quoteLink(){
-        
+        if(this.itemNo == null){return;}
+        const inputTag = "[afLink id=" + this.itemNo + " re_url=1 noaf=1][/afLink]";
+
+        const blockquoteTag = '<blockquote class="ajax-snippets-quote" cite="' + inputTag + '"><div>評価：[star rate="5" max="5" number="1"]</div><div><span class="bold">タイトル</span></div><p class="fz-14px">引用文</p><cite><a href="' + inputTag + '">公式サイト</a></cite></blockquote>';
+        this.closeTinymce(blockquoteTag);
       }
     }
   });
 </script>
-
-
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script type="text/javascript">
-  $(function () {
-    $(document).ready(function () {
-      ajaxLink();
-      $('input:visible').eq(0).focus();
-    });
-
-    function ajaxLink() {
-      var newText = $('#item').val();
-      // Ajax通信を開始する
-
-      $.ajax({
-        type: "POST",
-        data: {
-          'action': "prepareAjax",
-          'text': newText
-        },
-        url: '../../../wp-admin/admin-ajax.php',
-        success: function (e) {
-
-          jsonData = JSON.parse(e);
-
-          $alist = $('#ajax-item-list');
-          $alist.empty();
-          $.each(jsonData, function (i, val) {
-            $alist.append("<dt><label><input type='radio' name='q1' data-amazon=\"" + val['amazon'] + "\" data-rakuten=\"" + val['rakuten'] + "\" data-affilink=\"" + val['affilink'] + "\" data-id=\"" + val['id'] + "\" data-official=\"" + val['official'] + "\" value=\"" + val['name'] + "\">" + val['item'] + "<div style='display:none'>" + val['item'] + "</div></label>　<a href=\"../../../wp-admin/admin.php?page=child-config&action=update&child_id=" + val['id'] + "\" target=\"_blank\">編集</a></div></dt>");
-          });
-
-        },
-        error: function (e) {
-          console.log('失敗');
-        }
-      })
-    }
-
-    $(document).on('click', '#cancel', function () {
-
-      top.tinymce.activeEditor.windowManager.close();
-      return false;
-    });
-
-    $(document).on('click', '#AmazonLink', function () {
-      var val = $("input[name='q1']:checked");
-      var kw = val.next().text();
-      var amazon = val.attr('data-amazon');
-      var rakuten = val.attr('data-rakuten');
-      var inputTag;
-      var id = val.attr('data-id');
-      if (val.attr('data-id') == null) {
-        return false;
-      }
-      var affiLink = val.attr('data-affilink');
-
-      if (amazon != null && amazon != "") {
-        inputTag = "[amazon asin=\"" + amazon + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
-        inputTag = inputTag + " btn1_url=\"" + affiLink + "\" btn1_text=\"" + val.val() + "公式\"]";
-      } else if (rakuten != null && rakuten != "") {
-        inputTag = "[rakuten2 id=\"" + rakuten + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
-        var place = Math.random().toString(36).slice(-8);
-        inputTag = inputTag + " detail_id=" + id + " pl=" + place + "]";
-      } else {
-        return false;
-      }
-
-      top.tinymce.activeEditor.selection.setContent(inputTag);
-      top.tinymce.activeEditor.windowManager.close();
-      return false;
-    });
-
-    $(document).on('click', '#a8Link', function () {
-      var val = $("input[name='q1']:checked");
-      if (val.attr('data-id') == null) {
-        return false;
-      }
-      var inputTag = val.attr('data-affilink');
-      top.tinymce.activeEditor.selection.setContent(inputTag);
-      top.tinymce.activeEditor.windowManager.close();
-      return false;
-    });
-    $(document).on('click', '#singleReview', function () {
-      var val = $("input[name='q1']:checked");
-      var id = val.attr('data-id');
-      if (val.attr('data-id') == null) {
-        return false;
-      }
-      var inputTag = "[singleReview detail_id=" + id + " is_review=0 color='blue']";
-      top.tinymce.activeEditor.selection.setContent(inputTag);
-      top.tinymce.activeEditor.windowManager.close();
-      return false;
-    });
-
-    $(document).on('click', '#normalLink', function () {
-      var val = $("input[name='q1']:checked");
-      var id = val.attr('data-id');
-      if (val.attr('data-id') == null) {
-        return false;
-      }
-      var inputTag = "[afLink id=" + id + " re_url=0 noaf=0][/afLink]";
-      top.tinymce.activeEditor.selection.setContent(inputTag);
-      top.tinymce.activeEditor.windowManager.close();
-      return false;
-    });
-
-    $(document).on('click', '#quoteLink', function () {
-      var val = $("input[name='q1']:checked");
-      var id = val.attr('data-id');
-      if (val.attr('data-id') == null) {
-        return false;
-      }
-      var inputTag = "[afLink id=" + id + " re_url=1 noaf=1][/afLink]";
-
-      let blockquoteTag = '<blockquote class="ajax-snippets-quote" cite="' + inputTag + '"><div>評価：[star rate="5" max="5" number="1"]</div><div><span class="bold">タイトル</span></div><p class="fz-14px">引用文</p><cite><a href="' + inputTag + '">公式サイト</a></cite></blockquote>';
-      top.tinymce.activeEditor.selection.setContent(blockquoteTag);
-      top.tinymce.activeEditor.windowManager.close();
-      return false;
-    });
-
-    $(document).on('click', '#appLink', function () {
-      var val = $("input[name='q1']:checked");
-      var id = val.attr('data-id');
-      if (val.attr('data-id') == null) {
-        return false;
-      }
-      var inputTag = "[appLinkG detail_id=" + id + " re_url=0 noaf=0 text='テキスト']";
-      top.tinymce.activeEditor.selection.setContent(inputTag);
-      top.tinymce.activeEditor.windowManager.close();
-      return false;
-    });
-
-    $(document).on('click', '#afRecordLink', function () {
-      var val = $("input[name='q1']:checked");
-      var id = val.attr('data-id');
-      if (val.attr('data-id') == null) {
-        return false;
-      }
-      //コンテンツの取得(不要)
-      // var content = top.tinymce.activeEditor.getContent();
-      // var re = "afRecord id="+id+" pl=";
-      // var count = ( content.match(new RegExp(re,"g")) || [] ).length;
-
-      //本番
-      var place = Math.random().toString(36).slice(-8);
-      var inputTag = "[afRecord id=" + id + " ntab=1 pl=" + place + "]" + val.next().text() + "[/afRecord]";
-      top.tinymce.activeEditor.selection.setContent(inputTag);
-      top.tinymce.activeEditor.windowManager.close();
-      return false;
-    });
-    $(document).on('click', '#afRecordBanner', function () {
-      var val = $("input[name='q1']:checked");
-      var id = val.attr('data-id');
-      if (val.attr('data-id') == null) {
-        return false;
-      }
-
-      //本番
-      var place = Math.random().toString(36).slice(-8);
-      var inputTag = "[afRecordBanner id=" + id + " ntab=1 pl=" + place + "]";
-      top.tinymce.activeEditor.selection.setContent(inputTag);
-      top.tinymce.activeEditor.windowManager.close();
-      return false;
-    });
-
-
-    $('#item').keyup(function () {
-      ajaxLink();
-
-    });
-
-  });
-</script> -->
 
 </html>

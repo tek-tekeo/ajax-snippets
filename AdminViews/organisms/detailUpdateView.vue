@@ -115,7 +115,7 @@ module.exports = {
           fullWidth: true,
           type: 'success'
         }
-        this.$toasted.show('追加完了',options);
+        this.$toasted.show('更新完了',options);
       }else{
         var options = {
           position: 'top-center',
@@ -123,7 +123,7 @@ module.exports = {
           fullWidth: true,
           type: 'error'
         }
-        this.$toasted.show('追加失敗',options);
+        this.$toasted.show('更新失敗',options);
       }
     },
     async deleteDetail(){
