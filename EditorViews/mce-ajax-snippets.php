@@ -1,3 +1,6 @@
+<?php
+  require_once dirname( __FILE__ ) .'/../../../../wp-load.php';
+;?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -77,7 +80,6 @@
             引用
           </v-btn>
           <v-radio-group v-model="itemNo"> 
-            {{itemNo}}
             <v-virtual-scroll
             :items="searchList"
             height="400"
@@ -103,7 +105,7 @@
 
 <script>
   Vue.use(Toasted);
-  axios.defaults.baseURL = 'http://localhost:3000/?rest_route=/ajax_snippets_path/v1/';
+  axios.defaults.baseURL = '<?php echo site_url();?>'+'/?rest_route=/ajax_snippets_path/v1/';
   new Vue({
     el: '#vue-edit-page',
     vuetify: new Vuetify(),

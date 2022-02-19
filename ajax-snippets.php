@@ -1,12 +1,4 @@
 <?php
-use AjaxSnippets\Route;
-use AjaxSnippets\Database\InitDatabase;
-use AjaxSnippets\EditorViews\AjaxSnippetsMce;
-use AjaxSnippets\UserViews\RedirectSystem;
-
-
-require_once 'vendor/autoload.php';
-
 /*
 Plugin Name: Affiliate Link Maker
 Description: アフィリエイトのリンクを取得しやすくする(テーマはcocoonの必要がある)
@@ -17,6 +9,13 @@ Author URI: https://pachi.tokyo
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+
+use AjaxSnippets\Route;
+use AjaxSnippets\Database\InitDatabase;
+use AjaxSnippets\EditorViews\AjaxSnippetsMce;
+use AjaxSnippets\UserViews\RedirectSystem;
+
+require_once 'vendor/autoload.php';
 
 global $wpdb;
 define('VERSION','0.5');
@@ -72,12 +71,12 @@ class AjaxSneppets
 		* script関数の登録
 		*/
 		function ajax_register_scripts() {
-      wp_enqueue_script( 'url-path-php', plugins_url('ajaxSnippets/url_path.php'),array(),false,true);
-      wp_enqueue_style( 'ajax-snippets-style', plugins_url( 'ajaxSnippets/css/style.css' ) , array(), false,'all');
+      wp_enqueue_script( 'url-path-php', plugins_url('ajaxSnippets/UserViews/wp_api_path.php'),array(),false,true);
+      wp_enqueue_style( 'ajax-snippets-style', plugins_url( 'ajaxSnippets/UserViews/css/style.css' ) , array(), false,'all');
       wp_enqueue_script( 'chartjs','//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js', [ 'jquery' ] ,date('U'),true);
       wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js', array(),date('U'),true);
       wp_enqueue_script( 'axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js', ['vue'],date('U'),true);
-      wp_enqueue_script( 'vueClick', plugins_url('ajaxSnippets/js/vueClick.js'), ['axios'],false,true);
+      wp_enqueue_script( 'vueClick', plugins_url('ajaxSnippets/UserViews/js/vueClick.js'), ['axios'],false,true);
     }
 
 } // end of class

@@ -1,7 +1,5 @@
-const wp_rest = axios.create({
-  baseURL: WP_API_Settings.root,
-  headers: { 'X-WP-Nonce': WP_API_Settings.rest_nonce }
-});
+axios.defaults.baseURL = WP_API_Settings.root + '/?rest_route=/ajax_snippets_path/v1/';
+axios.defaults.headers.common = {'X-WP-Nonce':WP_API_Settings.rest_nonce};
 Vue.component('affiliate-link', {
   props: {
     title: {
@@ -27,17 +25,10 @@ Vue.component('affiliate-link', {
     }
   },
   methods: {
-    clickRecord: async function (e) {
-      let _this = this;
-      let form_data = new FormData;
-      // form_data.append('action', 'logRecord');
-      form_data.append('pl', this.place);
-      form_data.append('id', this.id);
-
-      wp_rest.post('/wp/custom/record', form_data).then(function (response) {
-        console.log(response.data);
-      }).catch(function (error) {
-        console.log(error.response);
+    async clickRecord() {
+      const res = await axios.post('log',{
+        'itemId': parseInt(this.id),
+        'place' : this.place
       });
     }
   },
@@ -69,16 +60,10 @@ Vue.component('affiliate-banner-link', {
     }
   },
   methods: {
-    clickRecord: async function (e) {
-      let _this = this;
-      let form_data = new FormData;
-      form_data.append('pl', this.place);
-      form_data.append('id', this.id);
-
-      wp_rest.post('/wp/custom/record', form_data).then(function (response) {
-        console.log(response.data);
-      }).catch(function (error) {
-        console.log(error.response);
+    async clickRecord() {
+      const res = await axios.post('log',{
+        'itemId': parseInt(this.id),
+        'place' : this.place
       });
     }
   },
@@ -122,16 +107,10 @@ Vue.component('rakuten-banner-link', {
     }
   },
   methods: {
-    clickRecord: async function (e) {
-      let _this = this;
-      let form_data = new FormData;
-      form_data.append('pl', this.place);
-      form_data.append('id', this.id);
-
-      wp_rest.post('/wp/custom/record', form_data).then(function (response) {
-        console.log(response.data);
-      }).catch(function (error) {
-        console.log(error.response);
+    async clickRecord() {
+      const res = await axios.post('log',{
+        'itemId': parseInt(this.id),
+        'place' : this.place
       });
     }
   },
