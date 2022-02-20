@@ -36,6 +36,19 @@ class DetailController
     $res = $this->detailGetService->getDetailsFindByName('');
     return new WP_REST_Response($res, 200);
   }
+
+  public function getLinkMaker(WP_REST_Request $req): WP_REST_Response
+  {
+    $cmd = new DetailGetCommand((int)$req->get_param('id'));
+    $res = $this->detailGetService->getLinkMaker($cmd);
+    $res->place =  (string)$req->get_param('place');
+    $content = (string)$req->get_param('content');
+    if($content != null){
+      $res->content =  $content;
+    }
+    return new WP_REST_Response($res, 200);
+  }
+
   public function search(WP_REST_Request $req): WP_REST_Response
   {
     $res = $this->detailGetService->getDetailsFindByName((string)$req->get_param('name'));

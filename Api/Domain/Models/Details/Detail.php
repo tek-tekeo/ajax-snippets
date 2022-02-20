@@ -131,7 +131,6 @@ class Detail
   {
     if($this->sameParent() == true || $this->getAsp() == null){
       $url = $this->parent()->affiLink();
-      $url = $this->sameParent();
     }else if($this->parent()->aspName() != 'a8'){
       //a8以外の場合
       $url = $this->affiItemLink();

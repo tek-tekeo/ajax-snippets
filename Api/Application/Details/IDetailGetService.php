@@ -8,6 +8,7 @@ use AjaxSnippets\Api\Domain\Models\Details\Detail;
 interface IDetailGetService
 {
   public function handle(DetailGetCommand $cmd);
+  public function getLinkMaker(DetailGetCommand $cmd);
   public function getDetailsFindByName(string $name);
   public function getEditorAnkenList(string $name);
 }

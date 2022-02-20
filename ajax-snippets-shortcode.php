@@ -71,122 +71,8 @@ EOT;
             }
     return $rep;
 }
-function AjaxRecordShortcodeLink($atts, $content = null) {
-    extract( shortcode_atts( array(
-       'id' => '1',
-       'pl' => '0',
-       'ntab' => '0',
-       'btn_color'=>''
-    ), $atts ) );
-
-    $info = AF::getAffiInfo($id, 0);
-    $tagStart = $btn_color == "" ? '<span class="ajaxSnippetsAffiliateLink">':'<span class="btn-wrap btn-wrap-'.$btn_color.' btn-wrap-l ajaxSnippetsAffiliateLink">';
-    $tagEnd = $btn_color == "" ? '</span>':'</span>';
-  if(empty($content)){
-$rep =<<<EOT
-<affiliate-link title=" {$info['official_item_link']}" affiurl="{$info['url']}" place="{$pl}" id="{$id}"></affiliate-link>
-EOT;
-  }else{
-    $content = esc_html($content);
-$rep =<<<EOT
-<affiliate-link title="{$content}" affiurl="{$info['url']}" place="{$pl}" id="{$id}"></affiliate-link>
-EOT;
-  }
-if(!empty($info['img_tag'])){
-$rep .=<<<EOT
-<img border="0" width="1" height="1" src="{$info['img_tag']}" alt="">
-EOT;
-}
-$rep = $tagStart . $rep . $tagEnd;
-
-
-  return $rep;
-  die();
-    global $wpdb;
-    $sql = "SELECT B.anken, B.img_tag, D.official_item_link FROM ".PLUGIN_DB_PREFIX."base As B INNER JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
-
-    $results = $wpdb->get_results($sql,OBJECT);
-        if(count($results) == 0){
-            $rep = "リンクエラー";
-        }
-      foreach($results as $r){
-        //$url = home_url() . "/link/".$r->anken . "?no={$id}&pl={$pl}";
-        $url = home_url() ."/". $r->anken . "?no={$id}&pl={$pl}";
-        if($ntab == 0){
-          $a_tab = "rel=\"nofollow\"";
-        }else{
-          $a_tab = "rel=\"nofollow noopener\" target=\"_blank\"";
-        }
-        $info = AF::getAffiInfo($id, 0);
-        //テキストなしリンク
-        if(empty($content)){
-$rep .= <<<EOT
-<a href="{$info['url']}" {$a_tab}> {$r->official_item_link}</a><img border="0" width="1" height="1" src="{$info['img_tag']}">
-EOT;
-        }else{
-$rep .= <<<EOT
-<a href="{$info['url']}" {$a_tab}>{$content}</a><img border="0" width="1" height="1" src="{$info['img_tag']}">
-EOT;
-        }
-}
-    return $rep;
-}
-
-function AjaxRecordShortcodeBanner($atts) {
-    extract( shortcode_atts( array(
-       'id' => '1',
-       'pl' => '0',
-       'ntab'=> '0'
-    ), $atts ) );
-    $info = AF::getAffiInfo($id, 0);
-
-$rep =<<<EOT
-<span class="ajaxSnippetsAffiliateLink">
-<affiliate-banner-link title="{$info['affi_img']}" affiurl="{$info['url']}" place="{$pl}" id="{$id}"></affiliate-banner-link>
-EOT;
-if(!empty($info['img_tag'])){
-$rep .=<<<EOT
-<img border="0" width="1" height="1" src="{$info['img_tag']}" alt="">
-EOT;
-}
-$rep .='</span>';
-
-  return $rep;
-  die();
-    global $wpdb;
-    $sql = "SELECT B.anken, B.img_tag,B.affi_img, D.detail_img FROM ".PLUGIN_DB_PREFIX."base As B INNER JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
-
-    $results = $wpdb->get_results($sql,OBJECT);
-        if(count($results) == 0){
-            $rep = "リンクエラー";
-        }
-      foreach($results as $r){
-        $url = home_url() . "/".$r->anken . "?no={$id}&pl={$pl}";
-        if($ntab == 0){
-          $a_tab = "rel=\"nofollow\"";
-        }else{
-          $a_tab = "rel=\"nofollow noopener\" target=\"_blank\"";
-        }
-        if($r->detail_img != ""){
-          $r->affi_img = $r->detail_img;
-        }
-        $info = AF::getAffiInfo($id, 0);
-
-$rep .= <<<EOT
-<a href="{$info['url']}" {$a_tab}><img border="0" width="300" height="250" alt="" src="{$info['affi_img']}"></a>
-EOT;
-        if(!empty($info['img_tag'])){
-$rep .= <<<EOT
-<img border="0" width="1" height="1" src="{$info['img_tag']}">
-EOT;
-        }
-        }
-    return $rep;
-}
 
 add_shortcode('afLink', 'AjaxSniShortcodeLink');
-add_shortcode('afRecord', 'AjaxRecordShortcodeLink');
-add_shortcode('afRecordBanner', 'AjaxRecordShortcodeBanner');
 
 function SingleReview($atts, $content = null){
   extract( shortcode_atts( array(
@@ -256,7 +142,7 @@ $rep .=<<<EOT
 EOT;
 if($is_review) $rep .=$l->review;
 if ( current_user_can('administrator') || current_user_can('editor') || current_user_can('author')){
-    $kono_url = admin_url('')."admin.php?page=child-config&action=update&child_id={$l->id}";
+    $kono_url = admin_url('')."admin.php?page=ajax-snippets#/detail/update/{$l->id}";
     $rep .= "<p><a href={$kono_url} target='_blank'>この案件を編集</a>(管理者向け)</p>";
 }
   }
@@ -445,26 +331,26 @@ EOT;
 }
 add_shortcode('appLinkG', 'appLinkGenerater');
 
-function GetAfLink($atts) {
-  extract( shortcode_atts( array(
-     'id' => '1',
-     'pl' => '0',
-     'ntab'=> '0'
-  ), $atts ) );
-  global $wpdb;
-  $sql = "SELECT B.anken, B.img_tag,B.affi_img, D.detail_img FROM ".PLUGIN_DB_PREFIX."base As B INNER JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
+// function GetAfLink($atts) {
+//   extract( shortcode_atts( array(
+//      'id' => '1',
+//      'pl' => '0',
+//      'ntab'=> '0'
+//   ), $atts ) );
+//   global $wpdb;
+//   $sql = "SELECT B.anken, B.img_tag,B.affi_img, D.detail_img FROM ".PLUGIN_DB_PREFIX."base As B INNER JOIN ".PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.id={$id}";
 
-  $results = $wpdb->get_results($sql,OBJECT);
-      if(count($results) == 0){
-          $rep = "リンクエラー";
-      }
-    foreach($results as $r){
-      $url = home_url() . "/".$r->anken . "?no={$id}&pl={$pl}";
-    }
-  return $url;
-}
+//   $results = $wpdb->get_results($sql,OBJECT);
+//       if(count($results) == 0){
+//           $rep = "リンクエラー";
+//       }
+//     foreach($results as $r){
+//       $url = home_url() . "/".$r->anken . "?no={$id}&pl={$pl}";
+//     }
+//   return $url;
+// }
 
-add_shortcode('getAfLink', 'GetAfLink');
+// add_shortcode('getAfLink', 'GetAfLink');
 
 function TagRanking($atts){
   extract( shortcode_atts( array(

@@ -55,6 +55,19 @@ class DetailGetService implements IDetailGetService
       return new EditDetailData($d);
     }, $details);
   }
+
+  public function getLinkMaker($cmd){
+    $detail = $this->detailRepository->DetailFindById($cmd->id());
+    $parent = $this->parentNodeRepository->ParentFindById($detail->parent()->id());
+    $detail->setParent($parent);
+    $detail->setParent($parent);
+    $asp = $this->aspRepository->AspFindByName($detail->parent()->aspName());
+    $detail->setAsp($asp);
+    if($parent == null){
+      return null;
+    }
+    return new AffiLinkData($detail);
+  }
 }
 
 
@@ -91,5 +104,20 @@ class EditDetailData
     $this->amazonAsin = $detail->amazonAsin();
     $this->rakutenId = $detail->rakutenId();
   }
-  
+}
+
+class AffiLinkData
+{
+  public function __construct(Detail $detail)
+  {
+    $this->itemId = $detail->id();
+    $this->content = $detail->officialItemLink();
+    $this->url = $detail->getRedirectUrl();
+    $this->imgSrc = $detail->parent()->affiImg();
+    $this->imgAlt = $detail->parent()->name() . ' ' . $detail->itemName();
+    $this->imgWidth = $detail->parent()->affiImgWidth();
+    $this->imgHeight = $detail->parent()->affiImgHeight();
+    $this->imgTag = $detail->parent()->imgTag();
+    $this->place = 'place';
+  }
 }

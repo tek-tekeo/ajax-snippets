@@ -14,6 +14,7 @@ use AjaxSnippets\Route;
 use AjaxSnippets\Database\InitDatabase;
 use AjaxSnippets\EditorViews\AjaxSnippetsMce;
 use AjaxSnippets\UserViews\RedirectSystem;
+use AjaxSnippets\UserViews\WpShortcode;
 
 require_once 'vendor/autoload.php';
 
@@ -23,8 +24,6 @@ define('PLUGIN_ID','ajax_snippets');
 define('PLUGIN_DB_PREFIX', $wpdb->prefix . PLUGIN_ID . '_');
 
 include_once dirname(__FILE__) . "/loader.php";
-include_once dirname(__FILE__) . "/EditorViews/AjaxSnippetsMce.php";
-include_once dirname(__FILE__) . "/UserViews/RedirectSystem.php";
 
 $containerBuilder = new DI\ContainerBuilder();
 $containerBuilder->addDefinitions(dirname(__FILE__) .'/diconfig.php'); //プラグインのディレクトリパスは　plugin_dir_path( __FILE__ )
@@ -44,40 +43,55 @@ class AjaxSneppets
 
     private function __construct()
     {
-      //スクリプト 、スタイルシートの追加
-      add_action( 'wp_enqueue_scripts', [$this, 'ajax_register_scripts']);
-        if (is_admin() && is_user_logged_in()) {
-          // メニュー追加
-          add_action('admin_menu', [$this, 
-            add_menu_page(
-              'Ajax Snippets',                                               /* ページタイトル*/
-              'アフィリンクメーカー',                                           /* メニュータイトル */
-              'manage_options',                                              /* 権限 */
-              'ajax-snippets',                                               /* ページを開いたときのURL */
-              function(){ require_once abspath(__FILE__).'AdminViews/App.php'; },       /* メニューに紐づく画面を描画するcallback関数 */
-              'dashicons-format-gallery', /* アイコン see: https://developer.wordpress.org/resource/dashicons/#awards */
-              6                          /* 表示位置のオフセット */
-            )
-          ]);
-        }
-        /****************
-         パーマリンク設定を『投稿名』『カスタム構造』などにする必要がある
-        ***************/
-        add_action( 'template_redirect', [RedirectSystem::getInstance(), 'handle']);
-				//ショートコードを追加
-				require_once abspath(__FILE__).'ajax-snippets-shortcode.php';
+      //スクリプト 、スタイルシートの追加 (公開ページにのみ反映)
+      add_action( 'wp_enqueue_scripts', [$this, 'getJsAndCss']);
+      if (is_admin() && is_user_logged_in()) {
+        add_action('admin_enqueue_scripts',[$this, 'registerCSS']);
+        // メニュー追加
+        add_action('admin_menu', [$this, 
+          add_menu_page(
+            'Ajax Snippets',                                               /* ページタイトル*/
+            'アフィリンクメーカー',                                           /* メニュータイトル */
+            'manage_options',                                              /* 権限 */
+            'ajax-snippets',                                               /* ページを開いたときのURL */
+            function(){ require_once abspath(__FILE__).'AdminViews/AdminPage.php'; },       /* メニューに紐づく画面を描画するcallback関数 */
+            'dashicons-format-gallery', /* アイコン see: https://developer.wordpress.org/resource/dashicons/#awards */
+            6                          /* 表示位置のオフセット */
+          )
+        ]);
+      }
+      /****************
+       パーマリンク設定を『投稿名』『カスタム構造』などにする必要がある
+      ***************/
+      add_action( 'template_redirect', [RedirectSystem::getInstance(), 'handle']);
+      //ショートコードを追加
+      // require_once abspath(__FILE__).'ajax-snippets-shortcode.php';
 		}
+
 		/**
 		* script関数の登録
 		*/
-		function ajax_register_scripts() {
-      wp_enqueue_script( 'url-path-php', plugins_url('ajaxSnippets/UserViews/wp_api_path.php'),array(),false,true);
-      wp_enqueue_style( 'ajax-snippets-style', plugins_url( 'ajaxSnippets/UserViews/css/style.css' ) , array(), false,'all');
-      wp_enqueue_script( 'chartjs','//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js', [ 'jquery' ] ,date('U'),true);
-      wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js', array(),date('U'),true);
-      wp_enqueue_script( 'axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js', ['vue'],date('U'),true);
-      wp_enqueue_script( 'vueClick', plugins_url('ajaxSnippets/UserViews/js/vueClick.js'), ['axios'],false,true);
+    public function getJsAndCss(){
+      $this->registerCSS();
+      $this->registerJS();
     }
+    public function registerCSS(){
+      wp_enqueue_style( 'ajax-snippets-style', plugins_url( 'ajaxSnippets/UserViews/css/style.css' ));
+      wp_enqueue_style( 'google-font', 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
+      wp_enqueue_style( 'material-design-icon', 'https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css');
+      wp_enqueue_style( 'vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css');
+    }
+		private function registerJS() {
+      wp_enqueue_script( 'wp-api-path', plugins_url('ajaxSnippets/UserViews/wp_api_path.php'),array(),false,false);
+      wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js', array(),false,true);
+      wp_enqueue_script( 'chartjs','//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js', [ 'jquery','vue' ] ,date('U'),true);
+      wp_enqueue_script( 'vue-chartjs', 'https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js', array('chartjs'),false,true);
+      wp_enqueue_script( 'vue-loader', 'https://unpkg.com/http-vue-loader', array('vue'), false,true);
+      wp_enqueue_script( 'axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js', array('vue','vue-loader','wp-api-path'),false,true);
+      wp_enqueue_script( 'vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js', array('vue','vue-loader','axios','wp-api-path'),false,true);
+      wp_enqueue_script( 'vue-log-record', plugins_url('ajaxSnippets/UserViews/js/main.js'), ['axios','vue-loader','vuetify'],false,true);
+      wp_enqueue_script( 'vue-test', plugins_url('ajaxSnippets/UserViews/js/test.js'), array(),false,true);
+    }    
 
 } // end of class
 
@@ -87,7 +101,7 @@ add_action('activated_plugin', [InitDatabase::getInstance(), 'handle']); //singl
 add_action('admin_init', [AjaxSnippetsMce::getInstance(), 'handle']); 
 /*プラグインの初期化 */
 add_action('init', 'AjaxSneppets::init');
-
+add_action('init', [WpShortcode::getInstance($diContainer), 'handle']);
 
 //エンドポイント一覧
 function createEndPoints()
@@ -111,7 +125,8 @@ function createEndPoints()
   Route::post('/detail', 'AjaxSnippets\Api\Controllers\DetailController@create'); //新規追加
   Route::get('/detail', 'AjaxSnippets\Api\Controllers\DetailController@index'); //全件取得
   Route::post('/detail/search', 'AjaxSnippets\Api\Controllers\DetailController@search'); //名前検索
-  Route::get('/detail/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\DetailController@get'); //指定ID検索
+  Route::get('/detail/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\DetailController@get', false); //指定ID検索
+  Route::get('/detail/link/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\DetailController@getLinkMaker', false); //指定ID検索
   Route::put('/detail/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\DetailController@update');
   Route::post('/detail/rchart', 'AjaxSnippets\Api\Controllers\DetailController@storeRchart');
   Route::post('/detail/info', 'AjaxSnippets\Api\Controllers\DetailController@storeInfo');
@@ -129,7 +144,6 @@ function createEndPoints()
   //タグ - 子要素 関連
   Route::post('/taglink', 'AjaxSnippets\Api\Controllers\TagLinkController@create');
   Route::put('/taglink/(?P<itemId>\d+)', 'AjaxSnippets\Api\Controllers\TagLinkController@update');
-  // Route::get('/taglink', 'AjaxSnippets\Api\Controllers\TagLinkController@index');
   Route::get('/taglink/(?P<itemId>\d+)', 'AjaxSnippets\Api\Controllers\TagLinkController@get');
   Route::delete('/taglink/(?P<itemId>\d+)', 'AjaxSnippets\Api\Controllers\TagLinkController@delete');
   

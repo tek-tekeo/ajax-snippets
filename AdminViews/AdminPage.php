@@ -7,9 +7,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   rest_nonce : "<?php echo wp_create_nonce('wp_rest')?>"
   };
 </script>
-<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+
 <div id="vue-app">
   <v-app>
     <v-main>
@@ -32,7 +30,6 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
       </v-container>
     </v-main>
   </v-app>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
@@ -55,7 +52,6 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     ];
 
   Vue.use(Toasted);
-  console.log(WP_API_Settings.root);
   axios.defaults.baseURL = '<?= site_url() ?>/' + '?rest_route=/ajax_snippets_path/v1/';
   new Vue({
     el: '#vue-app',
