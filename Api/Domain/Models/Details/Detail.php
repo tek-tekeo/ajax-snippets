@@ -51,7 +51,7 @@ class Detail
     $this->rakutenId = $rakutenId;
     $this->rchart = $rchart;
     $this->info = $info;
-    $this->review = $review;
+    $this->review = stripslashes($review);
     $this->isShowUrl = $isShowUrl;
     $this->sameParent = $sameParent;
   }
@@ -109,7 +109,7 @@ class Detail
 
   public function review():string
   {
-    return $this->review;
+    return wpautop(stripslashes_deep($this->review));
   }
 
   public function isShowUrl():int

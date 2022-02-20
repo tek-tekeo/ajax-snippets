@@ -85,7 +85,7 @@ class AjaxSneppets
       wp_enqueue_script( 'wp-api-path', plugins_url('ajaxSnippets/UserViews/wp_api_path.php'),array(),false,false);
       wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js', array(),false,true);
       wp_enqueue_script( 'chartjs','//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js', [ 'jquery','vue' ] ,date('U'),true);
-      wp_enqueue_script( 'vue-chartjs', 'https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js', array('chartjs'),false,true);
+      wp_enqueue_script( 'vue-chartjs', 'https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js', array('chartjs','vue','vue-loader'),false,true);
       wp_enqueue_script( 'vue-loader', 'https://unpkg.com/http-vue-loader', array('vue'), false,true);
       wp_enqueue_script( 'axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js', array('vue','vue-loader','wp-api-path'),false,true);
       wp_enqueue_script( 'vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js', array('vue','vue-loader','axios','wp-api-path'),false,true);

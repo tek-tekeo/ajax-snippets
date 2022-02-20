@@ -18,9 +18,9 @@
         </chart-js>
       </div>
     </div>
-    <div class="scrollable-table scroll-hint" style="position: relative; overflow: auto;">
+    <!-- <div class="scrollable-table scroll-hint" style="position: relative; overflow: auto;">
       <table class="simple-table">
-      <tbody>
+      <tbody> -->
         <!-- 情報の配列 -->
         <v-row v-for="ele in data.info" :key="ele">
           <v-col>{{ ele.factor }}</v-col><v-col>{{ ele.value }}</v-col>
@@ -41,9 +41,12 @@
             </affiliate-link>
           </v-col>
         </v-row>
-      </tbody>
+        <v-row>
+          <v-col v-if="isReview" v-html="data.review"></v-col>
+        </v-row>
+      <!-- </tbody>
       </table>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -81,8 +84,8 @@ module.exports = {
       default: 'タイトル'
     },
     isReview:{
-      type: String,
-      default: 'false'
+      type: Boolean,
+      default: false
     }
   }
 };
