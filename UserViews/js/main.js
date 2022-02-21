@@ -18,7 +18,8 @@ wrapper.append(content);
     components: {
       'affiliateLink': httpVueLoader('/wp-content/plugins/ajaxSnippets/UserViews/js/affiliateLink.vue'),
       'rakutenBannerLink': httpVueLoader('/wp-content/plugins/ajaxSnippets/UserViews/js/rakutenBannerLink.vue'),
-      'singleReview': httpVueLoader('/wp-content/plugins/ajaxSnippets/UserViews/js/singleReview.vue')
+      'singleReview': httpVueLoader('/wp-content/plugins/ajaxSnippets/UserViews/js/singleReview.vue'),
+      'appLink': httpVueLoader('/wp-content/plugins/ajaxSnippets/UserViews/js/appLink.vue'),
     },
     methods:{
       async clickRecord(logData) {

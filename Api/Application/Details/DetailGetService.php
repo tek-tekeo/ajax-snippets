@@ -47,27 +47,27 @@ class DetailGetService implements IDetailGetService
   public function getEditorAnkenList(string $name){
     $details = $this->detailRepository->DetailFindByName($name);
 
-    return array_map(function($d){
-      $parent = $this->parentNodeRepository->ParentFindById($d->parent()->id());
-      $d->setParent($parent);
-      $asp = $this->aspRepository->AspFindByName($d->parent()->aspName());
-      $d->setAsp($asp);
+    return array_map(function($detail){
+      $d = $this->newDetailClass($detail);
       return new EditDetailData($d);
     }, $details);
   }
 
   public function getLinkMaker($cmd){
     $detail = $this->detailRepository->DetailFindById($cmd->id());
+    $d = $this->newDetailClass($detail);
+    return new AffiLinkData($d);
+  }
+
+  private function newDetailClass(Detail $detail) : Detail
+  {
     $parent = $this->parentNodeRepository->ParentFindById($detail->parent()->id());
-    $detail->setParent($parent);
     $detail->setParent($parent);
     $asp = $this->aspRepository->AspFindByName($detail->parent()->aspName());
     $detail->setAsp($asp);
-    if($parent == null){
-      return null;
-    }
-    return new AffiLinkData($detail);
+    return $detail;
   }
+
 }
 
 

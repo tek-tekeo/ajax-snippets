@@ -115,13 +115,6 @@ class DetailController
     return new WP_REST_Response($res, 200);
   }
 
-  // public function delete(WP_REST_Request $req) : WP_REST_Response
-  // {  
-  //   $cmd = new AspDeleteCommand($req->get_param('id'));
-  //   $res = $this->aspDeleteService->handle($cmd);
-  //   return new WP_REST_Response( $res, 200 );
-  // }
-
   public function storeRchart(WP_REST_Request $req) : WP_REST_Response
   {
     $json = $req->get_param('json');

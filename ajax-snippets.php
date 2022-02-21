@@ -85,12 +85,10 @@ class AjaxSneppets
       wp_enqueue_script( 'wp-api-path', plugins_url('ajaxSnippets/UserViews/wp_api_path.php'),array(),false,false);
       wp_enqueue_script( 'vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js', array(),false,true);
       wp_enqueue_script( 'chartjs','//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js', [ 'jquery','vue' ] ,date('U'),true);
-      wp_enqueue_script( 'vue-chartjs', 'https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js', array('chartjs','vue','vue-loader'),false,true);
       wp_enqueue_script( 'vue-loader', 'https://unpkg.com/http-vue-loader', array('vue'), false,true);
       wp_enqueue_script( 'axios', 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js', array('vue','vue-loader','wp-api-path'),false,true);
       wp_enqueue_script( 'vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js', array('vue','vue-loader','axios','wp-api-path'),false,true);
       wp_enqueue_script( 'vue-log-record', plugins_url('ajaxSnippets/UserViews/js/main.js'), ['axios','vue-loader','vuetify'],false,true);
-      wp_enqueue_script( 'vue-test', plugins_url('ajaxSnippets/UserViews/js/test.js'), array(),false,true);
     }    
 
 } // end of class
@@ -112,7 +110,7 @@ function createEndPoints()
   Route::post('/base', 'AjaxSnippets\Api\Controllers\BaseController@create'); //新規追加
   Route::get('/base/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\BaseController@get'); //指定ID検索
   Route::put('/base/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\BaseController@update');
-  
+  Route::get('/app/(?P<detailId>\d+)/(?P<noaffi>\d+)', 'AjaxSnippets\Api\Controllers\BaseController@getApp');
   
   //Asp関連
   Route::post('/asp', 'AjaxSnippets\Api\Controllers\AspController@create');
