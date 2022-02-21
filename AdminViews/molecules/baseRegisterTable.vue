@@ -24,6 +24,7 @@
         <v-col>
           <wp-text-box
             label="アフィリンク（メイン）必須"
+            :is-url="true"
             v-model="base.affiLink"
           ></wp-text-box>   
         </v-col>
@@ -32,6 +33,7 @@
         <v-col>
           <wp-text-box
             label="アフィリンク(商品リンクの頭)"
+            :is-url="true"
             v-model="base.sLink"
           ></wp-text-box>   
         </v-col>
@@ -50,6 +52,7 @@
         <v-col>
           <wp-text-box
             label="バナー画像"
+            :is-url="true"
             v-model="base.affiImg"
           ></wp-text-box>   
         </v-col>
@@ -74,6 +77,7 @@
         <v-col>
           <wp-text-box
             label="アフィ、トラッキングイメージタグ"
+            :is-url="true"
             v-model="base.imgTag"
           ></wp-text-box>   
         </v-col>
@@ -82,6 +86,7 @@
         <v-col>
           <wp-text-box
             label="商品リンクイメージタグ"
+            :is-url="true"
             v-model="base.sImgTag"
           ></wp-text-box>   
         </v-col>
@@ -92,6 +97,7 @@
         <v-col>
           <wp-text-box
             label="アプリのアイコン画像URL"
+            :is-url="true"
             v-model="base.img"
           ></wp-text-box>   
         </v-col>
@@ -108,6 +114,7 @@
         <v-col>
           <wp-text-box
             label="iosのリンク先"
+            :is-url="true"
             v-model="base.iosLink"
           ></wp-text-box>   
         </v-col>
@@ -116,6 +123,7 @@
         <v-col>
           <wp-text-box
             label="androidのリンク先"
+            :is-url="true"
             v-model="base.androidLink"
           ></wp-text-box>   
         </v-col>
@@ -124,6 +132,7 @@
         <v-col>
           <wp-text-box
             label="webのリンク先"
+            :is-url="true"
             v-model="base.webLink"
           ></wp-text-box>   
         </v-col>
@@ -132,6 +141,7 @@
         <v-col>
           <wp-text-box
             label="iosのアフィリンク先"
+            :is-url="true"
             v-model="base.iosAffiLink"
           ></wp-text-box>   
         </v-col>
@@ -140,6 +150,7 @@
         <v-col>
           <wp-text-box
             label="androidのアフィリンク先"
+            :is-url="true"
             v-model="base.androidAffiLink"
           ></wp-text-box>   
         </v-col>
@@ -148,6 +159,7 @@
         <v-col>
           <wp-text-box
             label="webのアフィリンク先"
+            :is-url="true"
             v-model="base.webAffiLink"
           ></wp-text-box>   
         </v-col>
@@ -156,6 +168,7 @@
         <v-col>
           <wp-text-box
             label="レビュー記事のURL"
+            :is-url="true"
             v-model="base.article"
           ></wp-text-box>   
         </v-col>

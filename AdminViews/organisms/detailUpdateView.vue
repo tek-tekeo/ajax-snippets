@@ -3,8 +3,11 @@
     class="grey lighten-5 mb-6"
   >
   <v-row>
-    <v-col>
+    <v-col cols="4">
       <router-link to="/detail">一覧へ戻る</router-link>
+    </v-col>
+    <v-col cols="4">
+      <router-link :to="'/parent/update/'+detail.parent.id">親ページへ移動</router-link>
     </v-col>
   </v-row>
     <v-row>

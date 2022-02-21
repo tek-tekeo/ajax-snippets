@@ -27,6 +27,10 @@ module.exports = {
         const rule = v => !!v || '入力必須の項目';
         rules.push(rule);
       }
+      if(this.isUrl){
+        const urlRule =  v => /http.?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#\u3000-\u30FE\u4E00-\u9FA0\uFF01-\uFFE3]+/.test(v) || 'URLを入力してください';
+        rules.push(urlRule);
+      }
 
       return rules;
     }
@@ -50,6 +54,10 @@ module.exports = {
       default:""
     },
     readonly:{
+      type: Boolean,
+      default: false
+    },
+    isUrl:{
       type: Boolean,
       default: false
     }

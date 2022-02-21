@@ -1,9 +1,6 @@
 <?php
 namespace AjaxSnippets\UserViews;
 
-use AjaxSnippets\Api\Controllers\DetailController;
-use AjaxSnippets\Common\AffiLinkForm as AF;
-
 class WpShortcode
 {
   private static $singleton;
@@ -45,7 +42,8 @@ class WpShortcode
        'id' => '1',
        'pl' => '0',
        'ntab' => '0',
-       'btn_color'=>''
+       'btn_color'=>'',
+       're_url'=>'0'
     ), $atts ) );
 
 $rep =<<<EOT
@@ -56,6 +54,7 @@ item-id="{$id}"
 place="{$pl}"
 btn-color="{$btn_color}"
 ntab="{$ntab}"
+:re-url="{$re_url}"
 >
 </affiliate-link>
 EOT;
@@ -81,11 +80,11 @@ ntab="{$ntab}"
 >
 </affiliate-link>
 EOT;
-        $rep .= self::toEditPage($id); 
-        return $rep;
+    $rep .= self::toEditPage($id); 
+    return $rep;
   }
 
-  public function singleReview($atts, $content = null){
+  public function singleReview($atts){
     extract( shortcode_atts( array(
        'detail_id' => '1',
        'color'=>'blue',
@@ -102,19 +101,27 @@ title="{$title}"
 >
 </single-review>
 EOT;
-$rep .= self::toEditPage($detail_id); 
-return $rep;
+    $rep .= self::toEditPage($detail_id); 
+    return $rep;
   }
 
-  // public function Radercahrt($atts, $content = null){
-  //   extract( shortcode_atts( array(
-  //      'name' => 'コイツ',
-  //      'factor' => 'aaa,bbb,ccc,ddd,eee',
-  //      'rate' => '3,3,3,3,3',
-  //      'color'=>'blue',
-  //      'title'=>'0'
-  //   ), $atts ) );
-  // return '';
-  // }
+  public function appLinkG($atts) {
+    extract( shortcode_atts( array(
+    'detail_id' =>'1',
+    'noaf' =>'0'
+    ), $atts ) );
+    
+$rep =<<<EOT
+<app-link
+@click-record="clickRecord"
+item-id="{$detail_id}"
+noaffi="{$noaf}"
+>
+</app-link>
+EOT;
+    $rep .= self::toEditPage($detail_id); 
+    return $rep;
+  }
  
+  
 }

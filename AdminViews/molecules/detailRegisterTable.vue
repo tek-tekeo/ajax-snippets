@@ -23,7 +23,8 @@
           <wp-text-box
             label="商品ページのURL"
             v-model="detail.officialItemLink"
-            required=true
+            :required="true"
+             :is-url="true"
           ></wp-text-box>
           <v-checkbox
             v-model="detail.sameParent"
@@ -35,6 +36,7 @@
           <wp-text-box
             label="アフィリエイトURL(a8以外のURL)"
             v-model="detail.affiItemLink"
+            :is-url="true"
           ></wp-text-box>   
         </v-col>
       </v-row>
@@ -72,6 +74,7 @@
           <wp-media-upload
             label="アイテム別の画像"
             v-model="detail.detailImg"
+            :is-url="true"
           ></wp-media-upload>   
         </v-col>
       </v-row>
