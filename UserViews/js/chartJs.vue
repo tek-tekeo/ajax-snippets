@@ -1,6 +1,6 @@
 <template>
-  <div :id="'canvas_wapper'+num" style="margin-bottom:0;max-height:400px">
-    <canvas :id="'canvas'+num" width=400 height=400></canvas>
+  <div :id="'canvas_wapper'+num">
+    <canvas :id="'canvas'+num"></canvas>
   </div>
 </template>
 

@@ -1,7 +1,10 @@
 <template>
-  <div>
-    <div class="singleReview">
-      <div class="firstItem">
+  <v-container>
+    <v-row>
+      <v-col
+        sm="6"
+        cols="12"
+        >
         <affiliate-link 
           @click-record="clickRecord"
           :content="data.content"
@@ -13,8 +16,10 @@
           :re-url="0"
         >
         </affiliate-link>
-      </div>
-      <div class="secondItem">
+      </v-col>
+      <v-col
+       sm="6"
+       cols="12">
         <chart-js
           v-if="loaded"
           :rchart="data.rchart"
@@ -23,8 +28,8 @@
           :title="title"
         >
         </chart-js>
-      </div>
-    </div>
+      </v-col>
+    </v-row>
         <v-simple-table dense>
           <template v-slot:default>
             <tbody>
@@ -58,7 +63,7 @@
         <v-row>
           <v-col v-if="isReview" v-html="data.review"></v-col>
         </v-row>
-  </div>
+  </v-container>
 </template>
 
 <script>

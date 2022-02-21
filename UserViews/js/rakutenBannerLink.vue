@@ -1,17 +1,17 @@
 <template>
   <a
-    :href="affiurl"
+    :href="affiUrl"
     @click="clickRecord"
     rel="nofollow noopener"
     target="_blank"
     class="rakuten-item-thumb-link product-item-thumb-link"
-    :title="imgalt"
+    :title="imgAlt"
   >
     <img
-      :src="imgsrc"
-      :alt="imgalt"
-      :width="imgwidth"
-      :height="imgheight"
+      :src="imgSrc"
+      :alt="imgAlt"
+      :width="imgWidth"
+      :height="imgHeight"
       class="rakuten-item-thumb-image product-item-thumb-image"
     >
   </a>
@@ -26,23 +26,23 @@ module.exports = {
     }
   },
   props: {
-    imgsrc: {
+    imgSrc: {
       type: String,
       default: '公式サイト'
     },
-    imgalt: {
+    imgAlt: {
       type: String,
       default: '公式サイト'
     },
-    imgwidth: {
+    imgWidth: {
       type: String,
       default: '公式サイト'
     },
-    imgheight: {
+    imgHeight: {
       type: String,
       default: '公式サイト'
     },
-    affiurl: {
+    affiUrl: {
       type: String,
       default: '#'
     },

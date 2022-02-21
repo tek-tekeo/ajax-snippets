@@ -8,8 +8,8 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   };
 </script>
 
-<div id="vue-app" v-cloak>
-  <v-app>
+<div id="vue-app">
+  <v-app v-cloak>
     <v-main>
       <v-container fluid>
         <v-toolbar-title>アフィリンクメーカー</v-toolbar-title>

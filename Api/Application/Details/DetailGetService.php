@@ -103,6 +103,7 @@ class EditDetailData
     $this->aspName = $detail->getAsp()->getAspName();
     $this->amazonAsin = $detail->amazonAsin();
     $this->rakutenId = $detail->rakutenId();
+    $this->directLink = $detail->getDirectUrl();
   }
 }
 
@@ -120,5 +121,9 @@ class AffiLinkData
     $this->imgHeight = $detail->parent()->affiImgHeight();
     $this->imgTag = $detail->parent()->imgTag();
     $this->place = 'place';
+
+    //以下、rakutenの商品リンクのみ使用
+    $this->rakutenId = $detail->rakutenId();
+    $this->name = $detail->parent()->name();
   }
 }

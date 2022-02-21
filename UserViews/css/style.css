@@ -146,13 +146,28 @@ ul.favo_manga li:after {
   display:block;
 }
 
-.btn-wrap.ajaxSnippetsAffiliateLink > a{
+.btn-wrap > a{
   margin:0;
 }
+.shoplinkbtn1 a{
+  width: 100%;
+}
+
 /* 楽天リンクのボタンcss */
 @media screen and (max-width: 834px){
-  .product-item-buttons > * > .ajaxSnippetsAffiliateLink > a {
+  .product-item-buttons > * > a {
       width: auto;
       font-size: 11px;
   }
 }
+
+.v-application {
+  font-family: Roboto,sans-serif;
+  line-height: 1.5;
+}
+.product-item-buttons a, .sns-buttons a, .entry-categories-tags a{
+  color: white !important;
+}
+/* .v-application a {
+  color: #1976d2;
+} */

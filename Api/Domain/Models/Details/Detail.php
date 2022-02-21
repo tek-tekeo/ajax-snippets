@@ -141,6 +141,11 @@ class Detail
     return $url;
   }
 
+  public function getDirectUrl(): string
+  {
+    return home_url() . "/".$this->parent()->anken() . "?no=".$this->id."&pl=PLACE_ID";
+  }
+
   public function setAsp(Asp $asp)
   {
     $this->asp = $asp;

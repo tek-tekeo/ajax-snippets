@@ -1,16 +1,26 @@
 <template>
-  <span> 
-    <v-btn v-if="btnColor != ''"
-      x-large
-      :color="btnColor"
-      :href="link.url"
-      class="ma-2 white--text"
+  <span>
+    <v-container
+       v-if="btnColor != ''"
+       style="text-align:center"
     >
-    {{ link.content }}
-    <v-icon>
-        mdi-arrow-right-bold-box
-      </v-icon>
-    </v-btn>
+      <v-row>
+        <v-col>
+          <v-btn
+            x-large
+            :color="btnColor"
+            :href="link.url"
+            class="ma-2 white--text"
+          >
+          {{ link.content }}
+          <v-icon>
+              mdi-arrow-right-bold-box
+            </v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
+      
     <span v-else-if="reUrl == 1">
       {{ link.officialItemLink }}
     </span>
