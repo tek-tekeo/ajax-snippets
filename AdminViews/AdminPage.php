@@ -8,7 +8,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   };
 </script>
 
-<div id="vue-app">
+<div id="vue-app" v-cloak>
   <v-app>
     <v-main>
       <v-container fluid>
@@ -71,3 +71,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     }
   });
 </script>
+
+<style>
+
+</style>
