@@ -52,6 +52,7 @@ class AppRepository implements IAppRepository
         'web_link' => $app->webLink(),
         'ios_affi_link' => $app->iosAffiLink(),
         'android_affi_link' => $app->androidAffiLink(),
+        'web_affi_link' => $app->webAffiLink(),
         'article' => $app->article(),
         'app_order' => $app->appOrder(),
         'app_price' => $app->appPrice()
