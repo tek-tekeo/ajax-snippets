@@ -10,6 +10,7 @@
           btn_color=""
           :ntab="1"
           :set-banner="true"
+          :re-url="0"
         >
         </affiliate-link>
       </div>
@@ -46,6 +47,7 @@
                     btn_color=""
                     :ntab="0"
                     :set-banner="false"
+                    :re-url="0"
                   >
                   </affiliate-link>
                 </td>

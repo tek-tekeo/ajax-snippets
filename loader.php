@@ -91,27 +91,27 @@ foreach (glob($pattern) as $filename) {
 /**
  * 共通クラスの読み込み
  */
-$pattern = dirname(__FILE__) . '/Common/*.php';
-foreach (glob($pattern) as $filename) {
-    include_once $filename;
-}
+// $pattern = dirname(__FILE__) . '/Common/*.php';
+// foreach (glob($pattern) as $filename) {
+//     include_once $filename;
+// }
 
 
 // /**
 //  * コントローラーの読み込み
 //  */
-$pattern = dirname(__FILE__) . '/Controllers/*.php';
-foreach (glob($pattern) as $filename) {
-    include_once $filename;
-}
+// $pattern = dirname(__FILE__) . '/Controllers/*.php';
+// foreach (glob($pattern) as $filename) {
+//     include_once $filename;
+// }
 
 /**
  * 設定ファイル
  */
-$pattern = dirname(__FILE__) . "/Configs/*.php";
-foreach (glob($pattern) as $filename) {
-    include_once $filename;
-}
+// $pattern = dirname(__FILE__) . "/Configs/*.php";
+// foreach (glob($pattern) as $filename) {
+//     include_once $filename;
+// }
 
 // /**
 //  * WPの関数

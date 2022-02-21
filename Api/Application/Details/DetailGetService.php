@@ -113,6 +113,7 @@ class AffiLinkData
     $this->itemId = $detail->id();
     $this->content = $detail->officialItemLink();
     $this->url = $detail->getRedirectUrl();
+    $this->officialItemLink = $detail->officialItemLink();
     $this->imgSrc = $detail->parent()->affiImg();
     $this->imgAlt = $detail->parent()->name() . ' ' . $detail->itemName();
     $this->imgWidth = $detail->parent()->affiImgWidth();

@@ -11,6 +11,9 @@
         mdi-arrow-right-bold-box
       </v-icon>
     </v-btn>
+    <span v-else-if="reUrl == 1">
+      {{ link.officialItemLink }}
+    </span>
     <a v-else
       :href="link.url"
       @click="clickRecord"
@@ -34,7 +37,15 @@
 module.exports = {
   data(){
     return{
-      link:{imgSrc:'#'}
+      link:{
+        content:'',
+        imgAlt: '',
+        imgHeight: 250,
+        imgWidth: 300,
+        imgSrc: '#',
+        imgTag: '#',
+        url: '#'
+      }
     }
   },
   computed:{
@@ -86,6 +97,10 @@ module.exports = {
     ntab:{
       type: Number,
       default:1
+    },
+    reUrl:{
+      type: Number,
+      default:0
     }
   }
 };

@@ -42,7 +42,8 @@ class WpShortcode
        'id' => '1',
        'pl' => '0',
        'ntab' => '0',
-       'btn_color'=>''
+       'btn_color'=>'',
+       're_url'=>'0'
     ), $atts ) );
 
 $rep =<<<EOT
@@ -53,6 +54,7 @@ item-id="{$id}"
 place="{$pl}"
 btn-color="{$btn_color}"
 ntab="{$ntab}"
+:re-url="{$re_url}"
 >
 </affiliate-link>
 EOT;
