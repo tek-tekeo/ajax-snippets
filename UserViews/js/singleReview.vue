@@ -1,10 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col
-        sm="6"
-        cols="12"
-        >
+      <v-col cols="5">
         <affiliate-link 
           @click-record="clickRecord"
           :content="data.content"
@@ -17,9 +14,7 @@
         >
         </affiliate-link>
       </v-col>
-      <v-col
-       sm="6"
-       cols="12">
+      <v-col cols="7">
         <chart-js
           v-if="loaded"
           :rchart="data.rchart"

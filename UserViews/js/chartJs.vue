@@ -1,7 +1,7 @@
 <template>
-  <div :id="'canvas_wapper'+num">
-    <canvas :id="'canvas'+num"></canvas>
-  </div>
+    <div :id="'canvas_wapper'+num">
+      <canvas :id="'canvas'+num"></canvas>
+    </div>
 </template>
 
 <script>
@@ -40,33 +40,35 @@ module.exports = {
           pointHoverBorderColor:"rgb(255, 255, 255)"
         }]
       },
-      option:{
+      options:{
         legend: {
-                  display: false
+                display: false,
+                // maxHeight:300
               },
         title: {
-                  display: false,
-                  text: 'nameの評価'
+                display: false,
+                text: 'nameの評価'
               },
-          scale: {
-          angleLines: {
-                  display: true
-              },
-              gridLines: {
-                          display: true,
-                      },
-              ticks: {
-                  max: 5,
-                  min: 0,
-                  stepSize: 1
-              }
-          },
+        scale: {
+            angleLines: {
+              display: true
+            },
+            gridLines: {
+                display: true,
+            },
+            ticks: {
+                max: 5,
+                min: 0,
+                stepSize: 1
+            }
+        },
         elements:{
           line:{
             tension:0,
             borderWidth:3
           }
-        }
+        },
+        aspectRatio:1.5
       }
     }
   },
@@ -92,7 +94,7 @@ module.exports = {
     }
   },
   mounted () {
-    this.option.title.text = this.name + 'の評価';
+    this.options.title.text = this.name + 'の評価';
     this.data.labels = this.rchart.map(r => r.factor);
     this.data.datasets[0].data = this.rchart.map(r => r.value);
     this.data.datasets[0].backgroundColor = "rgba(" +this.rgbColor() + ", 0.2)";
@@ -107,7 +109,7 @@ module.exports = {
       data: this.data,
       options:this.options
     });
-
+    console.log(this.options);
   }
 }
 </script>
