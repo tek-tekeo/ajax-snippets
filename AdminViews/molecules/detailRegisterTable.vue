@@ -13,7 +13,7 @@
         <wp-text-box
           label="商品名 必須"
           v-model="detail.itemName"
-          required=true
+          :required="true"
         >
         </wp-text-box>
       </v-col>
@@ -24,7 +24,7 @@
             label="商品ページのURL"
             v-model="detail.officialItemLink"
             :required="true"
-             :is-url="true"
+            :is-url="true"
           ></wp-text-box>
           <v-checkbox
             v-model="detail.sameParent"

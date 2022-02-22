@@ -40,11 +40,16 @@
         </wp-text-box>
       </v-col>
       <v-col cols="4">
-        <wp-text-box
+        <!-- <wp-text-box
          v-model="el.value"
          label="値"
          >
-        </wp-text-box>
+        </wp-text-box> -->
+        <wp-text-area
+         v-model="el.value"
+         label="テキスト"
+         >
+        </wp-text-area>
       </v-col>
       <v-col cols="2">
         <span v-if="index == 0"><v-btn @click="storeDataDialog=true">データ登録</v-btn>
@@ -91,6 +96,7 @@
 module.exports = {
   components: {
     'WpTextBox': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/atoms/wpTextBox.vue'),
+    'WpTextArea': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/atoms/wpTextArea.vue'),
   },
   data(){
     return{
@@ -134,7 +140,8 @@ module.exports = {
     theme: {
      type: String,
      default: "入力テーマ"
-    }
+    },
+    
   }
 }
 </script>
