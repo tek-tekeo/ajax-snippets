@@ -73,6 +73,7 @@ class DetailGetService implements IDetailGetService
 
 class DetailData
 {
+
   public function __construct(Detail $detail)
   {
     $this->id = $detail->id();
@@ -89,7 +90,10 @@ class DetailData
     $this->isShowUrl = (bool)$detail->isShowUrl();
     $this->sameParent = (bool)$detail->sameParent();
     $this->review = $detail->review();
+    $this->getWpReview = $detail->getWpReview();
+    $this->getWpInfo = $detail->getWpInfo();
   }
+
 }
 
 class EditDetailData

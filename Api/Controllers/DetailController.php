@@ -105,7 +105,6 @@ class DetailController
   {
     $cmd = new DetailGetCommand((int)$req->get_param('id'));
     $res = $this->detailGetService->handle($cmd);
-
     return new WP_REST_Response($res, 200);
   }
 

@@ -34,11 +34,11 @@
           <template v-slot:default>
             <tbody>
               <tr
-                v-for="item in data.info"
+                v-for="item in data.getWpInfo"
                 :key="item.name"
               >
                 <th>{{ item.factor }}</th>
-                <td>{{ item.value }}</td>
+                <td v-html="item.value"></td>
               </tr>
               <!-- 公式サイトを表示するか？ -->
               <tr v-if="data.isShowUrl">
@@ -61,7 +61,7 @@
           </template>
         </v-simple-table>
         <v-row>
-          <v-col v-if="isReview" v-html="data.review"></v-col>
+          <v-col v-if="isReview" v-html="data.getWpReview"></v-col>
         </v-row>
   </v-container>
 </template>
@@ -128,5 +128,7 @@ module.exports = {
 </script>
 
 <style scoped>
-
+td p {
+    margin-bottom: 0px;
+}
 </style>

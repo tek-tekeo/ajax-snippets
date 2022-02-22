@@ -51,7 +51,7 @@ class Detail
     $this->rakutenId = $rakutenId;
     $this->rchart = $rchart;
     $this->info = $info;
-    $this->review = stripslashes($review);
+    $this->review = $review;
     $this->isShowUrl = $isShowUrl;
     $this->sameParent = $sameParent;
   }
@@ -109,7 +109,30 @@ class Detail
 
   public function review():string
   {
-    return wpautop(stripslashes_deep($this->review));
+    return $this->review;
+  }
+
+  public function getWpReview(): string
+  {
+    return wpautop($this->review);
+  }
+
+  public function getWpInfo()
+  {
+    return $this->changeWp($this->info);
+  }
+
+  private function changeWp($data)
+  {
+    $els = json_decode($data);
+    $newEls = array_map(function($e){
+      return array(
+        "factor" => $e->factor,
+        "value" => wpautop($e->value),
+      );
+    },$els);
+
+    return $newEls;
   }
 
   public function isShowUrl():int
