@@ -41,6 +41,7 @@ module.exports = {
         }]
       },
       options:{
+        animation: false,
         legend: {
                 display: false,
                 // maxHeight:300
