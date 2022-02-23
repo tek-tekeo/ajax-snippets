@@ -29,9 +29,9 @@ module.exports = {
       app:{
         link:'#',
         img:'#',
-        name:'タイトルー',
-        dev:'開発元',
-        linkImg:'https://nabettu.github.io/appreach/img/itune_ja.svg'
+        name:'',
+        dev:'',
+        linkImg:'#'
       }
     }
   },
@@ -58,7 +58,3 @@ module.exports = {
   }
 };
 </script>
-
-<style scoped>
-
-</style>

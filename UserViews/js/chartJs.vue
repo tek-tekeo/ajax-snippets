@@ -109,7 +109,6 @@ module.exports = {
       data: this.data,
       options:this.options
     });
-    console.log(this.options);
   }
 }
 </script>

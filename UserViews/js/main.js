@@ -6,16 +6,20 @@ axios.defaults.baseURL = WP_API_Settings.root+'?rest_route=/ajax_snippets_path/v
 // entry-content cf
 var content = document.getElementById('content-in');
 var wrapper = document.createElement("v-app");
-
+var wrapper2 = document.createElement("v-main");
 content.before(wrapper);
 wrapper.append(content);
-const items = document.querySelectorAll('.entry-content.cf');
+
+content.before(wrapper2);
+wrapper2.append(content);
+
+// const items = document.querySelectorAll('.entry-content.cf');
 // const items = document.querySelectorAll('.ajaxSnippetsAffiliateLink');
 // HTMLCollectionはforEachが使える
 // items.forEach((el, i) => {
 
   new Vue({
-    el:'#content', // HTMLElementをそのままelプロパティに渡す
+    el:'#container', // HTMLElementをそのままelプロパティに渡す
     vuetify: new Vuetify(),
     components: {
       'affiliateLink': httpVueLoader('/wp-content/plugins/ajaxSnippets/UserViews/js/affiliateLink.vue'),

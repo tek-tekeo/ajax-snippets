@@ -171,3 +171,14 @@ ul.favo_manga li:after {
 /* .v-application a {
   color: #1976d2;
 } */
+
+/* ボタンのv-appで領域を確保しないようにする */
+.v-application--wrap {
+  min-height: 0 !important; 
+  max-width: none !important;
+}
+/* 背景のレイアウト崩れを防ぐ */
+.theme--light.v-application {
+    background: transparent !important;
+    color: rgba(0,0,0,.87);
+}

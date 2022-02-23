@@ -1,26 +1,28 @@
 <template>
-  <span>
-    <v-container
-       v-if="btnColor != ''"
+  
+    <v-container>
+    <v-layout
+        v-if="btnColor != ''"
        style="text-align:center"
     >
       <v-row>
         <v-col>
-          <v-btn
-            x-large
-            :color="btnColor"
-            :href="link.url"
-            class="ma-2 white--text"
-          >
-          {{ link.content }}
-          <v-icon>
-              mdi-arrow-right-bold-box
-            </v-icon>
-          </v-btn>
+          <v-app>
+            <v-btn
+              x-large
+              :color="btnColor"
+              :href="link.url"
+              class="ma-2 white--text"
+            >
+              {{ content }}
+            <v-icon>
+                mdi-arrow-right-bold-box
+              </v-icon>
+            </v-btn>
+          </v-app>
         </v-col>
       </v-row>
-    </v-container>
-      
+    </v-layout>
     <span v-else-if="reUrl == 1">
       {{ link.officialItemLink }}
     </span>
@@ -40,7 +42,7 @@
       :src="link.imgTag"
       alt=""
     >
-  </span>
+  </v-container>
 </template>
 
 <script>
@@ -117,5 +119,7 @@ module.exports = {
 </script>
 
 <style scoped>
-
+.v-btn__content {
+  font-weight: bold;
+}
 </style>
