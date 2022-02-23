@@ -34,7 +34,7 @@ class WpShortcode
   {
     if ( current_user_can('administrator') || current_user_can('editor') || current_user_can('author')){
       $thisUrl = admin_url('')."admin.php?page=ajax-snippets#/detail/update/{$itemId}";
-      return "<p><a href={$thisUrl} target='_blank'>この案件を編集</a>(管理者向け)</p>";
+      return "<a href={$thisUrl} target='_blank' style='font-size:12px;'><v-icon> mdi-wrench </v-icon>編集</a>";
     }
   }
 

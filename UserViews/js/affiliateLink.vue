@@ -1,6 +1,5 @@
 <template>
-  
-    <v-container>
+  <span>
     <v-layout
         v-if="btnColor != ''"
        style="text-align:center"
@@ -42,7 +41,7 @@
       :src="link.imgTag"
       alt=""
     >
-  </v-container>
+  </span>
 </template>
 
 <script>

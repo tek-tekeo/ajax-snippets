@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container style="margin-bottom:0">
     <v-row>
       <v-col cols="5">
         <affiliate-link 
@@ -126,4 +126,5 @@ module.exports = {
 td p {
     margin-bottom: 0px;
 }
+
 </style>
