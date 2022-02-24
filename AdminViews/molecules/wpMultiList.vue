@@ -40,16 +40,20 @@
         </wp-text-box>
       </v-col>
       <v-col cols="4">
-        <!-- <wp-text-box
-         v-model="el.value"
-         label="値"
-         >
-        </wp-text-box> -->
         <wp-text-area
+         v-if="valueType == 'textBox'"
          v-model="el.value"
          label="テキスト"
          >
         </wp-text-area>
+        <wp-text-box
+         v-else
+         v-model="el.value"
+         :value-type="valueType"
+         label="値"
+         >
+        </wp-text-box>
+
       </v-col>
       <v-col cols="2">
         <span v-if="index == 0"><v-btn @click="storeDataDialog=true">データ登録</v-btn>
@@ -142,7 +146,11 @@ module.exports = {
      type: String,
      default: "入力テーマ"
     },
-    
+    //infoとchartの情報タイプ
+    valueType:{
+      type: String,
+      default: "textBox"  //numberで数字、textでテキスト
+    }
   }
 }
 </script>

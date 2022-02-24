@@ -3,6 +3,7 @@
     <v-text-field
       :label="label"
       :value="value"
+      :type="valueType"
       @input="changeValue"
       hide-details="auto"
       :rules="rules"
@@ -30,6 +31,11 @@ module.exports = {
       if(this.isUrl){
         const urlRule =  v => (v == '' || /http.?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#\u3000-\u30FE\u4E00-\u9FA0\uFF01-\uFFE3]+/.test(v)) || 'URLを入力してください';
         rules.push(urlRule);
+      }
+      if(this.valueType == 'number'){
+        const numRule = v => /[0-9]/.test(v) || '数値を入力してください';
+        rules.push(numRule);
+
       }
 
       return rules;
@@ -60,6 +66,10 @@ module.exports = {
     isUrl:{
       type: Boolean,
       default: false
+    },
+    valueType:{
+      type: String,
+      default: 'text'
     }
   }
 }

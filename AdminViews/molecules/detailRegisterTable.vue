@@ -83,6 +83,7 @@
         <wp-multi-list
           v-model="detail.rchart"
           theme="チャート情報"
+          value-type="number"
           @reuse-items="reuseRItems"
           @store-items="storeRItems"
         ></wp-multi-list>
@@ -93,6 +94,7 @@
         <wp-multi-list
           v-model="detail.info"
           theme="テーブル情報"
+          value-type="textBox"
           @reuse-items="reuseIItems"
           @store-items="storeIItems"
         ></wp-multi-list>
