@@ -19,7 +19,7 @@ axios.defaults.baseURL = WP_API_Settings.root+'?rest_route=/ajax_snippets_path/v
 // items.forEach((el, i) => {
 
   new Vue({
-    el:'#container', // HTMLElementをそのままelプロパティに渡す
+    el:'#content-in', // 範囲を広すぎると、他のjavascriptに干渉してしまう　　　HTMLElementをそのままelプロパティに渡す　
     vuetify: new Vuetify(),
     components: {
       'affiliateLink': httpVueLoader('/wp-content/plugins/ajax-snippets/UserViews/js/affiliateLink.vue'),
