@@ -83,7 +83,7 @@ class InitDatabase
   //名称からDBのテーブル名を取得
   private function getTableName(string $tableName): string
   {
-    return $this->repository->prefix . PLUGIN_DB_PREFIX . $tableName;
+    return PLUGIN_DB_PREFIX . $tableName;
   }
 
   //ベース（親）データのクエリを取得
