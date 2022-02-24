@@ -38,8 +38,8 @@
 <script>
 module.exports = {
   components: {
-    'AnalizeAffiCode': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/molecules/analizeAffiCode.vue'),
-    'BaseRegisterTable': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/molecules/baseRegisterTable.vue'),
+    'AnalizeAffiCode': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/analizeAffiCode.vue'),
+    'BaseRegisterTable': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/baseRegisterTable.vue'),
   },
   data(){
     return {

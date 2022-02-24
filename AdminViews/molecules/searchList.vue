@@ -24,7 +24,7 @@
 <script>
 module.exports = {
   components: {
-    'WpSearchTextBox': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/atoms/wpSearchTextBox.vue'),
+    'WpSearchTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpSearchTextBox.vue'),
   },
   data(){
     return {

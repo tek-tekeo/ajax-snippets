@@ -23,7 +23,7 @@
 <script>
 module.exports = {
   components: {
-    'WpTextArea': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/atoms/wpTextArea.vue'),
+    'WpTextArea': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpTextArea.vue'),
   },
   data(){
     return {

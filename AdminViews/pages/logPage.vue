@@ -138,12 +138,12 @@
 <script>
 module.exports = {
   components: {
-    'WpTextBox': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/atoms/wpTextBox.vue'),
-    'WpSelectBox': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/atoms/wpSelectBox.vue'),
-    'WpRadioBox': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/atoms/wpRadioBox.vue'),
-    'WpMultiList': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/molecules/wpMultiList.vue'),
-    'WpMediaUpload': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/molecules/wpMediaUpload.vue'),
-    'WpCheckBox': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/atoms/wpCheckBox.vue'),
+    'WpTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpTextBox.vue'),
+    'WpSelectBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpSelectBox.vue'),
+    'WpRadioBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpRadioBox.vue'),
+    'WpMultiList': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/wpMultiList.vue'),
+    'WpMediaUpload': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/wpMediaUpload.vue'),
+    'WpCheckBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpCheckBox.vue'),
   },
     data() {
       return {

@@ -22,10 +22,10 @@ wrapper2.append(content);
     el:'#container', // HTMLElementをそのままelプロパティに渡す
     vuetify: new Vuetify(),
     components: {
-      'affiliateLink': httpVueLoader('/wp-content/plugins/ajaxSnippets/UserViews/js/affiliateLink.vue'),
-      'rakutenBannerLink': httpVueLoader('/wp-content/plugins/ajaxSnippets/UserViews/js/rakutenBannerLink.vue'),
-      'singleReview': httpVueLoader('/wp-content/plugins/ajaxSnippets/UserViews/js/singleReview.vue'),
-      'appLink': httpVueLoader('/wp-content/plugins/ajaxSnippets/UserViews/js/appLink.vue'),
+      'affiliateLink': httpVueLoader('/wp-content/plugins/ajax-snippets/UserViews/js/affiliateLink.vue'),
+      'rakutenBannerLink': httpVueLoader('/wp-content/plugins/ajax-snippets/UserViews/js/rakutenBannerLink.vue'),
+      'singleReview': httpVueLoader('/wp-content/plugins/ajax-snippets/UserViews/js/singleReview.vue'),
+      'appLink': httpVueLoader('/wp-content/plugins/ajax-snippets/UserViews/js/appLink.vue'),
     },
     methods:{
       async clickRecord(logData) {

@@ -110,7 +110,7 @@
     el: '#vue-edit-page',
     vuetify: new Vuetify(),
     components: {
-      'WpSearchTextBox': httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/atoms/wpSearchTextBox.vue')
+      'WpSearchTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpSearchTextBox.vue')
     },
     data() {
       return {
@@ -179,7 +179,7 @@
       async textLink(){
         if(this.itemNo == null){return;}
         const item = this.returnItem();
-        console.log(item.affiLink);
+
         var inputTag = "[afRecord id=" + item.id + " ntab=1 pl=" + this.randomNo() + "]" + item.name + "[/afRecord]";
         this.closeTinymce(inputTag);
       },

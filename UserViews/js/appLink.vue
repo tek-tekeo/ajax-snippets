@@ -37,7 +37,6 @@ module.exports = {
   },
   async created(){
     const res = await axios.get('app/'+this.itemId+'/'+this.noaf);
-   console.log(res.data);
    this.app = res.data;
   },
   methods: {

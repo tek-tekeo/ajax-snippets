@@ -40,15 +40,15 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
 <script src="https://unpkg.com/vue-toasted"></script>
 <script>
   const routes = [
-      { path: '/', component: httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/pages/logPage.vue') },
-      { path: '/parent', component: httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/pages/parentPage.vue') },
-      { path: '/parent/create', component: httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/organisms/baseCreateView.vue') },
-      { path: '/parent/update/:id', component: httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/organisms/baseUpdateView.vue') },
-      { path: '/detail', component: httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/pages/detailPage.vue') },
-      { path: '/detail/create', component: httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/organisms/detailCreateView.vue') },
-      { path: '/detail/update/:id', component: httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/organisms/detailUpdateView.vue') },
-      { path: '/tag', component: httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/pages/tagPage.vue') },
-      { path: '/asp', component: httpVueLoader('/wp-content/plugins/ajaxSnippets/AdminViews/pages/aspPage.vue') }
+      { path: '/', component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/pages/logPage.vue') },
+      { path: '/parent', component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/pages/parentPage.vue') },
+      { path: '/parent/create', component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/organisms/baseCreateView.vue') },
+      { path: '/parent/update/:id', component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/organisms/baseUpdateView.vue') },
+      { path: '/detail', component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/pages/detailPage.vue') },
+      { path: '/detail/create', component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/organisms/detailCreateView.vue') },
+      { path: '/detail/update/:id', component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/organisms/detailUpdateView.vue') },
+      { path: '/tag', component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/pages/tagPage.vue') },
+      { path: '/asp', component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/pages/aspPage.vue') }
     ];
 
   Vue.use(Toasted);

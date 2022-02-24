@@ -68,8 +68,8 @@
 <script>
 module.exports = {
   components: {
-    'affiliateLink': httpVueLoader('/wp-content/plugins/ajaxSnippets/UserViews/js/affiliateLink.vue'),
-    'chartJs': httpVueLoader('/wp-content/plugins/ajaxSnippets/UserViews/js/chartJs.vue'),
+    'affiliateLink': httpVueLoader('/wp-content/plugins/ajax-snippets/UserViews/js/affiliateLink.vue'),
+    'chartJs': httpVueLoader('/wp-content/plugins/ajax-snippets/UserViews/js/chartJs.vue'),
   },
   data(){
     return{
