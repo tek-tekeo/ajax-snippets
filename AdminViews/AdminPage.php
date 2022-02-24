@@ -13,6 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
     <v-main>
       <v-container fluid>
         <v-toolbar-title>アフィリンクメーカー</v-toolbar-title>
+          <p>※キャッシュ系のプラグイン動作しているとうまく動きません</p>
           <v-tabs>
             <v-tabs-slider color="cyan"></v-tabs-slider>
             <v-tab
