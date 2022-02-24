@@ -128,7 +128,7 @@ class Detail
     $newEls = array_map(function($e){
       return array(
         "factor" => $e->factor,
-        "value" => wpautop($e->value),
+        "value" => do_shortcode(wpautop($e->value)),
       );
     },$els);
 
