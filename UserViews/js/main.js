@@ -4,14 +4,14 @@ axios.defaults.baseURL = WP_API_Settings.root+'?rest_route=/ajax_snippets_path/v
 // ↓v-appがないとvuetifyが適用されないので領域をラップする
 //vuetifyの適用領域をラップする
 // entry-content cf
-var content = document.getElementById('content-in');
-var wrapper = document.createElement("v-app");
-var wrapper2 = document.createElement("v-main");
-content.before(wrapper);
-wrapper.append(content);
+// var content = document.getElementById('content-in');
+// var wrapper = document.createElement("v-app");
+// var wrapper2 = document.createElement("v-main");
+// content.before(wrapper);
+// wrapper.append(content);
 
-content.before(wrapper2);
-wrapper2.append(content);
+// content.before(wrapper2);
+// wrapper2.append(content);
 
 // const items = document.querySelectorAll('.entry-content.cf');
 // const items = document.querySelectorAll('.ajaxSnippetsAffiliateLink');
