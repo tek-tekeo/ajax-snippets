@@ -9,7 +9,6 @@ Author URI: https://pachi.tokyo
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-
 use AjaxSnippets\Route;
 use AjaxSnippets\Database\InitDatabase;
 use AjaxSnippets\EditorViews\AjaxSnippetsMce;
@@ -31,6 +30,7 @@ $diContainer = $containerBuilder->build();  //グローバル変数にして、�
 
 // $a = $diContainer->get(IParentNodeRepository::class);
 // var_dump($a);die;
+
 
 class AjaxSneppets
 {
@@ -64,8 +64,8 @@ class AjaxSneppets
        パーマリンク設定を『投稿名』『カスタム構造』などにする必要がある
       ***************/
       add_action( 'template_redirect', [RedirectSystem::getInstance(), 'handle']);
-      //ショートコードを追加
-      // require_once abspath(__FILE__).'ajax-snippets-shortcode.php';
+      //ショートコードを追加 tagのみ
+      require_once abspath(__FILE__).'ajax-snippets-shortcode.php';
 		}
 
 		/**

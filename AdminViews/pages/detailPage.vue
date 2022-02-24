@@ -1,22 +1,22 @@
 <template>
   <div>
     <v-container>
-    <v-row>
-      <v-col>
-        <router-link to="/detail/create">子要素の新規作成ページへ</router-link>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="3">
-        <search-list
-          :items="items"
-          path="/detail/update/"
-          @search-text="searchDetailText"
-          @select-id="selectDetail"
-        >
-        </search-list>
-      </v-col>
-    </v-row>
+      <v-row>
+        <v-col>
+          <router-link to="/detail/create">子要素の新規作成ページへ</router-link>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="3">
+          <search-list
+            :items="items"
+            path="/detail/update/"
+            @search-text="searchDetailText"
+            @select-id="selectDetail"
+          >
+          </search-list>
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>

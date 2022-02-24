@@ -25,39 +25,43 @@
         </chart-js>
       </v-col>
     </v-row>
-        <v-simple-table dense>
-          <template v-slot:default>
-            <tbody>
-              <tr
-                v-for="item in data.getWpInfo"
-                :key="item.name"
+    <v-simple-table dense>
+      <template v-slot:default>
+        <tbody>
+          <tr
+            v-for="item in data.getWpInfo"
+            :key="item.name"
+          >
+            <th>{{ item.factor }}</th>
+            <td v-html="item.value"></td>
+          </tr>
+          <!-- 公式サイトを表示するか？ -->
+          <tr v-if="data.isShowUrl">
+            <th>公式サイト</th>
+            <td>
+              <affiliate-link 
+                @click-record="clickRecord"
+                :content="data.content"
+                :item-id="itemId"
+                place="singlePlace"
+                btn_color=""
+                :ntab="0"
+                :set-banner="false"
+                :re-url="0"
               >
-                <th>{{ item.factor }}</th>
-                <td v-html="item.value"></td>
-              </tr>
-              <!-- 公式サイトを表示するか？ -->
-              <tr v-if="data.isShowUrl">
-                <th>公式サイト</th>
-                <td>
-                  <affiliate-link 
-                    @click-record="clickRecord"
-                    :content="data.content"
-                    :item-id="itemId"
-                    place="singlePlace"
-                    btn_color=""
-                    :ntab="0"
-                    :set-banner="false"
-                    :re-url="0"
-                  >
-                  </affiliate-link>
-                </td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-        <v-row>
-          <v-col v-if="isReview" v-html="data.getWpReview"></v-col>
-        </v-row>
+              </affiliate-link>
+            </td>
+          </tr>
+        </tbody>
+      </template>
+    </v-simple-table>
+    <v-row>
+      <v-col
+        v-if="isReview"
+        v-html="data.getWpReview"
+      >
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

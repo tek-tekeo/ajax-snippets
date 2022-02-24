@@ -1,5 +1,5 @@
 <?php //テンプレートフォーム
-  require_once dirname( __FILE__ ) .'/../../../../wp-load.php';
+
 if ( !defined( 'ABSPATH' ) ) exit; ?>
 <script>
   var WP_API_Settings = {
@@ -20,7 +20,7 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
               :key="item.name"
               :to="item.to"
             >
-            {{item.name}}
+              {{item.name}}
             </v-tab>
           </v-tabs>
         </v-toolbar>
