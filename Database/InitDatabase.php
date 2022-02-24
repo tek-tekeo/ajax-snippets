@@ -77,7 +77,7 @@ class InitDatabase
   {
     $sql = $this->createSqlOfAspTable();
     dbDelta($sql);
-    // $this->addAspInitInfo();
+    $this->addAspInitInfo();
   }
 
   //名称からDBのテーブル名を取得
@@ -230,15 +230,19 @@ class InitDatabase
   }
 
   private function addAspInitInfo()
-    {
-      echo 'insert したてい';
-        // User::create([
-        //     'name' => '管理者',
-        //     'name_kana' => 'カンリシャ',
-        //     'email' => 'hoge@hoge.com',
-        //     'password' => 'password',
-        //     'company_name' => '会社',
-        //     'company_name_kana' => 'カイシャ'
-        // ]);
-    }
+  {
+    $this->repository->insert(
+      $this->getTableName('asp'),
+      array(
+        'id'=>1,
+        'asp_name'=>'a8',
+        'connect_string'=>'&a8ejpredirect='
+      ),
+      array(
+        '%d',
+        '%s',
+        '%s'
+      )
+    );
+  }
 }
