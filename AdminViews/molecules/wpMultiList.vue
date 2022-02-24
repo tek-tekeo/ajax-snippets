@@ -13,24 +13,16 @@
       </v-btn>
     </div>
     <div v-else>
-      <p>
-        <v-btn
-          @click="removeEl"
-          color="error"
-        >
-          {{ theme }}情報を削除する
-        </v-btn>
-      </p>
     <v-row v-for="(el, index) in els" :key="el + `-{$index}`">
       <v-col cols="1">
-        <span v-if="index != 0">
+        <p>
           <v-btn
-            @click="removeEl($event, index)"
+            @click="removeEl(index)"
             color="error"
           >
           削除
           </v-btn>
-        </span>
+        </p>
         <span v-if="index == 0">
           <v-btn
             @click="addEl"
@@ -124,8 +116,9 @@ module.exports = {
     addEl() {
       this.els.push({factor:'',value:''});
     },
-    removeEl(e, index){
-      this.els.splice(index, 1);
+    removeEl(index){
+      console.log(index);
+      this.els.splice(null, 1);
     },
   },
   computed:{
