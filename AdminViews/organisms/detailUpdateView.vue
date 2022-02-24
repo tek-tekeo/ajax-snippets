@@ -99,6 +99,7 @@ module.exports = {
       this.valid = this.$refs.form.validate();
     },
     async updateDetail(){
+      console.log(this.detail.info);
       this.validate();
       if(!this.valid){return;}
 

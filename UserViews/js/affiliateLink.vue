@@ -14,7 +14,7 @@
               class="ma-2 white--text"
             >
               {{ content }}
-            <v-icon>
+              <v-icon>
                 mdi-arrow-right-bold-box
               </v-icon>
             </v-btn>

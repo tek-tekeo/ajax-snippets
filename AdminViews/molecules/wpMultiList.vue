@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12"><h3>{{ theme }}</h3></v-col>
     </v-row>
-      <div v-if="elEmptyCheck">
+    <div v-if="elEmptyCheck">
       <v-btn
         @click="addEl"
         color="primary"
@@ -13,6 +13,14 @@
       </v-btn>
     </div>
     <div v-else>
+      <p>
+        <v-btn
+          @click="removeEl"
+          color="error"
+        >
+          {{ theme }}情報を削除する
+        </v-btn>
+      </p>
     <v-row v-for="(el, index) in els" :key="el + `-{$index}`">
       <v-col cols="1">
         <span v-if="index != 0">

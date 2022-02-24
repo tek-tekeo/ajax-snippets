@@ -1,5 +1,8 @@
 <template>
-    <div :id="'canvas_wapper'+num">
+    <div
+      :id="'canvas_wapper'+num"
+      v-show="this.data.labels.length >= 3"
+    >
       <canvas :id="'canvas'+num"></canvas>
     </div>
 </template>
