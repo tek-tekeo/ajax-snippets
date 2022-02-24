@@ -16,7 +16,11 @@ class AspService
   public function exist(Asp $asp) : bool
   {
     //名前で重複チェック
-    $findAsp = $this->aspRepository->AspFindByName($asp->getAspName());
-    return isset($findAsp);
+    try{
+      $findAsp = $this->aspRepository->AspFindByName($asp->getAspName());
+      return isset($findAsp);
+    }catch (\Exception $e){
+      return false;
+    }
   }
 }
