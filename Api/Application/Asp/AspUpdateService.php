@@ -28,14 +28,15 @@ class AspUpdateService implements IAspUpdateService
       print_r('userは存在しません');
       return false;
     }
-
-    //同じ名前で単一にしたい場合
-    if($this->aspService->exist($asp)){ //ドメインサービスを使う
-      //名前の更新
-      return false; //同じ名前がおるので棄却
-    }
+    //リクエストされた値を設定
     $asp->setAspName($command->aspName);
     $asp->setConnectString($command->connectString);
+    
+    //同一名の存在をチェック
+    if($this->aspService->exist($asp)){ //ドメインサービスを使う
+      return false; //同じ名前がおるので棄却
+    }
+    //書き込み
     return $this->aspRepository->save($asp);
   }
 }
