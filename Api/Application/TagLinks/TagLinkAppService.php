@@ -1,32 +1,31 @@
 <?php
 namespace AjaxSnippets\Api\Application\TagLinks;
 
+use AjaxSnippets\Api\Controllers\TagRankingCommand;
 use AjaxSnippets\Api\Domain\Models\TagLinks\TagLink;
 use AjaxSnippets\Api\Domain\Models\TagLinks\ITagLinkRepository;
+use AjaxSnippets\Api\Domain\Models\Details\Detail;
+use AjaxSnippets\Api\Domain\Models\Details\IDetailRepository;
+use AjaxSnippets\Api\Domain\Models\Tags\Tag;
 
 class TagLinkAppService
 {
   private $tagLinkRepository;
+  private $detailRepository;
 
-  public function __construct(ITagLinkRepository $tagLinkRepository)
+  public function __construct(ITagLinkRepository $tagLinkRepository, IDetailRepository $detailRepository)
   {
     $this->tagLinkRepository = $tagLinkRepository;
-  }
-
-  public function getAll():array
-  {
-    $res = $this->tagRepository->getAllTags();
-    return array_map(function($r){
-      return new TagData($r);
-    },$res);
+    $this->detailRepository = $detailRepository;
   }
 
   public function create(TagLinkCreateCommand $cmd):bool
   {
+    $detail = $this->detailRepository->DetailFindById($cmd->getItemId());
     $tag = new TagLink(
       $cmd->getId(),
-      $cmd->getItemId(),
-      $cmd->getTagId(),
+      $detail,
+      new Tag($cmd->getTagId())
     );
     $res = $this->tagLinkRepository->save($tag);
     if($res == null){
@@ -37,10 +36,11 @@ class TagLinkAppService
 
   public function update(TagLinkUpdateCommand $cmd):bool
   {
+    $detail = $this->detailRepository->DetailFindById($cmd->getItemId());
     $tag = new TagLink(
       $cmd->getId(),
-      $cmd->getItemId(),
-      $cmd->getTagId(),
+      $detail,
+      new Tag($cmd->getTagId())
     );
     $res = $this->tagLinkRepository->save($tag);
     if($res == null){
@@ -63,6 +63,32 @@ class TagLinkAppService
   public function delete(TagLinkDeleteCommand $cmd)
   {
     $tag = $this->tagLinkRepository->delete($cmd->getItemId());
+  }
+
+  public function createTagRanking(TagRankingCommand $cmd)
+  {
+    $itemIds = $this->tagLinkRepository->getItemIdsByTag($cmd->getTagId());
+
+    //ランキング分析
+    $disp_array = array();
+    $sum_values = array();
+    $names = array();
+    foreach($itemIds as $itemId){
+      $detail = $this->detailRepository->DetailFindById($itemId);
+      $values = json_decode($detail->rchart(), true);
+
+      $sum = 0;
+
+      foreach((array)$values as $v){
+        $sum = $sum + $v['value'];
+      }
+
+      array_push($disp_array, array('itemId'=>$itemId, 'name'=>$detail->itemName()));
+      array_push($sum_values, $sum);
+    }
+    array_multisort($sum_values, SORT_DESC, $disp_array);
+
+    return $disp_array;
   }
 
 }

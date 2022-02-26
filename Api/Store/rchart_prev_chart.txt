@@ -1,1 +1,1 @@
-[{"factor":"aaaaaaaa","value":"2"},{"factor":"bbb","value":"3"}]
+[{"factor":"aaaaaaaa","value":"2"},{"factor":"bbb","value":"3"},{"factor":"ccc","value":"1"}]

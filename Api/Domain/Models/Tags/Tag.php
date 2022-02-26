@@ -8,9 +8,9 @@ class Tag
   private $tagOrder;
 
   public function __construct(
-    int $id = null,
-    string $tagName,
-    int $tagOrder
+    int $id= null,
+    string $tagName = null,
+    int $tagOrder = 0
   )
   {
     $this->id = $id;

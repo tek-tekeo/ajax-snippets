@@ -23,18 +23,18 @@ class Detail
 
   public function __construct(
     int $id,
-    ParentNode $parent,
-    string $itemName = null,
-    string $officialItemLink = null,
-    string $affiItemLink = null,
-    string $detailImg = null,
-    string $amazonAsin = null,
-    string $rakutenId = null,
-    string $rchart = null,
-    string $info = null,
-    string $review = null,
-    int $isShowUrl,
-    int $sameParent
+    ParentNode $parent = null,
+    string $itemName = '',
+    string $officialItemLink = '',
+    string $affiItemLink = '',
+    string $detailImg = '',
+    string $amazonAsin = '',
+    string $rakutenId = '',
+    string $rchart = '',
+    string $info = '',
+    string $review = '',
+    int $isShowUrl = 0,
+    int $sameParent = 1
   )
   {
     if($id === null){
@@ -42,8 +42,12 @@ class Detail
     }else{
       $this->id = $id;
     }
-    $this->parent = $parent;
-    $this->itemName =$itemName;
+    if($parent === null){
+      $this->parent = new ParentNode();
+    }else{
+      $this->parent = $parent;
+    }
+    $this->itemName = $itemName;
     $this->officialItemLink=$officialItemLink;
     $this->affiItemLink =$affiItemLink;
     $this->detailImg = $detailImg;

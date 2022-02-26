@@ -8,4 +8,5 @@ interface ITagLinkRepository
   public function get(int $itemId);
   public function save(TagLink $tagLink) : bool;
   public function delete(int $itemId):bool;
+  public function getItemIdsByTag(int $tagId):array;
 }

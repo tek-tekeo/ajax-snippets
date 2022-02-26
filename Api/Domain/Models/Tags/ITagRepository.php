@@ -9,4 +9,5 @@ interface ITagRepository
   public function get(int $id);
   public function save(Tag $tag) : bool;
   public function delete(int $id):bool;
+  public function getTagsByName(string $name):array;
 }

@@ -93,7 +93,6 @@ module.exports = {
       const chartEl = document.getElementById("canvas"+this.num);
       const chartElPos = wy + chartEl.getBoundingClientRect().top;
 
-    console.log(wb);
     // チャートの位置がウィンドウの最下部位置を超えたら起動
       if ( wb > chartElPos) {
           this.chartGenerate();

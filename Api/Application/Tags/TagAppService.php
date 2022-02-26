@@ -63,6 +63,14 @@ class TagAppService
     $tag = $this->tagRepository->delete($cmd->id);
   }
 
+  public function search(string $name)
+  {
+    $tags = $this->tagRepository->getTagsByName($name);
+    return array_map(function($t){
+      return new TagData($t);
+    },$tags);
+  }
+
 }
 
 class TagData

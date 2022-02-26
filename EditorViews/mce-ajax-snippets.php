@@ -17,6 +17,17 @@
     <v-app>
       <v-main>
         <v-container fluid>
+      <v-tabs
+        color="deep-purple accent-4"
+        right
+      >
+        <v-tab>
+          リンク
+        </v-tab>
+        <v-tab>
+          タグ
+        </v-tab>
+        <v-tab-item>
           <wp-search-text-box
             label="名前で検索"
             @search-text="searchText"
@@ -85,14 +96,35 @@
             height="400"
             item-height="40"
             >
-            <template v-slot:default="{ item }">
-                <v-radio
-                  :label="item.name"
-                  :value="item.id"
-                ></v-radio>
-            </template>
-          </v-virtual-scroll>
-        </v-radio-group>
+              <template v-slot:default="{ item }">
+                  <v-radio
+                    :label="item.name"
+                    :value="item.id"
+                  ></v-radio>
+              </template>
+            </v-virtual-scroll>
+          </v-radio-group>
+        </v-tab-item>
+          <v-tab-item>
+            <wp-search-text-box
+              label="タグ名で検索"
+              @search-text="tagText"
+            >
+            </wp-search-text-box>
+            <v-list flat>
+                <v-list-item
+                  v-for="(item, i) in tagList"
+                  :key="i"
+                >
+                  <v-list-item-content
+                  @click="tagRanking(item)"
+                  >
+                    <v-list-item-title v-text="item.tagName"></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+          </v-list>
+          </v-tab-item>
+        </v-tabs>
         </v-container>
       </v-main>
     </v-app>
@@ -114,8 +146,11 @@
     },
     data() {
       return {
+        dialog:false,
         searchList:[],
+        tagList:[],
         itemNo:null,
+        tagNo:null
       }
     },
     async created(){
@@ -124,6 +159,8 @@
           'name':''
         });
         this.searchList = res.data;
+        const tags = await axios.get('/tag');
+        this.tagList = tags.data;
       } catch (err) {
         // TODO: エラー処理
         console.log(err);
@@ -137,6 +174,18 @@
           'name':name
         });
         this.searchList = res.data;
+        } catch (err) {
+          // TODO: エラー処理
+          console.log(err);
+        }
+      },
+      async tagText(name){
+        try {
+        // TODO: URL
+        const res = await axios.post('/tag/editor',{
+          'name':name
+        });
+        this.tagList = res.data;
         } catch (err) {
           // TODO: エラー処理
           console.log(err);
@@ -205,6 +254,10 @@
 
         const blockquoteTag = '<blockquote class="ajax-snippets-quote" cite="' + inputTag + '"><div>評価：[star rate="5" max="5" number="1"]</div><div><span class="bold">タイトル</span></div><p class="fz-14px">引用文</p><cite><a href="' + inputTag + '">公式サイト</a></cite></blockquote>';
         this.closeTinymce(blockquoteTag);
+      },
+      async tagRanking(item){
+        const inputTag = "[tagRanking id=" + item.id + " is_review=1 tagName=" + item.tagName + "]";
+        this.closeTinymce(inputTag);
       }
     }
   });

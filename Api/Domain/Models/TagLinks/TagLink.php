@@ -1,21 +1,24 @@
 <?php
 namespace AjaxSnippets\Api\Domain\Models\TagLinks;
 
+use AjaxSnippets\Api\Domain\Models\Details\Detail;
+use AjaxSnippets\Api\Domain\Models\Tags\Tag;
+
 class TagLink
 {
   private $id;
-  private $itemId;
-  private $tagId;
+  private $detail;
+  private $tag;
 
   public function __construct(
     int $id = null,
-    int $itemId,
-    int $tagId
+    Detail $detail,
+    Tag $tag
   )
   {
     $this->id = $id;
-    $this->itemId = $itemId;
-    $this->tagId = $tagId;
+    $this->detail = $detail;
+    $this->tag = $tag;
   }
 
   //以下、ドメインの知識のみ
@@ -26,12 +29,12 @@ class TagLink
 
   public function getItemId()
   {
-    return $this->itemId;
+    return $this->detail->id();
   }
 
   public function getTagId()
   {
-    return $this->tagId;
+    return $this->tag->getId();
   }
 }
 

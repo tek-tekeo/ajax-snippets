@@ -72,4 +72,22 @@ class TagRepository implements ITagRepository
     return array();
   }
 
+  public function getTagsByName(string $name) : array
+  {
+    $res = $this->db->get_results("SELECT * FROM ".$this->table. " where tag_name LIKE '%".$name."%'");
+    $tags = array();
+    if(!$res == null){
+      foreach($res as $r){
+        $tag = new Tag(
+          $r->id,
+          $r->tag_name,
+          $r->tag_order
+        );
+        array_push($tags, $tag);
+      }
+      return $tags;
+    }
+    return array();
+  }
+
 }

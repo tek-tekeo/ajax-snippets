@@ -1,6 +1,8 @@
 <?php
 namespace AjaxSnippets\Api\Infrastructure\Repository;
 
+use AjaxSnippets\Api\Domain\Models\Tags\Tag;
+use AjaxSnippets\Api\Domain\Models\Details\Detail;
 use AjaxSnippets\Api\Domain\Models\TagLinks\TagLink;
 use AjaxSnippets\Api\Domain\Models\TagLinks\ITagLinkRepository;
 
@@ -52,8 +54,8 @@ class TagLinkRepository implements ITagLinkRepository
       foreach($res as $r){
         $tag = new TagLink(
           $r->id,
-          $r->item_id,
-          $r->tag_id
+          new Detail($r->item_id),
+          new Tag($r->tag_id)
         );
         array_push($tags, $tag);
       }
@@ -62,22 +64,14 @@ class TagLinkRepository implements ITagLinkRepository
     return array();
   }
 
-  // public function getAllTags() : array
-  // {
-  //   $res = $this->db->get_results("SELECT * FROM ".$this->table);
-  //   $tags = array();
-  //   if(!$res == null){
-  //     foreach($res as $r){
-  //       $tag = new Tag(
-  //         $r->id,
-  //         $r->tag_name,
-  //         $r->tag_order
-  //       );
-  //       array_push($tags, $tag);
-  //     }
-  //     return $tags;
-  //   }
-  //   return array();
-  // }
-
+  public function getItemIdsByTag(int $tagId) : array
+  {
+    $sql = "SELECT DISTINCT item_id FROM ".$this->table." where tag_id in (".$tagId.") group by item_id having count(*) >= ".count(explode(",", $tagId));
+    $res = $this->db->get_results($sql);
+    $array = array();
+    foreach($res as $r){
+      array_push($array, $r->item_id);
+    }
+    return $array;
+  }
 }

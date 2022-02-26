@@ -2,6 +2,7 @@
 namespace AjaxSnippets\UserViews;
 
 use AjaxSnippets\Api\Controllers\DetailController;
+use AjaxSnippets\Api\Controllers\TagLinkController;
 
 class WpShortcode
 {
@@ -138,6 +139,26 @@ EOT;
     $res = $detailController->get($req);
     return $res->data->officialItemLink;
   }
+
+public function tagRanking($atts){
+  extract( shortcode_atts( array(
+    'id' => '1',
+    'is_review'=>'1'
+ ), $atts ) );
+
+  $tagLinkController = self::$di->get(TagLinkController::class);
+  $req = new \WP_REST_Request();
+  $req->set_param('tagId', $id);
+  $res = $tagLinkController->getTagRanking($req)->data; //タグランキングのデータをゲット
+
+  foreach($res as $r){
+    $html .= "<h3>".$r['name']."</h3>";
+    $html .= "[singleReview detail_id=".$r['itemId']." is_review=".$is_review."]";
+  }
+  $html = do_shortcode($html);
+
+ return $html;
+}
 
   //楽天のアフィリエイトリンク、cocoon利用時のみ
   public function rakuten2($atts){

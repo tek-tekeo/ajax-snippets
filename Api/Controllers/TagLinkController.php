@@ -18,13 +18,6 @@ class TagLinkController
     $this->tagLinkAppService = $tagLinkAppService;
   }
 
-  //コントローラーは入力をモデルが要求する入力に変換すること
-  public function index(){
-    //全件取得
-    $res = $this->tagLinkLinkAppService->getAll();
-    return new WP_REST_Response($res, 200);
-  }
-
   public function create(WP_REST_Request $req) : WP_REST_Response
   {
     $cmd = new TagLinkCreateCommand(
@@ -58,5 +51,28 @@ class TagLinkController
     $cmd = new TagLinkDeleteCommand((int)$req->get_param('itemId'));
     $res = $this->tagLinkAppService->delete($cmd);
     return new WP_REST_Response( $res, 200 );
+  }
+
+  //ショートコードのタグランキングを作る
+  public function getTagRanking(WP_REST_Request $req) : WP_REST_Response
+  {
+    $cmd = new TagRankingCommand((int)$req->get_param('tagId'));
+    $res = $this->tagLinkAppService->createTagRanking($cmd);
+    return new WP_REST_Response( $res, 200 );
+  }
+}
+
+class TagRankingCommand
+{
+  private $tagId;
+
+  public function __construct(int $tagId)
+  {
+    $this->tagId = $tagId;
+  }
+
+  public function getTagId()
+  {
+    return $this->tagId;
   }
 }
