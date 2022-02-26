@@ -112,7 +112,7 @@ function createEndPoints()
   Route::post('/base', 'AjaxSnippets\Api\Controllers\BaseController@create'); //新規追加
   Route::get('/base/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\BaseController@get'); //指定ID検索
   Route::put('/base/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\BaseController@update');
-  Route::get('/app/(?P<detailId>\d+)/(?P<noaffi>\d+)', 'AjaxSnippets\Api\Controllers\BaseController@getApp');
+  Route::get('/app/(?P<detailId>\d+)/(?P<noaffi>\d+)', 'AjaxSnippets\Api\Controllers\BaseController@getApp',false); //アプリリンクの生成
   
   //Asp関連
   Route::post('/asp', 'AjaxSnippets\Api\Controllers\AspController@create');
