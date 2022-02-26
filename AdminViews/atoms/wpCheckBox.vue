@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>{{ label }}</h3>
+    <h3 v-show="checkList.length != 0">{{ label }}</h3>
     <v-checkbox v-for="c in checkList" :key="c.name"
       v-model="checkItems"
       :label="c.name"
