@@ -1,7 +1,7 @@
 <?php
 namespace AjaxSnippets\Infrastructure\Repository;
 
-use AjaxSneppets\Domain\Models\BaseModel;
+use AjaxSnippets\Domain\Models\BaseModel;
 
 class Builder
 {

@@ -229,7 +229,7 @@
         if(this.itemNo == null){return;}
         const item = this.returnItem();
 
-        var inputTag = "[afRecord id=" + item.id + " ntab=1 pl=" + this.randomNo() + "]" + item.name + "[/afRecord]";
+        var inputTag = "[afRecord id=" + item.id + " ntab=1 pl=" + this.randomNo() + " btn_color=\"\"]" + item.name + "[/afRecord]";
         this.closeTinymce(inputTag);
       },
       async bannerLink(){

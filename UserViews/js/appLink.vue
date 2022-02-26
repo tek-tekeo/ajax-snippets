@@ -7,16 +7,17 @@
       <div class="fz-16px applink_box_title">{{ app.name }}</div>
       <div class="fz-12px">開発元：{{ app.dev }}</div>
         <img v-if="app.linkImg != ''" style="height: 40px; width: 135px;" :src="app.linkImg" alt="" />
-
-        <v-btn v-else
-          color="primary"
-          class="ma-2 white--text"
-        >
-        公式サイトへ
-        <v-icon>
-          mdi-arrow-right-bold-box
-        </v-icon>
-        </v-btn>
+        <v-app v-else>
+          <v-btn
+            color="primary"
+            class="ma-2 white--text"
+          >
+          公式サイトへ
+            <v-icon>
+              mdi-arrow-right-bold-box
+            </v-icon>
+          </v-btn>
+        </v-app>
       </div>
     </div>
   </a>
