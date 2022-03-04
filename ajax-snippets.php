@@ -34,8 +34,6 @@ $diContainer = $containerBuilder->build();  //グローバル変数にして、�
 
 class AjaxSneppets
 {
-  static private $instance = null;
-
     static function init() : self
     {
       return new self();
