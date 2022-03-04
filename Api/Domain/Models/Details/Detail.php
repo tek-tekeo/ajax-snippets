@@ -30,8 +30,8 @@ class Detail
     string $detailImg = '',
     string $amazonAsin = '',
     string $rakutenId = '',
-    string $rchart = '',
-    string $info = '',
+    string $rchart = '[]',
+    string $info = '[]',
     string $review = '',
     int $isShowUrl = 0,
     int $sameParent = 1

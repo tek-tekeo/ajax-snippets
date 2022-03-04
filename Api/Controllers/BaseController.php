@@ -80,7 +80,8 @@ class BaseController
         (string)$req->get_param('article'),
         (int)$req->get_param('appOrder'),
         (int)$req->get_param('appPrice')
-      )
+      ),
+      (string)$req->get_param('homeUrl')
     );
 
     $res = $this->baseElsCreateService->handle($cmd);

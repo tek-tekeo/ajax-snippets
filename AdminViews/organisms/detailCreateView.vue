@@ -24,14 +24,14 @@
             v-model="valid"
             lazy-validation
           >
-          <detail-register-table
-            :detail="detail"
-            :selected-tag-ids="selectedTagIds"
-            :base-list="baseList"
-            :tag-list="tagList"
-            @selected-tags="updateSelectedTagIds"
-          >
-          </detail-register-table>
+            <detail-register-table
+              :detail="detail"
+              :selected-tag-ids="selectedTagIds"
+              :base-list="baseList"
+              :tag-list="tagList"
+              @selected-tags="updateSelectedTagIds"
+            >
+            </detail-register-table>
           </v-form>
         </v-col>
       </v-row>

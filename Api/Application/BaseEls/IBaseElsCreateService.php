@@ -14,11 +14,13 @@ class BaseElsCreateCommand
 {
   private ParentNode $parent;
   private App $app;
+  private string $homeUrl;
 
-  public function __construct(ParentNode $parent, App $app)
+  public function __construct(ParentNode $parent, App $app, string $homeUrl)
   {
     $this->parent = $parent;
     $this->app = $app;
+    $this->homeUrl = $homeUrl;
   }
 
   public function getParent()
@@ -29,5 +31,10 @@ class BaseElsCreateCommand
   public function getApp()
   {
     return $this->app;
+  }
+
+  public function getHomeUrl()
+  {
+    return $this->homeUrl;
   }
 }

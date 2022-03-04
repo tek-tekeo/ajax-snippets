@@ -28,11 +28,17 @@
         </v-btn>
       </v-col>
       <v-col cols="8">
-        <base-register-table
-          :base="base"
-          :asp-list="aspList"
+        <v-form
+          ref="form"
+          v-model="valid"
+          lazy-validation
         >
-        </base-register-table>
+          <base-register-table
+            :base="base"
+            :asp-list="aspList"
+          >
+          </base-register-table>
+        </v-form>
         <analize-affi-code
           :asp="base.aspName"
           @analize-code="AnalizeCode"
@@ -75,7 +81,13 @@ module.exports = {
       this.$set(this.base, 'sLink', code.sLink);
       this.$set(this.base, 'sImgTag', code.sImgTag);
     },
+    validate(){
+      this.valid = this.$refs.form.validate();
+    },
     async updateBase(){
+      this.validate();
+      if(!this.valid){return;}
+
       const res = await axios.put('base/'+this.base.id,this.base);
       if(res.data && res.status == '200'){
         var options = {

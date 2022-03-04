@@ -19,11 +19,25 @@
         </v-btn>
       </v-col>
       <v-col cols="10">
-        <base-register-table
-          :base="base"
-          :asp-list="aspList"
+        <v-form
+          ref="form"
+          v-model="valid"
+          lazy-validation
         >
-        </base-register-table>
+          <p>
+          <wp-text-box
+            label="トップページのURL"
+            :is-url="true"
+            v-model="base.homeUrl"
+          >
+          </wp-text-box>
+          </p>
+          <base-register-table
+            :base="base"
+            :asp-list="aspList"
+          >
+          </base-register-table>
+        </v-form>
         <analize-affi-code
           :asp="base.aspName"
           @analize-code="AnalizeCode"
@@ -40,10 +54,12 @@ module.exports = {
   components: {
     'AnalizeAffiCode': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/analizeAffiCode.vue'),
     'BaseRegisterTable': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/baseRegisterTable.vue'),
+    'WpTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpTextBox.vue'),
   },
   data(){
     return {
-      base:{},
+      valid:true,
+      base:{homeUrl:null},
       aspList:[]
     }
   },
@@ -61,7 +77,13 @@ module.exports = {
       this.$set(this.base, 'sLink', code.sLink);
       this.$set(this.base, 'sImgTag', code.sImgTag);
     },
+    validate(){
+      this.valid = this.$refs.form.validate();
+    },
     async createNewBase(){
+      this.validate();
+      if(!this.valid){return;}
+
       const res = await axios.post('base',this.base);
       if(res.data && res.status == '200'){
         var options = {
