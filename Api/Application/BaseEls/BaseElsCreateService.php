@@ -36,13 +36,13 @@ class BaseElsCreateService implements IBaseElsCreateService
         new Detail(
           0,
           new ParentNode((int)$insertId),
-          'トップ',
+          $cmd->getParent()->name(),
           $cmd->getHomeUrl()
         )
       );
-      $res = $this->detailCreateService->handle($detailCmd);
+      $deatilInsertId = $this->detailCreateService->handle($detailCmd);
 
-      if($insertId !== 0 && $app == true && $res == true){
+      if($insertId !== 0 && $app == true && $deatilInsertId !== 0){
         return true;
       }
       return false;
