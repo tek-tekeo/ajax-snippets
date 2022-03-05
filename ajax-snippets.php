@@ -44,8 +44,6 @@ class AjaxSneppets
       //スクリプト 、スタイルシートの追加 (公開ページにのみ反映)
       add_action( 'wp_enqueue_scripts', [$this, 'getJsAndCss']);
       if (is_admin() && is_user_logged_in()) {
-        //管理画面のCSSを追加
-        add_action('admin_enqueue_scripts', [$this, 'registerCSS']);
         // メニュー追加
         add_action('admin_menu', [$this, 'adminMenu']);
       }

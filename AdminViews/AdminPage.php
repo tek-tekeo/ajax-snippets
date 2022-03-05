@@ -1,5 +1,7 @@
 <?php //テンプレートフォーム
-
+  wp_enqueue_style( 'vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css');
+  wp_enqueue_style( 'google-font', 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
+  wp_enqueue_style( 'material-design-icon', 'https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css');
 if ( !defined( 'ABSPATH' ) ) exit; ?>
 <script>
   var WP_API_Settings = {
