@@ -121,8 +121,7 @@ module.exports = {
       this.els.push({factor:'',value:''});
     },
     removeEl(index){
-      console.log(index);
-      this.els.splice(null, 1);
+      this.els.splice(index, 1);
     },
   },
   computed:{
