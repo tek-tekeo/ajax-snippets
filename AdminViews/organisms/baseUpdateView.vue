@@ -57,6 +57,7 @@ module.exports = {
   },
   data(){
     return {
+      valid:true,
       affiCode:'',
       affiSCode:'',
       base:{},

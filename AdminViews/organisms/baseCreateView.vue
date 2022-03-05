@@ -80,6 +80,12 @@ module.exports = {
     validate(){
       this.valid = this.$refs.form.validate();
     },
+    reset(){
+        //初期化
+        this.base = {};
+        this.valid = true;
+        this.$refs.form.reset(); //detailのデータ、親のIDについて完全消去できていない
+    },
     async createNewBase(){
       this.validate();
       if(!this.valid){return;}
@@ -93,7 +99,7 @@ module.exports = {
           type: 'success'
         }
         this.$toasted.show('追加完了',options);
-        this.base = {};
+        this.reset();
       }else{
         var options = {
           position: 'top-center',
