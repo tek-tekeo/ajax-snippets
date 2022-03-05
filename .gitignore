@@ -1,4 +1,4 @@
-/templates/child/prev_*.txt
+/Api/Store/*.txt
 /wpdb
 /themes
 /phpmyadmin
