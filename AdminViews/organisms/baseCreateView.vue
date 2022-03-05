@@ -76,6 +76,11 @@ module.exports = {
       this.$set(this.base, 'affiImgHeight', code.affiImgHeight);
       this.$set(this.base, 'sLink', code.sLink);
       this.$set(this.base, 'sImgTag', code.sImgTag);
+      this.$set(this.base, 'img', code.img);
+      this.$set(this.base, 'iosLink', code.iosLink);
+      this.$set(this.base, 'androidLink', code.androidLink);
+      this.$set(this.base, 'dev', code.dev);
+
     },
     validate(){
       this.valid = this.$refs.form.validate();
