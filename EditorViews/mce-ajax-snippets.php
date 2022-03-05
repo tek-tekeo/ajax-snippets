@@ -244,7 +244,9 @@
       },
       async appLink(){
         if(this.itemNo == null){return;}
-        let inputTag = "[appLinkG detail_id=" + this.itemNo + " re_url=0 noaf=0 text='テキスト']";
+        const item = this.returnItem();
+
+        let inputTag = "[appLinkG detail_id=" + this.itemNo + " noaf=0 text='" + item.name + "']";
         this.closeTinymce(inputTag);
         
       },
