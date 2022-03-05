@@ -1,15 +1,17 @@
 <template>
   <div>
-    <wp-text-area
-      label="画像付きメインリンク"
-      v-model="affiCode"
-    >
-    </wp-text-area>
-    <wp-text-area
-      label="商品テキストリンク"
-      v-model="affiSCode"
-    >
-    </wp-text-area>
+    <div v-if="asp == 'a8'">
+      <wp-text-area
+        label="画像付きメインリンク"
+        v-model="affiCode"
+      >
+      </wp-text-area>
+      <wp-text-area
+        label="商品テキストリンク"
+        v-model="affiSCode"
+      >
+      </wp-text-area>
+    </div>
     <wp-text-area
       label="アプリーチの新コードを入力"
       v-model="appCode"

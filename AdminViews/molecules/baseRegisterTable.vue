@@ -4,6 +4,16 @@
     <v-col cols="6">
       <v-row>
         <v-col>
+          <wp-select-box
+            :items="selectList"
+            v-model="findAsp"
+            @change="changeAsp"
+          >
+          </wp-select-box>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
         <wp-text-box
           label="名前 必須"
           v-model="base.name"
@@ -36,16 +46,6 @@
             :is-url="true"
             v-model="base.sLink"
           ></wp-text-box>   
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <wp-select-box
-            :items="selectList"
-            v-model="findAspId"
-            @change="changeAsp"
-          >
-          </wp-select-box>
         </v-col>
       </v-row>
       <v-row>
@@ -217,7 +217,7 @@ module.exports = {
     }
   },
   computed:{
-    findAspId(){
+    findAsp(){
       const findAsp =this.aspList.find(asp => asp.aspName == this.base.aspName);
       if(findAsp !== undefined){
        return {id:findAsp.id, name:findAsp.aspName};
