@@ -1,68 +1,62 @@
 <template>
-  <v-container style="margin-bottom:0">
-    <v-row>
-      <v-col cols="4" sm="5">
-        <affiliate-link 
-          @click-record="clickRecord"
-          :content="data.content"
-          :item-id="itemId"
-          place="singlePlace"
-          btn_color=""
-          :ntab="1"
-          :set-banner="true"
-          :re-url="0"
-        >
-        </affiliate-link>
-      </v-col>
-      <v-col cols="8" sm="7">
-        <chart-js
-          v-if="loaded"
-          :rchart="data.rchart"
-          :name="data.itemName"
-          :color="color"
-          :title="title"
-        >
-        </chart-js>
-      </v-col>
-    </v-row>
-    <v-simple-table dense>
-      <template v-slot:default>
-        <tbody>
-          <tr
-            v-for="item in data.getWpInfo"
-            :key="item.name"
-          >
-            <th>{{ item.factor }}</th>
-            <td v-html="item.value"></td>
-          </tr>
-          <!-- 公式サイトを表示するか？ -->
-          <tr v-if="data.isShowUrl">
-            <th>公式サイト</th>
-            <td>
-              <affiliate-link 
-                @click-record="clickRecord"
-                :content="data.content"
-                :item-id="itemId"
-                place="singlePlace"
-                btn_color=""
-                :ntab="0"
-                :set-banner="false"
-                :re-url="0"
-              >
-              </affiliate-link>
-            </td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table>
-    <v-row>
-      <v-col
-        v-if="isReview"
-        v-html="data.getWpReview"
+  <div>
+    <div class="singleReview">
+      <affiliate-link 
+        class="firstItem"
+        @click-record="clickRecord"
+        :content="data.content"
+        :item-id="itemId"
+        place="singlePlace"
+        btn_color=""
+        :ntab="1"
+        :set-banner="true"
+        :re-url="0"
       >
-      </v-col>
-    </v-row>
-  </v-container>
+      </affiliate-link>
+      <chart-js
+        v-if="loaded"
+        class="secondItem"
+        :rchart="data.rchart"
+        :name="data.itemName"
+        :color="color"
+        :title="title"
+      >
+      </chart-js>
+    </div>
+    <table class="singleReview_table">
+      <tbody>
+        <tr
+          v-for="item in data.getWpInfo"
+          :key="item.name"
+        >
+          <th>{{ item.factor }}</th>
+          <td v-html="item.value"></td>
+        </tr>
+        <!-- 公式サイトを表示するか？ -->
+        <tr v-if="data.isShowUrl">
+          <th>公式サイト</th>
+          <td>
+            <affiliate-link 
+              @click-record="clickRecord"
+              :content="data.content"
+              :item-id="itemId"
+              place="singlePlace"
+              btn_color=""
+              :ntab="0"
+              :set-banner="false"
+              :re-url="0"
+            >
+            </affiliate-link>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <span
+      v-if="isReview"
+      v-html="data.getWpReview"
+    >
+    </span>
+  </div>
 </template>
 
 <script>
@@ -127,8 +121,51 @@ module.exports = {
 </script>
 
 <style scoped>
-td p {
-    margin-bottom: 0px;
+td p{
+  margin-bottom:0;
+}
+table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table tr{
+  border-bottom: solid 2px white;
+}
+
+table tr:last-child{
+  border-bottom: none;
+}
+
+table th{
+  position: relative;
+  text-align: left;
+  width: 30%;
+  background-color: #262b2c;
+  color: white;
+  text-align: center;
+  padding: 0;
+}
+
+table th:after{
+  display: block;
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  top:calc(50% - 10px);
+  right:-10px;
+  border-left: 10px solid #262b2c;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+}
+
+table td{
+  text-align: left;
+  width: 70%;
+
+  background-color: #eee;
+  padding: 5px 20px;
 }
 
 </style>

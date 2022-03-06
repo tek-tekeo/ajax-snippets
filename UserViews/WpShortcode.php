@@ -35,7 +35,7 @@ class WpShortcode
   {
     if ( current_user_can('administrator') || current_user_can('editor') || current_user_can('author')){
       $thisUrl = admin_url('')."admin.php?page=ajax-snippets#/detail/update/{$itemId}";
-      return "<a href={$thisUrl} target='_blank' style='font-size:12px;'><v-icon> mdi-wrench </v-icon>編集</a>";
+      return "<a href={$thisUrl} target='_blank' style='font-size:12px;'>編集</a>";
     }
   }
 

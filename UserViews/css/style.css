@@ -136,7 +136,7 @@ ul.favo_manga li:after {
   width : calc(100% / 3) ;
 }
 .singleReview .secondItem{
-  max-width:300px;
+  max-width:350px;
   width : -webkit-calc(200% / 3) ;
   width : calc(200% / 3) ;
 }
@@ -161,24 +161,45 @@ ul.favo_manga li:after {
   }
 }
 
-.v-application {
-  font-family: Roboto,sans-serif;
-  line-height: 1.5;
+.btn {
+  width: 100%;
+  font-family: inherit;
+  appearance: none;
+  border: 0;
+  border-radius: 5px;
+  background: #4676d7;
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 1rem;
+  cursor: pointer;
 }
-.product-item-buttons a, .sns-buttons a, .entry-categories-tags a{
-  color: white !important;
-}
-/* .v-application a {
-  color: #1976d2;
-} */
 
-/* ボタンのv-appで領域を確保しないようにする */
-.v-application--wrap {
-  min-height: 0 !important; 
-  max-width: none !important;
+.btn:hover {
+  background: #1d49aa;
 }
-/* 背景のレイアウト崩れを防ぐ */
-.theme--light.v-application {
-    background: transparent !important;
-    color: rgba(0,0,0,.87);
+
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px #cbd6ee;
+}
+
+.error-btn, .red-btn{
+  background: #d74665;
+}
+.error-btn:hover, .red-btn:hover{
+  background: #cc7d94;
+}
+
+.success-btn, .green-btn{
+  background: #52d746;
+}
+.success-btn:hover, .green-btn:hover{
+  background: #8acc7d;
+}
+
+.orange-btn{
+  background: #df8c49;
+}
+.orange-btn:hover{
+  background: #dfb586;
 }

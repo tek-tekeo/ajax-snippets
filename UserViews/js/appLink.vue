@@ -7,17 +7,12 @@
       <div class="fz-16px applink_box_title">{{ app.name }}</div>
       <div class="fz-12px">開発元：{{ app.dev }}</div>
         <img v-if="app.linkImg != ''" style="height: 40px; width: 135px;" :src="app.linkImg" alt="" />
-        <v-app v-else>
-          <v-btn
-            color="primary"
-            class="ma-2 white--text"
+          <button
+            v-else
+            class="c-button"
           >
           公式サイトへ
-            <v-icon>
-              mdi-arrow-right-bold-box
-            </v-icon>
-          </v-btn>
-        </v-app>
+          </button>
       </div>
     </div>
   </a>
@@ -58,3 +53,27 @@ module.exports = {
   }
 };
 </script>
+
+<style scoped>
+.c-button {
+  min-width: 100px;
+  font-family: inherit;
+  appearance: none;
+  border: 0;
+  border-radius: 5px;
+  background: #4676d7;
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.c-button:hover {
+  background: #1d49aa;
+}
+
+.c-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px #cbd6ee;
+}
+</style>
