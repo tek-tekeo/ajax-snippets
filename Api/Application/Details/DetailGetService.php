@@ -119,10 +119,20 @@ class AffiLinkData
     $this->content = $detail->officialItemLink();
     $this->url = $detail->getRedirectUrl();
     $this->officialItemLink = $detail->officialItemLink();
-    $this->imgSrc = $detail->parent()->affiImg();
-    $this->imgAlt = $detail->parent()->name() . ' ' . $detail->itemName();
-    $this->imgWidth = $detail->parent()->affiImgWidth();
-    $this->imgHeight = $detail->parent()->affiImgHeight();
+    if($detail->sameParent() == 1){
+      $this->imgSrc = $detail->parent()->affiImg();
+      $this->imgAlt = $detail->parent()->name();
+      $this->imgWidth = $detail->parent()->affiImgWidth();
+      $this->imgHeight = $detail->parent()->affiImgHeight();
+    }else{
+      $this->imgSrc = $detail->detailImg();
+      $this->imgAlt = $detail->parent()->name() . ' ' . $detail->itemName();
+      preg_match('/wp-content.+/', $detail->detailImg(), $matches, PREG_OFFSET_CAPTURE);
+      $size = getimagesize('./'.$matches[0][0]);
+      $ratio = $size[1]/$size[0];
+      $this->imgWidth = 300;
+      $this->imgHeight = (int)300*$ratio;
+    }
     $this->imgTag = $detail->parent()->imgTag();
     $this->place = 'place';
 

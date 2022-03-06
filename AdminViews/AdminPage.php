@@ -1,7 +1,5 @@
 <?php //テンプレートフォーム
-  wp_enqueue_style( 'vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css');
-  wp_enqueue_style( 'google-font', 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
-  wp_enqueue_style( 'material-design-icon', 'https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css');
+
 if ( !defined( 'ABSPATH' ) ) exit; ?>
 <script>
   var WP_API_Settings = {
@@ -9,6 +7,9 @@ if ( !defined( 'ABSPATH' ) ) exit; ?>
   rest_nonce : "<?php echo wp_create_nonce('wp_rest')?>"
   };
 </script>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
 
 <div id="vue-app">
   <v-app v-cloak>
