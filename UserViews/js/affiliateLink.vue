@@ -2,7 +2,7 @@
   <span>
     <div v-if="btnColor != ''" style="padding:20px;">
       <a :href="link.url">
-        <button :class="'btn '+btnColor+'-btn'">
+        <button :class="'ajax_btn '+btnColor+'-ajax_btn'">
           {{ content }}
         </button>
       </a>

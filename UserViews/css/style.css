@@ -161,7 +161,7 @@ ul.favo_manga li:after {
   }
 }
 
-.btn {
+.ajax_btn {
   width: 100%;
   font-family: inherit;
   appearance: none;
@@ -174,32 +174,32 @@ ul.favo_manga li:after {
   cursor: pointer;
 }
 
-.btn:hover {
+.ajax_btn:hover {
   background: #1d49aa;
 }
 
-.btn:focus {
+.ajax_btn:focus {
   outline: none;
   box-shadow: 0 0 0 4px #cbd6ee;
 }
 
-.error-btn, .red-btn{
+.error-ajax_btn, .red-ajax_btn{
   background: #d74665;
 }
-.error-btn:hover, .red-btn:hover{
-  background: #cc7d94;
+.error-ajax_btn:hover, .red-ajax_btn:hover{
+  background: #e98aa5;
 }
 
-.success-btn, .green-btn{
+.success-ajax_btn, .green-ajax_btn{
   background: #52d746;
 }
-.success-btn:hover, .green-btn:hover{
+.success-ajax_btn:hover, .green-ajax_btn:hover{
   background: #8acc7d;
 }
 
-.orange-btn{
+.orange-ajax_btn{
   background: #df8c49;
 }
-.orange-btn:hover{
+.orange-ajax_btn:hover{
   background: #dfb586;
 }
