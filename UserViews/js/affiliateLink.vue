@@ -4,6 +4,7 @@
       <a 
         :href="link.url"
         @click="clickRecord"
+        :target="openTab"
       >
         <button :class="'ajax_btn '+btnColor+'-ajax_btn'">
           {{ content }}
