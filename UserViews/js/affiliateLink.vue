@@ -1,7 +1,10 @@
 <template>
   <span>
     <div v-if="btnColor != ''" style="padding:20px;">
-      <a :href="link.url">
+      <a 
+        :href="link.url"
+        @click="clickRecord"
+      >
         <button :class="'ajax_btn '+btnColor+'-ajax_btn'">
           {{ content }}
         </button>
