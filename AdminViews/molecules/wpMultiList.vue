@@ -56,8 +56,9 @@
 
       </v-col>
       <v-col cols="2">
-        <span v-if="index == 0"><v-btn @click="storeDataDialog=true">データ登録</v-btn>
+        <span v-if="index == 0"><v-btn @click="storeDataDialog=true">データ登録</v-btn></span>
         <span v-if="index == 0"><v-btn @click="reUseDataDialog=true">再利用</v-btn></span>
+        <span v-if="index != 0"><v-btn @click="changeOrder(index)">上へ</v-btn></span>
          <v-dialog v-model="storeDataDialog" max-width="400">
           <v-card>
             <v-card-title>
@@ -116,6 +117,14 @@ module.exports = {
     reUseChartItem(){
       this.$emit("reuse-items");
       this.reUseDataDialog = false;
+    },
+    changeOrder(index){
+      const clickNo = index;
+      const prevNo = parseInt(index) - 1;
+      const upItem = this.els[clickNo];
+      const downItem = this.els[prevNo];
+      this.els.splice(prevNo, 1, upItem);
+      this.els.splice(clickNo, 1, downItem);
     },
     addEl() {
       this.els.push({factor:'',value:''});
