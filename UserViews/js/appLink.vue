@@ -1,5 +1,10 @@
 <template>
-  <a class="applink" :href="app.link" rel="nofollow">
+  <a 
+    class="applink"
+    @click="clickRecord"
+    :href="app.link"
+    rel="nofollow"
+  >
     <div class="applink_box">
       <div class="applink_box_item1">
         <img :src="app.img" :alt="app.name +'のアイコン'"/></div>
@@ -37,6 +42,7 @@ module.exports = {
   },
   methods: {
     clickRecord(){
+      if(this.place === undefined){this.place = 'app'}
       const log = {itemId:this.itemId, place:this.place};
       this.$emit('click-record', log);
     }
