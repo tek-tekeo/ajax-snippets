@@ -74,13 +74,18 @@ module.exports = {
   },
   methods:{
     async AnalizeCode(code){
-      this.$set(this.base, 'affiLink', code.affiLink);
-      this.$set(this.base, 'affiImg', code.affiImg);
-      this.$set(this.base, 'imgTag', code.imgTag);
-      this.$set(this.base, 'affiImgWidth', code.affiImgWidth);
-      this.$set(this.base, 'affiImgHeight', code.affiImgHeight);
-      this.$set(this.base, 'sLink', code.sLink);
-      this.$set(this.base, 'sImgTag', code.sImgTag);
+      if(code.affiLink !== undefined){this.$set(this.base, 'affiLink', code.affiLink);}
+      if(code.affiImg !== undefined){this.$set(this.base, 'affiImg', code.affiImg);}
+      if(code.imgTag !== undefined){this.$set(this.base, 'imgTag', code.imgTag);}
+      if(code.affiImgWidth !== undefined){this.$set(this.base, 'affiImgWidth', code.affiImgWidth);}
+      if(code.affiImgHeight !== undefined){this.$set(this.base, 'affiImgHeight', code.affiImgHeight);}
+      if(code.sLink !== undefined){this.$set(this.base, 'sLink', code.sLink);}
+      if(code.sImgTag !== undefined){this.$set(this.base, 'sImgTag', code.sImgTag);}
+      if(code.img !== undefined){this.$set(this.base, 'img', code.img);}
+      if(code.iosLink !== undefined){this.$set(this.base, 'iosLink', code.iosLink);}
+      if(code.androidLink !== undefined){this.$set(this.base, 'androidLink', code.androidLink);}
+      if(code.dev !== undefined){this.$set(this.base, 'dev', code.dev);}
+      
     },
     validate(){
       this.valid = this.$refs.form.validate();

@@ -63,7 +63,7 @@ module.exports = {
         obj.sLink = sresult[0].match('[^\&]*')[0];
         obj.sImgTag = sresult[1];
       }
-
+  
       if(this.appCode !=''){
         const appLinks = new RegExp('(https://[^"]*)','g');
         const appRes = this.appCode.match(appLinks);
