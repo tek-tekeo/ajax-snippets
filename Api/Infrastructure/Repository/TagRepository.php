@@ -3,11 +3,12 @@ namespace AjaxSnippets\Api\Infrastructure\Repository;
 
 use AjaxSnippets\Api\Domain\Models\Tags\Tag;
 use AjaxSnippets\Api\Domain\Models\Tags\ITagRepository;
+use AjaxSnippets\Api\Infrastructure\Repository\BaseRepository;
 
-class TagRepository implements ITagRepository
+class TagRepository extends BaseRepository implements ITagRepository 
 {
-  private $db;
-  private $table;
+  // protected $db;
+  // protected $table;
 
   public function __construct()
   {
@@ -46,7 +47,10 @@ class TagRepository implements ITagRepository
 
   public function get(int $id)
   {
-    $res = $this->db->get_row("SELECT * FROM ".$this->table . " WHERE id=".$id);
+    $element = array(
+      'id' => $id
+    );
+    $res = $this->db->get_row($this->getSelectSql($element));
     return new Tag(
       $res->id,
       $res->tag_name,
