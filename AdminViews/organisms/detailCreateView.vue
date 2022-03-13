@@ -48,7 +48,7 @@ module.exports = {
     return {
       valid:true,
       detail:{
-        parent:{id:null,name:""},
+        parent:{id:null,name:"",aspName:""},
         itemName:'',
         officialItemLink:'',	
         affiItemLink:'',
@@ -75,8 +75,16 @@ module.exports = {
     this.tagList = res[1].data.map(function(r){
       return {id:r.id, name:r.tagName};
     });
+
+    const prevRegisterId = await axios.get('detail/prev');
+    if(prevRegisterId.data != 0){
+      this.detail.parent.id = prevRegisterId.data
+    }
   },
   methods:{
+    async storePrevId(parentId){
+      const res = await axios.post('detail/prev', {'parentId':parentId});
+    },
     updateSelectedTagIds(ids){
       this.selectedTagIds = ids;
     },
@@ -109,6 +117,7 @@ module.exports = {
           type: 'success'
         }
         this.$toasted.show('追加完了',options);
+        this.storePrevId(this.detail.parent.id);
         this.reset();
       }else{
         var options = {

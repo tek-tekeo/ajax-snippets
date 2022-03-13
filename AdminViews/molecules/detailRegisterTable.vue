@@ -34,6 +34,7 @@
         </v-col>
         <v-col cols="6">
           <wp-text-box
+            v-if="detail.parent.aspName != 'a8'"
             label="アフィリエイトURL(a8以外のURL)"
             v-model="detail.affiItemLink"
             :is-url="true"
@@ -136,6 +137,16 @@ module.exports = {
   },
   data(){
     return {
+    }
+  },
+  watch: {
+    detail: {
+      handler: function (val, oldVal) {
+        const base = this.baseList.find((base) => base.id == val.parent.id);
+        this.detail.parent.name = base.name;
+        this.detail.parent.aspName = base.aspName;
+      },
+      deep: true
     }
   },
   methods:{

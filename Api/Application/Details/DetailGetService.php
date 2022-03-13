@@ -79,6 +79,7 @@ class DetailData
     $this->id = $detail->id();
     $this->parent->id = $detail->parent()->id();
     $this->parent->name = $detail->parent()->name();
+    $this->parent->aspName = $detail->parent()->aspName();
     $this->itemName = $detail->itemName();
     $this->officialItemLink = $detail->officialItemLink();
     $this->affiItemLink = $detail->affiItemLink();

@@ -143,5 +143,19 @@ class DetailController
     $res = file_get_contents($getPath);
     return new WP_REST_Response(json_decode($res), 200);
   }
+  
+  public function storePrevId(WP_REST_Request $req) : WP_REST_Response
+  {
+    $parentId = $req->get_param('parentId');
+    $storePath = plugin_dir_path( __FILE__ ) . '../Store/parent_prev_id.txt';
+    $res = file_put_contents($storePath, $parentId);
+    return new WP_REST_Response($res, 200);
+  }
 
+  public function getPrevId() : WP_REST_Response
+  {
+    $getPath = plugin_dir_path( __FILE__ ) . '../Store/parent_prev_id.txt';
+    $parentId = file_get_contents($getPath);
+    return new WP_REST_Response((int)$parentId, 200);
+  }
 }

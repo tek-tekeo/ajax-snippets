@@ -63,7 +63,7 @@ class ParentListData
     // $this->anken = $parent->anken();
     // $this->affiLink = $parent->affiLink();
     // $this->sLink = $parent->sLink();
-    // $this->aspName = $parent->aspName();
+    $this->aspName = $parent->aspName();
     // $this->affiImg = $parent->affiImg();
     // $this->imgTag = $parent->imgTag();
     // $this->sImgTag = $parent->sImgTag();
