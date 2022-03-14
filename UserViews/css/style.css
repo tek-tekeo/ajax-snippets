@@ -126,7 +126,7 @@ ul.favo_manga li:after {
 
 .singleReview{
   display:flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content:space-evenly;
   width:100%"
 }

@@ -51,9 +51,9 @@ module.exports = {
                 // maxHeight:300
               },
         title: {
-                display: false,
-                text: 'nameの評価'
-              },
+              display: true,
+              text: ''
+            },
         scale: {
             angleLines: {
               display: true
@@ -100,7 +100,7 @@ module.exports = {
       }
     },
     chartGenerate(){
-      this.options.title.text = this.name + 'の評価';
+      // this.options.title.text = this.name + 'の評価';
       this.data.labels = this.rchart.map(r => r.factor);
       this.data.datasets[0].data = this.rchart.map(r => r.value);
       this.data.datasets[0].backgroundColor = "rgba(" +this.rgbColor() + ", 0.2)";
