@@ -10,26 +10,36 @@
           {{ content }}
         </button>
       </a>
+      <img
+        v-if="link.imgTag != ''"
+        border="0"
+        width="1"
+        height="1"
+        :src="link.imgTag"
+        alt=""
+      >
     </div>
     <span v-else-if="reUrl == 1">
       {{ link.officialItemLink }}
     </span>
-    <a v-else
-      :href="link.url"
-      @click="clickRecord"
-      rel="nofollow noopener"
-      :target="openTab"
-      v-html="redirectURL"
-    >
-    </a>
-    <img
-      v-if="link.imgTag != ''"
-      border="0"
-      width="1"
-      height="1"
-      :src="link.imgTag"
-      alt=""
-    >
+    <span v-else>
+      <a
+        :href="link.url"
+        @click="clickRecord"
+        rel="nofollow noopener"
+        :target="openTab"
+        v-html="redirectURL"
+      >
+      </a>
+      <img
+        v-if="link.imgTag != ''"
+        border="0"
+        width="1"
+        height="1"
+        :src="link.imgTag"
+        alt=""
+      >
+    </span>
   </span>
 </template>
 
