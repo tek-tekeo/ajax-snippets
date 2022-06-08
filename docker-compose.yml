@@ -3,12 +3,14 @@ services:
   wpdb:
     platform: linux/x86_64 # M1チップ対応のため追記
     image: mysql:5.7
-    container_name: "mysql57"
+    container_name: "wp_mysql57"
+    networks:
+      - wordpress000net1
     volumes:
-      - ./wpdb/mysql:/var/lib/mysql
+      - wpdb:/var/lib/mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root_alfkj
+      MYSQL_ROOT_PASSWORD: myrootpass
       MYSQL_DATABASE: wordpress_db
       MYSQL_USER: user
       MYSQL_PASSWORD: passw0rd
@@ -16,6 +18,8 @@ services:
   wordpress:
     image: wordpress:latest
     container_name: "wordpress"
+    networks:
+      - wordpress000net1
     volumes:
       - ./:/var/www/html/wp-content/plugins/ajax-snippets
       - ./themes/cocoon-master:/var/www/html/wp-content/themes/cocoon-master # テーマcocoonを入れる
@@ -24,9 +28,9 @@ services:
     depends_on:
       - wpdb
     ports:
-      - 3000:80
+      - 18085:80
     environment:
-      WORDPRESS_DB_HOST: wpdb:3306
+      WORDPRESS_DB_HOST: wpdb
       WORDPRESS_DB_NAME: wordpress_db
       WORDPRESS_DB_USER: user
       WORDPRESS_DB_PASSWORD: passw0rd
@@ -43,6 +47,12 @@ services:
     links:
       - wpdb
     ports:
-      - 8888:80
+      - 18885:80
     volumes:
       - ./phpmyadmin/sessions:/sessions
+
+networks:
+  wordpress000net1:
+
+volumes:
+  wpdb:
