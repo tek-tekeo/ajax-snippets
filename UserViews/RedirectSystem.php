@@ -1,4 +1,5 @@
 <?php
+
 namespace AjaxSnippets\UserViews;
 
 use AjaxSnippets\Api\Domain\Models\Logs\Log;
@@ -19,7 +20,8 @@ class RedirectSystem
   private $detailRepository;
   private $aspRepository;
 
-  private function __construct(){
+  private function __construct()
+  {
     global $diContainer;
 
     $this->parentNodeRepository = $diContainer->get(IParentNodeRepository::class);
@@ -28,41 +30,43 @@ class RedirectSystem
     $this->aspRepository = $diContainer->get(IAspRepository::class);
     $this->parentNodeService = $diContainer->get(ParentNodeService::class);
   }
-  
+
   //インスタンスを一つしか持てないように制約
   public static function getInstance()
   {
     //self::は自クラスを表す。自クラスのsingletonがあればそのまま返す
     if (!isset(self::$singleton)) {
-        self::$singleton = new RedirectSystem();
+      self::$singleton = new RedirectSystem();
     }
     return self::$singleton;
   }
 
-  public function handle():void
+  public function handle(): void
   {
     $req = $_SERVER["REQUEST_URI"];
-    $match = preg_match("/.+\/link\/(.*)\?no=([0-9]+)\&pl=(.+)/u", $req, $m);
-    if(!$match){return;} //リダイレクトのリンク形式になっていない場合はこちらでリターン。
+    $match = preg_match("/link\/(.*)\?no=([0-9]+)\&pl=(.+)/u", $req, $m);
+    if (!$match) {
+      return;
+    } //リダイレクトのリンク形式になっていない場合はこちらでリターン。
 
     $anken = $m[1];
     $id = $m[2];
     $place = $m[3];
 
-    try{
+    try {
       $detail = $this->detailRepository->DetailFindById($id);
       $detail->setParent($this->parentNodeRepository->ParentFindById($detail->parent()->id()));
       $detail->parent()->checkName($anken);
       $asp = $this->aspRepository->AspFindByName($detail->parent()->aspName());
       $detail->setAsp($asp);
       $url = $detail->getRedirectUrl();
-    }catch (\Exception $e){
+    } catch (\Exception $e) {
       //URLが案件とidの整合性が取れない場合は、トップページへ飛ばす。
       $url = site_url();
     }
-    
+
     //ログを記録する処理
-    try{
+    try {
       $log = new Log(
         null,
         $id,
@@ -73,7 +77,7 @@ class RedirectSystem
         $_SERVER['HTTP_REFERER']
       );
       $res = $this->logRepository->record($log);
-    }catch (\Exception $e){
+    } catch (\Exception $e) {
       //ログのインスタンス化に失敗した場合は保存しない
 
     }
@@ -81,5 +85,4 @@ class RedirectSystem
     wp_redirect($url, 302);
     exit;
   }
-
 }
