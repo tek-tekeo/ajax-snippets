@@ -1,6 +1,5 @@
 <?php
-  require_once dirname( __FILE__ ) .'/../../../../wp-load.php';
-;?>
+require_once dirname(__FILE__) . '/../../../../wp-load.php';; ?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -17,127 +16,76 @@
     <v-app>
       <v-main>
         <v-container fluid>
-      <v-tabs
-        color="deep-purple accent-4"
-        right
-      >
-        <v-tab>
-          リンク
-        </v-tab>
-        <v-tab>
-          タグ
-        </v-tab>
-        <v-tab-item>
-          <wp-search-text-box
-            label="名前で検索"
-            @search-text="searchText"
-          >
-          </wp-search-text-box>
+          <v-tabs color="deep-purple accent-4" right>
+            <v-tab>
+              リンク
+            </v-tab>
+            <v-tab>
+              タグ
+            </v-tab>
+            <v-tab-item>
+              <wp-search-text-box label="名前で検索" @search-text="searchText">
+              </wp-search-text-box>
 
-          <v-btn
-            color="primary"
-            @click="itemInfo"
-            small
-          >
-            情報
-          </v-btn>
+              <v-btn color="primary" @click="itemInfo" small>
+                情報
+              </v-btn>
 
-          <v-btn
-            color="blue-grey"
-            class="ma-2 white--text"
-            @click="shohinLink"
-            small
-          >
-            商品カード
-          </v-btn>
+              <v-btn color="blue-grey" class="ma-2 white--text" @click="shohinLink" small>
+                商品カード
+              </v-btn>
 
-          <v-btn
-            color="success"
-            @click="textLink"
-            small
-          >
-            テキストリンク
-          </v-btn>
+              <v-btn color="success" @click="textLink" small>
+                テキストリンク
+              </v-btn>
 
-          <v-btn
-            color="info"
-            @click="bannerLink"
-            small
-          >
-            バナー
-          </v-btn>
+              <v-btn color="info" @click="bannerLink" small>
+                バナー
+              </v-btn>
 
-          <v-btn
-            color="blue-grey"
-            class="ma-2 white--text"
-            @click="singleReview"
-            small
-          >
-            レビューBOX
-          </v-btn>
+              <v-btn color="blue-grey" class="ma-2 white--text" @click="singleReview" small>
+                レビューBOX
+              </v-btn>
 
-          <v-btn
-            color="indigo"
-            class="ma-2 white--text"
-            @click="appLink"
-            small
-          >
-            アプリ
-          </v-btn>
-          <v-btn
-          @click="quoteLink"
-          small
-          >
-            引用
-          </v-btn>
-          <v-radio-group v-model="itemNo"> 
-            <v-virtual-scroll
-            :items="searchList"
-            height="400"
-            item-height="40"
-            >
-              <template v-slot:default="{ item }">
-                  <v-radio
-                    :label="item.name"
-                    :value="item.id"
-                  ></v-radio>
-              </template>
-            </v-virtual-scroll>
-          </v-radio-group>
-        </v-tab-item>
-          <v-tab-item>
-            <wp-search-text-box
-              label="タグ名で検索"
-              @search-text="tagText"
-            >
-            </wp-search-text-box>
-            <v-list flat>
-                <v-list-item
-                  v-for="(item, i) in tagList"
-                  :key="i"
-                >
-                  <v-list-item-content
-                  @click="tagRanking(item)"
-                  >
+              <v-btn color="indigo" class="ma-2 white--text" @click="appLink" small>
+                アプリ
+              </v-btn>
+              <v-btn @click="quoteLink" small>
+                引用
+              </v-btn>
+              <v-radio-group v-model="itemNo">
+                <v-virtual-scroll :items="searchList" height="400" item-height="40">
+                  <template v-slot:default="{ item }">
+                    <v-radio :label="item.name" :value="item.id"></v-radio>
+                  </template>
+                </v-virtual-scroll>
+              </v-radio-group>
+            </v-tab-item>
+            <v-tab-item>
+              <wp-search-text-box label="タグ名で検索" @search-text="tagText">
+              </wp-search-text-box>
+              <v-list flat>
+                <v-list-item v-for="(item, i) in tagList" :key="i">
+                  <v-list-item-content @click="tagRanking(item)">
                     <v-list-item-title v-text="item.tagName"></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
-          </v-list>
-          </v-tab-item>
-        </v-tabs>
+              </v-list>
+            </v-tab-item>
+          </v-tabs>
         </v-container>
       </v-main>
     </v-app>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
 <script src="https://unpkg.com/http-vue-loader"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 <script src="https://unpkg.com/vue-toasted"></script>
 
 <script>
   Vue.use(Toasted);
-  axios.defaults.baseURL = '<?php echo site_url();?>'+'/?rest_route=/ajax_snippets_path/v1/';
+  axios.defaults.baseURL = '<?php echo site_url(); ?>' + '/?rest_route=/ajax_snippets_path/v1/';
   new Vue({
     el: '#vue-edit-page',
     vuetify: new Vuetify(),
@@ -146,17 +94,17 @@
     },
     data() {
       return {
-        dialog:false,
-        searchList:[],
-        tagList:[],
-        itemNo:null,
-        tagNo:null
+        dialog: false,
+        searchList: [],
+        tagList: [],
+        itemNo: null,
+        tagNo: null
       }
     },
-    async created(){
+    async created() {
       try {
-        const res = await axios.post('/detail/editor',{
-          'name':''
+        const res = await axios.post('/detail/editor', {
+          'name': ''
         });
         this.searchList = res.data;
         const tags = await axios.get('/tag');
@@ -166,58 +114,60 @@
         console.log(err);
       }
     },
-    methods:{
-      async searchText(name){
+    methods: {
+      async searchText(name) {
         try {
-        // TODO: URL
-        const res = await axios.post('/detail/editor',{
-          'name':name
-        });
-        this.searchList = res.data;
+          // TODO: URL
+          const res = await axios.post('/detail/editor', {
+            'name': name
+          });
+          this.searchList = res.data;
         } catch (err) {
           // TODO: エラー処理
           console.log(err);
         }
       },
-      async tagText(name){
+      async tagText(name) {
         try {
-        // TODO: URL
-        const res = await axios.post('/tag/editor',{
-          'name':name
-        });
-        this.tagList = res.data;
+          // TODO: URL
+          const res = await axios.post('/tag/editor', {
+            'name': name
+          });
+          this.tagList = res.data;
         } catch (err) {
           // TODO: エラー処理
           console.log(err);
         }
       },
-      returnItem(){
+      returnItem() {
         const list = JSON.parse(JSON.stringify(this.searchList));
-        const item = list.find((s)=>s.id == this.itemNo);
+        const item = list.find((s) => s.id == this.itemNo);
         return item;
       },
-      randomNo(){
-        return  Math.random().toString(36).slice(-8);
+      randomNo() {
+        return Math.random().toString(36).slice(-8);
       },
-      closeTinymce(input){
+      closeTinymce(input) {
         top.tinymce.activeEditor.selection.setContent(input);
         this.itemNo = null;
         top.tinymce.activeEditor.windowManager.close();
         return;
       },
-      async itemInfo(){
+      async itemInfo() {
         const item = this.returnItem();
         const input = JSON.stringify(item);
         this.closeTinymce(input);
       },
-      async shohinLink(){
-        if(this.itemNo == null){return;}
+      async shohinLink() {
+        if (this.itemNo == null) {
+          return;
+        }
         const item = this.returnItem();
         const kw = item.name;
         if (item.rakutenId != "") {
           inputTag = "[rakuten2 id=\"" + item.rakutenId + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
           inputTag = inputTag + " detail_id=" + item.id + " pl=" + this.randomNo() + "]";
-        }else if (item.amazonAsin != "") {
+        } else if (item.amazonAsin != "") {
           inputTag = "[amazon asin=\"" + item.amazonAsin + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
           inputTag = inputTag + " btn1_url=\"" + item.affiLink + "\" btn1_text=\"" + item.parent.name + "公式\"]";
         } else {
@@ -225,39 +175,49 @@
         }
         this.closeTinymce(inputTag);
       },
-      async textLink(){
-        if(this.itemNo == null){return;}
+      async textLink() {
+        if (this.itemNo == null) {
+          return;
+        }
         const item = this.returnItem();
 
         var inputTag = "[afRecord id=" + item.id + " ntab=1 pl=" + this.randomNo() + " btn_color=\"\"]" + item.name + "[/afRecord]";
         this.closeTinymce(inputTag);
       },
-      async bannerLink(){
-        if(this.itemNo == null){return;}
+      async bannerLink() {
+        if (this.itemNo == null) {
+          return;
+        }
         const inputTag = "[afRecordBanner id=" + this.itemNo + " ntab=1 pl=" + this.randomNo() + "]";
         this.closeTinymce(inputTag);
       },
-      async singleReview(){
-        if(this.itemNo == null){return;}
+      async singleReview() {
+        if (this.itemNo == null) {
+          return;
+        }
         let inputTag = "[singleReview detail_id=" + this.itemNo + " is_review=0 color='blue']";
         this.closeTinymce(inputTag);
       },
-      async appLink(){
-        if(this.itemNo == null){return;}
+      async appLink() {
+        if (this.itemNo == null) {
+          return;
+        }
         const item = this.returnItem();
 
         let inputTag = "[appLinkG detail_id=" + this.itemNo + " noaf=0 text='" + item.name + "']";
         this.closeTinymce(inputTag);
-        
+
       },
-      async quoteLink(){
-        if(this.itemNo == null){return;}
+      async quoteLink() {
+        if (this.itemNo == null) {
+          return;
+        }
         const inputTag = "[afLink id=" + this.itemNo + " re_url=1 noaf=1][/afLink]";
 
         const blockquoteTag = '<blockquote class="ajax-snippets-quote" cite="' + inputTag + '"><div>評価：[star rate="5" max="5" number="1"]</div><div><span class="bold">タイトル</span></div><p class="fz-14px">引用文</p><cite><a href="' + inputTag + '">公式サイト</a></cite></blockquote>';
         this.closeTinymce(blockquoteTag);
       },
-      async tagRanking(item){
+      async tagRanking(item) {
         const inputTag = "[tagRanking id=" + item.id + " is_review=1 tagName=" + item.tagName + "]";
         this.closeTinymce(inputTag);
       }

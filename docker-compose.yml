@@ -2,8 +2,8 @@ version: "3.2"
 services:
   wpdb:
     platform: linux/x86_64 # M1チップ対応のため追記
-    image: mysql:5.7
-    container_name: "wp_mysql57"
+    image: mysql:8.0
+    container_name: "wp_mysql80"
     networks:
       - wordpress000net1
     volumes:
@@ -14,7 +14,6 @@ services:
       MYSQL_DATABASE: wordpress_db
       MYSQL_USER: user
       MYSQL_PASSWORD: passw0rd
-
   wordpress:
     image: wordpress:latest
     container_name: "wordpress"

@@ -29,7 +29,7 @@ axios.defaults.baseURL = WP_API_Settings.root+'?rest_route=/ajax_snippets_path/v
     },
     methods:{
       async clickRecord(logData) {
-        const res = await axios.post('log',logData);
+        const res = await axios.post(baseURL+'log',logData);
       }
     }
   });
