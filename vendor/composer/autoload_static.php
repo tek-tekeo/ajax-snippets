@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInita9d1399a2edb7cecbb6a1dc7978688d7
+class ComposerStaticInit121faa1a03d10fe3fb680d7ce2c71959
 {
     public static $files = array (
         '538ca81a9a966a6716601ecf48f4eaef' => __DIR__ . '/..' . '/opis/closure/functions.php',
@@ -84,9 +84,9 @@ class ComposerStaticInita9d1399a2edb7cecbb6a1dc7978688d7
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInita9d1399a2edb7cecbb6a1dc7978688d7::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInita9d1399a2edb7cecbb6a1dc7978688d7::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInita9d1399a2edb7cecbb6a1dc7978688d7::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit121faa1a03d10fe3fb680d7ce2c71959::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit121faa1a03d10fe3fb680d7ce2c71959::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit121faa1a03d10fe3fb680d7ce2c71959::$classMap;
 
         }, null, ClassLoader::class);
     }
