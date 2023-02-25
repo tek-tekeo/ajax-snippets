@@ -1,22 +1,24 @@
-version: "3.2"
+version: "3"
 services:
   wpdb:
+    image: mysql:5.7
     platform: linux/x86_64 # M1チップ対応のため追記
-    image: mysql:8.0
-    container_name: "wp_mysql80"
     networks:
       - wordpress000net1
     volumes:
       - wpdb:/var/lib/mysql
     restart: always
+    ports:
+      - 3307:3306
     environment:
       MYSQL_ROOT_PASSWORD: myrootpass
       MYSQL_DATABASE: wordpress_db
       MYSQL_USER: user
       MYSQL_PASSWORD: passw0rd
+    command: mysqld --innodb_use_native_aio=0
+
   wordpress:
     image: wordpress:latest
-    container_name: "wordpress"
     networks:
       - wordpress000net1
     volumes:
@@ -27,7 +29,7 @@ services:
     depends_on:
       - wpdb
     ports:
-      - 18085:80
+      - 18088:80
     environment:
       WORDPRESS_DB_HOST: wpdb
       WORDPRESS_DB_NAME: wordpress_db
@@ -36,13 +38,14 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
-    container_name: "phpmyadmin"
     restart: always
     environment:
-      - PMA_ARBITRARY=1
-      - PMA_HOST=wpdb #mysqlサービス名を指定
-      - PMA_USER=user
-      - PMA_PASSWORD=passw0rd
+      PMA_ARBITRARY: 1
+      PMA_HOST: wpdb
+      PMA_USER: user
+      PMA_PASSWORD: passw0rd
+    networks:
+      - wordpress000net1
     links:
       - wpdb
     ports:
@@ -55,3 +58,4 @@ networks:
 
 volumes:
   wpdb:
+  wordpress:
