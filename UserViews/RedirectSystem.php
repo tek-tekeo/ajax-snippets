@@ -28,7 +28,6 @@ class RedirectSystem
     $this->detailRepository = $diContainer->get(IDetailRepository::class);
     $this->logRepository = $diContainer->get(ILogRepository::class);
     $this->aspRepository = $diContainer->get(IAspRepository::class);
-    $this->parentNodeService = $diContainer->get(ParentNodeService::class);
   }
 
   //インスタンスを一つしか持てないように制約

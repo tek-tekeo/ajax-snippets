@@ -9,8 +9,9 @@ use AjaxSnippets\Api\Domain\Models\Asps\IAspRepository;
 
 class DetailGetService implements IDetailGetService
 {
-  private $detailRepository;
-  private $parentNodeRepository;
+  public $detailRepository;
+  public $parentNodeRepository;
+  public $aspRepository;
 
   public function __construct(
     IDetailRepository $detailRepository,
@@ -36,7 +37,6 @@ class DetailGetService implements IDetailGetService
 
   public function getDetailsFindByName(string $name){
     $details = $this->detailRepository->DetailFindByName($name);
-    
     return array_map(function($d){
       $parent = $this->parentNodeRepository->ParentFindById($d->parent()->id());
       $d->setParent($parent);
@@ -70,16 +70,48 @@ class DetailGetService implements IDetailGetService
 
 }
 
+class ParentData{
+  public $id;
+  public $name;
+  public $aspName;
+
+  public function __construct($id, $name, $aspName)
+  {
+    $this->id = $id;
+    $this->name = $name;
+    $this->aspName = $aspName;
+  }
+}
 
 class DetailData
 {
-
+  public $id;
+  public $parent;
+  public $parentId;
+  public $parentName;
+  public $aspName;
+  public $itemName;
+  public $officialItemLink;
+  public $affiItemLink;
+  public $detailImg;
+  public $amazonAsin;
+  public $rakutenId;
+  public $rchart;
+  public $info;
+  public $isShowUrl;
+  public $sameParent;
+  public $review;
+  public $getWpReview;
+  public $getWpInfo;
+  
   public function __construct(Detail $detail)
   {
     $this->id = $detail->id();
-    $this->parent->id = $detail->parent()->id();
-    $this->parent->name = $detail->parent()->name();
-    $this->parent->aspName = $detail->parent()->aspName();
+    $this->parent = new ParentData(
+      $detail->parent()->id(),
+      $detail->parent()->name(),
+      $detail->parent()->aspName()
+    );
     $this->itemName = $detail->itemName();
     $this->officialItemLink = $detail->officialItemLink();
     $this->affiItemLink = $detail->affiItemLink();
@@ -99,6 +131,15 @@ class DetailData
 
 class EditDetailData
 {
+  public $id;
+  public $name;
+  public $officialItemLink;
+  public $affiLink;
+  public $aspName;
+  public $amazonAsin;
+  public $rakutenId;
+  public $directLink;
+
   public function __construct(Detail $detail)
   {
     $this->id = $detail->id();
@@ -114,6 +155,21 @@ class EditDetailData
 
 class AffiLinkData
 {
+  public $itemId;
+  public $content;
+  public $url;
+  public $officialItemLink;
+  public $imgSrc;
+  public $imgAlt;
+  public $imgWidth;
+  public $imgHeight;
+  public $imgTag;
+  public $isShowUrl;
+  public $sameParent;
+  public $place;
+  public $rakutenId;
+  public $name;
+
   public function __construct(Detail $detail)
   {
     $this->itemId = $detail->id();

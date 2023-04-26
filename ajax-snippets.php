@@ -62,7 +62,7 @@ class AjaxSneppets
       'manage_options',                                              /* 権限 */
       'ajax-snippets',                                               /* ページを開いたときのURL */
       function () {
-        require_once abspath(__FILE__) . 'AdminViews/AdminPage.php';
+        require_once dirname(__FILE__) . '/AdminViews/AdminPage.php';
       },       /* メニューに紐づく画面を描画するcallback関数 */
       'dashicons-format-gallery', /* アイコン see: https://developer.wordpress.org/resource/dashicons/#awards */
       6                          /* 表示位置のオフセット */
