@@ -27,7 +27,7 @@ class WpShortcode
     });
     //ショートコードに追加
     foreach($methods as $method){
-      add_shortcode($method, array(get_class(self::$singleton), $method ));
+      add_shortcode($method, [self::$singleton, $method] );
     }
   }
 
