@@ -163,6 +163,7 @@ ul.favo_manga li:after {
 
 .ajax_btn {
   width: 100%;
+  position: relative;
   font-family: inherit;
   appearance: none;
   border: 0;
@@ -172,6 +173,16 @@ ul.favo_manga li:after {
   padding: 8px 16px;
   font-size: 1rem;
   cursor: pointer;
+	box-shadow: 3px 3px 10px #a3a3a3;
+}
+
+.ajax_btn:after {
+  content: ">";
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  right: 13px;
+  transform: translateY(-50%);
 }
 
 .ajax_btn:hover {
