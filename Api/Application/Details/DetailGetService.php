@@ -187,6 +187,7 @@ class AffiLinkData
       preg_match('/wp-content.+/', $detail->detailImg(), $matches, PREG_OFFSET_CAPTURE);
       $size = getimagesize('./'.$matches[0][0]);
       $ratio = $size[1]/$size[0];
+      $ratio = 1;
       $this->imgWidth = 300;
       $this->imgHeight = (int)300*$ratio;
     }
