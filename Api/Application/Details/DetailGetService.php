@@ -185,7 +185,7 @@ class AffiLinkData
       $this->imgSrc = $detail->detailImg();
       $this->imgAlt = $detail->parent()->name() . ' ' . $detail->itemName();
       preg_match('/wp-content.+/', $detail->detailImg(), $matches, PREG_OFFSET_CAPTURE);
-      $size = getimagesize('./'.$matches[0][0]);
+      //$size = getimagesize('./'.$matches[0][0]);
       //$ratio = $size[1]/$size[0];
       $ratio = 1;
       $this->imgWidth = 300;
