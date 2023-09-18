@@ -63,6 +63,8 @@ module.exports = {
   },
   computed:{
     redirectURL(){
+      return this.link.content;
+
       if(this.setBanner){
         console.log('banner')
         return '<img border="0" width="'+this.link.imgWidth+'" height="'+this.link.imgHeight+'" alt="'+this.link.content+'" src="'+this.link.imgSrc+'">';
