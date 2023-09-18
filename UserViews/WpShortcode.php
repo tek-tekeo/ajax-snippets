@@ -48,7 +48,7 @@ class WpShortcode
        'btn_color'=>'',
        're_url'=>'0'
     ), $atts ) );
-print_r($content);die;
+
 $rep =<<<EOT
 <affiliate-link 
 @click-record="clickRecord"
