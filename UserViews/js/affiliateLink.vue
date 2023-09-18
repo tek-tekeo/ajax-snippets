@@ -74,7 +74,10 @@ module.exports = {
     }
   },
   async created(){
+    console.log('created')
+    console.log(this.itemId)
     const res = await axios.get('detail/link/'+this.itemId);
+    console.log(res.data)
     this.link = res.data;
   },
   methods: {
