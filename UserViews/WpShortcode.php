@@ -84,7 +84,10 @@ ntab="{$ntab}"
 >
 </affiliate-link>
 EOT;
-    $rep .= "<br>".self::toEditPage($id); 
+    if ( current_user_can('administrator') || current_user_can('editor') || current_user_can('author')){
+      $rep .= "<br>";
+    }
+    $rep .= self::toEditPage($id); 
     return $rep;
   }
 
