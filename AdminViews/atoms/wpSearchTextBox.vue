@@ -4,6 +4,7 @@
       :label="label"
       v-model="searchText"
       hide-details="auto"
+      autofocus
     ></v-text-field>
   </div>
 </template>
