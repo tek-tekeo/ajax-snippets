@@ -49,11 +49,12 @@ class WpShortcode
        're_url'=>'0'
     ), $atts ) );
 
+$esc_content = htmlspecialchars($content);
 $rep =<<<EOT
 <affiliate-link 
 @click-record="clickRecord"
 :re-url="{$re_url}"
-content="{$content}"
+content="{$esc_content}"
 item-id="{$id}"
 place="{$pl}"
 btn-color="{$btn_color}"
