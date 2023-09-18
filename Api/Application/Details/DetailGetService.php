@@ -184,11 +184,13 @@ class AffiLinkData
     }else{
       $this->imgSrc = $detail->detailImg();
       $this->imgAlt = $detail->parent()->name() . ' ' . $detail->itemName();
-      preg_match('/wp-content.+/', $detail->detailImg(), $matches, PREG_OFFSET_CAPTURE);
-      $size = getimagesize('./'.$matches[0][0]);
-      $ratio = $size[1]/$size[0];
-      $this->imgWidth = 300;
-      $this->imgHeight = (int)300*$ratio;
+      if($this->imgSrc != null){
+        preg_match('/wp-content.+/', $detail->detailImg(), $matches, PREG_OFFSET_CAPTURE);
+        $size = getimagesize('./'.$matches[0][0]);
+        $ratio = $size[1]/$size[0];
+        $this->imgWidth = 300;
+        $this->imgHeight = (int)300*$ratio;
+      }
     }
     $this->imgTag = $detail->parent()->imgTag();
     $this->place = 'place';
