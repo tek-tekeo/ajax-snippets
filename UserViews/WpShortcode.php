@@ -49,7 +49,7 @@ class WpShortcode
        're_url'=>'0'
     ), $atts ) );
 
-$esc_content = htmlspecialchars($content);
+$esc_content = htmlspecialchars(do_shortcode($content));
 $rep =<<<EOT
 <affiliate-link 
 @click-record="clickRecord"
