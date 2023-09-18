@@ -1,6 +1,7 @@
 <template>
   <span>
     <div v-if="btnColor != ''" style="padding:20px;">
+      aaaaaaaaa
       <a 
         :href="link.url"
         @click="clickRecord"
@@ -20,9 +21,11 @@
       >
     </div>
     <span v-else-if="reUrl == 1">
+      bbbbbb
       {{ link.officialItemLink }}
     </span>
     <span v-else>
+      cccccccc
       <a
         :href="link.url"
         @click="clickRecord"
@@ -61,10 +64,13 @@ module.exports = {
   computed:{
     redirectURL(){
       if(this.setBanner){
+        console.log('banner')
         return '<img border="0" width="'+this.link.imgWidth+'" height="'+this.link.imgHeight+'" alt="'+this.link.content+'" src="'+this.link.imgSrc+'">';
       }else if(this.content != ''){
+        console.log('no content')
         return this.content;
       }else{
+        console.log('content')
         return this.link.content;
       }
     },
