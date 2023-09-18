@@ -83,7 +83,7 @@ ntab="{$ntab}"
 >
 </affiliate-link>
 EOT;
-    $rep .= self::toEditPage($id); 
+    $rep .= "<br>".self::toEditPage($id); 
     return $rep;
   }
 
