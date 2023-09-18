@@ -48,16 +48,16 @@ class WpShortcode
        'btn_color'=>'',
        're_url'=>'0'
     ), $atts ) );
-
+print_r($content);die;
 $rep =<<<EOT
 <affiliate-link 
 @click-record="clickRecord"
+:re-url="{$re_url}"
 content="{$content}"
 item-id="{$id}"
 place="{$pl}"
 btn-color="{$btn_color}"
 ntab="{$ntab}"
-:re-url="{$re_url}"
 >
 </affiliate-link>
 EOT;
