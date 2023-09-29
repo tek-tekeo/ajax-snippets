@@ -170,7 +170,7 @@ class Detail
 
   public function getDirectUrl(): string
   {
-    return home_url() . "\/link\/".$this->parent()->anken() . "?no=".$this->id."&pl=PLACE_ID";
+    return home_url() . "/link/".$this->parent()->anken() . "?no=".$this->id."&pl=PLACE_ID";
   }
 
   public function setAsp(Asp $asp)
