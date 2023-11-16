@@ -30,8 +30,6 @@ $containerBuilder->addDefinitions(dirname(__FILE__) . '/diconfig.php'); //プラ
 $diContainer = $containerBuilder->build();  //グローバル変数にして、クラス呼び出しをdiContainer経由にしている
 
 // $a = $diContainer->get(IParentNodeRepository::class);
-// var_dump($a);die;
-
 
 class AjaxSneppets
 {
