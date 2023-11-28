@@ -3,4 +3,5 @@
 /themes
 /phpmyadmin
 /vendor
+composer.lock
 .env
