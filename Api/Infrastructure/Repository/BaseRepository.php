@@ -26,4 +26,15 @@ class BaseRepository
     }
   }
 
+  protected function groupBy($key, array $ary): array
+  {
+    $groups = [];
+    foreach ($ary as $row) {
+      if (property_exists($row, $key)) {
+          $groups[$row->id][] = $row;
+      }
+    }
+    return $groups;
+  }
+
 }
