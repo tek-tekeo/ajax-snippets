@@ -5,3 +5,7 @@
 /vendor
 composer.lock
 .env
+
+# PHPUnit
+/.phpunit.cache
+.phpunit.result.cache
