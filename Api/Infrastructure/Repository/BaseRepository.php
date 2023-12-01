@@ -31,7 +31,7 @@ class BaseRepository
     $groups = [];
     foreach ($ary as $row) {
       if (property_exists($row, $key)) {
-          $groups[$row->id][] = $row;
+          $groups[$row->$key][] = $row;
       }
     }
     return $groups;
