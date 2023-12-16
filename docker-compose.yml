@@ -9,7 +9,7 @@ services:
       - wpdb:/var/lib/mysql
     restart: always
     ports:
-      - 3307:3306
+      - ${DB_PORT}:3306
     environment:
       MYSQL_ROOT_PASSWORD: myrootpass
       MYSQL_DATABASE: wordpress_db
@@ -18,7 +18,8 @@ services:
     command: mysqld --innodb_use_native_aio=0
 
   wordpress:
-    image: wordpress:latest
+    image: wordpress:php8.1-apache
+    platform: linux/x86_64 # M1チップ対応のため追記
     networks:
       - wordpress000net1
     volumes:
@@ -29,7 +30,7 @@ services:
     depends_on:
       - wpdb
     ports:
-      - 18088:80
+      - ${WEB_PORT}:80
     environment:
       WORDPRESS_DB_HOST: wpdb
       WORDPRESS_DB_NAME: wordpress_db
@@ -38,6 +39,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
+    platform: linux/x86_64 # M1チップ対応のため追記
     restart: always
     environment:
       PMA_ARBITRARY: 1
@@ -49,7 +51,7 @@ services:
     links:
       - wpdb
     ports:
-      - 18885:80
+      - ${PHPMYADMIN_PORT}:80
     volumes:
       - ./phpmyadmin/sessions:/sessions
 
