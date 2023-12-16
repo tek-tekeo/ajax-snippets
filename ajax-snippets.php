@@ -45,6 +45,7 @@ class AjaxSneppets
     if (is_admin() && is_user_logged_in()) {
       // メニュー追加
       add_action('admin_menu', [$this, 'adminMenu']);
+      wp_enqueue_media(); //読込み
     }
     /****************
        パーマリンク設定を『投稿名』『カスタム構造』などにする必要がある

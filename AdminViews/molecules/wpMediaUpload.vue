@@ -3,18 +3,17 @@
     <v-row>
       <v-col cols="12">
       <wp-text-box
-        label="アイテム別の画像"
-        v-model="imgSrc"
+        :label="label"
+        v-model="value"
       ></wp-text-box>
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="8">
         <v-img
-          lazy-src="https://picsum.photos/id/11/10/6"
           max-height="100"
           max-width="100"
-          :src="imgSrc"
+          :src="value || 'https://picsum.photos/id/11/10/6'"
         >
         </v-img>
       </v-col>
@@ -23,13 +22,17 @@
           color="primary"
           elevation="4"
           small
-          @click="selectImg"
-        >選択</v-btn>
+          @click="selectImage"
+        >
+          選択
+        </v-btn>
         <v-btn
           elevation="4"
           small
-          @click="deleteImg"
-        >クリア</v-btn>
+          @click="deleteImage"
+        >
+          クリア
+        </v-btn>
       </v-col>
     </v-row>
   </div>
@@ -41,59 +44,63 @@ module.exports = {
     'WpTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpTextBox.vue')
   },
   methods:{
-    //v-modelのテキストボックスをhtml-vue-loaderで使うにはこうなる
-    changeValue(target){
-      this.$emit('input', target);
-    },
-    selectImg(e){
+    createCustomMedia(){
       let _this = this;
-      custom_uploader = wp.media({
-          title: "画像を選択してください。",
-          /* ライブラリの一覧は画像のみにする */
-          library: {
-            type: "image"
-          },
-          button: {
-            text: "画像の選択"
-          },
-          /* 選択できる画像は 1 つだけにする */
-          multiple: false
+      let customMedia = wp.media({
+        title: "画像を選択してください。",
+        library: { type: "image" }, // ライブラリの一覧は画像のみにする
+        button: {text: "画像の選択"},
+        multiple: false // 選択できる画像は 1 つだけにする
       });
-      custom_uploader.open();
-      custom_uploader.on("select",function(){
-        let images = custom_uploader.state().get("selection");
+
+      customMedia.on("select",function(){
+        let images = customMedia.state().get("selection");
         images.each(function (file) {
-          // console.log(file.attributes.sizes.full.url); //url
-          _this.$emit('change', file.attributes.sizes.full.url);
-          _this.imgSrc = file.attributes.sizes.full.url;
-          // _this.$set('imgSrc', file.attributes.sizes.full.url);
+          _this.value = file.attributes.sizes.full.url;
         });
       });
-      e.preventDefault();
+
+      return customMedia;
     },
-    deleteImg(e){
-      this.detail.detailImg = "";
+    selectImage(e){
       e.preventDefault();
+      let customMedia = this.createCustomMedia();
+      customMedia.open();
     },
-  },
-  model:{
-    prop: 'imgSrc',
-    event: 'change'
+    deleteImage(e){
+      this.value = "";
+    },
   },
   props: {
-    imgSrc:{
-      type:String,
+    value:{
+      type: String,
       default:""
+    },
+    label:{
+      type: String,
+      default:"アイテム別の画像"
+    }
+  },
+  watch:{
+    value(val){
+      this.$emit('input', val);
     }
   }
 }
 </script>
- 
+
 <style scoped>
 input{
     box-shadow: 0 0 0 0 !important;
     border-radius: 0px;
     border: none !important;
     background-color: transparent !important;
+}
+</style>
+
+<style>
+/* モーダルを開けた時に一番上に戻る（スクロールバーが消える）を防ぐ */
+body.modal-open {
+  overflow: unset !important;
 }
 </style>

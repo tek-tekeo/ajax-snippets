@@ -75,7 +75,6 @@
           <wp-media-upload
             label="アイテム別の画像"
             v-model="detail.detailImg"
-            :is-url="true"
           ></wp-media-upload>   
         </v-col>
       </v-row>
