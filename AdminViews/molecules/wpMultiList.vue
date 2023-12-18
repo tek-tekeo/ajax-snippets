@@ -9,7 +9,7 @@
         color="primary"
         block
       >
-       {{ theme }}情報を作る
+        {{ theme }}情報を作る
       </v-btn>
     </div>
     <div v-else>
@@ -34,32 +34,31 @@
       </v-col>
       <v-col cols="4">
         <wp-text-box
-         v-model="el.factor"
-         label="要素名"
-         >
+          v-model="el.factor"
+          label="要素名"
+        >
         </wp-text-box>
       </v-col>
       <v-col cols="4">
         <wp-text-area
-         v-if="valueType == 'textBox'"
-         v-model="el.value"
-         label="テキスト"
-         >
+          v-if="valueType == 'textBox'"
+          v-model="el.value"
+          label="テキスト"
+        >
         </wp-text-area>
         <wp-text-box
-         v-else
-         v-model="el.value"
-         :value-type="valueType"
-         label="値"
-         >
+          v-else
+          v-model="el.value"
+          :value-type="valueType"
+          label="値"
+        >
         </wp-text-box>
-
       </v-col>
       <v-col cols="2">
         <span v-if="index == 0"><v-btn @click="storeDataDialog=true">データ登録</v-btn></span>
         <span v-if="index == 0"><v-btn @click="reUseDataDialog=true">再利用</v-btn></span>
         <span v-if="index != 0"><v-btn @click="changeOrder(index)">上へ</v-btn></span>
-         <v-dialog v-model="storeDataDialog" max-width="400">
+        <v-dialog v-model="storeDataDialog" max-width="400">
           <v-card>
             <v-card-title>
               <div>データ登録しますか？</div>
@@ -151,8 +150,8 @@ module.exports = {
       default:[]
     },
     theme: {
-     type: String,
-     default: "入力テーマ"
+      type: String,
+      default: "入力テーマ"
     },
     //infoとchartの情報タイプ
     valueType:{
@@ -162,7 +161,7 @@ module.exports = {
   }
 }
 </script>
- 
+
 <style scoped>
 input{
     box-shadow: 0 0 0 0 !important;

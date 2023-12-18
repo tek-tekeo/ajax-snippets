@@ -7,7 +7,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="3">
+      <v-col cols="12">
         <search-list
           :items="baseList"
           @search-text="searchBaseText"

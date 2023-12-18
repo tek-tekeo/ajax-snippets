@@ -5,18 +5,26 @@
       @search-text="searchText"
     >
     </wp-search-text-box>
-      <v-list flat>
+      <v-list
+        dense
+      >
       <v-subheader>検索結果</v-subheader>
+      <v-card
+      v-scroll.self="onScroll"
+      class="overflow-y-auto"
+      max-height="500"
+    >
       <v-list-item
         v-for="(item, i) in items"
         :key="i"
       >
         <router-link :to="path+item.id">
           <v-list-item-content>
-            <v-list-item-title v-text="item.id +' ' + item.name"></v-list-item-title>
+            <v-list-item-title v-text="item.name"></v-list-item-title>
           </v-list-item-content>
         </router-link>
-      </v-list-item>
+      </v-list-item>  
+    </v-card>
     </v-list>
   </div>
 </template>
@@ -29,20 +37,13 @@ module.exports = {
   data(){
     return {
       selectedItem: 1,
-      // items:[
-      //   {id:1, name:'namae'},
-      //   {id:2, name:'namdgaae'},
-      //   {id:3, name:'namgggae'},
-      //   {id:4, name:'nama34te'},
-      // ]
-    }
-  },
-  computed:{
-    listName(item){
-      return item.id + item.name
+      scrollInvoked: 0
     }
   },
   methods:{
+    onScroll () {
+      this.scrollInvoked++
+    },
     searchText(val){
       this.$emit("search-text", val);
     }

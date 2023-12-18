@@ -125,8 +125,8 @@ class DetailData
     $this->detailImg = $detail->detailImg();
     $this->amazonAsin = $detail->amazonAsin();
     $this->rakutenId = $detail->rakutenId();
-    $this->rchart = json_decode($detail->rchart()); //json_decode
-    $this->info = json_decode($detail->info()); //json_decode
+    $this->rchart = json_decode($detail->rchart()) ?? []; //json_decode
+    $this->info = json_decode($detail->info()) ?? []; //json_decode
     $this->isShowUrl = (bool)$detail->isShowUrl();
     $this->sameParent = (bool)$detail->sameParent();
     $this->review = $detail->review();
