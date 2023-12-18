@@ -88,8 +88,8 @@
           @store-items="storeRItems"
         ></wp-multi-list>
       </v-col>
-     </v-row>
-     <v-row dense>
+    </v-row>
+    <v-row dense>
       <v-col>
         <wp-multi-list
           v-model="detail.info"
@@ -99,14 +99,14 @@
           @store-items="storeIItems"
         ></wp-multi-list>
       </v-col>
-     </v-row>
+    </v-row>
     <v-row>
       <v-col>
         <wp-check-box
-         label="タグを選択する"
-         :check-list="tagList"
-         v-model="selectedTagIds"
-         @change="emitTagIds"
+          label="タグを選択する"
+          :check-list="tagList"
+          v-model="selectedTagIds"
+          @change="emitTagIds"
         >
         </wp-check-box>
       </v-col>
@@ -185,8 +185,8 @@ module.exports = {
   },
   props: {
     detail: {
-     type: Object,
-     default: {}
+      type: Object,
+      default: {}
     },
     baseList:{
       type: Array,
@@ -203,7 +203,7 @@ module.exports = {
   }
 }
 </script>
- 
+
 <style scoped>
 
 </style>

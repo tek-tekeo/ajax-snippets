@@ -17,6 +17,14 @@
           >
             新規追加する
           </v-btn>
+          <v-btn
+            fixed
+            right
+            color="secondary"
+            @click="getPrevDetail"
+          >
+            前回登録した内容を使う
+          </v-btn>
         </v-col>
         <v-col cols="10">
           <v-form
@@ -129,6 +137,10 @@ module.exports = {
         this.$toasted.show('追加失敗',options);
       }
     },
+    async getPrevDetail(){
+      const res = await axios.get('detail/prevData');
+      this.detail = res.data;
+    }
   }
 }
 </script>

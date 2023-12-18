@@ -77,6 +77,30 @@ class DetailRepository implements IDetailRepository
     return null;
   }
 
+  public function DetailFindLatest(){
+    $res = $this->db->get_row("SELECT * FROM ".$this->table." ORDER BY id DESC LIMIT 1");
+    if(!$res == null){				
+      $detail = new Detail(
+        (int)$res->id,
+        new ParentNode((int)$res->base_id),
+        (string)$res->item_name,
+        (string)$res->official_item_link,
+        (string)$res->affi_item_link,
+        (string)$res->detail_img,
+        (string)$res->amazon_asin,
+        (string)$res->rakuten_id,
+        (string)$res->rchart,
+        (string)$res->info,
+        (string)$res->review,
+        (int)$res->is_show_url,
+        (int)$res->same_parent
+      );
+      return $detail;
+    }
+    throw new Exception('Detail IDに該当するデータが存在しません。');
+    return null;
+  }
+
   public function saveDetail(Detail $detail) : int
   {
     $res = $this->db->replace( 

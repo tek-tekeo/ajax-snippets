@@ -158,4 +158,10 @@ class DetailController
     $parentId = file_get_contents($getPath);
     return new WP_REST_Response((int)$parentId, 200);
   }
+
+  public function getPrevDetail() : WP_REST_Response
+  {
+    $res = $this->detailGetService->getLatestDetail();
+    return new WP_REST_Response($res, 200);
+  }
 }

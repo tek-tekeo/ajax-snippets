@@ -135,6 +135,7 @@ function createEndPoints()
   Route::get('/detail/info', 'AjaxSnippets\Api\Controllers\DetailController@getInfo');
   Route::post('/detail/prev', 'AjaxSnippets\Api\Controllers\DetailController@storePrevId');
   Route::get('/detail/prev', 'AjaxSnippets\Api\Controllers\DetailController@getPrevId');
+  Route::get('/detail/prevData', 'AjaxSnippets\Api\Controllers\DetailController@getPrevDetail');
   Route::post('/detail/editor', 'AjaxSnippets\Api\Controllers\DetailController@getEditorList'); //編集画面に表示する用のリスト
 
   //タグ関連

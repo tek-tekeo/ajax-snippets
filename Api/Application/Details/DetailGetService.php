@@ -68,6 +68,13 @@ class DetailGetService implements IDetailGetService
     return $detail;
   }
 
+  public function getLatestDetail(){
+    $detail = $this->detailRepository->DetailFindLatest();
+    $d = $this->newDetailClass($detail);
+    return new DetailData($d);
+  
+  }
+
 }
 
 class ParentData{
