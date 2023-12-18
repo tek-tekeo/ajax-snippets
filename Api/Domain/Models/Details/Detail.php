@@ -128,13 +128,13 @@ class Detail
 
   private function changeWp($data)
   {
-    $els = json_decode($data);
+    $els = json_decode($data) ?? [];
     $newEls = array_map(function($e){
       return array(
         "factor" => $e->factor,
         "value" => do_shortcode(wpautop($e->value)),
       );
-    },$els);
+    }, $els);
 
     return $newEls;
   }
