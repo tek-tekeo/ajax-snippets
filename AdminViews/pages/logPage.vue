@@ -202,12 +202,19 @@ module.exports = {
     },
     async created(){
       const dt = new Date();
-      const y = dt.getFullYear();
+      let y = dt.getFullYear();
       const m = ("00" + (dt.getMonth()+1)).slice(-2);
-      const m_1 = ("00" + (dt.getMonth())).slice(-2);
+      let m_1 = ("00" + (dt.getMonth())).slice(-2);
       const d = ("00" + dt.getDate()).slice(-2);
-      today = y + "-" + m + "-" + d;
-      lastMonth = y + "-" + m_1 + "-" + d;
+      let today, lastMonth;
+      if(m_1 === '00'){
+        lastMonth = y + "-" + m + "-" + d;
+        today= y-1 + "-12-" + d;
+      }else{
+        lastMonth = y + "-" + m + "-" + d;
+        today = y + "-" + m_1 + "-" + d;
+      }
+
       this.dates = [today, lastMonth];
 
       this.dateTime();
