@@ -54,5 +54,4 @@ return [
   IDetailGetService::class => DI\autowire(DetailGetService::class),
   IDetailCreateService::class => DI\autowire(DetailCreateService::class),
   IDetailUpdateService::class => DI\autowire(DetailUpdateService::class)
-  
 ];

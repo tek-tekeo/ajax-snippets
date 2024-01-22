@@ -6,7 +6,10 @@
     },
     "autoload": {
         "psr-4": {
-            "AjaxSnippets\\Api\\" : "Api/"
+            "AjaxSnippets\\Api\\" : "Api/",
+            "AjaxSnippets\\Database\\" : "Database/",
+            "AjaxSnippets\\UserViews\\" : "UserViews/",
+            "AjaxSnippets\\EditorViews\\" : "EditorViews/"
         }
     },
     "require": {
