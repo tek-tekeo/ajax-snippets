@@ -26,7 +26,9 @@ docker compose exec -it wordpress /bin/bash -c "wp plugin install tinymce-advanc
 docker compose exec -it wordpress /bin/bash -c "wp plugin install classic-editor --activate --allow-root"
 
 # プラグインの初期テンプレートを作成
-# docker compose exec -it wordpress /bin/bash -c "yes 's' | wp scaffold plugin $PLUGIN_NAME --allow-root"
+if [ -e $PLUGIN_NAME".php" ]; then
+  docker compose exec -it wordpress /bin/bash -c "yes 's' | wp scaffold plugin $PLUGIN_NAME --allow-root"
+fi
 # プラグインのアクティブ化
 docker compose exec -it wordpress /bin/bash -c "wp plugin activate $PLUGIN_NAME --allow-root"
 docker compose exec -it wordpress /bin/bash -c "cd $DIR && yes | bin/install-wp-tests.sh $WORDPRESS_TEST_DB_NAME $WORDPRESS_TEST_DB_USER $WORDPRESS_TEST_DB_PASSWORD $WORDPRESS_TEST_DB_HOST"
