@@ -42,9 +42,9 @@
           >
             更新する
           </v-btn>
-          <v-btn @click="deleteAsp(asp.id)">
-            削除する
-          </v-btn>
+          <confirm-dialog
+            @execute="deleteAsp(asp.id)"
+          ></confirm-dialog>
         </v-col>
         <v-col>{{asp.id}}</v-col>
         <v-col>
@@ -66,10 +66,13 @@
 </template>
 
 <script>
+const confirmDialogVue = require('../molecules/confirmDialog.vue');
+
 module.exports = {
   components: {
     'WpTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpTextBox.vue'),
     'WpSelectBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpSelectBox.vue'),
+    'ConfirmDialog': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/confirmDialog.vue'),
   },
   data() {
     return {
@@ -94,25 +97,7 @@ module.exports = {
         'aspName':this.aspName,
         'connectString':this.connectString
       });
-      if(res.data && res.status == '200'){
-        var options = {
-          position: 'top-center',
-          duration: 2000,
-          fullWidth: true,
-          type: 'success'
-        }
-        this.$toasted.show('追加完了',options);
-        const newAsps = await axios.get('asp');
-        this.asps = newAsps.data;
-      }else{
-        var options = {
-          position: 'top-center',
-          duration: 2000,
-          fullWidth: true,
-          type: 'error'
-        }
-        this.$toasted.show('追加失敗',options);
-      }
+      await this.toast(res, '追加');
     },
     async updateAsp(id){
       const asp = this.asps.find((asp) => asp.id == id);
@@ -120,16 +105,24 @@ module.exports = {
           'aspName':asp.aspName,
           'connectString':asp.connectString
         });
-        if(res.data && res.status == '200'){
+        await this.toast(res, '更新');
+    },
+    async deleteAsp(id){
+      const res = await axios.delete('asp/' + id);
+      await this.toast(res, '削除');
+    },
+    async toast(res, action){
+      if(res.data && res.status == '200'){
         var options = {
           position: 'top-center',
           duration: 2000,
           fullWidth: true,
           type: 'success'
         }
-        this.$toasted.show('更新完了',options);
+        this.$toasted.show(action + '完了',options);
         const newAsps = await axios.get('asp');
         this.asps = newAsps.data;
+        return true;
       }else{
         var options = {
           position: 'top-center',
@@ -137,15 +130,9 @@ module.exports = {
           fullWidth: true,
           type: 'error'
         }
-        this.$toasted.show('更新失敗',options);
+        this.$toasted.show(action + '失敗',options);
+        return false;
       }
-    },
-    async deleteAsp(id){
-            console.log('削除処理(TODO)');
-            return;
-      const res = await axios.delete('asps/' + id);
-      const newAsps = await axios.get('asps');
-      this.asps = newAsps.data;
     }
   }
 };
