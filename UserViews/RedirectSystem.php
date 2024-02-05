@@ -6,7 +6,7 @@ use AjaxSnippets\Api\Domain\Models\Logs\Log;
 use AjaxSnippets\Api\Domain\Models\BaseEls\IParentNodeRepository;
 use AjaxSnippets\Api\Domain\Models\Details\IDetailRepository;
 use AjaxSnippets\Api\Domain\Models\Logs\ILogRepository;
-use AjaxSnippets\Api\Domain\Models\Asps\IAspRepository;
+use AjaxSnippets\Api\Domain\Models\Asp\IAspRepository;
 use AjaxSnippets\Api\Domain\Models\BaseEls\ParentNode;
 use AjaxSnippets\Api\Domain\Services\ParentNodeService;
 
@@ -20,9 +20,9 @@ class RedirectSystem
   private $detailRepository;
   private $aspRepository;
 
-  private function __construct()
+  private function __construct($diContainer)
   {
-    global $diContainer;
+    // global $diContainer;
 
     $this->parentNodeRepository = $diContainer->get(IParentNodeRepository::class);
     $this->detailRepository = $diContainer->get(IDetailRepository::class);
@@ -31,11 +31,11 @@ class RedirectSystem
   }
 
   //インスタンスを一つしか持てないように制約
-  public static function getInstance()
+  public static function getInstance($diContainer)
   {
     //self::は自クラスを表す。自クラスのsingletonがあればそのまま返す
     if (!isset(self::$singleton)) {
-      self::$singleton = new RedirectSystem();
+      self::$singleton = new RedirectSystem($diContainer);
     }
     return self::$singleton;
   }

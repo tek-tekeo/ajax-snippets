@@ -16,20 +16,12 @@ use AjaxSnippets\EditorViews\AjaxSnippetsMce;
 use AjaxSnippets\UserViews\RedirectSystem;
 use AjaxSnippets\UserViews\WpShortcode;
 
-require_once 'vendor/autoload.php';
+require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+require_once dirname(__FILE__) . "/loader.php";
 
 global $wpdb;
 define('VERSION', '0.5');
-define('PLUGIN_ID', 'ajax_snippets');
-define('PLUGIN_DB_PREFIX', $wpdb->prefix . PLUGIN_ID . '_');
-
-include_once dirname(__FILE__) . "/loader.php";
-
-$containerBuilder = new DI\ContainerBuilder();
-$containerBuilder->addDefinitions(dirname(__FILE__) . '/diconfig.php'); //プラグインのディレクトリパスは　plugin_dir_path( __FILE__ )
-$diContainer = $containerBuilder->build();  //グローバル変数にして、クラス呼び出しをdiContainer経由にしている
-
-// $a = $diContainer->get(IParentNodeRepository::class);
+define('PLUGIN_DB_PREFIX', $wpdb->prefix . 'ajax_snippets_');
 
 class AjaxSneppets
 {
@@ -40,31 +32,41 @@ class AjaxSneppets
 
   private function __construct()
   {
+    global $diContainer;
+    $containerBuilder = new DI\ContainerBuilder();
+    $containerBuilder->addDefinitions(dirname(__FILE__) . '/diconfig.php');
+    $diContainer = $containerBuilder->build();
+
+    $wpShortcode = WpShortcode::getInstance($diContainer);
+    $wpShortcode->handle();
+    
+    // add_action('init', [WpShortcode::getInstance($diContainer), 'handle']);
+
     //スクリプト 、スタイルシートの追加 (公開ページにのみ反映)
     add_action('wp_enqueue_scripts', [$this, 'getJsAndCss']);
     if (is_admin() && is_user_logged_in()) {
       // メニュー追加
       add_action('admin_menu', [$this, 'adminMenu']);
-      wp_enqueue_media(); //読込み
     }
     /****************
-       パーマリンク設定を『投稿名』『カスタム構造』などにする必要がある
+      パーマリンク設定を『投稿名』『カスタム構造』などにする必要がある
      ***************/
-    add_action('template_redirect', [RedirectSystem::getInstance(), 'handle']);
+    add_action('template_redirect', [RedirectSystem::getInstance($diContainer), 'handle']);
   }
 
   public function adminMenu()
   {
     add_menu_page(
-      'Ajax Snippets',                                               /* ページタイトル*/
-      'アフィリンクメーカー',                                           /* メニュータイトル */
-      'manage_options',                                              /* 権限 */
-      'ajax-snippets',                                               /* ページを開いたときのURL */
+      'Ajax Snippets',        /* ページタイトル*/
+      'アフィリンクメーカー', /* メニュータイトル */
+      'manage_options',       /* 権限 */
+      'ajax-snippets',        /* ページを開いたときのURL */
+      /* メニューに紐づく画面を描画するcallback関数 */
       function () {
         require_once dirname(__FILE__) . '/AdminViews/AdminPage.php';
-      },       /* メニューに紐づく画面を描画するcallback関数 */
+      },
       'dashicons-format-gallery', /* アイコン see: https://developer.wordpress.org/resource/dashicons/#awards */
-      6                          /* 表示位置のオフセット */
+      6                       /* 表示位置のオフセット */
     );
   }
   /**
@@ -97,12 +99,12 @@ class AjaxSneppets
 } // end of class
 
 /* プラグインの有効化 */
-add_action('activated_plugin', [InitDatabase::getInstance(), 'handle']); //singletonパターンなので、一つのみ生成するときは「::」で参照する
-/*　編集画面のボタン設定 */
+add_action('activated_plugin', [InitDatabase::getInstance(), 'handle']);
+/* 編集画面のボタン設定 */
 add_action('admin_init', [AjaxSnippetsMce::getInstance(), 'handle']);
 /*プラグインの初期化 */
 add_action('init', 'AjaxSneppets::init');
-add_action('init', [WpShortcode::getInstance($diContainer), 'handle']);
+
 
 //エンドポイント一覧
 function createEndPoints()

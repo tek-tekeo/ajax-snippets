@@ -5,6 +5,7 @@
 /vendor
 composer.lock
 .env
+/volumes
 
 # PHPUnit
 /.phpunit.cache

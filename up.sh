@@ -15,6 +15,9 @@ docker compose exec -it wordpress /bin/bash -c "wp option update timezone_string
 docker compose exec -it wordpress /bin/bash -c "wp option update date_format 'Y-m-d' --allow-root"
 docker compose exec -it wordpress /bin/bash -c "wp option update time_format 'H:i' --allow-root"
 
+# テーマのインストール
+docker compose exec -it wordpress /bin/bash -c "wp theme install https://wp-cocoon.com/download/791/?tmstv=1707142588 --activate --allow-root"
+
 # プラグインの削除
 docker compose exec -it wordpress /bin/bash -c "wp plugin delete hello.php --allow-root"
 

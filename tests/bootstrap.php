@@ -35,6 +35,13 @@ function _manually_load_plugin() {
 	require_once(ABSPATH . 'wp-includes/pluggable.php');
 	wp_set_current_user(1);
 	require dirname( dirname( __FILE__ ) ) . '/ajax-snippets.php';
+	// Simulate plugin activation
+	activate_plugin('ajax-snippets/ajax-snippets.php');
+
+	do_action('activated_plugin', function(){
+		$initDatabase = new \AjaxSnippets\Database\InitDatabase();
+		$initDatabase->handle();
+	});
 }
 
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
