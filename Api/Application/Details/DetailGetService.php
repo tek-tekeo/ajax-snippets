@@ -5,7 +5,7 @@ use AjaxSnippets\Api\Domain\Models\Details\Detail;
 use AjaxSnippets\Api\Domain\Models\Details\IDetailRepository;
 use AjaxSnippets\Api\Domain\Models\BaseEls\ParentNode;
 use AjaxSnippets\Api\Domain\Models\BaseEls\IParentNodeRepository;
-use AjaxSnippets\Api\Domain\Models\Asps\IAspRepository;
+use AjaxSnippets\Api\Domain\Models\Asp\IAspRepository;
 
 class DetailGetService implements IDetailGetService
 {

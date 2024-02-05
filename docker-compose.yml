@@ -1,41 +1,45 @@
-version: "3"
 services:
   wpdb:
     image: mysql:5.7
     platform: linux/x86_64 # M1チップ対応のため追記
-    networks:
-      - wordpress000net1
     volumes:
       - wpdb:/var/lib/mysql
     restart: always
     ports:
-      - ${DB_PORT}:3306
+      - "${DB_PORT}:3306"
     environment:
       MYSQL_ROOT_PASSWORD: myrootpass
-      MYSQL_DATABASE: wordpress_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: passw0rd
+      MYSQL_DATABASE: "${WORDPRESS_DB_NAME}"
+      MYSQL_USER: "${WORDPRESS_DB_USER}"
+      MYSQL_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
     command: mysqld --innodb_use_native_aio=0
 
+  test_db:
+    image: mysql:5.7
+    platform: linux/x86_64
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: myrootpass
+      MYSQL_DATABASE: "${WORDPRESS_TEST_DB_NAME}"
+      MYSQL_USER: "${WORDPRESS_TEST_DB_USER}"
+      MYSQL_PASSWORD: "${WORDPRESS_TEST_DB_PASSWORD}"
+
   wordpress:
-    image: wordpress:php8.1-apache
-    platform: linux/x86_64 # M1チップ対応のため追記
-    networks:
-      - wordpress000net1
+    build: .
+    platform: linux/x86_64
     volumes:
-      - ./:/var/www/html/wp-content/plugins/ajax-snippets
-      - ./themes/cocoon-master:/var/www/html/wp-content/themes/cocoon-master # テーマcocoonを入れる
-      - ./php/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./:/var/www/html/wp-content/plugins/${PLUGIN_NAME}
+      - ./volumes/php/php.ini:/usr/local/etc/php/conf.d/php.ini
     restart: always
     depends_on:
       - wpdb
     ports:
-      - ${WEB_PORT}:80
+      - "${WEB_PORT}:80"
     environment:
       WORDPRESS_DB_HOST: wpdb
-      WORDPRESS_DB_NAME: wordpress_db
-      WORDPRESS_DB_USER: user
-      WORDPRESS_DB_PASSWORD: passw0rd
+      WORDPRESS_DB_NAME: "${WORDPRESS_DB_NAME}"
+      WORDPRESS_DB_USER: "${WORDPRESS_DB_USER}"
+      WORDPRESS_DB_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
@@ -43,20 +47,15 @@ services:
     restart: always
     environment:
       PMA_ARBITRARY: 1
-      PMA_HOST: wpdb
-      PMA_USER: user
-      PMA_PASSWORD: passw0rd
-    networks:
-      - wordpress000net1
+      PMA_HOST: test_db
+      PMA_USER: "${WORDPRESS_TEST_DB_USER}"
+      PMA_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
     links:
-      - wpdb
+      - test_db
     ports:
       - ${PHPMYADMIN_PORT}:80
     volumes:
-      - ./phpmyadmin/sessions:/sessions
-
-networks:
-  wordpress000net1:
+      - ./volumes/phpmyadmin/sessions:/sessions
 
 volumes:
   wpdb:

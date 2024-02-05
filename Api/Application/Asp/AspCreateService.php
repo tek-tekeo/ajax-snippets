@@ -1,38 +1,30 @@
 <?php
 namespace AjaxSnippets\Api\Application\Asp;
 
-use AjaxSnippets\Api\Domain\Models\Asps\Asp;
-use AjaxSnippets\Api\Domain\Models\Asps\AspId;
+use AjaxSnippets\Api\Domain\Models\Asp\Asp;
+use AjaxSnippets\Api\Domain\Models\Asp\AspId;
 use AjaxSnippets\Api\Domain\Services\AspService;
-use AjaxSnippets\Api\Domain\Models\Asps\IAspRepository;
+use AjaxSnippets\Api\Domain\Models\Asp\IAspRepository;
 use AjaxSnippets\Api\Application\Asp\AspCreateCommand;
 
 class AspCreateService implements IAspCreateService
 {
-  private $aspRepository;
-  private $aspService;
-
   public function __construct(
-    AspService $aspService,
-    IAspRepository $aspRepository
-  )
-  {
-    $this->aspRepository = $aspRepository;
-    $this->aspService = $aspService;
-  }
+    private AspService $aspService,
+    private IAspRepository $aspRepository
+  ){}
 
-  public function handle(AspCreateCommand $cmd):bool
+  public function handle(AspCreateCommand $cmd) : AspId
   {
     $asp = new Asp(
       new AspId(),
-      $cmd->aspName,
-      $cmd->connectString
+      $cmd->getAspName(),
+      $cmd->getConnectString()
     );
 
-    if($this->aspService->exist($asp)){
-      return false;
+    if($this->aspService->exists($asp)){
+      throw new \Exception('asp already exists', 500);
     }
-    $this->aspRepository->save($asp);
-    return true;
+    return $this->aspRepository->save($asp);
   }
 }

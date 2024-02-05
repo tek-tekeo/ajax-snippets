@@ -2,7 +2,7 @@
 namespace AjaxSnippets\Api\Domain\Models\Details;
 
 use AjaxSnippets\Api\Domain\Models\BaseEls\ParentNode;
-use AjaxSnippets\Api\Domain\Models\Asps\Asp;
+use AjaxSnippets\Api\Domain\Models\Asp\Asp;
 
 class Detail
 {  													

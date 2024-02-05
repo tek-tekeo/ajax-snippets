@@ -41,35 +41,28 @@ class AspController
 
   public function create(WP_REST_Request $req) : WP_REST_Response
   {
-    $cmd = new AspCreateCommand(
-      $req->get_param('aspName'),
-      $req->get_param('connectString')
-    );
+    $cmd = new AspCreateCommand($req);
     $res = $this->aspCreateService->handle($cmd);
     return new WP_REST_Response($res, 200);
   }
   
   public function update(WP_REST_Request $req) : WP_REST_Response
   {
-    $cmd = new AspUpdateCommand(
-      $req->get_param('id'),
-      $req->get_param('aspName'),
-      $req->get_param('connectString')
-    );
+    $cmd = new AspUpdateCommand($req);
     $res = $this->aspUpdateService->handle($cmd);
     return new WP_REST_Response($res, 200);
   }
 
   public function get(WP_REST_Request $req) : WP_REST_Response
   {
-    $cmd = new AspGetCommand((int)$req->get_param('id'));
+    $cmd = new AspGetCommand($req);
     $res = $this->aspGetService->handle($cmd);
     return new WP_REST_Response($res, 200);
   }
 
   public function delete(WP_REST_Request $req) : WP_REST_Response
   {  
-    $cmd = new AspDeleteCommand($req->get_param('id'));
+    $cmd = new AspDeleteCommand($req);
     $res = $this->aspDeleteService->handle($cmd);
     return new WP_REST_Response( $res, 200 );
   }

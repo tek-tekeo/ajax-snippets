@@ -5,7 +5,7 @@ use AjaxSnippets\Api\Domain\Models\BaseEls\IAppRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\AppRepository;
 use AjaxSnippets\Api\Domain\Models\Details\IDetailRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\DetailRepository;
-use AjaxSnippets\Api\Domain\Models\Asps\IAspRepository;
+use AjaxSnippets\Api\Domain\Models\Asp\IAspRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\AspRepository;
 use AjaxSnippets\Api\Domain\Models\Tags\ITagRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\TagRepository;

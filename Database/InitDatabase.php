@@ -21,7 +21,7 @@ class InitDatabase
   {
     //self::は自クラスを表す。自クラスのsingletonがあればそのまま返す
     if (!isset(self::$singleton)) {
-        self::$singleton = new InitDatabase();
+      self::$singleton = new InitDatabase();
     }
     return self::$singleton;
   }
@@ -29,6 +29,7 @@ class InitDatabase
   //テーブル作成の呼び出し
   public function handle()
   {
+
     $installed_ver = get_option( "jal_db_version" );
     if ( $installed_ver != VERSION ) {
       $this->initBaseTable();

@@ -8,14 +8,14 @@ interface IAspDeleteService
 
 class AspDeleteCommand
 {
-  public function __construct(
-    int $id
-  )
+  private int $id;
+  
+  public function __construct(\WP_REST_Request $req)
   {
-    $this->id = $id;
+    $this->id = $req->get_param('id');
   }
 
-  public function id(){
+  public function getId(){
     return $this->id;
   }
 }
