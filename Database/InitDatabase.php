@@ -90,7 +90,7 @@ class InitDatabase
   //ベース（親）データのクエリを取得
   private function createSqlOfBaseTable()
   {
-    $tableName = $this->getTableName('base');
+    $tableName = $this->getTableName('ads');
 
     $sql = "
       CREATE TABLE {$tableName} (
@@ -196,7 +196,7 @@ class InitDatabase
 
     $sql = "
       CREATE TABLE {$tableName} (
-      app_id int(11) NOT NULL AUTO_INCREMENT,
+      id int(11) NOT NULL AUTO_INCREMENT,
       img varchar(255) NOT NULL,
       dev varchar(255) NOT NULL,
       ios_link varchar(1025) NOT NULL,
@@ -208,7 +208,7 @@ class InitDatabase
       article varchar(1025) NOT NULL,
       app_order int(11) NOT NULL,
       app_price int(11) NOT NULL,
-      UNIQUE KEY id (app_id)
+      PRIMARY KEY id (id)
       ){$this->charsetCollate};";
 
     return $sql;

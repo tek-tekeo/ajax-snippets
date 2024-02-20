@@ -11,9 +11,12 @@ sleep 5 # wait for mysql to start
 docker compose exec -it wordpress /bin/bash -c "wp language core install ja --activate --allow-root"
 
 # タイムゾーンと日時表記
-docker compose exec -it wordpress /bin/bash -c "wp option update timezone_string 'Asia/Tokyo' --allow-root"
-docker compose exec -it wordpress /bin/bash -c "wp option update date_format 'Y-m-d' --allow-root"
-docker compose exec -it wordpress /bin/bash -c "wp option update time_format 'H:i' --allow-root"
+docker compose exec -it wordpress /bin/bash -c "\
+wp option update timezone_string 'Asia/Tokyo' --allow-root && \
+wp option update date_format 'Y-m-d' --allow-root && \
+wp option update time_format 'H:i' --allow-root && \
+wp option update permalink_structure '/%postname%/' --allow-root"
+
 
 # テーマのインストール
 docker compose exec -it wordpress /bin/bash -c "wp theme install https://wp-cocoon.com/download/791/?tmstv=1707142588 --activate --allow-root"
