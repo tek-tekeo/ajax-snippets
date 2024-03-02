@@ -1,14 +1,14 @@
 <?php
 namespace AjaxSnippets\Api\Infrastructure\Repository;
 
-use AjaxSnippets\Api\Domain\Models\Tags\Tag;
-use AjaxSnippets\Api\Domain\Models\Tags\ITagRepository;
-use AjaxSnippets\Api\Infrastructure\Repository\BaseRepository;
+use AjaxSnippets\Api\Domain\Models\Tag\Tag;
+use AjaxSnippets\Api\Domain\Models\Tag\TagId;
+use AjaxSnippets\Api\Domain\Models\Tag\ITagRepository;
 
-class TagRepository extends BaseRepository implements ITagRepository 
+class TagRepository implements ITagRepository 
 {
-  // protected $db;
-  // protected $table;
+  private $db;
+  private $table;
 
   public function __construct()
   {
@@ -17,81 +17,55 @@ class TagRepository extends BaseRepository implements ITagRepository
     $this->table = PLUGIN_DB_PREFIX.'tag';
   }
 
-  public function save(Tag $tag) : bool
+  public function save(Tag $tag) : TagId
   {
     $res = $this->db->replace( 
       $this->table, 
-      array( 
-        'id' => $tag->getId(),
-        'tag_name' => $tag->getTagName(),
-        'tag_order' => $tag->getTagOrder() 
-      ), 
-      array( 
-        '%d',
-        '%s', 
-        '%s' 
-      )
+      $tag->entity()
     );
-    return $res;
+    return new TagId($this->db->insert_id);
   }
 
-  public function delete(int $id) : bool
+  public function findById(TagId $id)
+  {
+    $row = $this->db->get_row("SELECT * FROM ".$this->table." WHERE id = ".$id->getId());
+    if(!$row == null){
+      $tag = new Tag(
+        new TagId($row->id),
+        $row->tag_name,
+        $row->tag_order
+      );
+      return $tag;
+    }
+    throw new \Exception('idに該当するタグがありません。');
+    return null;
+  }
+
+  public function findByName(string $name = '') : array
+  {
+    $res = $this->db->get_results("SELECT * FROM " . $this->table . " where tag_name LIKE '%".$name."%'");
+    $tags = array();
+    if(!$res == null){
+      foreach($res as $r){
+        $tag = new Tag(
+          new TagId($r->id),
+          $r->tag_name,
+          $r->tag_order
+        );
+        array_push($tags, $tag);
+      }
+      return $tags;
+    }
+    return array();
+  }
+
+  public function delete(tagId $tagId) : bool
   {
     $res = $this->db->delete(
       $this->table,
-      array( 'id' => $id )
+      array( 'id' => $tagId->getId() )
     );
 
     return $res;
   }
-
-  public function get(int $id)
-  {
-    $element = array(
-      'id' => $id
-    );
-    $res = $this->db->get_row($this->getSelectSql($element));
-    return new Tag(
-      $res->id,
-      $res->tag_name,
-      $res->tag_order
-    );
-  }
-
-  public function getAllTags() : array
-  {
-    $res = $this->db->get_results("SELECT * FROM ".$this->table);
-    $tags = array();
-    if(!$res == null){
-      foreach($res as $r){
-        $tag = new Tag(
-          $r->id,
-          $r->tag_name,
-          $r->tag_order
-        );
-        array_push($tags, $tag);
-      }
-      return $tags;
-    }
-    return array();
-  }
-
-  public function getTagsByName(string $name) : array
-  {
-    $res = $this->db->get_results("SELECT * FROM ".$this->table. " where tag_name LIKE '%".$name."%'");
-    $tags = array();
-    if(!$res == null){
-      foreach($res as $r){
-        $tag = new Tag(
-          $r->id,
-          $r->tag_name,
-          $r->tag_order
-        );
-        array_push($tags, $tag);
-      }
-      return $tags;
-    }
-    return array();
-  }
-
 }

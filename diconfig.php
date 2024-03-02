@@ -7,7 +7,7 @@ use AjaxSnippets\Api\Domain\Models\Details\IDetailRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\DetailRepository;
 use AjaxSnippets\Api\Domain\Models\Asp\IAspRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\AspRepository;
-use AjaxSnippets\Api\Domain\Models\Tags\ITagRepository;
+use AjaxSnippets\Api\Domain\Models\Tag\ITagRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\TagRepository;
 use AjaxSnippets\Api\Domain\Models\TagLinks\ITagLinkRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\TagLinkRepository;
@@ -22,6 +22,15 @@ use AjaxSnippets\Api\Application\Asp\IAspGetService;
 use AjaxSnippets\Api\Application\Asp\AspGetService;
 use AjaxSnippets\Api\Application\Asp\IAspDeleteService;
 use AjaxSnippets\Api\Application\Asp\AspDeleteService;
+
+use AjaxSnippets\Api\Application\Tag\ITagCreateService;
+use AjaxSnippets\Api\Application\Tag\TagCreateService;
+use AjaxSnippets\Api\Application\Tag\ITagUpdateService;
+use AjaxSnippets\Api\Application\Tag\TagUpdateService;
+use AjaxSnippets\Api\Application\Tag\ITagGetService;
+use AjaxSnippets\Api\Application\Tag\TagGetService;
+use AjaxSnippets\Api\Application\Tag\ITagDeleteService;
+use AjaxSnippets\Api\Application\Tag\TagDeleteService;
 
 use AjaxSnippets\Api\Application\BaseEls\IBaseElsCreateService;
 use AjaxSnippets\Api\Application\BaseEls\BaseElsCreateService;
@@ -48,6 +57,10 @@ return [
   IAspCreateService::class => DI\autowire(AspCreateService::class),
   IAspUpdateService::class => DI\autowire(AspUpdateService::class),
   IAspGetService::class => DI\autowire(AspGetService::class),
+  ITagDeleteService::class => DI\autowire(TagDeleteService::class),
+  ITagCreateService::class => DI\autowire(TagCreateService::class),
+  ITagUpdateService::class => DI\autowire(TagUpdateService::class),
+  ITagGetService::class => DI\autowire(TagGetService::class),
   IBaseElsGetService::class => DI\autowire(BaseElsGetService::class),
   IBaseElsUpdateService::class => DI\autowire(BaseElsUpdateService::class),
   IBaseElsCreateService::class => DI\autowire(BaseElsCreateService::class),

@@ -42,9 +42,9 @@
           >
             更新する
           </v-btn>
-          <v-btn @click="deleteTag(t.id)">
-            削除する
-          </v-btn>
+          <confirm-dialog
+            @execute="deleteTag(t.id)"
+          ></confirm-dialog>
         </v-col>
         <v-col>{{t.id}}</v-col>
         <v-col>
@@ -68,6 +68,7 @@ module.exports = {
   components: {
     'WpTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpTextBox.vue'),
     'WpSelectBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpSelectBox.vue'),
+    'ConfirmDialog': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/confirmDialog.vue'),
   },
   data() {
     return {
@@ -92,6 +93,21 @@ module.exports = {
         'tagName':this.tagName,
         'tagOrder':this.tagOrder
       });
+      await this.toast(res, '新規登録');
+    },
+    async updateTag(id){
+      const tag = this.tags.find((tag) => tag.id == id);
+        const res = await axios.put('tag/' + tag.id,{
+          'tagName':tag.tagName,
+          'tagOrder':tag.tagOrder
+        });
+        await this.toast(res, '更新');
+    },
+    async deleteTag(id){
+      const res = await axios.delete('tag/' + id);
+      await this.toast(res, '削除');
+    },
+    async toast(res, action){
       if(res.data && res.status == '200'){
         var options = {
           position: 'top-center',
@@ -99,9 +115,10 @@ module.exports = {
           fullWidth: true,
           type: 'success'
         }
-        this.$toasted.show('追加完了',options);
+        this.$toasted.show(action + '完了',options);
         const newTags = await axios.get('tag');
         this.tags = newTags.data;
+        return true;
       }else{
         var options = {
           position: 'top-center',
@@ -109,40 +126,9 @@ module.exports = {
           fullWidth: true,
           type: 'error'
         }
-        this.$toasted.show('追加失敗',options);
+        this.$toasted.show(action + '失敗',options);
+        return false;
       }
-    },
-    async updateTag(id){
-      console.log(id);
-      const tag = this.tags.find((tag) => tag.id == id);
-        const res = await axios.put('tag/' + tag.id,{
-          'tagName':tag.tagName,
-          'tagOrder':tag.tagOrder
-        });
-        if(res.data && res.status == '200'){
-        var options = {
-          position: 'top-center',
-          duration: 2000,
-          fullWidth: true,
-          type: 'success'
-        }
-        this.$toasted.show('更新完了',options);
-        const newTags = await axios.get('tag');
-        this.tags = newTags.data;
-      }else{
-        var options = {
-          position: 'top-center',
-          duration: 2000,
-          fullWidth: true,
-          type: 'error'
-        }
-        this.$toasted.show('更新失敗',options);
-      }
-    },
-    async deleteTag(id){
-      const res = await axios.delete('tag/' + id);
-      const newTags = await axios.get('tag');
-      this.tags = newTags.data;
     }
   }
 };

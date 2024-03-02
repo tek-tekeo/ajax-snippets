@@ -3,66 +3,61 @@ namespace AjaxSnippets\Api\Controllers;
 
 use \WP_REST_Request;
 use \WP_REST_Response;
-use AjaxSnippets\Api\Application\Tags\TagAppService;
-use AjaxSnippets\Api\Application\Tags\TagDeleteCommand;
-use AjaxSnippets\Api\Application\Tags\TagUpdateCommand;
-use AjaxSnippets\Api\Application\Tags\TagCreateCommand;
-use AjaxSnippets\Api\Application\Tags\TagGetCommand;
+use AjaxSnippets\Api\Application\Tag\ITagCreateService;
+use AjaxSnippets\Api\Application\Tag\ITagUpdateService;
+use AjaxSnippets\Api\Application\Tag\ITagGetService;
+use AjaxSnippets\Api\Application\Tag\ITagDeleteService;
+use AjaxSnippets\Api\Application\Tag\TagCreateCommand;
+use AjaxSnippets\Api\Application\Tag\TagUpdateCommand;
+use AjaxSnippets\Api\Application\Tag\TagGetCommand;
+use AjaxSnippets\Api\Application\Tag\TagDeleteCommand;
 
 class TagController
 {
-  private $tagAppService;
 
-  public function __construct(TagAppService $tagAppService)
-  {
-    $this->tagAppService = $tagAppService;
-  }
+  public function __construct(
+    private ITagCreateService $tagCreateService,
+    private ITagUpdateService $tagUpdateService,
+    private ITagGetService $tagGetService,
+    private ITagDeleteService $tagDeleteService
+    ){}
 
-  //コントローラーは入力をモデルが要求する入力に変換すること
   public function index(){
-    //全件取得
-    $res = $this->tagAppService->getAll();
+    $res = $this->tagGetService->getAll();
     return new WP_REST_Response($res, 200);
   }
 
   public function create(WP_REST_Request $req) : WP_REST_Response
   {
-    $cmd = new TagCreateCommand(
-      $req->get_param('tagName'),
-      $req->get_param('tagOrder')
-    );
-    $res = $this->tagAppService->create($cmd);
+    $cmd = new TagCreateCommand($req);
+    $res = $this->tagCreateService->handle($cmd);
     return new WP_REST_Response($res, 200);
   }
   
   public function update(WP_REST_Request $req) : WP_REST_Response
   {
-    $cmd = new TagUpdateCommand(
-      (int)$req->get_param('id'),
-      (string)$req->get_param('tagName'),
-      (int)$req->get_param('tagOrder')
-    );
-    $res = $this->tagAppService->update($cmd);
+    $cmd = new TagUpdateCommand($req);
+    $res = $this->tagUpdateService->handle($cmd);
     return new WP_REST_Response($res, 200);
   }
 
   public function get(WP_REST_Request $req) : WP_REST_Response
   {
-    $cmd = new TagGetCommand((int)$req->get_param('id'));
-    $res = $this->tagAppService->get($cmd);
+    $cmd = new TagGetCommand($req);
+    $res = $this->tagGetService->handle($cmd);
     return new WP_REST_Response($res, 200);
   }
 
   public function delete(WP_REST_Request $req) : WP_REST_Response
   {  
-    $cmd = new TagDeleteCommand((int)$req->get_param('id'));
-    $res = $this->tagAppService->delete($cmd);
+    $cmd = new TagDeleteCommand($req);
+    $res = $this->tagDeleteService->handle($cmd);
     return new WP_REST_Response( $res, 200 );
   }
 
   public function getEditorList(WP_REST_Request $req): WP_REST_Response
   {
-    $res = $this->tagAppService->search((string)$req->get_param('name'));
+    $res = $this->tagGetService->search((string)$req->get_param('name'));
     return new WP_REST_Response($res, 200);
   }
 

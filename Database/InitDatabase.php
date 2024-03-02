@@ -105,7 +105,7 @@ class InitDatabase
       s_img_tag varchar(1025) NOT NULL,
       affi_img_width int(11) DEFAULT 300 NOT NULL,
       affi_img_height int(11) DEFAULT 250 NOT NULL,
-      UNIQUE KEY id (id)
+      PRIMARY KEY id (id)
       ){$this->charsetCollate};";
 
     return $sql;
@@ -114,7 +114,7 @@ class InitDatabase
   //詳細（子）データのクエリを取得
   private function createSqlOfDetailTable()
   {
-    $tableName = $this->getTableName('detail');
+    $tableName = $this->getTableName('ad_details');
 
     $sql = "
       CREATE TABLE {$tableName} (
@@ -131,7 +131,7 @@ class InitDatabase
       review varchar(3000) DEFAULT '' NOT NULL,
       is_show_url tinyint DEFAULT 1 NOT NULL,
       same_parent tinyint DEFAULT 0 NOT NULL,
-      UNIQUE KEY id (id)
+      PRIMARY KEY id (id)
       ){$this->charsetCollate};";
 
     return $sql;
@@ -224,7 +224,7 @@ class InitDatabase
       id int(11) NOT NULL AUTO_INCREMENT,
       asp_name varchar(20) DEFAULT '' NOT NULL,
       connect_string varchar(128) DEFAULT '' NOT NULL,
-      UNIQUE KEY id (id)
+      PRIMARY KEY id (id)
       ){$this->charsetCollate};";
 
     return $sql;
