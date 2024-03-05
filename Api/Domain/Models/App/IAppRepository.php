@@ -1,10 +1,11 @@
 <?php
 namespace AjaxSnippets\Api\Domain\Models\App;
 
+use AjaxSnippets\Api\Domain\Models\App\AppId;
 use AjaxSnippets\Api\Domain\Models\App\App;
 
 interface IAppRepository
 {
-  public function AppFindById(int $appId);
-  public function saveApp(App $asp) : bool;
+  public function findById(AppId $appId);
+  public function save(App $asp) : AppId;
 }

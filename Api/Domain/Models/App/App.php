@@ -18,8 +18,7 @@ class App
     private string $article,
     private int $appOrder,
     private int $appPrice
-  )
-  {}
+  ){}
 
   public function getId(): AppId
   {
