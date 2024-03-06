@@ -9,5 +9,5 @@ interface IAdRepository
   public function save(Ad $ad) : AdId;
   public function findById(AdId $adId) : Ad;
   public function findByName(string $name): array;
-  public function getAllAds(): array;
+  public function findAll(): array;
 }

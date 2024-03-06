@@ -31,7 +31,7 @@ class AdRepository implements IAdRepository
   {
     $row = $this->db->get_row("SELECT * FROM ".$this->table." WHERE id = ".$adId->getId());
     if(!$row == null){
-      $Ad = new Ad(
+      $ad = new Ad(
         new AdId($row->id),
         $row->name,
         $row->anken,
@@ -45,7 +45,7 @@ class AdRepository implements IAdRepository
         $row->affi_img_height,
         new AppId($row->app_id) ?? new AppId(0)
       );
-      return $Ad;
+      return $ad;
     }
     throw new \Exception('idに該当する親要素がありません。');
     return null;
@@ -72,7 +72,7 @@ class AdRepository implements IAdRepository
     })->toArray();
   }
 
-  public function getAllAds() : array
+  public function findAll() : array
   {
     $res = $this->db->get_results("SELECT * FROM ".$this->table);
     return collect($res)->map(function($row){
@@ -93,4 +93,9 @@ class AdRepository implements IAdRepository
     })->toArray();
   }
 
+  public function delete(AdId $adId) : bool
+  {
+    $res = $this->db->delete($this->table, ['id' => $adId->getId()]);
+    return $res;
+  }
 }

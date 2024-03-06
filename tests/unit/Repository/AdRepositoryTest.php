@@ -41,6 +41,10 @@ final class AdRepositoryTest extends WP_UnitTestCase
 
     $insertId = $this->repository->save($ad);
     $this->assertEquals(new AdId(1), $insertId);
+
+    // 削除の確認
+    $res = $this->repository->delete($insertId);
+    $this->assertTrue($res);
   }
 
   public function testFindAllAds()
@@ -64,7 +68,7 @@ final class AdRepositoryTest extends WP_UnitTestCase
     $this->repository->save($ad);
     $this->repository->save($ad);
 
-    $res = $this->repository->getAllAds();
+    $res = $this->repository->findAll();
     $this->assertEquals([
       new Ad(
         new AdId(1),

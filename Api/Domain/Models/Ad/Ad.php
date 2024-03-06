@@ -13,11 +13,11 @@ class Ad
     private string $affiLink,
     private string $sLink,
     private string $aspName,
-    private string $affiImage,
-    private string $imageTag,
-    private string $affiImageTag,
-    private int $affiImageWidth,
-    private int $affiImageHeight,
+    private string $affiImg,
+    private string $imgTag,
+    private string $sImgTag,
+    private int $affiImgWidth,
+    private int $affiImgHeight,
     private AppId $appId
   ){}
 
@@ -41,6 +41,46 @@ class Ad
     return $this->affiLink;
   }
 
+  public function getSLink(): string
+  {
+    return $this->sLink;
+  }
+
+  public function getAspName(): string
+  {
+    return $this->aspName;
+  }
+
+  public function getAffiImg(): string
+  {
+    return $this->affiImg;
+  }
+
+  public function getImgTag(): string
+  {
+    return $this->imgTag;
+  }
+
+  public function getSImgTag(): string
+  {
+    return $this->sImgTag;
+  }
+
+  public function getAffiImgWidth(): int
+  {
+    return $this->affiImgWidth;
+  }
+
+  public function getAffiImgHeight(): int
+  {
+    return $this->affiImgHeight;
+  }
+
+  public function getAppId(): AppId
+  {
+    return $this->appId;
+  }
+
   public function entity(): array
   {
     return [
@@ -50,11 +90,11 @@ class Ad
       'affi_link' => $this->affiLink,
       's_link' => $this->sLink,
       'asp_name' => $this->aspName,
-      'affi_img' => $this->affiImage,
-      'img_tag' => $this->imageTag,
-      's_img_tag' => $this->affiImageTag,
-      'affi_img_width' => $this->affiImageWidth,
-      'affi_img_height' => $this->affiImageHeight,
+      'affi_img' => $this->affiImg,
+      'img_tag' => $this->imgTag,
+      's_img_tag' => $this->sImgTag,
+      'affi_img_width' => $this->affiImgWidth,
+      'affi_img_height' => $this->affiImgHeight,
       'app_id' => $this->appId->getId()
     ];
   }
