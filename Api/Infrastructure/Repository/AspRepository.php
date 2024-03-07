@@ -86,7 +86,7 @@ class AspRepository implements IAspRepository
     return array();
   }
 
-  public function AspFindById(AspId $aspId)
+  public function findById(AspId $aspId)
   {
     $id = $aspId->getId();
     $res = $this->db->get_row("SELECT * FROM ".PLUGIN_DB_PREFIX."asp WHERE id = ".$id);
@@ -101,7 +101,7 @@ class AspRepository implements IAspRepository
     return null;
   }
 
-  public function AspFindByName(string $aspName): ?Asp
+  public function findByName(string $aspName): Asp
   {
     $res = $this->db->get_row("SELECT * FROM ".PLUGIN_DB_PREFIX."asp WHERE asp_name = '".$aspName."'");
     if(!$res == null){

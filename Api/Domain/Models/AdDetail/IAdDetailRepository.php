@@ -10,3 +10,13 @@ interface IAdDetailRepository
   public function findByName(string $name);
   public function save(AdDetail $adDetail) : AdDetailId;
 }
+
+class AdDetailGetCommand
+{
+  public function __construct(private AdDetailId $id)
+  {}
+  public function getId()
+  {
+    return $this->id;
+  }
+}

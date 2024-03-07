@@ -4,6 +4,7 @@ namespace AjaxSnippets\Api\Infrastructure\Repository;
 use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailRepository;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetail;
 use AjaxSnippets\Api\Domain\Models\Ad\AdId;
+use AjaxSnippets\Api\Domain\Models\Ad\Ad;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 
 class AdDetailRepository implements IAdDetailRepository
@@ -20,36 +21,26 @@ class AdDetailRepository implements IAdDetailRepository
 
   public function findByName(string $name) : array
   {
-	  $sql = "SELECT D.*, B.name as parent_name FROM ". PLUGIN_DB_PREFIX."base As B RIGHT JOIN ". PLUGIN_DB_PREFIX."detail As D ON B.id = D.base_id where D.item_name LIKE '%".$name."%' OR B.name LIKE '%".$name."%' order by B.name asc, D.item_name asc";
+	  $sql = "SELECT D.*, B.name as name FROM ". PLUGIN_DB_PREFIX."ads As B RIGHT JOIN ". PLUGIN_DB_PREFIX."ad_details As D ON B.id = D.ad_id where D.item_name LIKE '%".$name."%' OR B.name LIKE '%".$name."%' order by B.name asc, D.item_name asc";
+    
     $res = $this->db->get_results($sql);
-    $details = array();
-    if(!$res == null){
-      foreach($res as $r){
-
-        $parent = new ParentNode(
-          (int)$r->base_id,
-          (string)$r->parent_name
-        );
-        $detail = new Detail(
-          (int)$r->id,
-          $parent,
-          (string)$r->item_name,
-          (string)$r->official_item_link,
-          (string)$r->affi_item_link,
-          (string)$r->detail_img,
-          (string)$r->amazon_asin,
-          (string)$r->rakuten_id,
-          (string)$r->rchart,
-          (string)$r->info,
-          (string)$r->review,
-          (int)$r->is_show_url,
-          (int)$r->same_parent
-        );
-        array_push($details, $detail);
-      }
-      return $details;
-    }
-    return array();
+    return collect($res)->map(function($r){
+      return new AdDetail(
+        new AdDetailId((int)$r->id),
+        new AdId((int)$r->ad_id),
+        (string)$r->item_name,
+        (string)$r->official_item_link,
+        (string)$r->affi_item_link,
+        (string)$r->detail_img,
+        (string)$r->amazon_asin,
+        (string)$r->rakuten_id,
+        (string)$r->rchart,
+        (string)$r->info,
+        (string)$r->review,
+        (int)$r->is_show_url,
+        (int)$r->same_parent
+      );
+    })->toArray();
   }
 
   public function findById(AdDetailId $adDetailId): AdDetail
@@ -104,5 +95,14 @@ class AdDetailRepository implements IAdDetailRepository
       $adDetail->entity()
     );
     return new AdDetailId($this->db->insert_id);
+  }
+
+  public function delete(AdDetailId $adDetailId): bool
+  {
+    $res = $this->db->delete( 
+      $this->table, 
+      array( 'id' => $adDetailId->getId() )
+    );
+    return $res;
   }
 }

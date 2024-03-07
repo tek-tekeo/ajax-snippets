@@ -105,8 +105,4 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
     $this->assertEquals($adDetail, $res);
   }
 
-  public function testFindByName()
-  {
-    
-  }
 }

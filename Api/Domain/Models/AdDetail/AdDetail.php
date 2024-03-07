@@ -38,6 +38,56 @@ class AdDetail
     return $this->itemName;
   }
 
+  public function getOfficialItemLink(): string
+  {
+    return $this->officialItemLink;
+  }
+
+  public function getAffiItemLink(): string
+  {
+    return $this->affiItemLink;
+  }
+
+  public function getDetailImg(): string
+  {
+    return $this->detailImg;
+  }
+
+  public function getAmazonAsin(): string
+  {
+    return $this->amazonAsin;
+  }
+
+  public function getRakutenId(): string
+  {
+    return $this->rakutenId;
+  }
+
+  public function getRchart(): string
+  {
+    return $this->rchart;
+  }
+
+  public function getInfo(): string
+  {
+    return $this->info;
+  }
+
+  public function getReview(): string
+  {
+    return $this->review;
+  }
+
+  public function getIsShowUrl(): int
+  {
+    return $this->isShowUrl;
+  }
+
+  public function getSameParent(): int
+  {
+    return $this->sameParent;
+  }
+
   public function entity(): array
   {
     return [
