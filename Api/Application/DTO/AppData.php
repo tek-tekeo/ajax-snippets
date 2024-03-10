@@ -6,6 +6,7 @@ use AjaxSnippets\Api\Domain\Models\App\App;
 class AppData
 {
   public int $id;
+  public string $name;
   public string $img;
   public string $dev;
   public string $iosLink;
@@ -18,21 +19,21 @@ class AppData
   public int $appOrder;
   public int $appPrice;
   
-  public function __construct(App $asp)
+  public function __construct(App $app)
   {
-    $aspId = $asp->getId();
-    $this->id = $aspId->getId();
-    $this->img = $asp->getImage();
-    $this->dev = $asp->getDeveloper();
-    $this->iosLink = $asp->getIosLink();
-    $this->androidLink = $asp->getAndroidLink();
-    $this->webLink = $asp->getWebLink();
-    $this->iosAffiLink = $asp->getIosAffiLink();
-    $this->androidAffiLink = $asp->getAndroidAffiLink();
-    $this->webAffiLink = $asp->getWebAffiLink();
-    $this->article = $asp->getArticle();
-    $this->appOrder = $asp->getAppOrder();
-    $this->appPrice = $asp->getAppPrice();
-
+    $appId = $app->getId();
+    $this->id = $appId->getId();
+    $this->name = $app->getName();
+    $this->img = $app->getImage();
+    $this->dev = $app->getDeveloper();
+    $this->iosLink = $app->getIosLink();
+    $this->androidLink = $app->getAndroidLink();
+    $this->webLink = $app->getWebLink();
+    $this->iosAffiLink = $app->getIosAffiLink();
+    $this->androidAffiLink = $app->getAndroidAffiLink();
+    $this->webAffiLink = $app->getWebAffiLink();
+    $this->article = $app->getArticle();
+    $this->appOrder = $app->getAppOrder();
+    $this->appPrice = $app->getAppPrice();
   }
 }

@@ -16,9 +16,11 @@ class AppCreateService implements IAppCreateService
   
   public function handle(AppCreateCommand $cmd)
   {
+
     // 広告情報の保存
     $app = new App(
       new AppId(),
+      $cmd->getName(),
       $cmd->getImg(),
       $cmd->getDev(),
       $cmd->getIosLink(),
@@ -31,12 +33,11 @@ class AppCreateService implements IAppCreateService
       $cmd->getAppOrder(),
       $cmd->getAppPrice()
     );
-    
-    // $appService = new AppService($this->appRepository);
-    // if($appService->exists($app)){
-    //   throw new \Exception('app alreappy exists', 500);
-    // }
 
+    $appService = new AppService($this->appRepository);
+    if($appService->exists($app)){
+      throw new \Exception('app alreappy exists', 500);
+    }
     return $this->appRepository->save($app);
 
   }

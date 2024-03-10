@@ -7,6 +7,7 @@ use AjaxSnippets\Api\Domain\Models\App\AppId;
 use AjaxSnippets\Api\Domain\Models\App\App;
 use AjaxSnippets\Api\Application\App\AppGetCommand;
 
+
 class AppApplicationGetServiceTest extends WP_UnitTestCase
 {
   private IAppRepository $appRepository;
@@ -23,6 +24,7 @@ class AppApplicationGetServiceTest extends WP_UnitTestCase
     $this->appGetService = new AppGetService($this->appRepository);
     $this->app = new App(
       new AppId(),
+      'name',
       'img',
       'dev',
       'iosLink',
@@ -51,6 +53,7 @@ class AppApplicationGetServiceTest extends WP_UnitTestCase
     $expected = new AppData(
       new App(
         new AppId(1),
+        'name',
         'img',
         'dev',
         'iosLink',
@@ -64,6 +67,34 @@ class AppApplicationGetServiceTest extends WP_UnitTestCase
         100
       )
     );
+    $this->assertEquals($expected, $actualAppData);
+  }
+
+  public function testGetAll()
+  {
+    $this->appRepository->save($this->app);
+
+    $actualAppData = $this->appGetService->getAll();
+
+    $expected = [
+      new AppData(
+        new App(
+          new AppId(1),
+          'name',
+          'img',
+          'dev',
+          'iosLink',
+          'androidLink',
+          'webLink',
+          'iosAffiLink',
+          'androidAffiLink',
+          'webAffiLink',
+          'article',
+          1,
+          100
+        )
+      )
+    ];
     $this->assertEquals($expected, $actualAppData);
   }
 

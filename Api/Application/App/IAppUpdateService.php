@@ -9,6 +9,7 @@ interface IAppUpdateService
 class AppUpdateCommand
 {
   private int $id;
+  private string $name;
   private string $img;
   private string $dev;
   private string $iosLink;
@@ -24,6 +25,7 @@ class AppUpdateCommand
   public function __construct(\WP_REST_Request $req)
   {
     $this->id = $req->get_param('id');
+    $this->name = $req->get_param('name');
     $this->img = $req->get_param('img');
     $this->dev = $req->get_param('dev');
     $this->iosLink = $req->get_param('iosLink');
@@ -39,6 +41,10 @@ class AppUpdateCommand
 
   public function getId(){
     return $this->id;
+  }
+
+  public function getName(){
+    return $this->name;
   }
 
   public function getImg(){

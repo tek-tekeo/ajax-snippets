@@ -7,6 +7,7 @@ class App
 {
   public function __construct(
     private AppId $id,
+    private string $name,
     private string $img,
     private string $dev,
     private string $iosLink,
@@ -23,6 +24,11 @@ class App
   public function getId(): AppId
   {
     return $this->id;
+  }
+
+  public function getName(): string
+  {
+    return $this->name;
   }
 
   public function getImage(): string
@@ -84,6 +90,7 @@ class App
   {
     return [
       'id' => $this->id->getId(),
+      'name' => $this->name,
       'img' => $this->img,
       'dev' => $this->dev,
       'ios_link' => $this->iosLink,

@@ -13,6 +13,7 @@ class AppService
 
   public function exists(App $app): bool
   {
-    return false;
+    $app = $this->appRepository->findByName($app->getName());
+    return (bool)$app;
   }
 }

@@ -26,6 +26,7 @@ class AppCreateServiceTest extends WP_UnitTestCase
     // アプリの情報
     $this->req = new \WP_REST_Request();
     $this->req->set_param('id', 1);
+    $this->req->set_param('name', 'name');
     $this->req->set_param('img', 'img');
     $this->req->set_param('dev', 'dev');
     $this->req->set_param('iosLink', 'iosLink');
@@ -42,6 +43,7 @@ class AppCreateServiceTest extends WP_UnitTestCase
   public function testCommand()
   {
     $cmd = new AppCreateCommand($this->req);
+    $this->assertEquals('name', $cmd->getName());
     $this->assertEquals('img', $cmd->getImg());
     $this->assertEquals('dev', $cmd->getDev());
     $this->assertEquals('iosLink', $cmd->getIosLink());
@@ -56,7 +58,7 @@ class AppCreateServiceTest extends WP_UnitTestCase
 
   }
 
-  public function test_create()
+  public function testCreateApp()
   {
     $cmd = new AppCreateCommand($this->req);
     // 新規登録されたら登録IDが返る
@@ -64,9 +66,15 @@ class AppCreateServiceTest extends WP_UnitTestCase
     $this->assertEquals(new AppId(1), $appId);
 
     // 同じapp名で登録されたら登録失敗となる // 実装していない
-    // $this->expectException(\Exception::class);
-    // $this->expectExceptionMessage('app alreappy exists');
-    // $this->expectExceptionCode(500);
-    // $appId = $this->appCreateService->handle($cmd);
+
+    $req = new \WP_REST_Request();
+    $req->set_param('id', 2);
+    $req->set_param('name', 'name');
+    $existNameCmd = new AppCreateCommand($req);
+    $this->assertEquals(new AppId(1), $appId);
+    $this->expectException(\Exception::class);
+    $this->expectExceptionMessage('app alreappy exists');
+    $this->expectExceptionCode(500);
+    $appId = $this->appCreateService->handle($existNameCmd);
   }
 }

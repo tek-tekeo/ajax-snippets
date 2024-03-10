@@ -8,6 +8,7 @@ interface IAppCreateService
 
 class AppCreateCommand
 {
+  private string $name;
   private string $img;
   private string $dev;
   private string $iosLink;
@@ -22,6 +23,7 @@ class AppCreateCommand
 
   public function __construct(\WP_REST_Request $req)
   {
+    $this->name = (string)$req->get_param('name');
     $this->img = (string)$req->get_param('img');
     $this->dev = (string)$req->get_param('dev');
     $this->iosLink = (string)$req->get_param('iosLink');
@@ -31,10 +33,15 @@ class AppCreateCommand
     $this->androidAffiLink = (string)$req->get_param('androidAffiLink');
     $this->webAffiLink = (string)$req->get_param('webAffiLink');
     $this->article = (string)$req->get_param('article');
-    $this->appOrder = (string)$req->get_param('appOrder');
-    $this->appPrice = (string)$req->get_param('appPrice');
+    $this->appOrder = (int)$req->get_param('appOrder') ?? 0;
+    $this->appPrice = (int)$req->get_param('appPrice') ?? 0;
   }
 
+  public function getName(): string
+  {
+    return $this->name;
+  }
+  
   public function getImg(): string
   {
     return $this->img;

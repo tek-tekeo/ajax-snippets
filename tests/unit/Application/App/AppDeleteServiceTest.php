@@ -20,7 +20,9 @@ class AppApplicationDeleteServiceTest extends WP_UnitTestCase
     $this->appRepository = $diContainer->get(IAppRepository::class);
 		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "apps");
     $this->appDeleteService = new AppDeleteService($this->appRepository);
-    $this->app = new App(new AppId(),
+    $this->app = new App(
+      new AppId(),
+      'name',
       'img',
       'dev',
       'ios link',

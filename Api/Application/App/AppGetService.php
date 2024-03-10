@@ -8,21 +8,15 @@ use AjaxSnippets\Api\Application\DTO\AppData;
 
 class AppGetService implements IAppGetService
 {
-  private $appRepository;
-
-  public function __construct(
-    IAppRepository $appRepository
-  )
-  {
-    $this->appRepository = $appRepository;
-  }
+  public function __construct(private IAppRepository $appRepository)
+  {}
   
   public function getAll()
   {
     $apps = $this->appRepository->getAll();
     return collect($apps)->map(function($app){
       return new AppData($app);
-    });
+    })->toArray();
   }
 
   public function handle(AppGetCommand $cmd):  AppData
@@ -33,8 +27,13 @@ class AppGetService implements IAppGetService
     if($app == null){
       return null;
     }
+    return new AppData($app);
+  }
 
-    return new AppData($app); //クライアントが直接ドメインオブジェクト　App()を操作できないように、DTOで対応する
+  public function findById(AppId $appId): AppData
+  {
+    $app = $this->appRepository->findById($appId);
+    return new AppData($app);
   }
 
 }

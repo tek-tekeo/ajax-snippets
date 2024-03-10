@@ -11,6 +11,7 @@ final class AppTest extends WP_UnitTestCase
     $appId = new AppId();
 		$this->app = new App(
       $appId,
+      'name',
       'imagestring',
       'dev',
       'iosLink',
@@ -28,6 +29,7 @@ final class AppTest extends WP_UnitTestCase
   public function testGetAppValues(): void
   {
     $this->assertEquals(new AppId(0), $this->app->getId());
+    $this->assertEquals('name', $this->app->getName());
     $this->assertEquals('imagestring', $this->app->getImage());
     $this->assertEquals('dev', $this->app->getDeveloper());
     $this->assertEquals('iosLink', $this->app->getIosLink());

@@ -25,7 +25,9 @@ class AppUpdateServiceTest extends WP_UnitTestCase
     $this->appUpdateService = new AppUpdateService($this->appRepository,$this->appService);
 
     // アプリの情報
-    $this->app = new App(new AppId(),
+    $this->app = new App(
+      new AppId(),
+      'name',
       'img',
       'dev',
       'ios link',
@@ -45,6 +47,7 @@ class AppUpdateServiceTest extends WP_UnitTestCase
     $req = new \WP_REST_Request();
     $req->set_param('id', 1);
     $req->set_param('img', 'img');
+    $req->set_param('name', 'name');
     $req->set_param('dev', 'dev');
     $req->set_param('iosLink', 'iosLink');
     $req->set_param('androidLink', 'androidLink');
@@ -58,6 +61,7 @@ class AppUpdateServiceTest extends WP_UnitTestCase
     $command = new AppUpdateCommand($req);
     $this->assertEquals(1, $command->getId());
     $this->assertEquals('img', $command->getImg());
+    $this->assertEquals('name', $command->getName());
     $this->assertEquals('dev', $command->getDev());
     $this->assertEquals('iosLink', $command->getIosLink());
     $this->assertEquals('androidLink', $command->getAndroidLink());
@@ -77,6 +81,7 @@ class AppUpdateServiceTest extends WP_UnitTestCase
     // アプリの情報
     $req = new \WP_REST_Request();
     $req->set_param('id', 1);
+    $req->set_param('name', 'change-name');
     $req->set_param('img', 'change-image');
     $req->set_param('dev', 'change-dev');
     $req->set_param('iosLink', 'iosLink');
@@ -94,8 +99,31 @@ class AppUpdateServiceTest extends WP_UnitTestCase
 
     // きちんと更新されたか確認
     $res = $this->appRepository->findById(new AppId(1));
+    $this->assertEquals('change-name', $res->getName());
     $this->assertEquals('change-image', $res->getImage());
     $this->assertEquals('change-dev', $res->getDeveloper());
     $this->assertEquals(2, $res->getAppOrder());
+    
+
+    // 重複した名前は更新しない
+    $req = new \WP_REST_Request();
+    $req->set_param('id', 1);
+    $req->set_param('name', 'change-name');
+    $req->set_param('img', 'change-image');
+    $req->set_param('dev', 'change-dev');
+    $req->set_param('iosLink', 'iosLink');
+    $req->set_param('androidLink', 'androidLink');
+    $req->set_param('webLink', 'webLink');
+    $req->set_param('iosAffiLink', 'iosAffiLink');
+    $req->set_param('androidAffiLink', 'androidAffiLink');
+    $req->set_param('webAffiLink', 'webAffiLink');
+    $req->set_param('article', 'article');
+    $req->set_param('appOrder', 2);
+    $req->set_param('appPrice', 1000);
+    $command = new AppUpdateCommand($req);
+    $this->expectException(\Exception::class);
+    $this->expectExceptionMessage('app name alreappy exists');
+    $this->expectExceptionCode(500);
+    $appId = $this->appUpdateService->handle($command);
   }
 }
