@@ -38,7 +38,7 @@
 <script>
 module.exports = {
   components: {
-    'AppRegisterTable': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/appRegisterTable.vue')
+    'AppRegisterTable': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/appRegisterTable.vue'),
   },
   data(){
     return {
@@ -49,7 +49,6 @@ module.exports = {
   },
   async created(){
     const res = await axios.get('apps');
-    console.log(res.data);
     this.appsList = res.data;
   },
   methods:{
