@@ -2,13 +2,14 @@
 namespace AjaxSnippets\Api\Domain\Models\Log;
 
 use AjaxSnippets\Api\Domain\Models\Log\LogId;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 
 class Log
 {
 
   public function __construct(
     private LogId $id,
-    private int $itemId,
+    private AdDetailId $adDetailId,
     private string $date,
     private string $time,
     private string $place,
@@ -21,9 +22,9 @@ class Log
     return $this->id;
   }
 
-  public function getItemId()
+  public function getAdDetailId()
   {
-    return $this->itemId;
+    return $this->adDetailId;
   }
 
   public function getDate()
@@ -55,7 +56,7 @@ class Log
   {
     return array(
       'id' => $this->id->getId(),
-      'item_id' => $this->itemId,
+      'ad_detail_id' => $this->getAdDetailId()->getId(),
       'date' => $this->date,
       'time' => $this->time,
       'place' => $this->place,

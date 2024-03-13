@@ -8,18 +8,18 @@ interface ILogCreateService
 
 class LogCreateCommand
 {
-  private int $itemId;
+  private int $adDetailId;
   private string $place;
 
   public function __construct(\WP_REST_Request $req)
   {
-    $this->itemId = (int)$req->get_param('itemId');
+    $this->adDetailId = (int)$req->get_param('adDetailId');
     $this->place = (string)$req->get_param('place');
   }
 
-  public function getItemId()
+  public function getAdDetailId()
   {
-    return $this->itemId;
+    return $this->adDetailId;
   }
 
   public function getPlace()

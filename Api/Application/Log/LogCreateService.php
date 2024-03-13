@@ -5,6 +5,7 @@ use AjaxSnippets\Api\Domain\Models\Log\ILogRepository;
 use AjaxSnippets\Api\Application\Log\LogCreateCommand;
 use AjaxSnippets\Api\Domain\Models\Log\Log;
 use AjaxSnippets\Api\Domain\Models\Log\LogId;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 
 class LogCreateService implements ILogCreateService
 {
@@ -15,7 +16,7 @@ class LogCreateService implements ILogCreateService
   {
     $log = new Log(
       new LogId(),
-      $cmd->getItemId(),
+      new AdDetailId($cmd->getAdDetailId()),
       date_i18n("Y-m-d"),
       date_i18n("H:i:s"),
       $cmd->getPlace(),

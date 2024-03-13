@@ -4,6 +4,7 @@ namespace AjaxSnippets\Api\Infrastructure\Repository;
 use AjaxSnippets\Api\Domain\Models\Log\Log;
 use AjaxSnippets\Api\Domain\Models\Log\ILogRepository;
 use AjaxSnippets\Api\Domain\Models\Log\LogId;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 
 class LogRepository implements ILogRepository
 {
@@ -40,7 +41,7 @@ class LogRepository implements ILogRepository
     return collect($res)->map(function($r){
       return new Log(
         new LogId($r->id),
-        $r->item_id,
+        new AdDetailId($r->ad_detail_id),
         $r->date,
         $r->time,
         $r->place,
@@ -52,7 +53,7 @@ class LogRepository implements ILogRepository
 
   public function getItemCountLogs(string $where = ''): array
   {
-    $res = $this->db->get_results("SELECT item_id, place, COUNT(*) as clicks FROM ". $this->table.$where);
+    $res = $this->db->get_results("SELECT ad_detail_id, place, COUNT(*) as clicks FROM ". $this->table.$where);
     return collect($res)->toArray();
   }
 

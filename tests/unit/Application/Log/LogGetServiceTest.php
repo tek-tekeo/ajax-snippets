@@ -9,6 +9,7 @@ use AjaxSnippets\Api\Domain\Models\Log\LogId;
 use AjaxSnippets\Api\Domain\Models\Log\Log;
 use AjaxSnippets\Api\Application\Log\LogGetCommand;
 use AjaxSnippets\Api\Application\Log\LogSearchCommand;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 
 class LogGetServiceTest extends WP_UnitTestCase
 {
@@ -26,7 +27,7 @@ class LogGetServiceTest extends WP_UnitTestCase
 		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "log");
     $this->logGetService = new LogGetService($this->logRepository);
     $this->columns = [
-      1,
+      new AdDetailId(1),
       '2024-08-01',
       '20:00:00',
       'place',

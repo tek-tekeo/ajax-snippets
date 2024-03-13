@@ -6,14 +6,12 @@ use \WP_REST_Response;
 use AjaxSnippets\Api\Application\Log\ILogCreateService;
 use AjaxSnippets\Api\Application\Log\ILogDeleteService;
 use AjaxSnippets\Api\Application\Log\ILogGetService;
-use AjaxSnippets\Api\Application\Log\LogAppService;
 use AjaxSnippets\Api\Application\Log\LogDeleteCommand;
 use AjaxSnippets\Api\Application\Log\LogGetCommand;
 
 class LogController
 {
   public function __construct(
-    private LogAppService $logAppService,
     private ILogCreateService $logCreateService,
     private ILogGetService $logGetService,
     private ILogDeleteService $logDeleteService

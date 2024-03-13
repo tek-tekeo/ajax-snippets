@@ -5,6 +5,7 @@ use AjaxSnippets\Api\Domain\Models\Log\ILogRepository;
 use AjaxSnippets\Api\Domain\Models\Log\LogId;
 use AjaxSnippets\Api\Domain\Models\Log\Log;
 use AjaxSnippets\Api\Application\Log\LogDeleteCommand;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 
 class LogDeleteServiceTest extends WP_UnitTestCase
 {
@@ -23,7 +24,7 @@ class LogDeleteServiceTest extends WP_UnitTestCase
 
   public function testHandle()
   {
-    $logId = $this->logRepository->save(new Log(new LogId(), 3, '2024-08-01', '20:00:00', 'place', 'ip', 'post_addr'));
+    $logId = $this->logRepository->save(new Log(new LogId(), new AdDetailId(3), '2024-08-01', '20:00:00', 'place', 'ip', 'post_addr'));
     
     $request = new \WP_REST_Request();
     $request->set_param('logId', 1);

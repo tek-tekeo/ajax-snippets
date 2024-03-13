@@ -1,6 +1,7 @@
 <?php
 use AjaxSnippets\Api\Domain\Models\Log\LogId;
 use AjaxSnippets\Api\Domain\Models\Log\Log;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 use AjaxSnippets\Api\Infrastructure\Repository\LogRepository;
 
 final class LogRepositoryTest extends WP_UnitTestCase
@@ -25,7 +26,7 @@ final class LogRepositoryTest extends WP_UnitTestCase
     $logId = new LogId();
     $log = new Log(
       $logId,
-      3,
+      new AdDetailId(3),
       '2024-08-01',
       '20:00:00',
       'place',
@@ -42,7 +43,7 @@ final class LogRepositoryTest extends WP_UnitTestCase
     $logId = new LogId();
     $log = new Log(
       $logId,
-      3,
+      new AdDetailId(3),
       '2024-08-01',
       '20:00:00',
       'place',
@@ -55,7 +56,7 @@ final class LogRepositoryTest extends WP_UnitTestCase
     $this->assertEquals(
       [new Log(
         new LogId(1),
-        3,
+        new AdDetailId(3),
         '2024-08-01',
         '20:00:00',
         'place',
@@ -71,7 +72,7 @@ final class LogRepositoryTest extends WP_UnitTestCase
 
     $log = new Log(
       $logId,
-      3,
+      new AdDetailId(3),
       '2024-08-01',
       '20:00:00',
       'place',
