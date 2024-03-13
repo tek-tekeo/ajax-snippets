@@ -51,7 +51,7 @@ class TagLinkAppService
 
   public function get(TagLinkGetCommand $cmd)
   {
-    $tags = $this->tagLinkRepository->get($cmd->getItemId());
+    $tags = $this->tagLinkRepository->findById($cmd->getItemId());
     if($tags == null){
       return null;
     }
@@ -103,30 +103,30 @@ class TagLinkData
   }
 }
 
-class TagLinkCreateCommand
-{
-  public function __construct(int $itemId, int $tagId)
-  {
-    $this->id = 0;
-    $this->itemId = $itemId;
-    $this->tagId = $tagId;
-  }
+// class TagLinkCreateCommand
+// {
+//   public function __construct(int $itemId, int $tagId)
+//   {
+//     $this->id = 0;
+//     $this->itemId = $itemId;
+//     $this->tagId = $tagId;
+//   }
 
-  public function getId()
-  {
-    return $this->id;
-  }
+//   public function getId()
+//   {
+//     return $this->id;
+//   }
 
-  public function getItemId()
-  {
-    return $this->itemId;
-  }
+//   public function getItemId()
+//   {
+//     return $this->itemId;
+//   }
 
-  public function getTagId()
-  {
-    return $this->tagId;
-  }
-}
+//   public function getTagId()
+//   {
+//     return $this->tagId;
+//   }
+// }
 
 class TagLinkUpdateCommand
 {

@@ -1,10 +1,13 @@
 <?php
 namespace AjaxSnippets\Api\Infrastructure\Repository;
 
-use AjaxSnippets\Api\Domain\Models\Tags\Tag;
-use AjaxSnippets\Api\Domain\Models\Details\Detail;
-use AjaxSnippets\Api\Domain\Models\TagLinks\TagLink;
-use AjaxSnippets\Api\Domain\Models\TagLinks\ITagLinkRepository;
+use AjaxSnippets\Api\Domain\Models\Tag\Tag;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetail;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
+use AjaxSnippets\Api\Domain\Models\Tag\TagId;
+use AjaxSnippets\Api\Domain\Models\TagLink\TagLink;
+use AjaxSnippets\Api\Domain\Models\TagLink\TagLinkId;
+use AjaxSnippets\Api\Domain\Models\TagLink\ITagLinkRepository;
 
 class TagLinkRepository implements ITagLinkRepository
 {
@@ -18,60 +21,65 @@ class TagLinkRepository implements ITagLinkRepository
     $this->table = PLUGIN_DB_PREFIX.'tag_link';
   }
 
-  public function save(TagLink $tagLink) : bool
+  public function findByName(string $name)
   {
-    $res = $this->db->replace( 
-      $this->table, 
-      array( 
-        'id' => $tagLink->getId(),
-        'item_id' => $tagLink->getItemId(),
-        'tag_id' => $tagLink->getTagId() 
-      ), 
-      array( 
-        '%d',
-        '%d', 
-        '%d' 
-      )
-    );
-    return $res;
+    $res = $this->db->get_results("SELECT * FROM ".$this->table . " WHERE name='".$name."'");
+    if(!$res == null){
+      return new Tag(
+        $res[0]->id,
+        $res[0]->name
+      );
+    }
+    return null;
   }
 
-  public function delete(int $itemId) : bool
+  public function save(TagLink $tagLink): TagLinkId
+  {  
+    $res = $this->db->replace( 
+      $this->table, 
+      $tagLink->entity()
+    );
+    return new TagLinkId($this->db->insert_id);
+  }
+
+  public function update(TagLink $tagLink) : TagLinkId
+  {
+    $res = $this->db->replace(
+      $this->table,
+     $tagLink->entity()
+    );
+    return new TagLinkId($this->db->insert_id);
+  }
+
+  public function delete(AdDetailId $adDetailId) : bool
   {
     $res = $this->db->delete(
       $this->table,
-      array( 'item_id' => $itemId )
+      array( 'ad_detail_id' => $adDetailId->getId() )
     );
 
     return $res;
   }
 
-  public function get(int $itemId) : array
+  public function findByAdDetailId(AdDetailId $adDetailId) : array
   {
-    $res = $this->db->get_results("SELECT * FROM ".$this->table . " WHERE item_id=".$itemId);
-    $tags = array();
-    if(!$res == null){
-      foreach($res as $r){
-        $tag = new TagLink(
-          $r->id,
-          new Detail($r->item_id),
-          new Tag($r->tag_id)
-        );
-        array_push($tags, $tag);
-      }
-      return $tags;
-    }
-    return array();
+    $res = $this->db->get_results("SELECT * FROM ".$this->table . " WHERE ad_detail_id=".$adDetailId->getId());
+    return collect($res)->map(function($r){
+      return new TagLink(
+        new TagLinkId($r->id),
+        new AdDetailId($r->ad_detail_id),
+        new TagId($r->tag_id)
+      );
+    })->toArray();
   }
 
-  public function getItemIdsByTag(int $tagId) : array
+  public function getItemIdsByTag(TagId $tagId) : array
   {
-    $sql = "SELECT DISTINCT item_id FROM ".$this->table." where tag_id in (".$tagId.") group by item_id having count(*) >= ".count(explode(",", $tagId));
+    $sql = "SELECT DISTINCT ad_detail_id FROM ".$this->table." where tag_id in (".$tagId->getId().") group by ad_detail_id having count(*) >= ".count(explode(",", $tagId->getId()));
     $res = $this->db->get_results($sql);
-    $array = array();
-    foreach($res as $r){
-      array_push($array, $r->item_id);
-    }
-    return $array;
+    return collect($res)->map(function($r){
+      return $r->ad_detail_id;
+    })->toArray();
+
   }
 }
