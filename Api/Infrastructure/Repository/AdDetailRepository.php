@@ -88,6 +88,28 @@ class AdDetailRepository implements IAdDetailRepository
     throw new Exception('Detail IDに該当するデータが存在しません。');
   }
 
+  public function findByAdId(AdId $adId): array
+  {
+    $res = $this->db->get_results("SELECT * FROM ".$this->table." WHERE ad_id=".$adId->getId());
+    return collect($res)->map(function($r){
+      return new AdDetail(
+        new AdDetailId((int)$r->id),
+        new AdId((int)$r->ad_id),
+        (string)$r->item_name,
+        (string)$r->official_item_link,
+        (string)$r->affi_item_link,
+        (string)$r->detail_img,
+        (string)$r->amazon_asin,
+        (string)$r->rakuten_id,
+        (string)$r->rchart,
+        (string)$r->info,
+        (string)$r->review,
+        (int)$r->is_show_url,
+        (int)$r->same_parent
+      );
+    })->toArray();
+  }
+
   public function save(AdDetail $adDetail): AdDetailId
   {
     $res = $this->db->replace( 
@@ -102,6 +124,15 @@ class AdDetailRepository implements IAdDetailRepository
     $res = $this->db->delete( 
       $this->table, 
       array( 'id' => $adDetailId->getId() )
+    );
+    return $res;
+  }
+
+  public function deleteByAdId(AdId $adId): bool
+  {
+    $res = $this->db->delete( 
+      $this->table, 
+      array( 'ad_id' => $adId->getId() )
     );
     return $res;
   }
