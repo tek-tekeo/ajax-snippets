@@ -20,7 +20,7 @@ class AdUpdateService implements IAdUpdateService
 
     // 広告情報を更新する
     $updateAd = new Ad(
-      $adId,
+      $ad->getAdId(),
       ($cmd->getName()) ? $cmd->getName() : $ad->getName(),
       ($cmd->getAnken()) ? $cmd->getAnken() : $ad->getAnken(),
       ($cmd->getAffiLink()) ? $cmd->getAffiLink() : $ad->getAffiLink(),
@@ -31,7 +31,7 @@ class AdUpdateService implements IAdUpdateService
       ($cmd->getSImgTag()) ? $cmd->getSImgTag() : $ad->getSImgTag(),
       ($cmd->getAffiImgWidth()) ? $cmd->getAffiImgWidth() : $ad->getAffiImgWidth(),
       ($cmd->getAffiImgHeight()) ? $cmd->getAffiImgHeight() : $ad->getAffiImgHeight(),
-      $ad->getAppId()
+      ($cmd->getAppId()) ? new AppId($cmd->getAppId()) : $ad->getAppId(),
     );
 
     return $this->adRepository->save($updateAd);

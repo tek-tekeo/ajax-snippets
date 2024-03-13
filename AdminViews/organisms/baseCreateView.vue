@@ -35,6 +35,7 @@
           <base-register-table
             :base="base"
             :asp-list="aspList"
+            :app-list="appList"
           >
           </base-register-table>
         </v-form>
@@ -60,12 +61,16 @@ module.exports = {
     return {
       valid:true,
       base:{homeUrl:null},
-      aspList:[]
+      aspList:[],
+      appList:[],
     }
   },
   async created(){
     const res = await axios.get('asp');
     this.aspList = res.data;
+    const apps = await axios.get('apps');
+    this.appList = apps.data;
+
   },
   methods:{
     async AnalizeCode(code){

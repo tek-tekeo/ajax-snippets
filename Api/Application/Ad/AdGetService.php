@@ -6,6 +6,7 @@ use AjaxSnippets\Api\Application\Ad\AdGetCommand;
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
 use AjaxSnippets\Api\Domain\Models\Ad\AdId;
 use AjaxSnippets\Api\Domain\Models\Ad\IAdRepository;
+use AjaxSnippets\Api\Application\DTO\Ad\AdData;
 
 class AdGetService implements IAdGetService
 {
@@ -15,16 +16,22 @@ class AdGetService implements IAdGetService
   public function handle(AdGetCommand $cmd)
   {
     $adId = new AdId($cmd->getId());
-    return $this->adRepository->findById($adId);
+    return new AdData($this->adRepository->findById($adId));
   }
 
   public function getAdsByName(string $name)
   {
-    return $this->adRepository->findByName($name);
+    $res = $this->adRepository->findByName($name);
+    return collect($res)->map(function($ad){
+      return new AdData($ad);
+    })->toArray();
   }
 
   public function getAll()
   {
-    return $this->adRepository->findAll();
+    $res = $this->adRepository->findAll();
+    return collect($res)->map(function($ad){
+      return new AdData($ad);
+    })->toArray();
   }
 }

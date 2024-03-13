@@ -22,3 +22,18 @@ class AdGetCommand
     return $this->id;
   }
 }
+
+class AdSearchCommand
+{
+  private string $name;
+
+  public function __construct(\WP_REST_Request $req)
+  {
+    $this->name = (string)$req->get_param('name');
+  }
+
+  public function getName()
+  {
+    return $this->name;
+  }
+}

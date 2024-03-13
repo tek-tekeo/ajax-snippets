@@ -18,13 +18,13 @@ class AdCreateCommand
   private string $affiImg;
   private string $imgTag;
   private string $sImgTag;
-  private string $affiImgWidth;
-  private string $affiImgHeight;
+  private int $affiImgWidth;
+  private int $affiImgHeight;
   private int $appId;
   
   private string $homeUrl;
 
-  public function __construct(\WP_REST_Request $req, $appId)
+  public function __construct(\WP_REST_Request $req)
   {
     $this->name = (string)$req->get_param('name');
     $this->anken = (string)$req->get_param('anken');
@@ -34,10 +34,9 @@ class AdCreateCommand
     $this->affiImg = (string)$req->get_param('affiImg');
     $this->imgTag = (string)$req->get_param('imgTag');
     $this->sImgTag = (string)$req->get_param('sImgTag');
-    $this->affiImgWidth = (string)$req->get_param('affiImgWidth');
-    $this->affiImgHeight = (string)$req->get_param('affiImgHeight');
-
-    $this->appId = $appId->getId();
+    $this->affiImgWidth = (int)$req->get_param('affiImgWidth');
+    $this->affiImgHeight = (int)$req->get_param('affiImgHeight');
+    $this->appId = (int)$req->get_param('appId');
     
     $this->homeUrl = (string)$req->get_param('homeUrl');
   }

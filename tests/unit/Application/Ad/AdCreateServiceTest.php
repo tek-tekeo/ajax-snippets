@@ -2,7 +2,10 @@
 
 use AjaxSnippets\Api\Application\Ad\AdCreateService;
 use AjaxSnippets\Api\Domain\Models\Ad\IAdRepository;
+use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailRepository;
 use AjaxSnippets\Api\Domain\Models\Ad\AdId;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetail;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 use AjaxSnippets\Api\Application\Ad\IAdCreateService;
 use AjaxSnippets\Api\Application\Ad\AdCreateCommand;
 use AjaxSnippets\Api\Domain\Models\App\AppId;
@@ -12,6 +15,7 @@ class AdCreateServiceTest extends WP_UnitTestCase
 {
   private IAdRepository $adRepository;
   private AdCreateService $adCreateService;
+  private IAdDetailRepository $adDetailRepository;
   private \WP_REST_Request $req;
 
   public function setUp(): void
@@ -20,9 +24,11 @@ class AdCreateServiceTest extends WP_UnitTestCase
     global $diContainer;
     parent::setUp();
     $this->adRepository = $diContainer->get(IAdRepository::class);
+    $this->adDetailRepository = $diContainer->get(IAdDetailRepository::class);
     // $this->adService = new AdService($this->adRepository);
 		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ads");
-    $this->adCreateService = new AdCreateService($this->adRepository);
+		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
+    $this->adCreateService = new AdCreateService($this->adRepository, $this->adDetailRepository);
 
     $this->req = new \WP_REST_Request();
     // 広告の情報
@@ -52,12 +58,45 @@ class AdCreateServiceTest extends WP_UnitTestCase
     $this->assertEquals('homeUrl', $cmd->getHomeUrl());
   }
 
-  public function test_create()
+  public function testCURD()
   {
-    $cmd = new AdCreateCommand($this->req, new AppId(1));
+    $cmd = new AdCreateCommand($this->req);
     // 新規登録されたら登録IDが返る
     $adId = $this->adCreateService->handle($cmd);
     $this->assertEquals(new AdId(1), $adId);
+
+    // 登録された広告を取得する
+    $ad = $this->adRepository->findById(new AdId(1));
+    $this->assertEquals('name', $ad->getName());
+    $this->assertEquals('anken', $ad->getAnken());
+    $this->assertEquals('affiLink', $ad->getAffiLink());
+    $this->assertEquals('sLink', $ad->getSLink());
+    $this->assertEquals('aspName', $ad->getAspName());
+    $this->assertEquals('affiImg', $ad->getAffiImg());
+    $this->assertEquals('imgTag', $ad->getImgTag());
+    $this->assertEquals('sImgTag', $ad->getSImgTag());
+    $this->assertEquals(300, $ad->getAffiImgWidth());
+    $this->assertEquals(250, $ad->getAffiImgHeight());
+    $this->assertEquals(new AppId(0), $ad->getAppId());
+
+    // 登録された広告の商品リンクに使用するURLを取得する
+    $adDetails = $this->adDetailRepository->findByAdId(new AdId(1));
+    $this->assertEquals(new AdDetail(
+      new AdDetailId(1),
+      new AdId(1),
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '[]',
+      '[]',
+      '',
+      0,
+      1
+    
+    ), $adDetails[0]);
 
     // 同じad名で登録されたら登録失敗となる
     $this->expectException(\Exception::class);

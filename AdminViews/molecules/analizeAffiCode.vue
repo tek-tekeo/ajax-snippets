@@ -12,11 +12,6 @@
       >
       </wp-text-area>
     </div>
-    <wp-text-area
-      label="アプリーチの新コードを入力"
-      v-model="appCode"
-    >
-    </wp-text-area>
     <v-btn
       block
       color="primary"
@@ -62,17 +57,6 @@ module.exports = {
         const sresult = this.affiSCode.match(a8sregex);
         obj.sLink = sresult[0].match('[^\&]*')[0];
         obj.sImgTag = sresult[1];
-      }
-  
-      if(this.appCode !=''){
-        const appLinks = new RegExp('(https://[^"]*)','g');
-        const appRes = this.appCode.match(appLinks);
-        obj.img = appRes[0];
-        obj.iosLink = appRes[2];
-        obj.androidLink = appRes[4];
-
-        const appDev = new RegExp('<span class=\"appreach__developper\">([^<]+)</span>');
-        obj.dev = this.appCode.match(appDev)[1];
       }
 
       this.$emit('analize-code', obj);

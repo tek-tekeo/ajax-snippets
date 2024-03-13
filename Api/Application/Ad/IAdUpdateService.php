@@ -1,10 +1,6 @@
 <?php
 namespace AjaxSnippets\Api\Application\Ad;
 
-use AjaxSnippets\Api\Domain\Models\Ad\Ad;
-use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetail;
-
-
 interface IAdUpdateService
 {
   public function handle(AdUpdateCommand $cmd);
@@ -23,6 +19,7 @@ class AdUpdateCommand
   private string $sImgTag;
   private int $affiImgWidth;
   private int $affiImgHeight;
+  private int $appId;
 
   public function __construct(\WP_REST_Request $req)
   {
@@ -37,6 +34,7 @@ class AdUpdateCommand
     $this->sImgTag = (string)$req->get_param('sImgTag');
     $this->affiImgWidth = (int)$req->get_param('affiImgWidth');
     $this->affiImgHeight = (int)$req->get_param('affiImgHeight');
+    $this->appId = (int)$req->get_param('appId');
   }
   
   public function getId(): int
@@ -94,4 +92,8 @@ class AdUpdateCommand
     return $this->affiImgHeight;
   }
 
+  public function getAppId(): int
+  {
+    return $this->appId;
+  }
 }

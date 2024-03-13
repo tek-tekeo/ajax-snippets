@@ -18,14 +18,11 @@
         </v-btn>
 
 
-        <v-btn
+        <confirm-dialog
           fixed
           bottom
-          color="error"
-          @click="deleteBase"
-        >
-          削除する
-        </v-btn>
+          @execute="deleteAd(app.id)"
+        ></confirm-dialog>
       </v-col>
       <v-col cols="8">
         <v-form
@@ -36,6 +33,7 @@
           <base-register-table
             :base="base"
             :asp-list="aspList"
+            :app-list="appList"
           >
           </base-register-table>
         </v-form>
@@ -54,6 +52,7 @@ module.exports = {
   components: {
     'BaseRegisterTable': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/baseRegisterTable.vue'),
     'AnalizeAffiCode': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/analizeAffiCode.vue'),
+    'ConfirmDialog': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/confirmDialog.vue')
   },
   data(){
     return {
@@ -61,16 +60,20 @@ module.exports = {
       affiCode:'',
       affiSCode:'',
       base:{},
-      aspList:[]
+      aspList:[],
+      appList:[],
     }
   },
   async created(){
     const res = await Promise.all([
       axios.get('asp'),
+      axios.get('apps'),
       axios.get('base/' + this.$route.params['id'])
     ]);
+
     this.aspList = res[0].data;
-    this.base = res[1].data;
+    this.appList = res[1].data;
+    this.base = res[2].data;
   },
   methods:{
     async AnalizeCode(code){
@@ -94,7 +97,21 @@ module.exports = {
       this.validate();
       if(!this.valid){return;}
 
-      const res = await axios.put('base/'+this.base.id,this.base);
+      const res = await axios.put('base/'+this.base.id, this.base);
+      await this.toast(res, '更新');
+    },
+    async deleteAd(){
+      const res = await axios.delete('base/'+this.base.id, this.base);
+      await this.toast(res, '削除');
+        // 削除が成功した場合にのみリダイレクトする
+      if (res.data && res.status === 200) {
+        this.$router.push('/parent');
+      }
+    },
+    async analizeAffi(){
+      console.log('分析');
+    },
+    async toast(res, action){
       if(res.data && res.status == '200'){
         var options = {
           position: 'top-center',
@@ -102,7 +119,8 @@ module.exports = {
           fullWidth: true,
           type: 'success'
         }
-        this.$toasted.show('更新完了',options);
+        this.$toasted.show(action + '完了',options);
+        return true;
       }else{
         var options = {
           position: 'top-center',
@@ -110,15 +128,9 @@ module.exports = {
           fullWidth: true,
           type: 'error'
         }
-        this.$toasted.show('更新失敗',options);
+        this.$toasted.show(action + '失敗',options);
+        return false;
       }
-    },
-    async deleteBase(){
-      //TODO: 削除処理
-      console.log('削除しました');
-    },
-    async analizeAffi(){
-      console.log('分析');
     }
   }
 }

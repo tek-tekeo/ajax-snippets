@@ -4,15 +4,19 @@ namespace AjaxSnippets\Api\Application\Ad;
 use AjaxSnippets\Api\Application\Ad\AdCreateCommand;
 use AjaxSnippets\Api\Domain\Models\Ad\AdId;
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetail;
 use AjaxSnippets\Api\Domain\Services\AdService;
 use AjaxSnippets\Api\Domain\Models\App\AppId;
 use AjaxSnippets\Api\Domain\Models\Ad\IAdRepository;
+use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailRepository;
 
 class AdCreateService implements IAdCreateService
 {
   
   public function __construct(
-    private IAdRepository $adRepository
+    private IAdRepository $adRepository,
+    private IAdDetailRepository $adDetailRepository
   ){}
   
   public function handle(AdCreateCommand $cmd)
@@ -38,10 +42,12 @@ class AdCreateService implements IAdCreateService
       throw new \Exception('ad already exists', 500);
     }
 
-    return $this->adRepository->save($ad);
+    $insertedAdId =  $this->adRepository->save($ad);
 
-    // 広告の商品リンクを保存する
+    // 子要素の追加
+    $adDetail = new AdDetail(new AdDetailId(), $insertedAdId);
+    $this->adDetailRepository->save($adDetail);
 
-    return new AdId(1);
+    return $insertedAdId;
   }
 }

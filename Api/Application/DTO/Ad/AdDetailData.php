@@ -21,10 +21,12 @@ class AdDetailData
   public string $review;
   public string $getWpReview;
   public string $getWpInfo;
+  public array $tagIds;
 
   public function __construct(
     private Ad $ad,
-    private AdDetail $adDetail
+    private AdDetail $adDetail,
+    private array $tagLinks = []
   ){
     $this->id = $adDetail->getId()->getId();
     $this->adId = $ad->getAdId()->getId();
@@ -39,6 +41,9 @@ class AdDetailData
     $this->isShowUrl = (bool)$adDetail->getIsShowUrl();
     $this->sameParent = (bool)$adDetail->getSameParent();
     $this->review = $adDetail->getReview();
+    $this->tagIds = collect($tagLinks)->map(function($tagLink){
+      return $tagLink->getTagId()->getId();
+    })->toArray();
     // $this->getWpReview = $adDetail->getWpReview();
     // $this->getWpInfo = $adDetail->getWpInfo();
   }

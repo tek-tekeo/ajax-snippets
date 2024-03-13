@@ -6,6 +6,7 @@ use AjaxSnippets\Api\Domain\Models\Ad\AdId;
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
 use AjaxSnippets\Api\Domain\Models\App\AppId;
 use AjaxSnippets\Api\Application\Ad\AdGetCommand;
+use AjaxSnippets\Api\Application\DTO\Ad\AdData;
 
 class AdGetServiceTest extends WP_UnitTestCase
 {
@@ -53,10 +54,10 @@ class AdGetServiceTest extends WP_UnitTestCase
     $actualAdData = $this->adGetService->handle($command);
     
     $this->assertEquals(
-      new Ad(
+      new AdData(new Ad(
         new AdId(2),
       ...$this->columns
-    ), $actualAdData);
+    )), $actualAdData);
   }
 
   public function testGetAllAds()
@@ -69,9 +70,9 @@ class AdGetServiceTest extends WP_UnitTestCase
     
     $this->assertEquals(
       [
-        new Ad(new AdId(1), ...$this->columns),
-        new Ad(new AdId(2), ...$this->columns),
-        new Ad(new AdId(3), ...$this->columns)
+        new AdData(new Ad(new AdId(1), ...$this->columns)),
+        new AdData(new Ad(new AdId(2), ...$this->columns)),
+        new AdData(new Ad(new AdId(3), ...$this->columns))
       ],
       $actualAdData
     );
@@ -91,7 +92,7 @@ class AdGetServiceTest extends WP_UnitTestCase
       'item-image-tag-url',
       300,
       250,
-      new AppId()
+      new AppId(1)
     );
     $this->adRepository->save($this->ad);
     $this->adRepository->save($this->ad);
@@ -100,7 +101,7 @@ class AdGetServiceTest extends WP_UnitTestCase
     $actualAdData = $this->adGetService->getAdsByName('Find');
     
 
-    $this->assertEquals([$findAd], $actualAdData);
+    $this->assertEquals([new AdData($findAd)], $actualAdData);
   }
 
 }
