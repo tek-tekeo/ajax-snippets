@@ -9,6 +9,7 @@ use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 use AjaxSnippets\Api\Application\Ad\IAdCreateService;
 use AjaxSnippets\Api\Application\Ad\AdCreateCommand;
 use AjaxSnippets\Api\Domain\Models\App\AppId;
+use AjaxSnippets\Api\Domain\Models\Asp\AspId;
 use AjaxSnippets\Api\Domain\Services\AdService;
 
 class AdCreateServiceTest extends WP_UnitTestCase
@@ -36,7 +37,7 @@ class AdCreateServiceTest extends WP_UnitTestCase
     $this->req->set_param('anken', 'anken');
     $this->req->set_param('affiLink', 'affiLink');
     $this->req->set_param('sLink', 'sLink');
-    $this->req->set_param('aspName', 'aspName');
+    $this->req->set_param('aspId', 1);
     $this->req->set_param('affiImg', 'affiImg');
     $this->req->set_param('imgTag', 'imgTag');
     $this->req->set_param('sImgTag', 'sImgTag');
@@ -51,7 +52,7 @@ class AdCreateServiceTest extends WP_UnitTestCase
   {
     $cmd = new AdCreateCommand($this->req);
     $this->assertEquals(['name', 'anken', 'affiLink', 'sLink',
-      'aspName', 'affiImg', 'imgTag', 'sImgTag', 300, 250
+      1, 'affiImg', 'imgTag', 'sImgTag', 300, 250
     ], $cmd->getAdInfo());
 
     $this->assertEquals('homeUrl', $cmd->getHomeUrl());
@@ -70,7 +71,7 @@ class AdCreateServiceTest extends WP_UnitTestCase
     $this->assertEquals('anken', $ad->getAnken());
     $this->assertEquals('affiLink', $ad->getAffiLink());
     $this->assertEquals('sLink', $ad->getSLink());
-    $this->assertEquals('aspName', $ad->getAspName());
+    $this->assertEquals(new AspId(1), $ad->getAspId());
     $this->assertEquals('affiImg', $ad->getAffiImg());
     $this->assertEquals('imgTag', $ad->getImgTag());
     $this->assertEquals('sImgTag', $ad->getSImgTag());

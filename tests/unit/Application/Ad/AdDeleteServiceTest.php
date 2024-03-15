@@ -8,6 +8,7 @@ use AjaxSnippets\Api\Domain\Models\Ad\Ad;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetail;
 use AjaxSnippets\Api\Domain\Models\App\AppId;
+use AjaxSnippets\Api\Domain\Models\Asp\AspId;
 use AjaxSnippets\Api\Application\Ad\AdDeleteCommand;
 
 class AdDeleteServiceTest extends WP_UnitTestCase
@@ -42,7 +43,7 @@ class AdDeleteServiceTest extends WP_UnitTestCase
         'anken',
         'affiLink',
         'sLink',
-        'aspName',
+        new AspId(1),
         'affiImg',
         'imgTag',
         'sImgTag',

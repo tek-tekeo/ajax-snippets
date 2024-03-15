@@ -20,7 +20,7 @@ class AspGetService implements IAspGetService
   public function handle(AspGetCommand $cmd)
   {
     $aspId = new AspId($cmd->getId());
-    $asp = $this->aspRepository->get($aspId);
+    $asp = $this->aspRepository->findById($aspId);
     
     if($asp == null){
       return null;

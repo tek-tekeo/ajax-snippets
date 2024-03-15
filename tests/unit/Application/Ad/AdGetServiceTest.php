@@ -5,6 +5,7 @@ use AjaxSnippets\Api\Domain\Models\Ad\IAdRepository;
 use AjaxSnippets\Api\Domain\Models\Ad\AdId;
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
 use AjaxSnippets\Api\Domain\Models\App\AppId;
+use AjaxSnippets\Api\Domain\Models\Asp\AspId;
 use AjaxSnippets\Api\Application\Ad\AdGetCommand;
 use AjaxSnippets\Api\Application\DTO\Ad\AdData;
 
@@ -28,7 +29,7 @@ class AdGetServiceTest extends WP_UnitTestCase
       'anken-link',
       'https://www.anken.com',
       'https://www.item-link.com',
-      'a8',
+      new AspId(1),
       'banner-image.jpg',
       'image-tag-url',
       'item-image-tag-url',
@@ -86,7 +87,7 @@ class AdGetServiceTest extends WP_UnitTestCase
       'anken-link',
       'https://www.anken.com',
       'https://www.item-link.com',
-      'a8',
+      new AspId(1),
       'banner-image.jpg',
       'image-tag-url',
       'item-image-tag-url',

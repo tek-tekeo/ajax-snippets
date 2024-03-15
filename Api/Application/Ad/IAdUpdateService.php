@@ -13,7 +13,7 @@ class AdUpdateCommand
   private string $anken;
   private float $affiLink;
   private string $sLink;
-  private string $aspName;
+  private int $aspId;
   private string $affiImg;
   private string $imgTag;
   private string $sImgTag;
@@ -28,7 +28,7 @@ class AdUpdateCommand
     $this->anken = (string)$req->get_param('anken');
     $this->affiLink = (float)$req->get_param('affiLink');
     $this->sLink = (string)$req->get_param('sLink');
-    $this->aspName = (string)$req->get_param('aspName');
+    $this->aspId = (int)$req->get_param('aspId');
     $this->affiImg = (string)$req->get_param('affiImg');
     $this->imgTag = (string)$req->get_param('imgTag');
     $this->sImgTag = (string)$req->get_param('sImgTag');
@@ -62,9 +62,9 @@ class AdUpdateCommand
     return $this->sLink;
   }
 
-  public function getAspName(): string
+  public function getAspId(): string
   {
-    return $this->aspName;
+    return $this->aspId;
   }
 
   public function getAffiImg(): string

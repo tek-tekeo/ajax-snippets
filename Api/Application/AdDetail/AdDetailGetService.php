@@ -47,7 +47,7 @@ class AdDetailGetService implements IAdDetailGetService
     $details = $this->adDetailRepository->findByName($name);
     return collect($details)->map(function($adDetail){
       $ad = $this->adRepository->findById($adDetail->getAdId());
-      $asp = $this->aspRepository->findByName($ad->getAspName());
+      $asp = $this->aspRepository->findById($ad->getAspId());
       return new EditDetailData($ad, $adDetail, $asp);
     })->toArray();
 

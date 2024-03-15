@@ -10,7 +10,7 @@ class AdData
   public string $anken;
   public string $affiLink;
   public string $sLink;
-  public string $aspName;
+  public int $aspId;
   public string $affiImg;
   public string $imgTag;
   public string $sImgTag;
@@ -25,7 +25,7 @@ class AdData
     $this->anken = $ad->getAnken();
     $this->affiLink = $ad->getAffiLink();
     $this->sLink = $ad->getSLink();
-    $this->aspName = $ad->getAspName();
+    $this->aspId = $ad->getAspId()->getId();
     $this->affiImg = $ad->getAffiImg();
     $this->imgTag = $ad->getImgTag();
     $this->sImgTag = $ad->getSImgTag();

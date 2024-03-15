@@ -11,14 +11,16 @@ class AspApplicationGetServiceTest extends WP_UnitTestCase
 {
   private IAspRepository $aspRepository;
   private AspGetService $aspGetService;
+  private $table;
 
   public function setUp(): void
   {
     global $wpdb;
     global $diContainer;
+    $this->table = PLUGIN_DB_PREFIX . 'asps';
     parent::setUp();
     $this->aspRepository = $diContainer->get(IAspRepository::class);
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "asp");
+		$wpdb->query("TRUNCATE TABLE " .$this->table);
     $this->aspGetService = new AspGetService($this->aspRepository);
   }
 

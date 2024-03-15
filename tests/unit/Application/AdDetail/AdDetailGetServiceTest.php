@@ -100,7 +100,7 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
       'anken',
       'affiLink',
       'sLink',
-      'aspName',
+      new AspId(1),
       'affiImg',
       'imgTag',
       'sImgTag',

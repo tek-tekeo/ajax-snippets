@@ -10,14 +10,16 @@ class LogCreateServiceTest extends WP_UnitTestCase
   private ILogRepository $logRepository;
   private LogCreateService $logCreateService;
   private \WP_REST_Request $req;
+  private $table;
 
   public function setUp(): void
   {
     global $wpdb;
     global $diContainer;
+    $this->table = PLUGIN_DB_PREFIX . 'logs';
     parent::setUp();
     $this->logRepository = $diContainer->get(ILogRepository::class);
-    $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "log");
+		$wpdb->query("TRUNCATE TABLE " . $this->table);
     $this->logCreateService = new LogCreateService($this->logRepository);
 
     // ログの情報

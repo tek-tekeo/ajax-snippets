@@ -23,7 +23,7 @@ class AspUpdateService implements IAspUpdateService
 
   public function handle(AspUpdateCommand $cmd){
     $targetId = new AspId($cmd->getId());
-    $asp = $this->aspRepository->get($targetId);
+    $asp = $this->aspRepository->findById($targetId);
     if($asp == null){
       print_r('userは存在しません');
       return false;

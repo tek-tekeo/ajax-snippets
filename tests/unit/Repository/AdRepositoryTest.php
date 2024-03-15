@@ -3,10 +3,13 @@ use AjaxSnippets\Api\Domain\Models\Ad\AdId;
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
 use AjaxSnippets\Api\Infrastructure\Repository\AdRepository;
 use AjaxSnippets\Api\Domain\Models\App\AppId;
+use AjaxSnippets\Api\Domain\Models\Asp\AspId;
 
 final class AdRepositoryTest extends WP_UnitTestCase
 {
   private $repository;
+  private $table;
+  private $db;
 
 	public function setUp():void
 	{
@@ -18,7 +21,9 @@ final class AdRepositoryTest extends WP_UnitTestCase
 	protected function resetDatabase()
 	{
 		global $wpdb;
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ads");
+    $this->db = $wpdb;
+    $this->table = PLUGIN_DB_PREFIX . 'ads';
+		$wpdb->query("TRUNCATE TABLE " . $this->table);
 	}
 
   public function testSaveAd()
@@ -30,7 +35,7 @@ final class AdRepositoryTest extends WP_UnitTestCase
       'anken-link',
       'https://www.anken.com',
       'https://www.item-link.com',
-      'a8',
+      new AspId(1),
       'banner-image.jpg',
       'image-tag-url',
       'item-image-tag-url',
@@ -45,6 +50,24 @@ final class AdRepositoryTest extends WP_UnitTestCase
     // 削除の確認
     $res = $this->repository->delete($insertId);
     $this->assertTrue($res);
+    $res = $this->db->get_row("SELECT * FROM ".$this->table." WHERE id = ".$insertId->getId());
+    $this->assertEquals(
+      [
+        'id' => 1,
+        'name' => 'Main Ad Name',
+        'anken' => 'anken-link',
+        'affi_link' => 'https://www.anken.com',
+        's_link' => 'https://www.item-link.com',
+        'asp_id' => 1,
+        'affi_img' => 'banner-image.jpg',
+        'img_tag' => 'image-tag-url',
+        's_img_tag' => 'item-image-tag-url',
+        'affi_img_width' => 300,
+        'affi_img_height' => 250,
+        'app_id' => 0,
+        'deleted_at' => '2024-03-15'
+      ]
+      , (array)$res);
   }
 
   public function testFindAllAds()
@@ -56,7 +79,7 @@ final class AdRepositoryTest extends WP_UnitTestCase
       'anken-link',
       'https://www.anken.com',
       'https://www.item-link.com',
-      'a8',
+      new AspId(1),
       'banner-image.jpg',
       'image-tag-url',
       'item-image-tag-url',
@@ -76,7 +99,7 @@ final class AdRepositoryTest extends WP_UnitTestCase
         'anken-link',
         'https://www.anken.com',
         'https://www.item-link.com',
-        'a8',
+        new AspId(1),
         'banner-image.jpg',
         'image-tag-url',
         'item-image-tag-url',
@@ -90,7 +113,7 @@ final class AdRepositoryTest extends WP_UnitTestCase
         'anken-link',
         'https://www.anken.com',
         'https://www.item-link.com',
-        'a8',
+        new AspId(1),
         'banner-image.jpg',
         'image-tag-url',
         'item-image-tag-url',
@@ -104,7 +127,7 @@ final class AdRepositoryTest extends WP_UnitTestCase
         'anken-link',
         'https://www.anken.com',
         'https://www.item-link.com',
-        'a8',
+        new AspId(1),
         'banner-image.jpg',
         'image-tag-url',
         'item-image-tag-url',
@@ -124,7 +147,7 @@ final class AdRepositoryTest extends WP_UnitTestCase
       'anken-link',
       'https://www.anken.com',
       'https://www.item-link.com',
-      'a8',
+      new AspId(1),
       'banner-image.jpg',
       'image-tag-url',
       'item-image-tag-url',
@@ -142,7 +165,7 @@ final class AdRepositoryTest extends WP_UnitTestCase
         'anken-link',
         'https://www.anken.com',
         'https://www.item-link.com',
-        'a8',
+        new AspId(1),
         'banner-image.jpg',
         'image-tag-url',
         'item-image-tag-url',
@@ -159,7 +182,7 @@ final class AdRepositoryTest extends WP_UnitTestCase
       'anken-link',
       'https://www.anken.com',
       'https://www.item-link.com',
-      'a8',
+      new AspId(1),
       'banner-image.jpg',
       'image-tag-url',
       'item-image-tag-url',

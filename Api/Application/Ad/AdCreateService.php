@@ -8,6 +8,7 @@ use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetail;
 use AjaxSnippets\Api\Domain\Services\AdService;
 use AjaxSnippets\Api\Domain\Models\App\AppId;
+use AjaxSnippets\Api\Domain\Models\Asp\AspId;
 use AjaxSnippets\Api\Domain\Models\Ad\IAdRepository;
 use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailRepository;
 
@@ -28,7 +29,7 @@ class AdCreateService implements IAdCreateService
       $cmd->getAdAnken(),
       $cmd->getAdAffiLink(),
       $cmd->getAdSLink(),
-      $cmd->getAdAspName(),
+      new AspId($cmd->getAdAspId()),
       $cmd->getAdAffiImg(),
       $cmd->getAdImgTag(),
       $cmd->getAdSImgTag(),

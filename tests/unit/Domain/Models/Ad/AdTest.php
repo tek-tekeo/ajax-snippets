@@ -3,6 +3,7 @@
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
 use AjaxSnippets\Api\Domain\Models\Ad\AdId;
 use AjaxSnippets\Api\Domain\Models\App\AppId;
+use AjaxSnippets\Api\Domain\Models\Asp\AspId;
 
 class AdTest extends WP_UnitTestCase
 {
@@ -16,7 +17,7 @@ class AdTest extends WP_UnitTestCase
       'anken-link',
       'https://www.anken.com',
       'https://www.item-link.com',
-      'a8',
+      new AspId(1),
       'banner-image.jpg',
       'image-tag-url',
       'item-image-tag-url',
@@ -32,7 +33,7 @@ class AdTest extends WP_UnitTestCase
         'anken' => 'anken-link',
         'affi_link' => 'https://www.anken.com',
         's_link' => 'https://www.item-link.com',
-        'asp_name' => 'a8',
+        'asp_id' => 1,
         'affi_img' => 'banner-image.jpg',
         'img_tag' => 'image-tag-url',
         's_img_tag' => 'item-image-tag-url',

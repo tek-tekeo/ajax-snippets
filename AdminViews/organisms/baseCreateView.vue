@@ -39,7 +39,7 @@
           >
           </base-register-table>
           <analize-affi-code
-          :asp="base.aspName"
+          :asp-id="base.aspId"
           @analize-code="AnalizeCode"
         >
         </analize-affi-code>

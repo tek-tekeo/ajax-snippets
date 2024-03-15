@@ -6,6 +6,7 @@ use AjaxSnippets\Api\Application\Ad\AdUpdateCommand;
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
 use AjaxSnippets\Api\Domain\Models\Ad\AdId;
 use AjaxSnippets\Api\Domain\Models\App\AppId;
+use AjaxSnippets\Api\Domain\Models\Asp\AspId;
 use AjaxSnippets\Api\Domain\Models\Ad\IAdRepository;
 
 class AdUpdateService implements IAdUpdateService
@@ -25,7 +26,7 @@ class AdUpdateService implements IAdUpdateService
       ($cmd->getAnken()) ? $cmd->getAnken() : $ad->getAnken(),
       ($cmd->getAffiLink()) ? $cmd->getAffiLink() : $ad->getAffiLink(),
       ($cmd->getSLink()) ? $cmd->getSLink() : $ad->getSLink(),
-      ($cmd->getAspName()) ? $cmd->getAspName() : $ad->getAspName(),
+      ($cmd->getAspId()) ? new AspId($cmd->getAspId()) : $ad->getAspId(),
       ($cmd->getAffiImg()) ? $cmd->getAffiImg() : $ad->getAffiImg(),
       ($cmd->getImgTag()) ? $cmd->getImgTag() : $ad->getImgTag(),
       ($cmd->getSImgTag()) ? $cmd->getSImgTag() : $ad->getSImgTag(),

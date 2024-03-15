@@ -15,7 +15,7 @@ class LogRepository implements ILogRepository
   {
     global $wpdb;
     $this->db = $wpdb;
-    $this->table = PLUGIN_DB_PREFIX.'log';
+    $this->table = PLUGIN_DB_PREFIX.'logs';
   }
 
   public function save(Log $log): LogId

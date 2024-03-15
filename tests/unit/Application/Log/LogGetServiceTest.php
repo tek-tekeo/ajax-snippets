@@ -17,14 +17,16 @@ class LogGetServiceTest extends WP_UnitTestCase
   private LogGetService $logGetService;
   private Log $log;
   private array $columns;
+  private $table;
 
   public function setUp(): void
   {
     global $wpdb;
     global $diContainer;
     parent::setUp();
+    $this->table = PLUGIN_DB_PREFIX . 'logs';
     $this->logRepository = $diContainer->get(ILogRepository::class);
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "log");
+		$wpdb->query("TRUNCATE TABLE " . $this->table);
     $this->logGetService = new LogGetService($this->logRepository);
     $this->columns = [
       new AdDetailId(1),

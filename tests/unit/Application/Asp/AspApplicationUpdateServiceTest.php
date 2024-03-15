@@ -12,19 +12,21 @@ class AspApplicationUpdateServiceTest extends WP_UnitTestCase
   private IAspRepository $aspRepository;
   private AspUpdateService $aspUpdateService;
   private AspService $aspService;
+  private $table;
 
   public function setUp(): void
   {
     global $wpdb;
     global $diContainer;
+    $this->table = PLUGIN_DB_PREFIX . 'asps';
     parent::setUp();
     $this->aspRepository = $diContainer->get(IAspRepository::class);
     $this->aspService = new AspService($this->aspRepository);
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "asp");
+		$wpdb->query("TRUNCATE TABLE " . $this->table);
     $this->aspUpdateService = new AspUpdateService($this->aspRepository,$this->aspService);
   }
 
-  public function testupdate()
+  public function testUpdate()
   {
     $this->aspRepository->save(new Asp(new AspId(), 'aspName1', 'connectString1'));
     $this->aspRepository->save(new Asp(new AspId(), 'aspName2', 'connectString2'));
@@ -40,7 +42,7 @@ class AspApplicationUpdateServiceTest extends WP_UnitTestCase
     $this->assertEquals(new AspId(4), $aspId);
 
     // きちんと更新されたか確認
-    $res = $this->aspRepository->get(new AspId(4));
+    $res = $this->aspRepository->findById(new AspId(4));
     $expected = new Asp(new AspId(4), 'aspName100', 'connectString100');
     $this->assertEquals($expected, $res);
   }

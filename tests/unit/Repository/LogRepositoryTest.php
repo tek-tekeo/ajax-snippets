@@ -7,6 +7,7 @@ use AjaxSnippets\Api\Infrastructure\Repository\LogRepository;
 final class LogRepositoryTest extends WP_UnitTestCase
 {
   private $repository;
+  private $table;
 
 	public function setUp():void
 	{
@@ -18,7 +19,9 @@ final class LogRepositoryTest extends WP_UnitTestCase
 	protected function resetDatabase()
 	{
 		global $wpdb;
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "log");
+    $this->table = PLUGIN_DB_PREFIX . 'logs';
+		$wpdb->query("TRUNCATE TABLE " . $this->table);
+
 	}
 
   public function testRecordLog()

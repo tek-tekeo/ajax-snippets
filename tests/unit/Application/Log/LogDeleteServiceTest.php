@@ -11,14 +11,16 @@ class LogDeleteServiceTest extends WP_UnitTestCase
 {
   private ILogRepository $logRepository;
   private LogDeleteService $logDeleteService;
+  private $table;
 
   public function setUp(): void
   {
     global $wpdb;
     global $diContainer;
+    $this->table = PLUGIN_DB_PREFIX . 'logs';
     parent::setUp();
     $this->logRepository = $diContainer->get(ILogRepository::class);
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "log");
+		$wpdb->query("TRUNCATE TABLE " . $this->table);
     $this->logDeleteService = new LogDeleteService($this->logRepository);
   }
 

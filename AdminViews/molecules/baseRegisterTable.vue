@@ -120,8 +120,8 @@ module.exports = {
   },
   methods:{
     changeAsp(id){
-      const findAspName =this.aspList.find(asp => asp.id == id).aspName;
-      this.$set(this.base, 'aspName', findAspName);
+      const findAspId =this.aspList.find(asp => asp.id == id).id;
+      this.$set(this.base, 'aspId', findAspId);
     },
     changeApp(id){
       const appId =this.appList.find(app => app.id == id).id;
@@ -136,7 +136,7 @@ module.exports = {
   },
   computed:{
     findAsp(){
-      const findAsp =this.aspList.find(asp => asp.aspName == this.base.aspName);
+      const findAsp =this.aspList.find(asp => asp.id == this.base.aspId);
       if(findAsp !== undefined){
         return {id:findAsp.id, name:findAsp.aspName};
       }

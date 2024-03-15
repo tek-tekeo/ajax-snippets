@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="asp == 'a8'">
+    <div v-if="aspId == 1">
       <wp-text-area
         label="画像付きメインリンク"
         rows="5"
@@ -65,7 +65,7 @@ module.exports = {
     }
   },
   props:{
-    asp:{
+    aspId:{
       type:String,
       default:""
     }

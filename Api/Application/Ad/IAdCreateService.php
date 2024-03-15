@@ -14,7 +14,7 @@ class AdCreateCommand
   private string $anken;
   private string $affiLink;
   private string $sLink;
-  private string $aspName;
+  private int $aspId;
   private string $affiImg;
   private string $imgTag;
   private string $sImgTag;
@@ -30,7 +30,7 @@ class AdCreateCommand
     $this->anken = (string)$req->get_param('anken');
     $this->affiLink = (string)$req->get_param('affiLink');
     $this->sLink = (string)$req->get_param('sLink');
-    $this->aspName = (string)$req->get_param('aspName');
+    $this->aspId = (int)$req->get_param('aspId');
     $this->affiImg = (string)$req->get_param('affiImg');
     $this->imgTag = (string)$req->get_param('imgTag');
     $this->sImgTag = (string)$req->get_param('sImgTag');
@@ -57,9 +57,9 @@ class AdCreateCommand
   {
     return $this->sLink;
   }
-  public function getAdAspName()
+  public function getAdAspId()
   {
-    return $this->aspName;
+    return $this->aspId;
   }
   public function getAdAffiImg()
   {
@@ -90,7 +90,7 @@ class AdCreateCommand
   public function getAdInfo()
   {
     return [
-      $this->name, $this->anken, $this->affiLink, $this->sLink, $this->aspName, $this->affiImg, $this->imgTag, $this->sImgTag, $this->affiImgWidth, $this->affiImgHeight
+      $this->name, $this->anken, $this->affiLink, $this->sLink, $this->aspId, $this->affiImg, $this->imgTag, $this->sImgTag, $this->affiImgWidth, $this->affiImgHeight
     ];
   }
 

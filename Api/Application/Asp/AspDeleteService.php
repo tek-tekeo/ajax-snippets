@@ -22,7 +22,7 @@ class AspDeleteService implements IAspDeleteService
   public function handle(AspDeleteCommand $cmd):bool
   {
     $targetId = new AspId($cmd->getId());
-    $asp = $this->aspRepository->get($targetId);
+    $asp = $this->aspRepository->findById($targetId);
 
     if($asp == null){
       return false; //ユーザーはいなかったようだ

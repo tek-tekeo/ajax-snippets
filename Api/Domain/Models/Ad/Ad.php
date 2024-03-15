@@ -3,6 +3,7 @@ namespace AjaxSnippets\Api\Domain\Models\Ad;
 
 use AjaxSnippets\Api\Domain\Models\Ad\AdId;
 use AjaxSnippets\Api\Domain\Models\App\AppId;
+use AjaxSnippets\Api\Domain\Models\Asp\AspId;
 
 class Ad
 {
@@ -12,7 +13,7 @@ class Ad
     private string $anken,
     private string $affiLink,
     private string $sLink,
-    private string $aspName,
+    private AspId $aspId,
     private string $affiImg,
     private string $imgTag,
     private string $sImgTag,
@@ -46,9 +47,9 @@ class Ad
     return $this->sLink;
   }
 
-  public function getAspName(): string
+  public function getAspId(): AspId
   {
-    return $this->aspName;
+    return $this->aspId;
   }
 
   public function getAffiImg(): string
@@ -89,7 +90,7 @@ class Ad
       'anken' => $this->anken,
       'affi_link' => $this->affiLink,
       's_link' => $this->sLink,
-      'asp_name' => $this->aspName,
+      'asp_id' => $this->aspId->getId(),
       'affi_img' => $this->affiImg,
       'img_tag' => $this->imgTag,
       's_img_tag' => $this->sImgTag,

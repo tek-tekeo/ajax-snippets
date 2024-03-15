@@ -38,7 +38,7 @@
           </base-register-table>
         </v-form>
         <analize-affi-code
-          :asp="base.aspName"
+          :asp-id="base.aspId"
           @analize-code="AnalizeCode"
         >
         </analize-affi-code>
@@ -74,6 +74,7 @@ module.exports = {
     this.aspList = res[0].data;
     this.appList = res[1].data;
     this.base = res[2].data;
+
   },
   methods:{
     async AnalizeCode(code){

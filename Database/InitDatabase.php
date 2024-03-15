@@ -111,7 +111,7 @@ class InitDatabase
       anken varchar(255) NOT NULL,
       affi_link varchar(1025) NOT NULL,
       s_link varchar(1025) NOT NULL,
-      asp_name varchar(10) NOT NULL,
+      asp_id int NOT NULL,
       affi_img varchar(1025) NOT NULL,
       img_tag varchar(1025) NOT NULL,
       s_img_tag varchar(1025) NOT NULL,
@@ -188,7 +188,7 @@ class InitDatabase
   //ログデータのクエリを取得
   private function createSqlOfLogTable()
   {
-    $tableName = $this->getTableName('log');
+    $tableName = $this->getTableName('logs');
 
     $sql = "
     CREATE TABLE {$tableName} (
@@ -281,12 +281,25 @@ class InitDatabase
 
   private function addAspInitInfo()
   {
-    $this->repository->insert(
-      $this->getTableName('asp'),
+    $this->repository->replace(
+      $this->getTableName('asps'),
       array(
         'id'=>1,
         'asp_name'=>'a8',
         'connect_string'=>'&a8ejpredirect='
+      ),
+      array(
+        '%d',
+        '%s',
+        '%s'
+      )
+    );
+    $this->repository->replace(
+      $this->getTableName('asps'),
+      array(
+        'id'=>2,
+        'asp_name'=>'afb',
+        'connect_string'=>''
       ),
       array(
         '%d',
