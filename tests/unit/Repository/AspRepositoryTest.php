@@ -69,8 +69,10 @@ class AspRepositoryTest extends WP_UnitTestCase
 
 		// 論理削除されているので取得できない
 		$aspId = new AspId(3);
+		$this->expectException(\Exception::class);
+    $this->expectExceptionMessage('ASP ID に該当するデータが存在しません。');
+    $this->expectExceptionCode(500);
 		$asp = $this->repository->findById($aspId);
-		$this->assertFalse($asp);
 
 		// 更新
 		$expectedAsp = new Asp(new AspId(1), 'asp2', 'connectionString2');

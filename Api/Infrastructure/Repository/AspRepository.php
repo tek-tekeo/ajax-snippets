@@ -26,24 +26,53 @@ class AspRepository implements IAspRepository
     return new AspId($this->db->insert_id);
   }
 
-  // public function get(AspId $aspId): Asp | bool
-  // {
-  //   $row = $this->db->get_row(
-  //     $this->db->prepare(
-  //       "SELECT * FROM " . $this->table . " WHERE id = %d AND deleted_at IS NULL",
-  //       $aspId->getId()
-  //     )
-  //   );
-  //   if (!$row) {
-  //     return false;
-  //   }
+  public function getAll() : array
+  {
+    $res = $this->db->get_results("SELECT * FROM ". $this->table . " WHERE deleted_at IS NULL");
+    $asps = array();
+    if(!$res == null){
+      foreach($res as $r){
+        $asp = new Asp(
+          new AspId($r->id),
+          $r->asp_name,
+          $r->connect_string
+        );
+        array_push($asps, $asp);
+      }
+      return $asps;
+    }
+    return array();
+  }
 
-  //   return new Asp(
-  //     new AspId((int)$row->id),
-  //     $row->asp_name,
-  //     $row->connect_string
-  //   );
-  // }
+  public function findById(AspId $aspId)
+  {
+    $id = $aspId->getId();
+    $res = $this->db->get_row("SELECT * FROM ".$this->table." WHERE id=". $id." AND deleted_at IS NULL");
+    if(!$res == null){
+      $asp = new Asp(
+        new AspId($res->id),
+        $res->asp_name,
+        $res->connect_string
+      );
+      return $asp;
+    }
+    throw new \Exception('ASP ID に該当するデータが存在しません。', 500);
+  }
+
+  public function findByName(string $aspName): Asp
+  {
+    $res = $this->db->get_row("SELECT * FROM ".$this->table." WHERE asp_name = '".$aspName."' AND deleted_at IS NULL");
+    if(!$res == null){
+      $asp = new Asp(
+        new AspId($res->id),
+        $res->asp_name,
+        $res->connect_string
+      );
+      return $asp;
+    }
+    throw new \Exception('名前に該当するASPが存在しません。');
+    return null;
+  }
 
   public function delete(AspId $aspId) : bool
   {
@@ -74,51 +103,4 @@ class AspRepository implements IAspRepository
     return true;
   }
 
-  public function getAll() : array
-  {
-    $res = $this->db->get_results("SELECT * FROM ". $this->table . " WHERE deleted_at IS NULL");
-    $asps = array();
-    if(!$res == null){
-      foreach($res as $r){
-        $asp = new Asp(
-          new AspId($r->id),
-          $r->asp_name,
-          $r->connect_string
-        );
-        array_push($asps, $asp);
-      }
-      return $asps;
-    }
-    return array();
-  }
-
-  public function findById(AspId $aspId)
-  {
-    $id = $aspId->getId();
-    $res = $this->db->get_row("SELECT * FROM ".$this->table." WHERE id = ".$id." AND deleted_at IS NULL");
-    if(!$res == null){
-      $asp = new Asp(
-        new AspId($res->id),
-        $res->asp_name,
-        $res->connect_string
-      );
-      return $asp;
-    }
-    return false;
-  }
-
-  public function findByName(string $aspName): Asp
-  {
-    $res = $this->db->get_row("SELECT * FROM ".$this->table." WHERE asp_name = '".$aspName."' AND deleted_at IS NULL");
-    if(!$res == null){
-      $asp = new Asp(
-        new AspId($res->id),
-        $res->asp_name,
-        $res->connect_string
-      );
-      return $asp;
-    }
-    throw new \Exception('名前に該当するASPが存在しません。');
-    return null;
-  }
 }

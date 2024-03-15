@@ -51,7 +51,7 @@ class AjaxSneppets
     /****************
       パーマリンク設定を『投稿名』『カスタム構造』などにする必要がある
      ***************/
-    // add_action('template_redirect', [RedirectSystem::getInstance($diContainer), 'handle']);
+    add_action('template_redirect', [RedirectSystem::getInstance($diContainer), 'handle']);
   }
 
   public function adminMenu()

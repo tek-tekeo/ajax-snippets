@@ -2,30 +2,34 @@
 
 namespace AjaxSnippets\UserViews;
 
-use AjaxSnippets\Api\Domain\Models\Logs\Log;
-use AjaxSnippets\Api\Domain\Models\BaseEls\IParentNodeRepository;
-use AjaxSnippets\Api\Domain\Models\Details\IDetailRepository;
-use AjaxSnippets\Api\Domain\Models\Logs\ILogRepository;
+
+use AjaxSnippets\Api\Domain\Models\Ad\IAdRepository;
+use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailRepository;
 use AjaxSnippets\Api\Domain\Models\Asp\IAspRepository;
-use AjaxSnippets\Api\Domain\Models\BaseEls\ParentNode;
-use AjaxSnippets\Api\Domain\Services\ParentNodeService;
+use AjaxSnippets\Api\Domain\Models\Log\ILogRepository;
+
+use AjaxSnippets\Api\Domain\Models\Ad\Ad;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetail;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
+use AjaxSnippets\Api\Domain\Models\Log\Log;
+use AjaxSnippets\Api\Domain\Models\Log\LogId;
+use AjaxSnippets\Api\Domain\Models\Asp\Asp;
+use AjaxSnippets\Api\Domain\Services\AdService;
 
 class RedirectSystem
 {
   //一つしかインスタンスを持てないように制約
   private static $singleton;
 
-  private $parentNodeRepository;
-  private $logRepository;
-  private $detailRepository;
+  private $adRepository;
+  private $adDetailRepository;
   private $aspRepository;
+  private $logRepository;
 
   private function __construct($diContainer)
   {
-    // global $diContainer;
-
-    $this->parentNodeRepository = $diContainer->get(IParentNodeRepository::class);
-    $this->detailRepository = $diContainer->get(IDetailRepository::class);
+    $this->adRepository = $diContainer->get(IAdRepository::class);
+    $this->adDetailRepository = $diContainer->get(IAdDetailRepository::class);
     $this->logRepository = $diContainer->get(ILogRepository::class);
     $this->aspRepository = $diContainer->get(IAspRepository::class);
   }
@@ -40,25 +44,35 @@ class RedirectSystem
     return self::$singleton;
   }
 
-  public function handle(): void
+  public function isRedirectLink($req)
   {
-    $req = $_SERVER["REQUEST_URI"];
     $match = preg_match("/link\/(.*)\?no=([0-9]+)\&pl=(.+)/u", $req, $m);
     if (!$match) {
-      return;
+      return false;
     } //リダイレクトのリンク形式になっていない場合はこちらでリターン。
+    return $m;
+  }
+
+  public function handle($req = null)
+  {
+    if ($req == null) {
+      $req = $_SERVER["REQUEST_URI"];
+    }
+
+    $m = $this->isRedirectLink($req);
+    if (!$m) { return; } //リダイレクトのリンク形式になっていない場合はこちらでリターン。
 
     $anken = $m[1];
     $id = $m[2];
     $place = $m[3];
 
     try {
-      $detail = $this->detailRepository->DetailFindById($id);
-      $detail->setParent($this->parentNodeRepository->ParentFindById($detail->parent()->id()));
-      $detail->parent()->checkName($anken);
-      $asp = $this->aspRepository->AspFindByName($detail->parent()->aspName());
-      $detail->setAsp($asp);
-      $url = $detail->getRedirectUrl();
+      $adDetailId = new AdDetailId($id);
+      $adDetail = $this->adDetailRepository->findById($adDetailId);
+      $ad = $this->adRepository->findById($adDetail->getAdId());
+      $asp = $this->aspRepository->findById($ad->getAspId());
+      $cmd = new RedirectURL($ad, $adDetail, $asp);
+      $url = $cmd->getRedirectUrl();
     } catch (\Exception $e) {
       //URLが案件とidの整合性が取れない場合は、トップページへ飛ばす。
       $url = site_url();
@@ -67,15 +81,16 @@ class RedirectSystem
     //ログを記録する処理
     try {
       $log = new Log(
-        null,
-        $id,
+        new LogId(),
+        $adDetailId,
         date("Y-m-d"),
         date("H:i:s"),
         $place,
         ip2long($_SERVER['REMOTE_ADDR']),
-        $_SERVER['HTTP_REFERER']
+        $_SERVER['HTTP_REFERER'] ?? 'none'
       );
-      $res = $this->logRepository->record($log);
+      
+      $res = $this->logRepository->save($log);
     } catch (\Exception $e) {
       //ログのインスタンス化に失敗した場合は保存しない
 
@@ -84,4 +99,34 @@ class RedirectSystem
     wp_redirect($url, 302);
     exit;
   }
+}
+
+class RedirectURL
+{
+  public function __construct(
+    private Ad $ad,
+    private AdDetail $adDetail,
+    private Asp $asp
+  ) {
+  }
+
+  public function getRedirectUrl(): string
+  {
+    // 親要素のリンクが指定されている場合、親要素のリンクを返す
+    if ($this->adDetail->getSameParent()) {
+      return $this->ad->getAffiLink();
+    }
+
+    // a8の子要素の場合、リンクを作って返す
+    if ($this->asp->getAspName() === 'a8') {
+      return $this->ad->getSLink() . 
+      $this->asp->getConnectString() . 
+      urlencode($this->adDetail->getOfficialItemLink());
+    }
+
+    // その他のASPの場合、リンクを作って返す
+    return $this->adDetail->getAffiItemLink();
+    return 'リダイレクト';
+  }
+
 }
