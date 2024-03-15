@@ -17,11 +17,12 @@ class AdDetailUpdateCommand
   private string $detailImg;
   private string $amazonAsin;
   private string $rakutenId;
-  private string $rchart;
-  private string $info;
+  private array $rchart;
+  private array $info;
   private string $review;
   private int $isShowUrl;
   private int $sameParent;
+  private array $tagIds;
 
   public function __construct(\WP_REST_Request $req)
   {
@@ -34,11 +35,12 @@ class AdDetailUpdateCommand
     $this->detailImg = (string)$req->get_param('detailImg');
     $this->amazonAsin = (string)$req->get_param('amazonAsin');
     $this->rakutenId = (string)$req->get_param('rakutenId');
-    $this->rchart = (string)$req->get_param('rchart');
-    $this->info = (string)$req->get_param('info');
+    $this->rchart = (array)$req->get_param('rchart');
+    $this->info = (array)$req->get_param('info');
     $this->review = (string)$req->get_param('review');
     $this->isShowUrl = (int)$req->get_param('isShowUrl');
     $this->sameParent = (int)$req->get_param('sameParent');
+    $this->tagIds = (array)$req->get_param('tagIds');
   }
 
   public function getId(): int
@@ -86,12 +88,12 @@ class AdDetailUpdateCommand
     return $this->rakutenId;
   }
 
-  public function getRchart(): string
+  public function getRates(): array
   {
     return $this->rchart;
   }
 
-  public function getInfo(): string
+  public function getInfos(): array
   {
     return $this->info;
   }
@@ -109,5 +111,10 @@ class AdDetailUpdateCommand
   public function getSameParent(): int
   {
     return $this->sameParent;
+  }
+
+  public function getTagIds(): array
+  {
+    return $this->tagIds;
   }
 }

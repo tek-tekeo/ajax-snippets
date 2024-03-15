@@ -38,12 +38,12 @@
             :app-list="appList"
           >
           </base-register-table>
-        </v-form>
-        <analize-affi-code
+          <analize-affi-code
           :asp="base.aspName"
           @analize-code="AnalizeCode"
         >
         </analize-affi-code>
+        </v-form>
       </v-col>
     </v-row>
   </v-container>

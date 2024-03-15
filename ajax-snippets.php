@@ -20,7 +20,7 @@ require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 require_once dirname(__FILE__) . "/loader.php";
 
 global $wpdb;
-define('VERSION', '0.5');
+define('VERSION', '0.7');
 define('PLUGIN_DB_PREFIX', $wpdb->prefix . 'ajax_snippets_');
 
 class AjaxSneppets
@@ -51,7 +51,7 @@ class AjaxSneppets
     /****************
       パーマリンク設定を『投稿名』『カスタム構造』などにする必要がある
      ***************/
-    add_action('template_redirect', [RedirectSystem::getInstance($diContainer), 'handle']);
+    // add_action('template_redirect', [RedirectSystem::getInstance($diContainer), 'handle']);
   }
 
   public function adminMenu()
@@ -110,12 +110,20 @@ add_action('init', 'AjaxSneppets::init');
 function createEndPoints()
 {
   //親要素関連
-  Route::get('/base', 'AjaxSnippets\Api\Controllers\BaseController@index'); //全件取得
-  Route::post('/base/search', 'AjaxSnippets\Api\Controllers\BaseController@search'); //名前検索
-  Route::post('/base', 'AjaxSnippets\Api\Controllers\BaseController@create'); //新規追加
-  Route::get('/base/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\BaseController@get'); //指定ID検索
-  Route::put('/base/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\BaseController@update');
-  Route::get('/app/(?P<detailId>\d+)/(?P<noaffi>\d+)', 'AjaxSnippets\Api\Controllers\BaseController@getApp', false); //アプリリンクの生成
+  Route::get('/base', 'AjaxSnippets\Api\Controllers\AdController@index'); //全件取得
+  Route::post('/base/search', 'AjaxSnippets\Api\Controllers\AdController@search'); //名前検索
+  Route::post('/base', 'AjaxSnippets\Api\Controllers\AdController@create'); //新規追加
+  Route::get('/base/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdController@get'); //指定ID検索
+  Route::put('/base/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdController@update');
+  Route::delete('/base/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdController@delete');
+  Route::get('/app/(?P<detailId>\d+)/(?P<noaffi>\d+)', 'AjaxSnippets\Api\Controllers\AdController@getApp', false); //アプリリンクの生成
+
+  //アプリ関連
+  Route::post('/apps', 'AjaxSnippets\Api\Controllers\AppController@create');
+  Route::put('/apps/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AppController@update');
+  Route::get('/apps', 'AjaxSnippets\Api\Controllers\AppController@index');
+  Route::get('/apps/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AppController@get');
+  Route::delete('/apps/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AppController@delete');
 
   //Asp関連
   Route::post('/asp', 'AjaxSnippets\Api\Controllers\AspController@create');
@@ -125,20 +133,21 @@ function createEndPoints()
   Route::delete('/asp/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AspController@delete');
 
   //子要素関連
-  Route::post('/detail', 'AjaxSnippets\Api\Controllers\DetailController@create'); //新規追加
-  Route::get('/detail', 'AjaxSnippets\Api\Controllers\DetailController@index'); //全件取得
-  Route::post('/detail/search', 'AjaxSnippets\Api\Controllers\DetailController@search'); //名前検索
-  Route::get('/detail/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\DetailController@get', false); //指定ID検索
-  Route::get('/detail/link/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\DetailController@getLinkMaker', false); //指定ID検索
-  Route::put('/detail/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\DetailController@update');
-  Route::post('/detail/rchart', 'AjaxSnippets\Api\Controllers\DetailController@storeRchart');
-  Route::post('/detail/info', 'AjaxSnippets\Api\Controllers\DetailController@storeInfo');
-  Route::get('/detail/rchart', 'AjaxSnippets\Api\Controllers\DetailController@getRchart');
-  Route::get('/detail/info', 'AjaxSnippets\Api\Controllers\DetailController@getInfo');
-  Route::post('/detail/prev', 'AjaxSnippets\Api\Controllers\DetailController@storePrevId');
-  Route::get('/detail/prev', 'AjaxSnippets\Api\Controllers\DetailController@getPrevId');
-  Route::get('/detail/prevData', 'AjaxSnippets\Api\Controllers\DetailController@getPrevDetail');
-  Route::post('/detail/editor', 'AjaxSnippets\Api\Controllers\DetailController@getEditorList'); //編集画面に表示する用のリスト
+  Route::post('/detail', 'AjaxSnippets\Api\Controllers\AdDetailController@create'); //新規追加
+  Route::get('/detail', 'AjaxSnippets\Api\Controllers\AdDetailController@index'); //全件取得
+  Route::post('/detail/search', 'AjaxSnippets\Api\Controllers\AdDetailController@search'); //名前検索
+  Route::get('/detail/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdDetailController@get', false); //指定ID検索
+  Route::delete('/detail/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdDetailController@delete');
+  Route::get('/detail/link/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdDetailController@getLinkMaker', false); //指定ID検索
+  Route::put('/detail/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdDetailController@update');
+  Route::post('/detail/rchart', 'AjaxSnippets\Api\Controllers\AdDetailController@storeRchart');
+  Route::post('/detail/info', 'AjaxSnippets\Api\Controllers\AdDetailController@storeInfo');
+  Route::get('/detail/rchart', 'AjaxSnippets\Api\Controllers\AdDetailController@getRchart');
+  Route::get('/detail/info', 'AjaxSnippets\Api\Controllers\AdDetailController@getInfo');
+  Route::post('/detail/prev', 'AjaxSnippets\Api\Controllers\AdDetailController@storePrevId');
+  Route::get('/detail/prev', 'AjaxSnippets\Api\Controllers\AdDetailController@getPrevId');
+  Route::get('/detail/prevData', 'AjaxSnippets\Api\Controllers\AdDetailController@getPrevDetail');
+  Route::post('/detail/editor', 'AjaxSnippets\Api\Controllers\AdDetailController@getEditorList'); //編集画面に表示する用のリスト
 
   //タグ関連
   Route::post('/tag', 'AjaxSnippets\Api\Controllers\TagController@create');
@@ -148,14 +157,7 @@ function createEndPoints()
   Route::delete('/tag/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\TagController@delete');
   Route::post('/tag/editor', 'AjaxSnippets\Api\Controllers\TagController@getEditorList');
 
-  //タグ - 子要素 関連
-  Route::post('/taglink', 'AjaxSnippets\Api\Controllers\TagLinkController@create');
-  Route::put('/taglink/(?P<itemId>\d+)', 'AjaxSnippets\Api\Controllers\TagLinkController@update');
-  Route::get('/taglink/(?P<itemId>\d+)', 'AjaxSnippets\Api\Controllers\TagLinkController@get');
-  Route::delete('/taglink/(?P<itemId>\d+)', 'AjaxSnippets\Api\Controllers\TagLinkController@delete');
-
   //ログ関連
-
   Route::post('/log/date', 'AjaxSnippets\Api\Controllers\LogController@index');
   Route::post('/log/anken', 'AjaxSnippets\Api\Controllers\LogController@anken');
   Route::post('/log/article', 'AjaxSnippets\Api\Controllers\LogController@article');

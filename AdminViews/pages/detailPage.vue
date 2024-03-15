@@ -44,7 +44,7 @@ module.exports = {
   computed:{
     items(){
       return this.detailList.map(function(detail){
-         return {id:detail.id, name: detail.parent.name +" "+ detail.itemName};
+        return {id:detail.id, name: detail.name};
       });
     }
   },

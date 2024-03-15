@@ -25,7 +25,6 @@ class AdCreateServiceTest extends WP_UnitTestCase
     parent::setUp();
     $this->adRepository = $diContainer->get(IAdRepository::class);
     $this->adDetailRepository = $diContainer->get(IAdDetailRepository::class);
-    // $this->adService = new AdService($this->adRepository);
 		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ads");
 		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
     $this->adCreateService = new AdCreateService($this->adRepository, $this->adDetailRepository);
@@ -50,7 +49,7 @@ class AdCreateServiceTest extends WP_UnitTestCase
 
   public function testCommand()
   {
-    $cmd = new AdCreateCommand($this->req, new AppId(1));
+    $cmd = new AdCreateCommand($this->req);
     $this->assertEquals(['name', 'anken', 'affiLink', 'sLink',
       'aspName', 'affiImg', 'imgTag', 'sImgTag', 300, 250
     ], $cmd->getAdInfo());

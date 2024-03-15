@@ -18,6 +18,7 @@
             新規追加する
           </v-btn>
           <v-btn
+            style="z-index:999"
             fixed
             right
             color="secondary"
@@ -34,10 +35,8 @@
           >
             <detail-register-table
               :detail="detail"
-              :selected-tag-ids="selectedTagIds"
               :base-list="baseList"
               :tag-list="tagList"
-              @selected-tags="updateSelectedTagIds"
             >
             </detail-register-table>
           </v-form>
@@ -56,7 +55,7 @@ module.exports = {
     return {
       valid:true,
       detail:{
-        parent:{id:null,name:"",aspName:""},
+        adId: null,
         itemName:'',
         officialItemLink:'',	
         affiItemLink:'',
@@ -67,11 +66,11 @@ module.exports = {
         info:[],
         review:'',
         isShowUrl:false,
-        sameParent:true
+        sameParent:true,
+        tagIds:[]
       },
       baseList:[],
-      tagList:[],
-      selectedTagIds:[]
+      tagList:[]
     }
   },
   async created(){
@@ -86,36 +85,26 @@ module.exports = {
 
     const prevRegisterId = await axios.get('detail/prev');
     if(prevRegisterId.data != 0){
-      this.detail.parent.id = prevRegisterId.data
+      this.detail.adId = prevRegisterId.data
     }
   },
   methods:{
-    async storePrevId(parentId){
-      const res = await axios.post('detail/prev', {'parentId':parentId});
-    },
-    updateSelectedTagIds(ids){
-      this.selectedTagIds = ids;
+    async storePrevId(adId){
+      const res = await axios.post('detail/prev', {'parentId':adId});
     },
     validate(){
       this.valid = this.$refs.form.validate();
     },
     reset(){
         //初期化
-        this.selectedTagIds = [];
         this.valid = true;
         this.$refs.form.reset(); //detailのデータ、親のIDについて完全消去できていない
     },
     async createNewDetail(){
       this.validate();
       if(!this.valid){return;}
-            
+
       const res = await axios.post('detail',this.detail);
-      const itemId = res.data;
-      const tagLink = this.selectedTagIds.map(async function(tagId){
-        const res2 = await axios.post('taglink',
-          {itemId: itemId, tagId:tagId}
-        );
-      });
 
       if(res.data && res.status == '200'){
         var options = {
@@ -125,7 +114,7 @@ module.exports = {
           type: 'success'
         }
         this.$toasted.show('追加完了',options);
-        this.storePrevId(this.detail.parent.id);
+        this.storePrevId(this.detail.adId);
         this.reset();
       }else{
         var options = {

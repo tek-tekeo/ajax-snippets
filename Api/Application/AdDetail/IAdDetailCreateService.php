@@ -18,27 +18,29 @@ class AdDetailCreateCommand
   private string $detailImg;
   private string $amazonAsin;
   private string $rakutenId;
-  private string $rchart;
-  private string $info;
+  private array $rchart;
+  private array $info;
   private string $review;
   private int $isShowUrl;
   private int $sameParent;
+  private array $tagIds;
 
   public function __construct(\WP_REST_Request $req)
   {
     $this->itemId = (int)$req->get_param('itemId');
-    $this->adId = (int)$req->get_param('id');
+    $this->adId = (int)$req->get_param('adId');
     $this->itemName = (string)$req->get_param('itemName');
     $this->officialItemLink = (string)$req->get_param('officialItemLink');
     $this->affiItemLink = (string)$req->get_param('affiItemLink');
     $this->detailImg = (string)$req->get_param('detailImg');
     $this->amazonAsin = (string)$req->get_param('amazonAsin');
     $this->rakutenId = (string)$req->get_param('rakutenId');
-    $this->rchart = (string)$req->get_param('rchart');
-    $this->info = (string)$req->get_param('info');
+    $this->rchart = (array)$req->get_param('rchart');
+    $this->info = (array)$req->get_param('info');
     $this->review = (string)$req->get_param('review');
     $this->isShowUrl = (int)$req->get_param('isShowUrl');
     $this->sameParent = (int)$req->get_param('sameParent');
+    $this->tagIds = (array)$req->get_param('tagIds');
   }
 
   public function getItemId(): int
@@ -81,12 +83,12 @@ class AdDetailCreateCommand
     return $this->rakutenId;
   }
 
-  public function getRchart(): string
+  public function getRates(): array
   {
     return $this->rchart;
   }
 
-  public function getInfo(): string
+  public function getInfos(): array
   {
     return $this->info;
   }
@@ -104,5 +106,10 @@ class AdDetailCreateCommand
   public function getSameParent(): int
   {
     return $this->sameParent;
+  }
+
+  public function getTagIds(): array
+  {
+    return $this->tagIds;
   }
 }

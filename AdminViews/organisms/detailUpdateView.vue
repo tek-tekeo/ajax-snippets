@@ -7,7 +7,7 @@
       <router-link to="/detail">一覧へ戻る</router-link>
     </v-col>
     <v-col cols="4">
-      <router-link :to="'/parent/update/'+detail.parent.id">親ページへ移動</router-link>
+      <router-link :to="'/parent/update/'+detail.adId">親ページへ移動</router-link>
     </v-col>
   </v-row>
     <v-row>
@@ -20,14 +20,11 @@
           更新する
         </v-btn>
 
-        <v-btn
+        <confirm-dialog
           fixed
           bottom
-          color="error"
-          @click="deleteDetail"
-        >
-          削除する
-        </v-btn>
+          @execute="deleteDetail(detail.id)"
+        ></confirm-dialog>
       </v-col>
       <v-col cols="10">
           <v-form
@@ -37,7 +34,6 @@
           >
           <detail-register-table
             :detail="detail"
-            :selected-tag-ids="selectedTagIds"
             :base-list="baseList"
             :tag-list="tagList"
             @selected-tags="updateSelectedTagIds"
@@ -53,12 +49,14 @@
 module.exports = {
   components: {
     'DetailRegisterTable': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/detailRegisterTable.vue'),
+    'ConfirmDialog': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/confirmDialog.vue')
   },
   data(){
     return {
       valid:true,
       detail:{
         parent:{id:null, name:''},
+        adId: 0,
         itemName:'',
         officialItemLink:'',	
         affiItemLink:'',
@@ -69,7 +67,8 @@ module.exports = {
         info:[],
         review:'',
         isShowUrl:false,
-        sameParent:true
+        sameParent:true,
+        tagIds:[]
       },
       baseList:[],
       tagList:[],
@@ -80,16 +79,16 @@ module.exports = {
     const res = await Promise.all([
       axios.get('base'),
       axios.get('tag'),
-      axios.get('detail/' + this.$route.params['id']),
-      axios.get('taglink/' + this.$route.params['id']),
+      axios.get('detail/' + this.$route.params['id'])
     ]);
-    this.baseList = res[0].data;
+
+    this.baseList = res[0].data.map(function(r){
+      return {id:r.id, name:r.name};
+    });
     this.tagList = res[1].data.map(function(r){
       return {id:r.id, name:r.tagName};
     });
     this.detail = res[2].data;
-    this.selectedTagIds = res[3].data.map((t) => t.tagId)
-
   },
   methods:{
     updateSelectedTagIds(ids){
@@ -102,15 +101,18 @@ module.exports = {
       this.validate();
       if(!this.valid){return;}
 
-      let _this = this.detail;
-      const res1 = await axios.delete('taglink/' + this.detail.id);
-      const tagLink = this.selectedTagIds.map(async function(tagId){
-        const res2 = await axios.post('taglink',
-          {itemId: _this.id, tagId:tagId}
-        );
-      });
-
-      const res = await axios.put('detail/'+this.$route.params['id'],this.detail);
+      const res = await axios.put('detail/'+this.$route.params['id'], this.detail);
+      await this.toast(res, '更新');
+    },
+    async deleteDetail(){
+      const res = await axios.delete('detail/'+this.$route.params['id']);
+      await this.toast(res, '削除');
+      // 削除が成功した場合にのみリダイレクトする
+      if (res.data && res.status === 200) {
+        this.$router.push('/detail');
+      }
+    },
+    async toast(res, action){
       if(res.data && res.status == '200'){
         var options = {
           position: 'top-center',
@@ -118,7 +120,8 @@ module.exports = {
           fullWidth: true,
           type: 'success'
         }
-        this.$toasted.show('更新完了',options);
+        this.$toasted.show(action + '完了',options);
+        return true;
       }else{
         var options = {
           position: 'top-center',
@@ -126,11 +129,9 @@ module.exports = {
           fullWidth: true,
           type: 'error'
         }
-        this.$toasted.show('更新失敗',options);
+        this.$toasted.show(action + '失敗',options);
+        return false;
       }
-    },
-    async deleteDetail(){
-      
     }
   }
 }

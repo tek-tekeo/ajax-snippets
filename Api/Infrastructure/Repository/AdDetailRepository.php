@@ -90,7 +90,7 @@ class AdDetailRepository implements IAdDetailRepository
 
   public function findByAdId(AdId $adId): array
   {
-    $res = $this->db->get_results("SELECT * FROM ".$this->table." WHERE ad_id=".$adId->getId());
+    $res = $this->db->get_results("SELECT * FROM ".$this->table." WHERE ad_id=".$adId->getId()." ORDER BY id ASC");
     return collect($res)->map(function($r){
       return new AdDetail(
         new AdDetailId((int)$r->id),

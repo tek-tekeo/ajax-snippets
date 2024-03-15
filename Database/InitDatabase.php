@@ -34,6 +34,8 @@ class InitDatabase
     if ( $installed_ver != VERSION ) {
       $this->initBaseTable();
       $this->initDetailTable();
+      $this->initDetailChartTable();
+      $this->initDetailInfoTable();
       $this->initLogTable();
       $this->initTagLinkTable();
       $this->initTagTable();
@@ -51,6 +53,16 @@ class InitDatabase
   private function initDetailTable()
   {
     $sql = $this->createSqlOfDetailTable();
+    dbDelta($sql);
+  }
+  private function initDetailChartTable()
+  {
+    $sql = $this->createSqlOfDetailChartTable();
+    dbDelta($sql);
+  }
+  private function initDetailInfoTable()
+  {
+    $sql = $this->createSqlOfDetailInfoTable();
     dbDelta($sql);
   }
   private function initLogTable()
@@ -120,7 +132,7 @@ class InitDatabase
     $sql = "
       CREATE TABLE {$tableName} (
       id int(11) NOT NULL AUTO_INCREMENT,
-      base_id int(11) NOT NULL,
+      ad_id int(11) NOT NULL,
       item_name varchar(1025) DEFAULT '' NOT NULL,
       official_item_link varchar(1025) DEFAULT '' NOT NULL,
       affi_item_link varchar(1025) DEFAULT '' NOT NULL,
@@ -138,6 +150,41 @@ class InitDatabase
     return $sql;
   }
 
+  private function createSqlOfDetailChartTable()
+  {
+    $tableName = $this->getTableName('ad_details_chart');
+
+    $sql = "
+      CREATE TABLE {$tableName} (
+      id int(11) NOT NULL AUTO_INCREMENT,
+      ad_detail_id int(11) NOT NULL,
+      name varchar(255) DEFAULT '' NOT NULL,
+      value double DEFAULT 0 NOT NULL,
+      sort_order int(11) DEFAULT 0 NOT NULL,
+      PRIMARY KEY id (id)
+      ){$this->charsetCollate};";
+
+    return $sql;
+  }
+
+  private function createSqlOfDetailInfoTable()
+  {
+    $tableName = $this->getTableName('ad_details_info');
+
+    $sql = "
+      CREATE TABLE {$tableName} (
+      id int(11) NOT NULL AUTO_INCREMENT,
+      ad_detail_id int(11) NOT NULL,
+      title varchar(255) DEFAULT '' NOT NULL,
+      content varchar(1024) DEFAULT '' NOT NULL,
+      sort_order int(11) DEFAULT 0 NOT NULL,
+      PRIMARY KEY id (id)
+      ){$this->charsetCollate};";
+
+    return $sql;
+
+  }
+
   //ログデータのクエリを取得
   private function createSqlOfLogTable()
   {
@@ -146,7 +193,7 @@ class InitDatabase
     $sql = "
     CREATE TABLE {$tableName} (
     id int(11) NOT NULL AUTO_INCREMENT,
-    item_id int(11) NOT NULL,
+    ad_detail_id int(11) NOT NULL,
     date DATE NOT NULL,
     time TIME NOT NULL,
     post_addr varchar(1025) DEFAULT '' NOT NULL,
@@ -166,7 +213,7 @@ class InitDatabase
     $sql = "
       CREATE TABLE {$tableName} (
       id int(11) NOT NULL AUTO_INCREMENT,
-      item_id int(11) NOT NULL,
+      ad_detail_id int(11) NOT NULL,
       tag_id int(11) NOT NULL,
       PRIMARY KEY id (id)
       ){$this->charsetCollate};";
@@ -198,6 +245,7 @@ class InitDatabase
     $sql = "
       CREATE TABLE {$tableName} (
       id int(11) NOT NULL AUTO_INCREMENT,
+      name varchar(255) NOT NULL,
       img varchar(255) NOT NULL,
       dev varchar(255) NOT NULL,
       ios_link varchar(1025) NOT NULL,

@@ -7,7 +7,7 @@ DIR="/var/www/html/wp-content/plugins/$PLUGIN_NAME"
 docker compose down
 docker compose up -d --build
 sleep 5 # wait for mysql to start
-# docker compose exec -it wordpress /bin/bash -c `wp core install --url="http://localhost:$WEB_PORT" --title='新規サイト' --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" --admin_email="$WORDPRESS_ADMIN_EMAIL" --allow-root`
+docker compose exec -it wordpress /bin/bash -c "wp core install --url='http://localhost:$WEB_PORT' --title='new site' --admin_user='$WORDPRESS_ADMIN_USER' --admin_password='$WORDPRESS_ADMIN_PASSWORD' --admin_email='$WORDPRESS_ADMIN_EMAIL' --allow-root"
 docker compose exec -it wordpress /bin/bash -c "wp language core install ja --activate --allow-root"
 
 # タイムゾーンと日時表記
@@ -30,7 +30,7 @@ docker compose exec -it wordpress /bin/bash -c "wp plugin install classic-editor
 
 # プラグインの初期テンプレートを作成
 if [ -e $PLUGIN_NAME".php" ]; then
-  docker compose exec -it wordpress /bin/bash -c "yes 's' | wp scaffold plugin $PLUGIN_NAME --allow-root"
+  docker compose exec -it wordpress /bin/bash -c "yes 's' | wp scaffold plugin $PLUGIN_NAME --allow-root --skip-tests"
 fi
 # プラグインのアクティブ化
 docker compose exec -it wordpress /bin/bash -c "wp plugin activate $PLUGIN_NAME --allow-root"

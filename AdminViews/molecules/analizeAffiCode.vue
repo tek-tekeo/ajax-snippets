@@ -3,22 +3,24 @@
     <div v-if="asp == 'a8'">
       <wp-text-area
         label="画像付きメインリンク"
+        rows="5"
         v-model="affiCode"
       >
       </wp-text-area>
       <wp-text-area
         label="商品テキストリンク"
+        rows="5"
         v-model="affiSCode"
       >
       </wp-text-area>
+      <v-btn
+        block
+        color="primary"
+        @click="analizeAffi"
+      >
+      アフィリンク分析&挿入
+      </v-btn>
     </div>
-    <v-btn
-      block
-      color="primary"
-      @click="analizeAffi"
-    >
-    アフィリンク分析&挿入
-    </v-btn>
   </div>
 </template>
 

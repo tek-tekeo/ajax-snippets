@@ -105,4 +105,90 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
     $this->assertEquals($adDetail, $res);
   }
 
+  public function testFindByAdId()
+  {
+    $adId = new AdId(1);
+    $adDetailId = new AdDetailId();
+    $adDetail = new AdDetail(
+      $adDetailId,
+      $adId,
+      'item name',
+      'official item link',
+      'affi item link',
+      'detail image',
+      'amazon asin',
+      'rakuten id',
+      '[]',
+      '[]',
+      'review',
+      1,
+      1
+    );
+
+    $this->repository->save($adDetail);
+    $this->repository->save($adDetail);
+    $adDetails = $this->repository->findByAdId(new AdId(1));
+    $expectedCount = 2;
+    $this->assertCount($expectedCount, $adDetails);
+    $this->assertEquals([
+      new AdDetail(
+        new AdDetailId(1),
+        new AdId(1),
+        'item name',
+        'official item link',
+        'affi item link',
+        'detail image',
+        'amazon asin',
+        'rakuten id',
+        '[]',
+        '[]',
+        'review',
+        1,
+        1
+      ),
+      new AdDetail(
+        new AdDetailId(2),
+        new AdId(1),
+        'item name',
+        'official item link',
+        'affi item link',
+        'detail image',
+        'amazon asin',
+        'rakuten id',
+        '[]',
+        '[]',
+        'review',
+        1,
+        1
+      ),
+    ], $adDetails);
+  }
+
+  public function testDeleteByAdId()
+  {
+        $adId = new AdId(1);
+    $adDetailId = new AdDetailId();
+    $adDetail = new AdDetail(
+      $adDetailId,
+      $adId,
+      'item name',
+      'official item link',
+      'affi item link',
+      'detail image',
+      'amazon asin',
+      'rakuten id',
+      '[]',
+      '[]',
+      'review',
+      1,
+      1
+    );
+
+    $this->repository->save($adDetail);
+    $this->repository->save($adDetail);
+    $result = $this->repository->deleteByAdId(new AdId(1));
+    $this->assertTrue($result);
+    $adDetails = $this->repository->findByAdId(new AdId(1));
+    $this->assertCount(0, $adDetails);
+  }
 }

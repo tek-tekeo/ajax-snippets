@@ -8,7 +8,7 @@ interface IAdDetailGetService
 {
   public function handle(AdDetailGetCommand $cmd);
   public function getLinkMaker(AdDetailGetCommand $cmd);
-  public function getDetailsFindByName(string $name);
+  public function getAdDetailsFindByName(string $name);
   public function getEditorAnkenList(string $name);
 }
 

@@ -5,7 +5,7 @@
         <wp-select-box
           label="親要素の指定"
           :items="selectList"
-          v-model="detail.parent.id"
+          v-model="detail.adId"
         >
         </wp-select-box>
       </v-col>
@@ -34,7 +34,6 @@
         </v-col>
         <v-col cols="6">
           <wp-text-box
-            v-if="detail.parent.aspName != 'a8'"
             label="アフィリエイトURL(a8以外のURL)"
             v-model="detail.affiItemLink"
             :is-url="true"
@@ -105,8 +104,7 @@
         <wp-check-box
           label="タグを選択する"
           :check-list="tagList"
-          v-model="selectedTagIds"
-          @change="emitTagIds"
+          v-model="detail.tagIds"
         >
         </wp-check-box>
       </v-col>
@@ -115,6 +113,7 @@
       <v-col>
         <wp-text-area
           label="レビュー"
+          rows="5"
           v-model="detail.review"
         >
         </wp-text-area>
@@ -138,23 +137,7 @@ module.exports = {
     return {
     }
   },
-  watch: {
-    detail: {
-      handler: function (val, oldVal) {
-        const base = this.baseList.find((base) => base.id == val.parent.id);
-        this.detail.parent.name = base.name;
-        this.detail.parent.aspName = base.aspName;
-      },
-      deep: true
-    }
-  },
   methods:{
-    emitTagIds(){
-      this.$emit("selected-tags", this.selectedTagIds);
-    },
-    deleteDetail(){
-      //TODO削除処理
-    },
     async updateDetail(){
       this.$emit("updated-item", this.base);
     },
@@ -176,9 +159,6 @@ module.exports = {
     }
   },
   computed:{
-    selectElements(){
-      return {id:this.detail.baseId, name:''};
-    },
     selectList(){
       return this.baseList;
     }
@@ -193,10 +173,6 @@ module.exports = {
       default:[]
     },
     tagList:{
-      type: Array,
-      default:[]
-    },
-    selectedTagIds:{
       type: Array,
       default:[]
     }

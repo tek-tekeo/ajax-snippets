@@ -26,6 +26,8 @@ class AdDetailData
   public function __construct(
     private Ad $ad,
     private AdDetail $adDetail,
+    private array $adDetailChart = [],
+    private array $adDetailInfo = [],
     private array $tagLinks = []
   ){
     $this->id = $adDetail->getId()->getId();
@@ -36,8 +38,24 @@ class AdDetailData
     $this->detailImg = $adDetail->getDetailImg();
     $this->amazonAsin = $adDetail->getAmazonAsin();
     $this->rakutenId = $adDetail->getRakutenId();
-    $this->rchart = json_decode($adDetail->getRchart()) ?? [];
-    $this->info = json_decode($adDetail->getInfo()) ?? [];
+    $this->rchart = collect($adDetailChart)->map(function($rate){
+      return [
+        'id' => $rate->getId(),
+        'adDetailId' => $rate->getAdId()->getId(),
+        'factor' => $rate->getFactor(),
+        'value' => $rate->getRate(),
+        'sortOrder' => $rate->getOrder(),
+      ];
+    })->toArray(); //json_decode($adDetail->getRchart()) ?? [];
+    $this->info = collect($adDetailInfo)->map(function($info){
+      return [
+        'id' => $info->getId(),
+        'adDetailId' => $info->getAdId()->getId(),
+        'factor' => $info->getTitle(),
+        'value' => $info->getContent(),
+        'sortOrder' => $info->getOrder(),
+      ];
+    })->toArray(); //json_decode($adDetail->getInfo()) ?? [];
     $this->isShowUrl = (bool)$adDetail->getIsShowUrl();
     $this->sameParent = (bool)$adDetail->getSameParent();
     $this->review = $adDetail->getReview();
