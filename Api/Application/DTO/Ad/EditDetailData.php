@@ -18,7 +18,7 @@ class EditDetailData
 
   public function __construct(Ad $ad, AdDetail $detail, Asp $asp)
   {
-    $this->id = $detail->getId();
+    $this->id = $detail->getId()->getId();
     $this->name = $ad->getName() . ' ' . $detail->getItemName();
     $this->officialItemLink = $detail->getOfficialItemLink();
     // $this->affiLink = $detail->getRedirectUrl();

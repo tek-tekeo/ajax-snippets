@@ -65,7 +65,7 @@ final class AdRepositoryTest extends WP_UnitTestCase
         'affi_img_width' => 300,
         'affi_img_height' => 250,
         'app_id' => 0,
-        'deleted_at' => '2024-03-15'
+        'deleted_at' => date('Y-m-d')
       ]
       , (array)$res);
   }

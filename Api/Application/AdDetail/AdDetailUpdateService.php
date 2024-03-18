@@ -44,8 +44,8 @@ class AdDetailUpdateService implements IAdDetailUpdateService
       '',//($cmd->getRchart()) ? $cmd->getRchart() : $adDetail->getRchart(),
       '',//($cmd->getInfo()) ? $cmd->getInfo() : $adDetail->getInfo(),
       ($cmd->getReview()) ? $cmd->getReview() : $adDetail->getReview(),
-      ($cmd->getIsShowUrl()) ? $cmd->getIsShowUrl() : $adDetail->getIsShowUrl(),
-      ($cmd->getSameParent()) ? $cmd->getSameParent() : $adDetail->getSameParent()
+      $cmd->getIsShowUrl(),
+      $cmd->getSameParent()
     );
 
     $insertAdDetailId = $this->adDetailRepository->save($updateAdDetail);
