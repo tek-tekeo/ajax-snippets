@@ -21,7 +21,7 @@ class AdDetailRepository implements IAdDetailRepository
 
   public function findByName(string $name) : array
   {
-	  $sql = "SELECT D.*, B.name as name FROM ". PLUGIN_DB_PREFIX."ads As B RIGHT JOIN ". PLUGIN_DB_PREFIX."ad_details As D ON B.id = D.ad_id where D.item_name LIKE '%".$name."%' OR B.name LIKE '%".$name."%' order by B.name asc, D.item_name asc";
+    $sql = "SELECT D.*, A.name as name FROM ". PLUGIN_DB_PREFIX."ads AS A, ". PLUGIN_DB_PREFIX."ad_details AS D where A.id=D.ad_id AND (D.item_name LIKE '%".$name."%' OR A.name LIKE '%".$name."%') order by A.name asc, D.item_name asc, D.id asc";
     
     $res = $this->db->get_results($sql);
     return collect($res)->map(function($r){

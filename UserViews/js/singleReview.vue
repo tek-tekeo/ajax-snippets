@@ -4,7 +4,7 @@
       <affiliate-link 
         class="firstItem"
         @click-record="clickRecord"
-        :content="data.content"
+        :content="data.officialItemLink"
         :item-id="itemId"
         place="singlePlace"
         btn_color=""
@@ -26,7 +26,7 @@
     <table class="singleReview_table">
       <tbody>
         <tr
-          v-for="item in data.getWpInfo"
+          v-for="item in data.info"
           :key="item.name"
         >
           <th>{{ item.factor }}</th>
@@ -38,7 +38,7 @@
           <td>
             <affiliate-link 
               @click-record="clickRecord"
-              :content="data.content"
+              :content="data.officialItemLink"
               :item-id="itemId"
               place="singlePlace"
               btn_color=""

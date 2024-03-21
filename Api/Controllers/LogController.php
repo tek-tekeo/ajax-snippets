@@ -6,6 +6,7 @@ use \WP_REST_Response;
 use AjaxSnippets\Api\Application\Log\ILogCreateService;
 use AjaxSnippets\Api\Application\Log\ILogDeleteService;
 use AjaxSnippets\Api\Application\Log\ILogGetService;
+use AjaxSnippets\Api\Application\Log\LogCreateCommand;
 use AjaxSnippets\Api\Application\Log\LogDeleteCommand;
 use AjaxSnippets\Api\Application\Log\LogGetCommand;
 
@@ -49,7 +50,7 @@ class LogController
   public function create(WP_REST_Request $req) : WP_REST_Response
   {
     $cmd = new LogCreateCommand($req);
-    $res = $this->logCreateService->record($cmd);
+    $res = $this->logCreateService->handle($cmd);
     return new WP_REST_Response($res, 200);
   }
 

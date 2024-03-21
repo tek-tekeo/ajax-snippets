@@ -93,45 +93,4 @@ class AdController
     return new WP_REST_Response( $res, 200 );
   }
 
-  public function getApp(WP_REST_Request $req): WP_REST_Response
-  {
-    return new WP_REST_Response([], 200);
-
-    // $cmd = new DetailGetCommand((int)$req->get_param('detailId'));
-    // $res = $this->detailGetService->handle($cmd);
-    // $cmd = new AdGetCommand($res->parent->id);
-    // $res = $this->adGetService->handle($cmd);
-    // $res = new AppLink($res, (int)$req->get_param('noaf'));
-    // return new WP_REST_Response($res, 200 );
-  }
-
 }
-
-// class AppLink
-// {
-//   public function __construct($base, $noaf)
-//   {
-//     //名前、アプリアイコン、開発元、リンク、App Storeの画像
-//     $this->id = $base->appId;
-//     $this->name = $base->name;
-//     $this->img = $base->img;
-//     $this->dev = $base->dev;
-
-//     //UAによる判断、アフィリエイト化するかの判断
-//     $ua = $_SERVER['HTTP_USER_AGENT'];
-//     if ( preg_match('/Android/ui', $ua) ) {
-//       //Android系の端末
-//       ($noaf == 0) ? $this->link = $base->androidAffiLink : $this->link = $base->androidLink;
-//       $this->linkImg = 'https://nabettu.github.io/appreach/img/gplay_ja.png';
-
-//     }else if ( preg_match('/iPhone|iPod|iPad/ui', $ua) ) {
-//       //iOS系の端末
-//       ($noaf == 0) ? $this->link = $base->iosAffiLink : $this->link = $base->iosLink;
-//       $this->linkImg = 'https://nabettu.github.io/appreach/img/itune_ja.svg';
-//     }else{
-//       //Webブラウザからのアクセス
-//       ($noaf == 0) ? $this->link = $base->affiLink : $this->link = $base->webLink;
-//       $this->linkImg = '';
-//     }
-//   }
-// }

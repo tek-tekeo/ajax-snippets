@@ -25,7 +25,7 @@ final class RedirectSystemTest extends WP_UnitTestCase
     $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ads");
     $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "asps");
 		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "log");
+		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "logs");
 		
     $wpdb->insert(PLUGIN_DB_PREFIX . "ads", [
       'id' => 1,

@@ -162,8 +162,8 @@ class AdDetailUpdateServiceTest extends WP_UnitTestCase
       '',
       '',
       'review',
-      1,
-      1
+      0,
+      0
     );
     $this->assertEquals($expected, $res);
 

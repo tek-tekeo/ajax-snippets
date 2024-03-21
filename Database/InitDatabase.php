@@ -118,6 +118,7 @@ class InitDatabase
       affi_img_width int(11) DEFAULT 300 NOT NULL,
       affi_img_height int(11) DEFAULT 250 NOT NULL,
       app_id int(11) DEFAULT 0 NOT NULL,
+      deleted_at DATE DEFAULT NULL,
       PRIMARY KEY id (id)
       ){$this->charsetCollate};";
 
@@ -158,8 +159,8 @@ class InitDatabase
       CREATE TABLE {$tableName} (
       id int(11) NOT NULL AUTO_INCREMENT,
       ad_detail_id int(11) NOT NULL,
-      name varchar(255) DEFAULT '' NOT NULL,
-      value double DEFAULT 0 NOT NULL,
+      factor varchar(255) DEFAULT '' NOT NULL,
+      rate double DEFAULT 0 NOT NULL,
       sort_order int(11) DEFAULT 0 NOT NULL,
       PRIMARY KEY id (id)
       ){$this->charsetCollate};";
@@ -266,13 +267,14 @@ class InitDatabase
   //ASPのデータのクエリを取得
   private function createSqlOfAspTable()
   {
-    $tableName = $this->getTableName('asp');
+    $tableName = $this->getTableName('asps');
 
     $sql = "
       CREATE TABLE {$tableName} (
       id int(11) NOT NULL AUTO_INCREMENT,
       asp_name varchar(20) DEFAULT '' NOT NULL,
       connect_string varchar(128) DEFAULT '' NOT NULL,
+      deleted_at DATE DEFAULT NULL,
       PRIMARY KEY id (id)
       ){$this->charsetCollate};";
 

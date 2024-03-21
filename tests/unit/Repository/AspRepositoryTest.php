@@ -22,23 +22,23 @@ class AspRepositoryTest extends WP_UnitTestCase
 		$this->db = $wpdb;
 		$this->table = PLUGIN_DB_PREFIX . 'asps';
 		$this->db->query("TRUNCATE TABLE " . $this->table);
-		$this->db->insert($this->table, [
+		$this->db->replace($this->table, [
 			'id' => 1,
 			'asp_name' => 'a8',
 			'connect_string' => '&a8ejpredirect='
 		]);
-		$this->db->insert($this->table, [
+		$this->db->replace($this->table, [
 			'id' => 2,
 			'asp_name' => 'afb',
 			'connect_string' => ''
 		]);
-		$this->db->insert($this->table, [
+		$this->db->replace($this->table, [
 			'id' => 3,
 			'asp_name' => 'dmm',
 			'connect_string' => '?af_id=tekeo-001&ch=link_tool&ch_id=link&lurl=',
 			'deleted_at' => '2024-01-01'
 		]);
-		$this->db->insert($this->table, [
+		$this->db->replace($this->table, [
 			'id' => 4,
 			'asp_name' => 'felmat',
 			'connect_string' => ''
