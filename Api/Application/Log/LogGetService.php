@@ -3,24 +3,33 @@ namespace AjaxSnippets\Api\Application\Log;
 
 use AjaxSnippets\Api\Domain\Models\Log\ILogRepository;
 use AjaxSnippets\Api\Application\Log\ILogGetService;
-use AjaxSnippets\Api\Application\Log\LogCreateCommand;
-use AjaxSnippets\Api\Domain\Models\Log\Log;
-use AjaxSnippets\Api\Domain\Models\Log\LogId;
+use AjaxSnippets\Api\Application\Log\LogGetCommand;
+use AjaxSnippets\Api\Infrastructure\Repository\LogRepository;
+use AjaxSnippets\Api\Infrastructure\Repository\AdRepository;
+use AjaxSnippets\Api\Infrastructure\Repository\AdDetailRepository;
+use AjaxSnippets\Api\Domain\Services\AdService;
 use AjaxSnippets\Api\Application\DTO\Log\LogData;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 use AjaxSnippets\Api\Application\DTO\Log\ClickData;
 use AjaxSnippets\Api\Application\DTO\Log\DayPerClickData;
 use stdClass;
 
 class LogGetService implements ILogGetService
 {
-  public function __construct(private ILogRepository $logRepository)
-  {}
+  private $adService;
+  public function __construct(
+    private ILogRepository $logRepository
+  ){
+    $this->adService = new AdService(new AdRepository(), new AdDetailRepository());
+  }
 
   public function handle(LogGetCommand $cmd): array
   {
     $logs = $this->logRepository->getLogs($cmd->getWhereSortByDate());
-    return collect($logs)->map(function($log) {
-      return new LogData($log);
+    
+    return collect($logs)->map(function($log){
+      $name = $this->adService->getFullNameByAdDetailId($log->getAdDetailId());
+      return new LogData($log, $name);
     })->toArray();
   }
 
@@ -32,17 +41,13 @@ class LogGetService implements ILogGetService
     })->toArray();
   }
 
+  // 案件・場所
   public function getItemCountLogs(LogGetCommand $cmd): array
   {
     $res = $this->logRepository->getItemCountLogs($cmd->getWhereSortByDate());
     return collect($res)->map(function($data) {
-      $d = new stdClass();
-      $d->post_addr = 'post_addr'; // なぜか名前を入れる
-      $d->place = $data->place;
-      $d->clicks = $data->clicks;
-      // $adDetail = $this->adDetailRepository->findById($r->item_id);
-      // $parent = $this->adRepository->ParentFindById($adDetail->parent()->id());
-      return new ClickData('ad name', $d->place, $d->clicks);
+      $name = $this->adService->getFullNameByAdDetailId(new AdDetailId($data->ad_detail_id));
+      return new ClickData($name, $data->place, $data->clicks);
     })->toArray();
   }
 

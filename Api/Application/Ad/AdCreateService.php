@@ -38,7 +38,7 @@ class AdCreateService implements IAdCreateService
       new AppId($cmd->getAppId())
     );
     
-    $adService = new AdService($this->adRepository);
+    $adService = new AdService($this->adRepository, $this->adDetailRepository);
     if($adService->exists($ad)){
       throw new \Exception('ad already exists', 500);
     }

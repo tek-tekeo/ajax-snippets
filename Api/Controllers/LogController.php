@@ -29,14 +29,14 @@ class LogController
   public function anken(WP_REST_Request $req):WP_REST_Response
   {
     $cmd = new LogGetCommand($req);
-    $res = $this->logGetService->getAnkenLogs($cmd);
+    $res = $this->logGetService->getItemCountLogs($cmd);
     return new WP_REST_Response($res, 200);
   }
 
   public function article(WP_REST_Request $req):WP_REST_Response
   {
     $cmd = new LogGetCommand($req);
-    $res = $this->logGetService->getArticleLogs($cmd);
+    $res = $this->logGetService->getArticleCountLogs($cmd);
     return new WP_REST_Response($res, 200);
   }
 

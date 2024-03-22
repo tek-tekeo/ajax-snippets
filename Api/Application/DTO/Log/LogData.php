@@ -6,21 +6,20 @@ use AjaxSnippets\Api\Domain\Models\Log\Log;
 class LogData
 {
   public int $id;
-  public string $itemId;
-  public string $date;
-  public string $time;
+  public string $dateTime;
+  public string $name;
   public string $place;
   public string $ip;
   public string $postAddr;
   
-  public function __construct(Log $log)
+  public function __construct(Log $log, string $name)
   {
     $logId = $log->getId();
     $this->id = $logId->getId();
-    $this->date = $log->getDate();
-    $this->time = $log->getTime();
+    $this->name = $name;
+    $this->dateTime = $log->getDate(). ' ' . $log->getTime();
+    $this->postAddr = $log->getPostAddr();
     $this->place = $log->getPlace();
     $this->ip = $log->getIp();
-    $this->postAddr = $log->getPostAddr();
   }
 }

@@ -267,7 +267,6 @@ module.exports = {
           limit:this.limit,
           dates:this.dates
         });
-        console.log(logs.data)
         this.reset();
         this.logs = logs.data;
         this.choice = '日付順';
