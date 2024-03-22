@@ -1,5 +1,4 @@
 <?php
-
 use AjaxSnippets\Api\Domain\Models\Asp\Asp;
 use AjaxSnippets\Api\Domain\Models\Asp\AspId;
 

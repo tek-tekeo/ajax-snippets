@@ -11,15 +11,17 @@ class AspApplicationCreateServiceTest extends WP_UnitTestCase
   private IAspRepository $aspRepository;
   private AspCreateService $aspCreateService;
   private AspService $aspService;
+  private $table;
 
   public function setUp(): void
   {
     global $wpdb;
     global $diContainer;
+    $this->table = PLUGIN_DB_PREFIX . 'asps';
     parent::setUp();
     $this->aspRepository = $diContainer->get(IAspRepository::class);
     $this->aspService = new AspService($this->aspRepository);
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "asp");
+		$wpdb->query("TRUNCATE TABLE " . $this->table);
     $this->aspCreateService = new AspCreateService($this->aspService, $this->aspRepository);
   }
 

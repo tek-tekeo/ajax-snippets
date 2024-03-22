@@ -14,7 +14,7 @@ class AspRepository implements IAspRepository
   {
     global $wpdb;
     $this->db = $wpdb;
-    $this->table = PLUGIN_DB_PREFIX.'asp';
+    $this->table = PLUGIN_DB_PREFIX.'asps';
   }
 
   public function save(Asp $asp) : AspId
@@ -26,51 +26,9 @@ class AspRepository implements IAspRepository
     return new AspId($this->db->insert_id);
   }
 
-  public function get(AspId $aspId): Asp | bool
-  {
-    $row = $this->db->get_row(
-      $this->db->prepare(
-        "SELECT * FROM " . $this->table . " WHERE id = %d",
-        $aspId->getId()
-      )
-    );
-    if (!$row) {
-      return false;
-    }
-
-    return new Asp(
-      new AspId((int)$row->id),
-      $row->asp_name,
-      $row->connect_string
-    );
-  }
-
-  public function delete(AspId $aspId) : bool
-  {
-    $result = $this->db->delete(
-      $this->table,
-      ['id' => $aspId->getId()]
-    );
-    return $result;
-  }
-
-  public function existsByName(string $aspName): bool
-  {
-    $row = $this->db->get_row(
-      $this->db->prepare(
-        "SELECT * FROM " . $this->table . " WHERE asp_name = %s",
-        $aspName
-      )
-    );
-    if (!$row) {
-      return false;
-    }
-    return true;
-  }
-
   public function getAll() : array
   {
-    $res = $this->db->get_results("SELECT * FROM ".PLUGIN_DB_PREFIX."asp");
+    $res = $this->db->get_results("SELECT * FROM ". $this->table . " WHERE deleted_at IS NULL");
     $asps = array();
     if(!$res == null){
       foreach($res as $r){
@@ -86,10 +44,10 @@ class AspRepository implements IAspRepository
     return array();
   }
 
-  public function AspFindById(AspId $aspId)
+  public function findById(AspId $aspId)
   {
     $id = $aspId->getId();
-    $res = $this->db->get_row("SELECT * FROM ".PLUGIN_DB_PREFIX."asp WHERE id = ".$id);
+    $res = $this->db->get_row("SELECT * FROM ".$this->table." WHERE id=". $id." AND deleted_at IS NULL");
     if(!$res == null){
       $asp = new Asp(
         new AspId($res->id),
@@ -98,12 +56,12 @@ class AspRepository implements IAspRepository
       );
       return $asp;
     }
-    return null;
+    throw new \Exception('ASP ID に該当するデータが存在しません。', 500);
   }
 
-  public function AspFindByName(string $aspName): ?Asp
+  public function findByName(string $aspName): Asp
   {
-    $res = $this->db->get_row("SELECT * FROM ".PLUGIN_DB_PREFIX."asp WHERE asp_name = '".$aspName."'");
+    $res = $this->db->get_row("SELECT * FROM ".$this->table." WHERE asp_name = '".$aspName."' AND deleted_at IS NULL");
     if(!$res == null){
       $asp = new Asp(
         new AspId($res->id),
@@ -115,4 +73,34 @@ class AspRepository implements IAspRepository
     throw new \Exception('名前に該当するASPが存在しません。');
     return null;
   }
+
+  public function delete(AspId $aspId) : bool
+  {
+    $result = $this->db->update(
+      $this->table,
+      ['deleted_at' => date('Y-m-d')],
+      ['id' => $aspId->getId()]
+    );
+
+    if (!$result) {
+      return false;
+    }
+
+    return $result;
+  }
+
+  public function existsByName(string $aspName): bool
+  {
+    $row = $this->db->get_row(
+      $this->db->prepare(
+        "SELECT * FROM " . $this->table . " WHERE asp_name = %s AND deleted_at IS NULL",
+        $aspName
+      )
+    );
+    if (!$row) {
+      return false;
+    }
+    return true;
+  }
+
 }

@@ -1,6 +1,6 @@
 <?php
-
 use AjaxSnippets\Api\Domain\Models\Asp\AspId;
+
 class AspIdTest extends WP_UnitTestCase
 {
   public function testThenAspId()

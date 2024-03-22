@@ -74,7 +74,19 @@ if (!defined('ABSPATH')) exit; ?>
     {
       path: '/asp',
       component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/pages/aspPage.vue')
-    }
+    },
+    {
+      path: '/app',
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/pages/appPage.vue')
+    },
+    {
+      path: '/app/create',
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/organisms/appCreateView.vue')
+    },
+    {
+      path: '/app/update/:id',
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/organisms/appUpdateView.vue')
+    },
   ];
 
   Vue.use(Toasted);
@@ -89,24 +101,28 @@ if (!defined('ABSPATH')) exit; ?>
       return {
         tab: null,
         items: [{
-            name: '親要素の追加・変更',
+            name: 'メイン広告',
             to: '/parent'
           },
           {
-            name: '子要素の追加・変更',
+            name: '商品別広告',
             to: '/detail'
           },
           {
-            name: 'タグの設定',
+            name: 'タグ設定',
             to: '/tag'
           },
           {
-            name: 'クリックログの確認',
+            name: 'クリックログ',
             to: '/'
           },
           {
-            name: 'ASPの設定',
+            name: 'ASP設定',
             to: '/asp'
+          },
+          {
+            name: 'アプリ登録',
+            to: '/app'
           },
         ],
       }

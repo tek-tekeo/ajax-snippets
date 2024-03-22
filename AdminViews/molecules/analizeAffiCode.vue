@@ -1,29 +1,26 @@
 <template>
   <div>
-    <div v-if="asp == 'a8'">
+    <div v-if="aspId == 1">
       <wp-text-area
         label="画像付きメインリンク"
+        rows="5"
         v-model="affiCode"
       >
       </wp-text-area>
       <wp-text-area
         label="商品テキストリンク"
+        rows="5"
         v-model="affiSCode"
       >
       </wp-text-area>
+      <v-btn
+        block
+        color="primary"
+        @click="analizeAffi"
+      >
+      アフィリンク分析&挿入
+      </v-btn>
     </div>
-    <wp-text-area
-      label="アプリーチの新コードを入力"
-      v-model="appCode"
-    >
-    </wp-text-area>
-    <v-btn
-      block
-      color="primary"
-      @click="analizeAffi"
-    >
-    アフィリンク分析&挿入
-    </v-btn>
   </div>
 </template>
 
@@ -63,23 +60,12 @@ module.exports = {
         obj.sLink = sresult[0].match('[^\&]*')[0];
         obj.sImgTag = sresult[1];
       }
-  
-      if(this.appCode !=''){
-        const appLinks = new RegExp('(https://[^"]*)','g');
-        const appRes = this.appCode.match(appLinks);
-        obj.img = appRes[0];
-        obj.iosLink = appRes[2];
-        obj.androidLink = appRes[4];
-
-        const appDev = new RegExp('<span class=\"appreach__developper\">([^<]+)</span>');
-        obj.dev = this.appCode.match(appDev)[1];
-      }
 
       this.$emit('analize-code', obj);
     }
   },
   props:{
-    asp:{
+    aspId:{
       type:String,
       default:""
     }

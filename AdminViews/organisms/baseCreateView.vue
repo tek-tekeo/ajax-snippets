@@ -35,14 +35,15 @@
           <base-register-table
             :base="base"
             :asp-list="aspList"
+            :app-list="appList"
           >
           </base-register-table>
-        </v-form>
-        <analize-affi-code
-          :asp="base.aspName"
+          <analize-affi-code
+          :asp-id="base.aspId"
           @analize-code="AnalizeCode"
         >
         </analize-affi-code>
+        </v-form>
       </v-col>
     </v-row>
   </v-container>
@@ -60,12 +61,16 @@ module.exports = {
     return {
       valid:true,
       base:{homeUrl:null},
-      aspList:[]
+      aspList:[],
+      appList:[],
     }
   },
   async created(){
     const res = await axios.get('asp');
     this.aspList = res.data;
+    const apps = await axios.get('apps');
+    this.appList = apps.data;
+
   },
   methods:{
     async AnalizeCode(code){

@@ -9,6 +9,8 @@
         <v-btn
           color="error"
           dark
+          :fixed="fixed"
+          :bottom="bottom"
           v-bind="attrs"
           v-on="on"
         >
@@ -56,6 +58,10 @@ module.exports = {
         this.$emit("execute");
       }
     }
+  },
+  props: {
+    fixed: Boolean,
+    bottom: Boolean
   }
 }
 </script>

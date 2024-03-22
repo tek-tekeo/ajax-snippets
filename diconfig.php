@@ -1,17 +1,21 @@
 <?php
-use AjaxSnippets\Api\Domain\Models\BaseEls\IParentNodeRepository;
-use AjaxSnippets\Api\Infrastructure\Repository\ParentNodeRepository;
-use AjaxSnippets\Api\Domain\Models\BaseEls\IAppRepository;
+use AjaxSnippets\Api\Domain\Models\Ad\IAdRepository;
+use AjaxSnippets\Api\Infrastructure\Repository\AdRepository;
+use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailRepository;
+use AjaxSnippets\Api\Infrastructure\Repository\AdDetailRepository;
+use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailChartRepository;
+use AjaxSnippets\Api\Infrastructure\Repository\AdDetailChartRepository;
+use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailInfoRepository;
+use AjaxSnippets\Api\Infrastructure\Repository\AdDetailInfoRepository;
+use AjaxSnippets\Api\Domain\Models\App\IAppRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\AppRepository;
-use AjaxSnippets\Api\Domain\Models\Details\IDetailRepository;
-use AjaxSnippets\Api\Infrastructure\Repository\DetailRepository;
 use AjaxSnippets\Api\Domain\Models\Asp\IAspRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\AspRepository;
-use AjaxSnippets\Api\Domain\Models\Tags\ITagRepository;
+use AjaxSnippets\Api\Domain\Models\Tag\ITagRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\TagRepository;
-use AjaxSnippets\Api\Domain\Models\TagLinks\ITagLinkRepository;
+use AjaxSnippets\Api\Domain\Models\TagLink\ITagLinkRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\TagLinkRepository;
-use AjaxSnippets\Api\Domain\Models\Logs\ILogRepository;
+use AjaxSnippets\Api\Domain\Models\Log\ILogRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\LogRepository;
 
 use AjaxSnippets\Api\Application\Asp\IAspCreateService;
@@ -23,23 +27,64 @@ use AjaxSnippets\Api\Application\Asp\AspGetService;
 use AjaxSnippets\Api\Application\Asp\IAspDeleteService;
 use AjaxSnippets\Api\Application\Asp\AspDeleteService;
 
-use AjaxSnippets\Api\Application\BaseEls\IBaseElsCreateService;
-use AjaxSnippets\Api\Application\BaseEls\BaseElsCreateService;
-use AjaxSnippets\Api\Application\BaseEls\IBaseElsGetService;
-use AjaxSnippets\Api\Application\BaseEls\BaseElsGetService;
-use AjaxSnippets\Api\Application\BaseEls\IBaseElsUpdateService;
-use AjaxSnippets\Api\Application\BaseEls\BaseElsUpdateService;
-use AjaxSnippets\Api\Application\Details\IDetailCreateService;
-use AjaxSnippets\Api\Application\Details\DetailCreateService;
-use AjaxSnippets\Api\Application\Details\IDetailGetService;
-use AjaxSnippets\Api\Application\Details\DetailGetService;
-use AjaxSnippets\Api\Application\Details\IDetailUpdateService;
-use AjaxSnippets\Api\Application\Details\DetailUpdateService;
+use AjaxSnippets\Api\Application\Tag\ITagCreateService;
+use AjaxSnippets\Api\Application\Tag\TagCreateService;
+use AjaxSnippets\Api\Application\Tag\ITagUpdateService;
+use AjaxSnippets\Api\Application\Tag\TagUpdateService;
+use AjaxSnippets\Api\Application\Tag\ITagGetService;
+use AjaxSnippets\Api\Application\Tag\TagGetService;
+use AjaxSnippets\Api\Application\Tag\ITagDeleteService;
+use AjaxSnippets\Api\Application\Tag\TagDeleteService;
+
+use AjaxSnippets\Api\Application\TagLink\ITagLinkCreateService;
+use AjaxSnippets\Api\Application\TagLink\TagLinkCreateService;
+use AjaxSnippets\Api\Application\TagLink\ITagLinkUpdateService;
+use AjaxSnippets\Api\Application\TagLink\TagLinkUpdateService;
+use AjaxSnippets\Api\Application\TagLink\ITagLinkGetService;
+use AjaxSnippets\Api\Application\TagLink\TagLinkGetService;
+use AjaxSnippets\Api\Application\TagLink\ITagLinkDeleteService;
+use AjaxSnippets\Api\Application\TagLink\TagLinkDeleteService;
+
+use AjaxSnippets\Api\Application\Ad\IAdCreateService;
+use AjaxSnippets\Api\Application\Ad\AdCreateService;
+use AjaxSnippets\Api\Application\Ad\IAdUpdateService;
+use AjaxSnippets\Api\Application\Ad\AdUpdateService;
+use AjaxSnippets\Api\Application\Ad\IAdGetService;
+use AjaxSnippets\Api\Application\Ad\AdGetService;
+use AjaxSnippets\Api\Application\Ad\IAdDeleteService;
+use AjaxSnippets\Api\Application\Ad\AdDeleteService;
+
+use AjaxSnippets\Api\Application\AdDetail\IAdDetailCreateService;
+use AjaxSnippets\Api\Application\AdDetail\AdDetailCreateService;
+use AjaxSnippets\Api\Application\AdDetail\IAdDetailUpdateService;
+use AjaxSnippets\Api\Application\AdDetail\AdDetailUpdateService;
+use AjaxSnippets\Api\Application\AdDetail\IAdDetailGetService;
+use AjaxSnippets\Api\Application\AdDetail\AdDetailGetService;
+use AjaxSnippets\Api\Application\AdDetail\IAdDetailDeleteService;
+use AjaxSnippets\Api\Application\AdDetail\AdDetailDeleteService;
+
+use AjaxSnippets\Api\Application\App\IAppCreateService;
+use AjaxSnippets\Api\Application\App\AppCreateService;
+use AjaxSnippets\Api\Application\App\IAppUpdateService;
+use AjaxSnippets\Api\Application\App\AppUpdateService;
+use AjaxSnippets\Api\Application\App\IAppGetService;
+use AjaxSnippets\Api\Application\App\AppGetService;
+use AjaxSnippets\Api\Application\App\IAppDeleteService;
+use AjaxSnippets\Api\Application\App\AppDeleteService;
+
+use AjaxSnippets\Api\Application\Log\ILogCreateService;
+use AjaxSnippets\Api\Application\Log\LogCreateService;
+use AjaxSnippets\Api\Application\Log\ILogGetService;
+use AjaxSnippets\Api\Application\Log\LogGetService;
+use AjaxSnippets\Api\Application\Log\ILogDeleteService;
+use AjaxSnippets\Api\Application\Log\LogDeleteService;
 
 return [
-  IParentNodeRepository::class => DI\autowire(ParentNodeRepository::class),
+  IAdRepository::class => DI\autowire(AdRepository::class),
+  IAdDetailRepository::class => DI\autowire(AdDetailRepository::class),
+  IAdDetailChartRepository::class => DI\autowire(AdDetailChartRepository::class),
+  IAdDetailInfoRepository::class => DI\autowire(AdDetailInfoRepository::class),
   IAppRepository::class => DI\autowire(AppRepository::class),
-  IDetailRepository::class => DI\autowire(DetailRepository::class),
   IAspRepository::class => DI\autowire(AspRepository::class),
   ITagRepository::class => DI\autowire(TagRepository::class),
   ILogRepository::class => DI\autowire(LogRepository::class),
@@ -48,10 +93,27 @@ return [
   IAspCreateService::class => DI\autowire(AspCreateService::class),
   IAspUpdateService::class => DI\autowire(AspUpdateService::class),
   IAspGetService::class => DI\autowire(AspGetService::class),
-  IBaseElsGetService::class => DI\autowire(BaseElsGetService::class),
-  IBaseElsUpdateService::class => DI\autowire(BaseElsUpdateService::class),
-  IBaseElsCreateService::class => DI\autowire(BaseElsCreateService::class),
-  IDetailGetService::class => DI\autowire(DetailGetService::class),
-  IDetailCreateService::class => DI\autowire(DetailCreateService::class),
-  IDetailUpdateService::class => DI\autowire(DetailUpdateService::class)
+  ITagDeleteService::class => DI\autowire(TagDeleteService::class),
+  ITagCreateService::class => DI\autowire(TagCreateService::class),
+  ITagUpdateService::class => DI\autowire(TagUpdateService::class),
+  ITagGetService::class => DI\autowire(TagGetService::class),
+  ITagLinkCreateService::class => DI\autowire(TagLinkCreateService::class),
+  ITagLinkUpdateService::class => DI\autowire(TagLinkUpdateService::class),
+  ITagLinkGetService::class => DI\autowire(TagLinkGetService::class),
+  ITagLinkDeleteService::class => DI\autowire(TagLinkDeleteService::class),
+  ILogCreateService::class => DI\autowire(LogCreateService::class),
+  ILogGetService::class => DI\autowire(LogGetService::class),
+  ILogDeleteService::class => DI\autowire(LogDeleteService::class),
+  IAdCreateService::class => DI\autowire(AdCreateService::class),
+  IAdUpdateService::class => DI\autowire(AdUpdateService::class),
+  IAdGetService::class => DI\autowire(AdGetService::class),
+  IAdDeleteService::class => DI\autowire(AdDeleteService::class),
+  IAdDetailCreateService::class => DI\autowire(AdDetailCreateService::class),
+  IAdDetailUpdateService::class => DI\autowire(AdDetailUpdateService::class),
+  IAdDetailGetService::class => DI\autowire(AdDetailGetService::class),
+  IAdDetailDeleteService::class => DI\autowire(AdDetailDeleteService::class),
+  IAppCreateService::class => DI\autowire(AppCreateService::class),
+  IAppUpdateService::class => DI\autowire(AppUpdateService::class),
+  IAppGetService::class => DI\autowire(AppGetService::class),
+  IAppDeleteService::class => DI\autowire(AppDeleteService::class),
 ];

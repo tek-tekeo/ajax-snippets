@@ -1,0 +1,101 @@
+<?php
+namespace AjaxSnippets\Api\Application\Ad;
+
+use AjaxSnippets\Api\Application\App\AppId;
+
+interface IAdCreateService
+{
+  public function handle(AdCreateCommand $cmd);
+}
+
+class AdCreateCommand
+{
+  private string $name;
+  private string $anken;
+  private string $affiLink;
+  private string $sLink;
+  private int $aspId;
+  private string $affiImg;
+  private string $imgTag;
+  private string $sImgTag;
+  private int $affiImgWidth;
+  private int $affiImgHeight;
+  private int $appId;
+  
+  private string $homeUrl;
+
+  public function __construct(\WP_REST_Request $req)
+  {
+    $this->name = (string)$req->get_param('name');
+    $this->anken = (string)$req->get_param('anken');
+    $this->affiLink = (string)$req->get_param('affiLink');
+    $this->sLink = (string)$req->get_param('sLink');
+    $this->aspId = (int)$req->get_param('aspId');
+    $this->affiImg = (string)$req->get_param('affiImg');
+    $this->imgTag = (string)$req->get_param('imgTag');
+    $this->sImgTag = (string)$req->get_param('sImgTag');
+    $this->affiImgWidth = (int)$req->get_param('affiImgWidth');
+    $this->affiImgHeight = (int)$req->get_param('affiImgHeight');
+    $this->appId = (int)$req->get_param('appId');
+    
+    $this->homeUrl = (string)$req->get_param('homeUrl');
+  }
+
+  public function getAdName()
+  {
+    return $this->name;
+  }
+  public function getAdAnken()
+  {
+    return $this->anken;
+  }
+  public function getAdAffiLink()
+  {
+    return $this->affiLink;
+  }
+  public function getAdSLink()
+  {
+    return $this->sLink;
+  }
+  public function getAdAspId()
+  {
+    return $this->aspId;
+  }
+  public function getAdAffiImg()
+  {
+    return $this->affiImg;
+  }
+  public function getAdImgTag()
+  {
+    return $this->imgTag;
+  }
+  public function getAdSImgTag()
+  {
+    return $this->sImgTag;
+  }
+  public function getAdAffiImgWidth()
+  {
+    return $this->affiImgWidth;
+  }
+  public function getAdAffiImgHeight()
+  {
+    return $this->affiImgHeight;
+  }
+
+  public function getAppId()
+  {
+    return $this->appId;
+  }
+  
+  public function getAdInfo()
+  {
+    return [
+      $this->name, $this->anken, $this->affiLink, $this->sLink, $this->aspId, $this->affiImg, $this->imgTag, $this->sImgTag, $this->affiImgWidth, $this->affiImgHeight
+    ];
+  }
+
+  public function getHomeUrl()
+  {
+    return $this->homeUrl;
+  }
+}

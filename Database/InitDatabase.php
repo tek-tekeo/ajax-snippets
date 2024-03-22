@@ -34,6 +34,8 @@ class InitDatabase
     if ( $installed_ver != VERSION ) {
       $this->initBaseTable();
       $this->initDetailTable();
+      $this->initDetailChartTable();
+      $this->initDetailInfoTable();
       $this->initLogTable();
       $this->initTagLinkTable();
       $this->initTagTable();
@@ -51,6 +53,16 @@ class InitDatabase
   private function initDetailTable()
   {
     $sql = $this->createSqlOfDetailTable();
+    dbDelta($sql);
+  }
+  private function initDetailChartTable()
+  {
+    $sql = $this->createSqlOfDetailChartTable();
+    dbDelta($sql);
+  }
+  private function initDetailInfoTable()
+  {
+    $sql = $this->createSqlOfDetailInfoTable();
     dbDelta($sql);
   }
   private function initLogTable()
@@ -90,7 +102,7 @@ class InitDatabase
   //ベース（親）データのクエリを取得
   private function createSqlOfBaseTable()
   {
-    $tableName = $this->getTableName('base');
+    $tableName = $this->getTableName('ads');
 
     $sql = "
       CREATE TABLE {$tableName} (
@@ -99,13 +111,15 @@ class InitDatabase
       anken varchar(255) NOT NULL,
       affi_link varchar(1025) NOT NULL,
       s_link varchar(1025) NOT NULL,
-      asp_name varchar(10) NOT NULL,
+      asp_id int NOT NULL,
       affi_img varchar(1025) NOT NULL,
       img_tag varchar(1025) NOT NULL,
       s_img_tag varchar(1025) NOT NULL,
       affi_img_width int(11) DEFAULT 300 NOT NULL,
       affi_img_height int(11) DEFAULT 250 NOT NULL,
-      UNIQUE KEY id (id)
+      app_id int(11) DEFAULT 0 NOT NULL,
+      deleted_at DATE DEFAULT NULL,
+      PRIMARY KEY id (id)
       ){$this->charsetCollate};";
 
     return $sql;
@@ -114,12 +128,12 @@ class InitDatabase
   //詳細（子）データのクエリを取得
   private function createSqlOfDetailTable()
   {
-    $tableName = $this->getTableName('detail');
+    $tableName = $this->getTableName('ad_details');
 
     $sql = "
       CREATE TABLE {$tableName} (
       id int(11) NOT NULL AUTO_INCREMENT,
-      base_id int(11) NOT NULL,
+      ad_id int(11) NOT NULL,
       item_name varchar(1025) DEFAULT '' NOT NULL,
       official_item_link varchar(1025) DEFAULT '' NOT NULL,
       affi_item_link varchar(1025) DEFAULT '' NOT NULL,
@@ -131,21 +145,56 @@ class InitDatabase
       review varchar(3000) DEFAULT '' NOT NULL,
       is_show_url tinyint DEFAULT 1 NOT NULL,
       same_parent tinyint DEFAULT 0 NOT NULL,
-      UNIQUE KEY id (id)
+      PRIMARY KEY id (id)
       ){$this->charsetCollate};";
 
     return $sql;
   }
 
+  private function createSqlOfDetailChartTable()
+  {
+    $tableName = $this->getTableName('ad_details_chart');
+
+    $sql = "
+      CREATE TABLE {$tableName} (
+      id int(11) NOT NULL AUTO_INCREMENT,
+      ad_detail_id int(11) NOT NULL,
+      factor varchar(255) DEFAULT '' NOT NULL,
+      rate double DEFAULT 0 NOT NULL,
+      sort_order int(11) DEFAULT 0 NOT NULL,
+      PRIMARY KEY id (id)
+      ){$this->charsetCollate};";
+
+    return $sql;
+  }
+
+  private function createSqlOfDetailInfoTable()
+  {
+    $tableName = $this->getTableName('ad_details_info');
+
+    $sql = "
+      CREATE TABLE {$tableName} (
+      id int(11) NOT NULL AUTO_INCREMENT,
+      ad_detail_id int(11) NOT NULL,
+      title varchar(255) DEFAULT '' NOT NULL,
+      content varchar(1024) DEFAULT '' NOT NULL,
+      sort_order int(11) DEFAULT 0 NOT NULL,
+      PRIMARY KEY id (id)
+      ){$this->charsetCollate};";
+
+    return $sql;
+
+  }
+
   //ログデータのクエリを取得
   private function createSqlOfLogTable()
   {
-    $tableName = $this->getTableName('log');
+    $tableName = $this->getTableName('logs');
 
     $sql = "
     CREATE TABLE {$tableName} (
     id int(11) NOT NULL AUTO_INCREMENT,
-    item_id int(11) NOT NULL,
+    ad_detail_id int(11) NOT NULL,
     date DATE NOT NULL,
     time TIME NOT NULL,
     post_addr varchar(1025) DEFAULT '' NOT NULL,
@@ -165,7 +214,7 @@ class InitDatabase
     $sql = "
       CREATE TABLE {$tableName} (
       id int(11) NOT NULL AUTO_INCREMENT,
-      item_id int(11) NOT NULL,
+      ad_detail_id int(11) NOT NULL,
       tag_id int(11) NOT NULL,
       PRIMARY KEY id (id)
       ){$this->charsetCollate};";
@@ -196,7 +245,8 @@ class InitDatabase
 
     $sql = "
       CREATE TABLE {$tableName} (
-      app_id int(11) NOT NULL AUTO_INCREMENT,
+      id int(11) NOT NULL AUTO_INCREMENT,
+      name varchar(255) NOT NULL,
       img varchar(255) NOT NULL,
       dev varchar(255) NOT NULL,
       ios_link varchar(1025) NOT NULL,
@@ -208,7 +258,7 @@ class InitDatabase
       article varchar(1025) NOT NULL,
       app_order int(11) NOT NULL,
       app_price int(11) NOT NULL,
-      UNIQUE KEY id (app_id)
+      PRIMARY KEY id (id)
       ){$this->charsetCollate};";
 
     return $sql;
@@ -217,14 +267,15 @@ class InitDatabase
   //ASPのデータのクエリを取得
   private function createSqlOfAspTable()
   {
-    $tableName = $this->getTableName('asp');
+    $tableName = $this->getTableName('asps');
 
     $sql = "
       CREATE TABLE {$tableName} (
       id int(11) NOT NULL AUTO_INCREMENT,
       asp_name varchar(20) DEFAULT '' NOT NULL,
       connect_string varchar(128) DEFAULT '' NOT NULL,
-      UNIQUE KEY id (id)
+      deleted_at DATE DEFAULT NULL,
+      PRIMARY KEY id (id)
       ){$this->charsetCollate};";
 
     return $sql;
@@ -232,12 +283,25 @@ class InitDatabase
 
   private function addAspInitInfo()
   {
-    $this->repository->insert(
-      $this->getTableName('asp'),
+    $this->repository->replace(
+      $this->getTableName('asps'),
       array(
         'id'=>1,
         'asp_name'=>'a8',
         'connect_string'=>'&a8ejpredirect='
+      ),
+      array(
+        '%d',
+        '%s',
+        '%s'
+      )
+    );
+    $this->repository->replace(
+      $this->getTableName('asps'),
+      array(
+        'id'=>2,
+        'asp_name'=>'afb',
+        'connect_string'=>''
       ),
       array(
         '%d',

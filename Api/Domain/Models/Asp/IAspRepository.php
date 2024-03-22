@@ -9,6 +9,6 @@ interface IAspRepository
     public function save(Asp $asp) : AspId;
     public function delete(AspId $aspId) : bool;
     public function getAll():array;
-    public function AspFindById(AspId $aspId);
-    public function AspFindByName(string $aspName) : ?Asp;
+    public function findById(AspId $aspId);
+    public function findByName(string $aspName) : ?Asp;
 }

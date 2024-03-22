@@ -6,7 +6,7 @@
       item-value="id"
       :items="items"
       :label="label"
-      :rules="[v => !!v || '選択してください']"
+      :rules="rules"
       @change="changeValue"
       required
       outlined
@@ -29,8 +29,8 @@ module.exports = {
   },
   props: {
     items: {
-     type: Array,
-     default: []
+      type: Array,
+      default: []
     },
     selectedItem:{
       type: Object,
@@ -39,6 +39,10 @@ module.exports = {
     label:{
       type: String,
       default:'提携ASPを選択'
+    },
+    rules:{
+      type: Array,
+      default: () => [v => !!v || '選択してください']
     }
   }
 }

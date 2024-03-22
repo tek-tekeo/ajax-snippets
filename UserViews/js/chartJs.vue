@@ -24,7 +24,12 @@ module.exports = {
     },
     rchart:{
       type: Array,
-      default:[]
+      default:[
+        {
+          factor:'',
+          value:''
+        }
+      ]
     }
   },
   data () {
@@ -100,6 +105,7 @@ module.exports = {
       }
     },
     chartGenerate(){
+
       // this.options.title.text = this.name + 'の評価';
       this.data.labels = this.rchart.map(r => r.factor);
       this.data.datasets[0].data = this.rchart.map(r => r.value);

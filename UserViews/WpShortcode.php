@@ -1,13 +1,16 @@
 <?php
 namespace AjaxSnippets\UserViews;
 
-use AjaxSnippets\Api\Controllers\DetailController;
+use AjaxSnippets\Api\Controllers\AdDetailController;
 use AjaxSnippets\Api\Controllers\TagLinkController;
+use AjaxSnippets\Api\Infrastructure\QueryService\AffiLinkCommand;
+use AjaxSnippets\Api\Infrastructure\QueryService\AffiLinkQueryService;
 
 class WpShortcode
 {
   private static $singleton;
   private static $di;
+  private static $query;
 
   public static function getInstance($diContainer)
   {
@@ -15,6 +18,7 @@ class WpShortcode
     if (!isset(self::$singleton)) {
         self::$di = $diContainer;
         self::$singleton = new WpShortcode();
+        self::$query = new AffiLinkQueryService();
     }
     return self::$singleton;
   }
@@ -42,26 +46,15 @@ class WpShortcode
   //テキストリンク
   public function afRecord($atts, $content = null) {
     extract( shortcode_atts( array(
-       'id' => '1',
-       'pl' => '0',
-       'ntab' => '0',
-       'btn_color'=>'',
-       're_url'=>'0'
+      'id' => '1',
+      'pl' => '0',
+      'ntab' => '0',
+      'btn_color'=>'',
+      're_url'=>'0'
     ), $atts ) );
 
-$esc_content = htmlspecialchars(do_shortcode($content));
-$rep =<<<EOT
-<affiliate-link 
-@click-record="clickRecord"
-:re-url="{$re_url}"
-content="{$esc_content}"
-item-id="{$id}"
-place="{$pl}"
-btn-color="{$btn_color}"
-ntab="{$ntab}"
->
-</affiliate-link>
-EOT;
+    $cmd = new AffiLinkCommand($id, $pl, $ntab, $btn_color, $re_url, $content);
+    $rep = self::$query->affiLink($cmd);
     $rep .= self::toEditPage($id); 
     return $rep;
   }
@@ -69,21 +62,12 @@ EOT;
   //バナー
   public function afRecordBanner($atts) {
     extract( shortcode_atts( array(
-       'id' => '1',
-       'pl' => '0',
-       'ntab'=> '0'
+      'id' => '1',
+      'pl' => '0',
+      'ntab'=> '0'
     ), $atts ) );
-$rep =<<<EOT
-<affiliate-link 
-@click-record="clickRecord"
-content=""
-item-id="{$id}"
-place="{$pl}"
-ntab="{$ntab}"
-:set-banner="true"
->
-</affiliate-link>
-EOT;
+    $cmd = new AffiLinkCommand($id, $pl, $ntab, '', 0, '', true);
+    $rep = self::$query->affiLink($cmd);
     if ( current_user_can('administrator') || current_user_can('editor') || current_user_can('author')){
       $rep .= "<br>";
     }
@@ -93,23 +77,15 @@ EOT;
 
   public function singleReview($atts){
     extract( shortcode_atts( array(
-       'detail_id' => '1',
-       'color'=>'blue',
-       'title'=>'0',
-       'is_review' => '0'
+      'detail_id' => '1',
+      'color'=>'blue',
+      'title'=>'0',
+      'is_review' => '0'
     ), $atts ) );
-$rep =<<<EOT
-<single-review
-@click-record="clickRecord"
-item-id="{$detail_id}"
-color="{$color}"
-title="{$title}"
-:is-review="{$is_review}"
->
-</single-review>
-EOT;
+    $rep = self::$query->singleReview($detail_id, $color, $title, $is_review);
     $rep .= self::toEditPage($detail_id); 
     return $rep;
+
   }
 
   public function appLinkG($atts) {
@@ -117,7 +93,10 @@ EOT;
     'detail_id' =>'1',
     'noaf' =>'0'
     ), $atts ) );
-    
+    $pl = 'app';
+    $rep = self::$query->appLink($detail_id, (bool)$noaf);
+    $rep .= self::toEditPage($detail_id); 
+    return $rep;
 $rep =<<<EOT
 <app-link
 @click-record="clickRecord"
@@ -129,7 +108,7 @@ EOT;
     $rep .= self::toEditPage($detail_id); 
     return $rep;
   }
- 
+
   //公式サイトのリンクを返すだけ　2022/02/21 ※アフィリエイト機能は廃止
   public function afLink($atts, $content = null):string
   {
@@ -137,7 +116,7 @@ EOT;
       'id' => '1'
     ), $atts ) );
 
-    $detailController = self::$di->get(DetailController::class);
+    $detailController = self::$di->get(AdDetailController::class);
     $req = new \WP_REST_Request();
     $req->set_param('id', $id);
     $res = $detailController->get($req);
@@ -148,7 +127,7 @@ public function tagRanking($atts){
   extract( shortcode_atts( array(
     'id' => '1',
     'is_review'=>'1'
- ), $atts ) );
+), $atts ) );
 
   $tagLinkController = self::$di->get(TagLinkController::class);
   $req = new \WP_REST_Request();
@@ -161,7 +140,7 @@ public function tagRanking($atts){
   }
   $html = do_shortcode($html);
 
- return $html;
+  return $html;
 }
 
   //楽天のアフィリエイトリンク、cocoon利用時のみ
@@ -196,27 +175,31 @@ public function tagRanking($atts){
     'detail_id' => 1,
     'pl'=>0
     ), $atts, 'rakuten' ) );
-  
-    $editLink = self::toEditPage($detail_id); 
-    $detailController = self::$di->get(DetailController::class);
-    $req = new \WP_REST_Request();
-    $req->set_param('id', $detail_id);
-    $info = $detailController->getLinkMaker($req)->data;
 
-$affiText =<<<EOT
-<affiliate-link 
-@click-record="clickRecord"
-content="{$info->name}公式"
-item-id="{$detail_id}"
-place="{$pl}_btn"
-ntab="1"
-:set-banner="false"
->
-</affiliate-link>
-EOT;
-  
+    $editLink = self::toEditPage($detail_id); 
+    $btnContentText = self::$query->getOfficialNameFromAdDetailId($detail_id);
+    $cmd = new AffiLinkCommand($detail_id, $pl, 1, '', 0, $btnContentText.'公式', false);
+    $affiText = self::$query->affiLink($cmd);
+    $cmdBanner = new AffiLinkCommand($detail_id, $pl.'_image', 1, '', 0, $btnContentText.'公式', true);
+    $affiBannerLink = self::$query->affiLink($cmdBanner);
+
+    // $detailController = self::$di->get(AdDetailController::class);
+    // $req = new \WP_REST_Request();
+    // $req->set_param('id', $detail_id);
+    // $info = $detailController->getLinkMaker($req)->data;
+    $id = self::$query->getRakutenIdFromAdDetailId($detail_id);
+
+// <affiliate-link 
+// @click-record="clickRecord"
+// content="{$info->name}公式"
+// item-id="{$detail_id}"
+// place="{$pl}_btn"
+// ntab="1"
+// :set-banner="false"
+// >
+// </affiliate-link>
     // $id = sanitize_shortcode_value($id);
-    $id = $info->rakutenId;
+    // $id = $info->rakutenId;
   
     if ($no) {
       $search = $no;
@@ -335,7 +318,6 @@ EOT;
         }
       }
     }
-  
   
     if ($json) {
       //ジェイソンのリクエスト結果チェック
@@ -563,17 +545,18 @@ EOT;
             $affiText = "[afRecord id={$detail_id} pl={$pl}]".esc_attr($TitleAttr)."[/afRecord]";
             $affiText = do_shortcode($affiText);
 
-$rep =<<<EOT
-<rakuten-banner-link
-img-src="{$ImageUrl}"
-img-alt="{$TitleAttr}"
-img-width="{$ImageWidth}"
-img-height="{$ImageHeight}"
-affi-url="{$info->url}"
-place="{$pl}_pic"
-id="{$detail_id}"
-></rakuten-banner-link>
-EOT;
+// $rep =<<<EOT
+// <rakuten-banner-link
+// img-src="{$ImageUrl}"
+// img-alt="{$TitleAttr}"
+// img-width="{$ImageWidth}"
+// img-height="{$ImageHeight}"
+// affi-url="{$info->url}"
+// place="{$pl}_pic"
+// id="{$detail_id}"
+// ></rakuten-banner-link>
+// EOT;
+
 
             $image_only_class = null;
             if ($image_only) {
@@ -583,7 +566,7 @@ EOT;
                     '<img src="'.esc_url($ImageUrl).'" alt="'.esc_attr($TitleAttr).'" width="'.esc_attr($ImageWidth).'" height="'.esc_attr($ImageHeight).'" class="rakuten-item-thumb-image product-item-thumb-image">'.
                     $moshimo_rakuten_impression_tag.
                   '</a>';
-            $image_link_tag = $rep;
+            $image_link_tag = $affiBannerLink;
             //画像のみ出力する場合
             if ($image_only) {
               return apply_filters('rakuten_product_image_link_tag', $image_link_tag);
@@ -592,17 +575,18 @@ EOT;
             ///////////////////////////////////////////
             // 楽天テキストリンク
             ///////////////////////////////////////////
-$affiText =<<<EOT
-<affiliate-link 
-@click-record="clickRecord"
-content="{$info->imgAlt}"
-item-id="{$detail_id}"
-place="{$pl}_text"
-ntab="1"
-:set-banner="false"
->
-</affiliate-link>
-EOT;
+// $affiText =<<<EOT
+// <affiliate-link 
+// @click-record="clickRecord"
+// content="{$info->imgAlt}"
+// item-id="{$detail_id}"
+// place="{$pl}_text"
+// ntab="1"
+// :set-banner="false"
+// >
+// </affiliate-link>
+// EOT;
+
             $text_only_class = null;
             if ($text_only) {
               $text_only_class = ' rakuten-item-text-only product-item-text-only';

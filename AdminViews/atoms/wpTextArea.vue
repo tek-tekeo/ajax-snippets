@@ -1,6 +1,7 @@
 <template>
     <v-textarea
       outlined
+      :rows="rows"
       :label="label"
       :value="value"
       @input="changeValue"
@@ -21,17 +22,21 @@ module.exports = {
   },
   props: {
     label: {
-     type: String,
-     default: ""
+      type: String,
+      default: ""
     },
     value:{
       type: String,
       default:""
+    },
+    rows:{
+      type: Number,
+      default: 2
     }
   }
 }
 </script>
- 
+
 <style scoped>
 textarea{
     box-shadow: 0 0 0 0 !important;
