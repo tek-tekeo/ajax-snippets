@@ -12,6 +12,8 @@ use AjaxSnippets\Api\Application\DTO\Ad\AdDetailData;
 use AjaxSnippets\Api\Application\DTO\Ad\EditDetailData;
 use AjaxSnippets\Api\Application\DTO\Ad\AffiLinkData;
 use AjaxSnippets\Api\Application\DTO\Ad\AdDetailDataIndex;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailInfo;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailChart;
 
 class AdDetailGetService implements IAdDetailGetService
 {
@@ -68,4 +70,24 @@ class AdDetailGetService implements IAdDetailGetService
     return new AdDetailData($ad, $detail, $adDetailChart, $adDetailInfo, $tags);
   }
 
+  public function getFukki()
+  {
+    $adDetails = $this->adDetailRepository->findByName('');
+    $res = collect($adDetails)->map(function($adDetail){
+      $info = $adDetail->getInfo();
+      $rchart = $adDetail->getRchart();
+      $info = json_decode($info);
+      $rchart = json_decode($rchart);
+      collect($info)->map(function($info) use ($adDetail){
+        $nInfo = new AdDetailInfo(0, $adDetail->getId(), $info->factor, $info->value, 0);
+        $adDetailInfo = $this->adDetailInfoRepository->save($nInfo);
+      });
+
+      collect($rchart)->map(function($info) use ($adDetail){
+        $nChart = new AdDetailChart(0, $adDetail->getId(), $info->factor, $info->value, 0);
+        $adDetailChart = $this->adDetailChartRepository->save($nChart);
+      });
+    })->toArray();
+    return 'ok';
+  }
 }

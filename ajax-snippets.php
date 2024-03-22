@@ -148,6 +148,7 @@ function createEndPoints()
   Route::get('/detail/prev', 'AjaxSnippets\Api\Controllers\AdDetailController@getPrevId');
   Route::get('/detail/prevData', 'AjaxSnippets\Api\Controllers\AdDetailController@getPrevDetail');
   Route::post('/detail/editor', 'AjaxSnippets\Api\Controllers\AdDetailController@getEditorList'); //編集画面に表示する用のリスト
+  Route::get('/fukki', 'AjaxSnippets\Api\Controllers\AdDetailController@fukki'); //編集画面に表示する用のリスト
 
   //タグ関連
   Route::post('/tag', 'AjaxSnippets\Api\Controllers\TagController@create');

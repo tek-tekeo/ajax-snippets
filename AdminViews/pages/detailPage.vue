@@ -5,6 +5,9 @@
         <v-col>
           <router-link to="/detail/create">子要素の新規作成ページへ</router-link>
         </v-col>
+        <v-col>
+          <v-btn @click="fukki">復活</v-btn>
+        </v-col>
       </v-row>
       <v-row>
         <v-col cols="12">
@@ -49,6 +52,10 @@ module.exports = {
     }
   },
   methods:{
+    async fukki(){
+      const res = await axios.get('/fukki');
+      console.log(res.data);
+    },
     async searchDetailText(name){
       try {
       // TODO: URL
