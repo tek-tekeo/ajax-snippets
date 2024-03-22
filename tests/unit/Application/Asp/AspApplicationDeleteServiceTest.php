@@ -17,7 +17,7 @@ class AspApplicationDeleteServiceTest extends WP_UnitTestCase
     global $diContainer;
     parent::setUp();
     $this->aspRepository = $diContainer->get(IAspRepository::class);
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "asp");
+		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "asps");
     $this->aspDeleteService = new AspDeleteService($this->aspRepository);
   }
 

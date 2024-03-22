@@ -77,6 +77,21 @@ class AppUpdateServiceTest extends WP_UnitTestCase
   public function testUpdate()
   {
     $this->appRepository->save($this->app);
+    $this->appRepository->save(new App(
+      new AppId(2),
+      'name2',
+      'img',
+      'dev',
+      'ios link',
+      'android link',
+      'web link',
+      'ios affi link',
+      'android affi link',
+      'web affi link',
+      'article',
+      1,
+      1
+    ));
 
     // アプリの情報
     $req = new \WP_REST_Request();
@@ -104,10 +119,9 @@ class AppUpdateServiceTest extends WP_UnitTestCase
     $this->assertEquals('change-dev', $res->getDeveloper());
     $this->assertEquals(2, $res->getAppOrder());
     
-
-    // 重複した名前は更新しない
+    // 重複した名前がある場合は更新できない
     $req = new \WP_REST_Request();
-    $req->set_param('id', 1);
+    $req->set_param('id', 2);
     $req->set_param('name', 'change-name');
     $req->set_param('img', 'change-image');
     $req->set_param('dev', 'change-dev');
@@ -125,5 +139,26 @@ class AppUpdateServiceTest extends WP_UnitTestCase
     $this->expectExceptionMessage('app name alreappy exists');
     $this->expectExceptionCode(500);
     $appId = $this->appUpdateService->handle($command);
+
+    // 重複した名前でも同じIDなら更新する
+    $req = new \WP_REST_Request();
+    $req->set_param('id', 1);
+    $req->set_param('name', 'change-name');
+    $req->set_param('img', 'change');
+    $req->set_param('dev', 'change-dev');
+    $req->set_param('iosLink', 'iosLink');
+    $req->set_param('androidLink', 'androidLink');
+    $req->set_param('webLink', 'webLink');
+    $req->set_param('iosAffiLink', 'iosAffiLink');
+    $req->set_param('androidAffiLink', 'androidAffiLink');
+    $req->set_param('webAffiLink', 'webAffiLink');
+    $req->set_param('article', 'article');
+    $req->set_param('appOrder', 2);
+    $req->set_param('appPrice', 1000);
+    $command = new AppUpdateCommand($req);
+    $appId = $this->appUpdateService->handle($command);
+    // きちんと更新されたか確認
+    $res = $this->appRepository->findById(new AppId(1));
+    $this->assertEquals('change', $res->getImage());
   }
 }

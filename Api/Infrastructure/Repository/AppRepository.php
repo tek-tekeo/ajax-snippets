@@ -63,9 +63,9 @@ class AppRepository implements IAppRepository
     return null;
   }
 
-  public function findByName(string $name): App | null
+  public function findByName(string $name, AppId $appId): App | null
   {
-    $res = $this->db->get_row("SELECT * FROM ".$this->table." WHERE name='".$name."'");
+    $res = $this->db->get_row("SELECT * FROM ".$this->table." WHERE name='".$name."' AND id<>".$appId->getId());
     if($res == null){
       return null;
     }

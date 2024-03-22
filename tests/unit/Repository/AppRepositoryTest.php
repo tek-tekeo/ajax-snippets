@@ -111,7 +111,7 @@ class AppRepositoryTest extends WP_UnitTestCase
 			1
 		);
 		$this->repository->save($expected);
-		$this->assertEquals($expected, $this->repository->findByName('name'));
+		$this->assertEquals($expected, $this->repository->findByName('name',new AppId(2)));
 	
 	}
 
