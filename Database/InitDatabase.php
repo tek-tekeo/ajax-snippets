@@ -225,7 +225,7 @@ class InitDatabase
   //タグデータのクエリを取得
   private function createSqlOfTagTable()
   {
-    $tableName = $this->getTableName('tag');
+    $tableName = $this->getTableName('tags');
 
     $sql = "
       CREATE TABLE {$tableName} (

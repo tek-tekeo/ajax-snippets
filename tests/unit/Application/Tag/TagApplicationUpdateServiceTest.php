@@ -17,7 +17,7 @@ class TagApplicationUpdateServiceTest extends WP_UnitTestCase
     global $diContainer;
     parent::setUp();
     $this->tagRepository = $diContainer->get(ITagRepository::class);
-    $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "tag");
+    $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . 'tags');
     $this->tagUpdateService = new TagUpdateService($this->tagRepository);
   }
 

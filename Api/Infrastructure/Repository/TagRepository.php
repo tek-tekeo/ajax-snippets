@@ -14,7 +14,7 @@ class TagRepository implements ITagRepository
   {
     global $wpdb;
     $this->db = $wpdb;
-    $this->table = PLUGIN_DB_PREFIX.'tag';
+    $this->table = PLUGIN_DB_PREFIX.'tags';
   }
 
   public function save(Tag $tag) : TagId

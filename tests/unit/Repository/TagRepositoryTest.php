@@ -17,7 +17,7 @@ final class TagRepositoryTest extends WP_UnitTestCase
 	protected function resetDatabase()
 	{
 		global $wpdb;
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "tag");
+		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . 'tags');
 	}
 
   public function testSaveTag()
