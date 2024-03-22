@@ -17,8 +17,8 @@ if (!defined('ABSPATH')) exit; ?>
   <tbody>
   <?php foreach ($info as $item) : ?>
     <tr>
-      <th><?= $item['title']?></th>
-      <td><?= $item['content']?></td>
+      <th><?= wpautop($item['title'])?></th>
+      <td><?= wpautop($item['content'])?></td>
     </tr>
   <?php endforeach; ?>
   <?php if ($adDetail->getIsShowUrl()) : ?>

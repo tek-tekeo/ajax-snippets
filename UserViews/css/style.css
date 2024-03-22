@@ -238,7 +238,7 @@ ul.favo_manga li:after {
   box-shadow: 0 0 0 4px #cbd6ee;
 }
 
-td.singleReview_table p{
+table.singleReview_table p{
   margin-bottom:0;
 }
 table.singleReview_table{

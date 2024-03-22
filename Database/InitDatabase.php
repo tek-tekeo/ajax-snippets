@@ -177,7 +177,7 @@ class InitDatabase
       id int(11) NOT NULL AUTO_INCREMENT,
       ad_detail_id int(11) NOT NULL,
       title varchar(255) DEFAULT '' NOT NULL,
-      content varchar(1024) DEFAULT '' NOT NULL,
+      content text NOT NULL,
       sort_order int(11) DEFAULT 0 NOT NULL,
       PRIMARY KEY id (id)
       ){$this->charsetCollate};";
