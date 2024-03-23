@@ -136,9 +136,9 @@ class AffiLinkQueryService
     string $title = '0',
     bool $isReview = false
   ){
-    $cmd = new AffiLinkCommand($adDetailId);
+    $cmd = new AffiLinkCommand($adDetailId, 'single_review_official_link');
     $text = $this->affiLink($cmd);
-    $cmd = new AffiLinkCommand($adDetailId, 'single_review', 0, '', 0, '', true);
+    $cmd = new AffiLinkCommand($adDetailId, 'single_review_image', 0, '', 0, '', true);
     $banner = $this->affiLink($cmd);
     $adDetail = $this->adDetailRepo->findById(new AdDetailId($adDetailId));
     $adDetailInfo = $this->adDetailInfoRepo->findByAdDetailId($adDetail->getId());
