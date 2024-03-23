@@ -12,7 +12,7 @@ use AjaxSnippets\Api\Infrastructure\Repository\AspRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\AppRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\AdDetailInfoRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\AdDetailChartRepository;
-use AjaxSnippets\UserViews\Components\AppLinkComponent;
+use AjaxSnippets\Views\UserViews\Components\AppLinkComponent;
 
 class AffiLinkQueryService
 {
@@ -47,7 +47,7 @@ class AffiLinkQueryService
     $content = $this->getContent($cmd, $ad, $adDetail);
     // アフィリエイトリンクを生成、返却する
     ob_start(); // 出力バッファリングを開始
-    require dirname(__FILE__, 4) . '/UserViews/components/AffiLinkComponent.php';
+    require dirname(__FILE__, 4) . '/Views/UserViews/components/AffiLinkComponent.php';
     $html = ob_get_clean(); 
     return $this->wrapClickLog(
       $adDetail->getId(),
@@ -158,7 +158,7 @@ class AffiLinkQueryService
     })->toArray();
 
     ob_start(); // 出力バッファリングを開始
-    require dirname(__FILE__, 4) . '/UserViews/components/SingleReviewComponent.php';
+    require dirname(__FILE__, 4) . '/Views/UserViews/components/SingleReviewComponent.php';
     return ob_get_clean(); 
   }
 

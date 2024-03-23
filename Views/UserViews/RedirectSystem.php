@@ -1,6 +1,6 @@
 <?php
 
-namespace AjaxSnippets\UserViews;
+namespace AjaxSnippets\Views\UserViews;
 
 
 use AjaxSnippets\Api\Domain\Models\Ad\IAdRepository;

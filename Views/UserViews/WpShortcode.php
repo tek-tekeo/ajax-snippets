@@ -1,5 +1,5 @@
 <?php
-namespace AjaxSnippets\UserViews;
+namespace AjaxSnippets\Views\UserViews;
 
 use AjaxSnippets\Api\Controllers\AdDetailController;
 use AjaxSnippets\Api\Controllers\TagLinkController;
@@ -273,7 +273,7 @@ public function tagRanking($atts){
     $transient_bk_id = get_rakuten_api_transient_bk_id($cache_id);
     $json_cache = get_transient( $transient_id );
     //キャッシュ更新間隔（randで次回の同時読み込みを防ぐ）
-    $cache_expiration = DAY_IN_SECONDS * $days + (rand(0, 60) * 60);
+    $cache_expiration = DAY_IN_SECONDS * $days + (random_int(0, 60) * 60);
   
     //キャッシュがある場合はキャッシュを利用する
     if ($json_cache) {

@@ -22,12 +22,12 @@ axios.defaults.baseURL = WP_API_Settings.root+'?rest_route=/ajax_snippets_path/v
     el:'#content-in', // 範囲を広すぎると、他のjavascriptに干渉してしまう　　　HTMLElementをそのままelプロパティに渡す　
     // vuetify: new Vuetify(),
     components: {
-      'affiliateLink': httpVueLoader('/wp-content/plugins/ajax-snippets/UserViews/js/affiliateLink.vue'),
-      'rakutenBannerLink': httpVueLoader('/wp-content/plugins/ajax-snippets/UserViews/js/rakutenBannerLink.vue'),
-      'singleReview': httpVueLoader('/wp-content/plugins/ajax-snippets/UserViews/js/singleReview.vue'),
-      'appLink': httpVueLoader('/wp-content/plugins/ajax-snippets/UserViews/js/appLink.vue'),
-      'chartJs': httpVueLoader('/wp-content/plugins/ajax-snippets/UserViews/js/chartJs.vue'),
-      'clickLog': httpVueLoader('/wp-content/plugins/ajax-snippets/UserViews/js/clickLog.vue'),
+      'affiliateLink': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/UserViews/js/affiliateLink.vue'),
+      'rakutenBannerLink': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/UserViews/js/rakutenBannerLink.vue'),
+      'singleReview': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/UserViews/js/singleReview.vue'),
+      'appLink': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/UserViews/js/appLink.vue'),
+      'chartJs': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/UserViews/js/chartJs.vue'),
+      'clickLog': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/UserViews/js/clickLog.vue'),
     },
     methods:{
       async clickRecord(logData) {

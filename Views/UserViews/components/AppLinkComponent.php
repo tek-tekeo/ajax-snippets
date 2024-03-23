@@ -1,5 +1,5 @@
 <?php
-namespace AjaxSnippets\UserViews\Components;
+namespace AjaxSnippets\Views\UserViews\Components;
 
 use AjaxSnippets\Api\Domain\Models\App\App;
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
