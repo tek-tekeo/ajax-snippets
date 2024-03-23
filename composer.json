@@ -9,7 +9,7 @@
             "AjaxSnippets\\Api\\" : "Api/",
             "AjaxSnippets\\Database\\" : "Database/",
             "AjaxSnippets\\UserViews\\" : "UserViews/",
-            "AjaxSnippets\\EditorViews\\" : "EditorViews/"
+            "AjaxSnippets\\Views\\" : "Views/"
         }
     },
     "require": {

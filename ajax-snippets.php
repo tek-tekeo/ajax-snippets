@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) {
 
 use AjaxSnippets\Route;
 use AjaxSnippets\Database\InitDatabase;
-use AjaxSnippets\EditorViews\AjaxSnippetsMce;
+use AjaxSnippets\Views\EditorViews\AjaxSnippetsMce;
 use AjaxSnippets\UserViews\RedirectSystem;
 use AjaxSnippets\UserViews\WpShortcode;
 

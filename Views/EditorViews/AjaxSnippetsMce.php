@@ -1,6 +1,6 @@
 <?php
 
-namespace AjaxSnippets\EditorViews;
+namespace AjaxSnippets\Views\EditorViews;
 
 class AjaxSnippetsMce
 {

@@ -6,7 +6,7 @@
     editor.addCommand('mce_ajax_snippets', function () {
       tinymce.activeEditor.windowManager.open({
         title: "文字入力で案件を抽出",
-        url: '../wp-content/plugins/ajax-snippets/EditorViews/mce-ajax-snippets.php',
+        url: '../wp-content/plugins/ajax-snippets/Views/EditorViews/mce-ajax-snippets.php',
         width: 600,
         height: 500,
       }, {

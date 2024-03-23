@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . '/../../../../wp-load.php';; ?>
+require_once dirname(__FILE__) . '/../../../../../wp-load.php';; ?>
 <!DOCTYPE html>
 <html lang="ja">
 
