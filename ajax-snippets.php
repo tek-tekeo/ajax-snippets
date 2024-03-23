@@ -12,9 +12,9 @@ if (!defined('ABSPATH')) {
 
 use AjaxSnippets\Route;
 use AjaxSnippets\Database\InitDatabase;
-use AjaxSnippets\EditorViews\AjaxSnippetsMce;
-use AjaxSnippets\UserViews\RedirectSystem;
-use AjaxSnippets\UserViews\WpShortcode;
+use AjaxSnippets\Views\EditorViews\AjaxSnippetsMce;
+use AjaxSnippets\Views\UserViews\RedirectSystem;
+use AjaxSnippets\Views\UserViews\WpShortcode;
 
 require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 require_once dirname(__FILE__) . "/loader.php";
@@ -63,7 +63,7 @@ class AjaxSneppets
       'ajax-snippets',        /* ページを開いたときのURL */
       /* メニューに紐づく画面を描画するcallback関数 */
       function () {
-        require_once dirname(__FILE__) . '/AdminViews/AdminPage.php';
+        require_once dirname(__FILE__) . '/Views/AdminViews/AdminPage.php';
       },
       'dashicons-format-gallery', /* アイコン see: https://developer.wordpress.org/resource/dashicons/#awards */
       6                       /* 表示位置のオフセット */
@@ -80,7 +80,7 @@ class AjaxSneppets
 
   public function registerCSS()
   {
-    wp_enqueue_style('ajax-snippets-style', plugins_url('ajax-snippets/UserViews/css/style.css'));
+    wp_enqueue_style('ajax-snippets-style', plugins_url('ajax-snippets/Views/UserViews/css/style.css'));
     // wp_enqueue_style( 'google-font', 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
     // wp_enqueue_style( 'material-design-icon', 'https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css');
     // wp_enqueue_style( 'vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css');
@@ -88,13 +88,13 @@ class AjaxSneppets
 
   private function registerJS()
   {
-    wp_enqueue_script('wp-api-path', plugins_url('ajax-snippets/UserViews/wp_api_path.php'), array(), false, false);
+    wp_enqueue_script('wp-api-path', plugins_url('ajax-snippets/Views/UserViews/wp_api_path.php'), array(), false, false);
     wp_enqueue_script('vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js', array(), false, true);
     wp_enqueue_script('chartjs', '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js', ['jquery', 'vue'], date('U'), true);
     wp_enqueue_script('vue-loader', 'https://unpkg.com/http-vue-loader', array('vue'), false, true);
     wp_enqueue_script('axios', 'https://unpkg.com/axios/dist/axios.min.js', array('vue', 'vue-loader', 'wp-api-path'), false, true);
     // wp_enqueue_script('vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js', array('vue', 'vue-loader', 'axios', 'wp-api-path'), false, true);
-    wp_enqueue_script('vue-log-record', plugins_url('ajax-snippets/UserViews/js/main.js'), ['axios', 'vue-loader', 'vue', 'wp-api-path'], false, true);
+    wp_enqueue_script('vue-log-record', plugins_url('ajax-snippets/Views/UserViews/js/main.js'), ['axios', 'vue-loader', 'vue', 'wp-api-path'], false, true);
   }
 } // end of class
 

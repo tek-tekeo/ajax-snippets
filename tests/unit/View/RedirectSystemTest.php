@@ -1,6 +1,6 @@
 <?php
-use AjaxSnippets\UserViews\RedirectSystem;
-use AjaxSnippets\UserViews\RedirectCommand;
+use AjaxSnippets\Views\UserViews\RedirectSystem;
+use AjaxSnippets\Views\UserViews\RedirectCommand;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetail;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailChart;
