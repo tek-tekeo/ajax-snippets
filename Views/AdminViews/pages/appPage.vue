@@ -24,7 +24,7 @@
 <script>
 module.exports = {
   components: {
-      'SearchList': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/searchList.vue')
+      'SearchList': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/searchList.vue')
     },
   data(){
     return {

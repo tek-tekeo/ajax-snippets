@@ -53,9 +53,9 @@
 <script>
 module.exports = {
   components: {
-    'AnalizeAffiCode': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/analizeAffiCode.vue'),
-    'BaseRegisterTable': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/baseRegisterTable.vue'),
-    'WpTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpTextBox.vue'),
+    'AnalizeAffiCode': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/analizeAffiCode.vue'),
+    'BaseRegisterTable': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/baseRegisterTable.vue'),
+    'WpTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/atoms/wpTextBox.vue'),
   },
   data(){
     return {

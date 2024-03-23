@@ -50,9 +50,9 @@
 <script>
 module.exports = {
   components: {
-    'BaseRegisterTable': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/baseRegisterTable.vue'),
-    'AnalizeAffiCode': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/analizeAffiCode.vue'),
-    'ConfirmDialog': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/confirmDialog.vue')
+    'BaseRegisterTable': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/baseRegisterTable.vue'),
+    'AnalizeAffiCode': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/analizeAffiCode.vue'),
+    'ConfirmDialog': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/confirmDialog.vue')
   },
   data(){
     return {

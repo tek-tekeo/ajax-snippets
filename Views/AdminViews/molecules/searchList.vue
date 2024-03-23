@@ -32,7 +32,7 @@
 <script>
 module.exports = {
   components: {
-    'WpSearchTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpSearchTextBox.vue'),
+    'WpSearchTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/atoms/wpSearchTextBox.vue'),
   },
   data(){
     return {

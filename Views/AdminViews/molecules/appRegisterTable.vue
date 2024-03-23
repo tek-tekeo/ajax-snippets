@@ -107,9 +107,9 @@
 <script>
 module.exports = {
   components: {
-    'WpTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpTextBox.vue'),
-    'WpMediaUpload': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/wpMediaUpload.vue'),
-    'WpTextArea': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpTextArea.vue'),
+    'WpTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/atoms/wpTextBox.vue'),
+    'WpMediaUpload': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/wpMediaUpload.vue'),
+    'WpTextArea': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/atoms/wpTextArea.vue'),
   },
   data(){
     return {

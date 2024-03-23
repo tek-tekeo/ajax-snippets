@@ -125,13 +125,13 @@
 <script>
 module.exports = {
   components: {
-    'WpTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpTextBox.vue'),
-    'WpSelectBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpSelectBox.vue'),
-    'WpRadioBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpRadioBox.vue'),
-    'WpMultiList': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/wpMultiList.vue'),
-    'WpMediaUpload': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/wpMediaUpload.vue'),
-    'WpCheckBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpCheckBox.vue'),
-    'WpTextArea': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpTextArea.vue'),
+    'WpTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/atoms/wpTextBox.vue'),
+    'WpSelectBox': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/atoms/wpSelectBox.vue'),
+    'WpRadioBox': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/atoms/wpRadioBox.vue'),
+    'WpMultiList': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/wpMultiList.vue'),
+    'WpMediaUpload': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/wpMediaUpload.vue'),
+    'WpCheckBox': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/atoms/wpCheckBox.vue'),
+    'WpTextArea': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/atoms/wpTextArea.vue'),
   },
   data(){
     return {

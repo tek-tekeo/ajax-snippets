@@ -90,7 +90,7 @@ require_once dirname(__FILE__) . '/../../../../wp-load.php';; ?>
     el: '#vue-edit-page',
     vuetify: new Vuetify(),
     components: {
-      'WpSearchTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpSearchTextBox.vue')
+      'WpSearchTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/atoms/wpSearchTextBox.vue')
     },
     data() {
       return {

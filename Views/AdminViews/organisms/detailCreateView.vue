@@ -49,7 +49,7 @@
 <script>
 module.exports = {
   components: {
-    'DetailRegisterTable': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/detailRegisterTable.vue'),
+    'DetailRegisterTable': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/detailRegisterTable.vue'),
   },
   data(){
     return {

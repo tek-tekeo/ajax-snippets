@@ -41,7 +41,7 @@
 <script>
 module.exports = {
   components: {
-    'WpTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpTextBox.vue')
+    'WpTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/atoms/wpTextBox.vue')
   },
   methods:{
     createCustomMedia(){

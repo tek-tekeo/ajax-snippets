@@ -38,7 +38,7 @@
 <script>
 module.exports = {
   components: {
-    'AppRegisterTable': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/appRegisterTable.vue'),
+    'AppRegisterTable': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/appRegisterTable.vue'),
   },
   data(){
     return {

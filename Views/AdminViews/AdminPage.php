@@ -41,51 +41,51 @@ if (!defined('ABSPATH')) exit; ?>
 <script>
   const routes = [{
       path: '/',
-      component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/pages/logPage.vue')
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/pages/logPage.vue')
     },
     {
       path: '/parent',
-      component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/pages/parentPage.vue')
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/pages/parentPage.vue')
     },
     {
       path: '/parent/create',
-      component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/organisms/baseCreateView.vue')
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/organisms/baseCreateView.vue')
     },
     {
       path: '/parent/update/:id',
-      component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/organisms/baseUpdateView.vue')
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/organisms/baseUpdateView.vue')
     },
     {
       path: '/detail',
-      component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/pages/detailPage.vue')
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/pages/detailPage.vue')
     },
     {
       path: '/detail/create',
-      component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/organisms/detailCreateView.vue')
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/organisms/detailCreateView.vue')
     },
     {
       path: '/detail/update/:id',
-      component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/organisms/detailUpdateView.vue')
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/organisms/detailUpdateView.vue')
     },
     {
       path: '/tag',
-      component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/pages/tagPage.vue')
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/pages/tagPage.vue')
     },
     {
       path: '/asp',
-      component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/pages/aspPage.vue')
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/pages/aspPage.vue')
     },
     {
       path: '/app',
-      component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/pages/appPage.vue')
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/pages/appPage.vue')
     },
     {
       path: '/app/create',
-      component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/organisms/appCreateView.vue')
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/organisms/appCreateView.vue')
     },
     {
       path: '/app/update/:id',
-      component: httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/organisms/appUpdateView.vue')
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/organisms/appUpdateView.vue')
     },
   ];
 

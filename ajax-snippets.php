@@ -63,7 +63,7 @@ class AjaxSneppets
       'ajax-snippets',        /* ページを開いたときのURL */
       /* メニューに紐づく画面を描画するcallback関数 */
       function () {
-        require_once dirname(__FILE__) . '/AdminViews/AdminPage.php';
+        require_once dirname(__FILE__) . '/Views/AdminViews/AdminPage.php';
       },
       'dashicons-format-gallery', /* アイコン see: https://developer.wordpress.org/resource/dashicons/#awards */
       6                       /* 表示位置のオフセット */

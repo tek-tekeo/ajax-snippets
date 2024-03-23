@@ -6,7 +6,7 @@
       >
         <v-col>
           <v-btn
-            @click="createNewAsp"
+            @click="createNewTag"
             color="primary"
           >
             追加
@@ -14,15 +14,15 @@
         </v-col>
         <v-col>
           <wp-text-box
-            label="ASP名"
-            v-model="aspName"
+            label="タグ名"
+            v-model="tagName"
           >
           </wp-text-box>
           </v-col>
         <v-col>
           <wp-text-box
-            label="接続子"
-            v-model="connectString"
+            label="順番"
+            v-model="tagOrder"
           >
           </wp-text-box>
         </v-col>
@@ -30,34 +30,32 @@
       <v-row>
         <v-col></v-col>
         <v-col>ID</v-col>
-        <v-col>Asp名</v-col>
-        <v-col>接続子</v-col>
+        <v-col>Tag名</v-col>
+        <v-col>順番</v-col>
       </v-row>
-      <v-row v-for="asp in asps" :key="'asp-'+asp.id">
+      <v-row v-for="t in tags" :key="'tag-'+t.id">
         <v-col>
           <v-btn
-            @click="updateAsp(asp.id)"
+            @click="updateTag(t.id)"
             dark
             color="teal"
           >
             更新する
           </v-btn>
           <confirm-dialog
-            @execute="deleteAsp(asp.id)"
+            @execute="deleteTag(t.id)"
           ></confirm-dialog>
         </v-col>
-        <v-col>{{asp.id}}</v-col>
+        <v-col>{{t.id}}</v-col>
         <v-col>
           <wp-text-box
-            label=""
-            v-model="asp.aspName"
+            v-model="t.tagName"
           >
-          </wp-text-box>   
+          </wp-text-box>
         </v-col>
         <v-col>
           <wp-text-box
-            label=""
-            v-model="asp.connectString"
+            v-model="t.tagOrder"
           >
           </wp-text-box>
         </v-col>
@@ -66,49 +64,47 @@
 </template>
 
 <script>
-const confirmDialogVue = require('../molecules/confirmDialog.vue');
-
 module.exports = {
   components: {
-    'WpTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpTextBox.vue'),
-    'WpSelectBox': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/atoms/wpSelectBox.vue'),
-    'ConfirmDialog': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/confirmDialog.vue'),
+    'WpTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/atoms/wpTextBox.vue'),
+    'WpSelectBox': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/atoms/wpSelectBox.vue'),
+    'ConfirmDialog': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/confirmDialog.vue'),
   },
   data() {
     return {
-      asps:[],
-      aspName:'',
-      connectString:'',
+      tags:[],
+      tagName:'',
+      tagOrder:0,
     }
   },
   async created(){
     try {
       // TODO: URL
-      const res = await axios.get('asp');
-      this.asps = res.data;
+      const res = await axios.get('tag');
+      this.tags = res.data;
     } catch (err) {
       // TODO: エラー処理
       console.log(err);
     }
   },
   methods:{
-    async createNewAsp(){
-      const res = await axios.post('asp',{
-        'aspName':this.aspName,
-        'connectString':this.connectString
+    async createNewTag(){
+      const res = await axios.post('tag',{
+        'tagName':this.tagName,
+        'tagOrder':this.tagOrder
       });
-      await this.toast(res, '追加');
+      await this.toast(res, '新規登録');
     },
-    async updateAsp(id){
-      const asp = this.asps.find((asp) => asp.id == id);
-        const res = await axios.put('asp/' + asp.id,{
-          'aspName':asp.aspName,
-          'connectString':asp.connectString
+    async updateTag(id){
+      const tag = this.tags.find((tag) => tag.id == id);
+        const res = await axios.put('tag/' + tag.id,{
+          'tagName':tag.tagName,
+          'tagOrder':tag.tagOrder
         });
         await this.toast(res, '更新');
     },
-    async deleteAsp(id){
-      const res = await axios.delete('asp/' + id);
+    async deleteTag(id){
+      const res = await axios.delete('tag/' + id);
       await this.toast(res, '削除');
     },
     async toast(res, action){
@@ -120,8 +116,8 @@ module.exports = {
           type: 'success'
         }
         this.$toasted.show(action + '完了',options);
-        const newAsps = await axios.get('asp');
-        this.asps = newAsps.data;
+        const newTags = await axios.get('tag');
+        this.tags = newTags.data;
         return true;
       }else{
         var options = {

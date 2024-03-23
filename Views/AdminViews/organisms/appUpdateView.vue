@@ -41,8 +41,8 @@
 <script>
 module.exports = {
   components: {
-    'AppRegisterTable': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/appRegisterTable.vue'),
-    'ConfirmDialog': httpVueLoader('/wp-content/plugins/ajax-snippets/AdminViews/molecules/confirmDialog.vue')
+    'AppRegisterTable': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/appRegisterTable.vue'),
+    'ConfirmDialog': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/confirmDialog.vue')
   },
   data(){
     return {
