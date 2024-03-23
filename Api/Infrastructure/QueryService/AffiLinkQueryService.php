@@ -138,7 +138,7 @@ class AffiLinkQueryService
   ){
     $cmd = new AffiLinkCommand($adDetailId);
     $text = $this->affiLink($cmd);
-    $cmd = new AffiLinkCommand($adDetailId, 'no_set', 0, '', 0, '', true);
+    $cmd = new AffiLinkCommand($adDetailId, 'single_review', 0, '', 0, '', true);
     $banner = $this->affiLink($cmd);
     $adDetail = $this->adDetailRepo->findById(new AdDetailId($adDetailId));
     $adDetailInfo = $this->adDetailInfoRepo->findByAdDetailId($adDetail->getId());
