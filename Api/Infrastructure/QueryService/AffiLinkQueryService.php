@@ -6,6 +6,7 @@ use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetail;
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
 use AjaxSnippets\Api\Domain\Models\Ad\AdId;
 use AjaxSnippets\Api\Domain\Models\Asp\Asp;
+use AjaxSnippets\Api\Domain\Models\Asp\AspId;
 use AjaxSnippets\Api\Infrastructure\Repository\AdRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\AdDetailRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\AspRepository;
@@ -16,28 +17,31 @@ use AjaxSnippets\Views\UserViews\Components\AppLinkComponent;
 
 class AffiLinkQueryService
 {
-  private $adRepo;
-  private $adDetailRepo;
-  private $aspRepo;
-  private $appRepo;
+  private $adRepository;
+  private $adDetailRepository;
+  private $aspRepository;
+  private $appRepository;
   private $adDetailInfoRepo;
   private $adDetailChartRepo;
 
   public function __construct(){
-    $this->adRepo = new AdRepository();
-    $this->adDetailRepo = new AdDetailRepository();
-    $this->aspRepo = new AspRepository();
-    $this->appRepo = new AppRepository();
+    $this->adRepository = new AdRepository();
+    $this->adDetailRepository = new AdDetailRepository();
+    $this->aspRepository = new AspRepository();
+    $this->appRepository = new AppRepository();
     $this->adDetailInfoRepo = new AdDetailInfoRepository();
     $this->adDetailChartRepo = new AdDetailChartRepository();
   }
 
   // アフィリエイトテキスト、バナーの生成
   public function affiLink(AffiLinkCommand $cmd){
-    $adDetail = $this->adDetailRepo->findById(new AdDetailId($cmd->getId()));
-    $ad = $this->adRepo->findById($adDetail->getAdId());
-    $asp = $this->aspRepo->findById($ad->getAspId());
-
+    $adDetail = $this->adDetailRepository->findById(new AdDetailId($cmd->getId()));
+    $ad = $this->adRepository->findById($adDetail->getAdId());
+    try{
+      $asp = $this->aspRepository->findById($ad->getAspId());
+    }catch(\Exception $e){
+      $asp = new Asp(new AspId(0), '未設定', '');
+    }
     // URLを返す場合
     if($cmd->getReUrl()){
       return $adDetail->getOfficialItemLink();
@@ -117,9 +121,9 @@ class AffiLinkQueryService
   // スマホアプリリンクの生成
   public function appLink(int $adDetailId, bool $noAffi = false)
   {
-    $adDetail = $this->adDetailRepo->findById(new AdDetailId($adDetailId));
-    $ad = $this->adRepo->findById($adDetail->getAdId());
-    $app = $this->appRepo->findById($ad->getAppId());
+    $adDetail = $this->adDetailRepository->findById(new AdDetailId($adDetailId));
+    $ad = $this->adRepository->findById($adDetail->getAdId());
+    $app = $this->appRepository->findById($ad->getAppId());
     $html = (new AppLinkComponent($app, $ad, $noAffi))->getAppLinkCode();
     return $this->wrapClickLog(
       $adDetail->getId(),
@@ -140,7 +144,7 @@ class AffiLinkQueryService
     $text = $this->affiLink($cmd);
     $cmd = new AffiLinkCommand($adDetailId, 'single_review_image', 0, '', 0, '', true);
     $banner = $this->affiLink($cmd);
-    $adDetail = $this->adDetailRepo->findById(new AdDetailId($adDetailId));
+    $adDetail = $this->adDetailRepository->findById(new AdDetailId($adDetailId));
     $adDetailInfo = $this->adDetailInfoRepo->findByAdDetailId($adDetail->getId());
     $info = collect($adDetailInfo)->map(function($info){
       return [
@@ -163,13 +167,13 @@ class AffiLinkQueryService
   }
 
   public function getRakutenIdFromAdDetailId(int $adDetailId){
-    $adDetail = $this->adDetailRepo->findById(new AdDetailId($adDetailId));
+    $adDetail = $this->adDetailRepository->findById(new AdDetailId($adDetailId));
     return $adDetail->getRakutenId();
   }
 
   public function getOfficialNameFromAdDetailId(int $adDetailId){
-    $adDetail = $this->adDetailRepo->findById(new AdDetailId($adDetailId));
-    $ad = $this->adRepo->findById($adDetail->getAdId());
+    $adDetail = $this->adDetailRepository->findById(new AdDetailId($adDetailId));
+    $ad = $this->adRepository->findById($adDetail->getAdId());
     return $ad->getName();
   }
 

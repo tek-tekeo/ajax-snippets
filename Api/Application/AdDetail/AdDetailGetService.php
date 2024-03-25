@@ -14,6 +14,8 @@ use AjaxSnippets\Api\Application\DTO\Ad\AffiLinkData;
 use AjaxSnippets\Api\Application\DTO\Ad\AdDetailDataIndex;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailInfo;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailChart;
+use AjaxSnippets\Api\Domain\Models\Asp\Asp;
+use AjaxSnippets\Api\Domain\Models\Asp\AspId;
 
 class AdDetailGetService implements IAdDetailGetService
 {
@@ -49,7 +51,11 @@ class AdDetailGetService implements IAdDetailGetService
     $details = $this->adDetailRepository->findByName($name);
     return collect($details)->map(function($adDetail){
       $ad = $this->adRepository->findById($adDetail->getAdId());
-      $asp = $this->aspRepository->findById($ad->getAspId());
+      try{
+        $asp = $this->aspRepository->findById($ad->getAspId());
+      }catch(\Exception $e){
+        $asp = new Asp(new AspId(0), '未設定', '');
+      }
       return new EditDetailData($ad, $adDetail, $asp);
     })->toArray();
 

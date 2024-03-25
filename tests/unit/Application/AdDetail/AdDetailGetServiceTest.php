@@ -50,6 +50,7 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
     $this->tagLinkRepository = $diContainer->get(ITagLinkRepository::class);
     $this->adDetailChartRepository = $diContainer->get(IAdDetailChartRepository::class);
     $this->adDetailInfoRepository = $diContainer->get(IAdDetailInfoRepository::class);
+		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "asps");
 		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
     $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details_chart");
     $wpdb->insert(PLUGIN_DB_PREFIX . 'ad_details_chart', [
@@ -230,11 +231,34 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
 
   public function testGetEditorAnkenList()
   {
+    global $wpdb;
+		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "asps");
+
     $asp = new Asp(
       new AspId(1),
       'aspName',
       'link'
     );
+    $actualAdDetailData = $this->adDetailGetService->getEditorAnkenList('');
+    $expected = [
+      new EditDetailData(
+        $this->ad,
+        new AdDetail(new AdDetailId(1), ...$this->columns),
+        new Asp(new AspId(0), '未設定', '')
+      ),
+      new EditDetailData(
+        $this->ad,
+        new AdDetail(new AdDetailId(2), ...$this->columns),
+        new Asp(new AspId(0), '未設定', '')
+      ),
+      new EditDetailData(
+        $this->ad,
+        new AdDetail(new AdDetailId(3), ...$this->columns),
+        new Asp(new AspId(0), '未設定', '')
+      )
+    ];
+    $this->assertEquals($expected, $actualAdDetailData);
+
     $this->aspRepository->save($asp);
     $actualAdDetailData = $this->adDetailGetService->getEditorAnkenList('');
 
