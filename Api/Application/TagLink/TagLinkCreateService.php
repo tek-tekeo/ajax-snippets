@@ -10,10 +10,10 @@ use AjaxSnippets\Api\Application\TagLink\TagLinkCreateCommand;
 
 class TagLinkCreateService implements ITagLinkCreateService
 {
-  public function __construct(private ITagLinkRepository $tagLinkRepository)
-  {
-    $this->tagLinkRepository = $tagLinkRepository;
-  }
+
+  public function __construct(
+    private ITagLinkRepository $tagLinkRepository)
+  {}
 
   public function handle(TagLinkCreateCommand $cmd): TagLinkId
   {

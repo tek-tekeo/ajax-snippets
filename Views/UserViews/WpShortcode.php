@@ -5,6 +5,7 @@ use AjaxSnippets\Api\Controllers\AdDetailController;
 use AjaxSnippets\Api\Controllers\TagLinkController;
 use AjaxSnippets\Api\Infrastructure\QueryService\AffiLinkCommand;
 use AjaxSnippets\Api\Infrastructure\QueryService\AffiLinkQueryService;
+use AjaxSnippets\Api\Application\TagLink\TagLinkGetService;
 
 class WpShortcode
 {
@@ -129,14 +130,11 @@ public function tagRanking($atts){
     'is_review'=>'1'
 ), $atts ) );
 
-  $tagLinkController = self::$di->get(TagLinkController::class);
-  $req = new \WP_REST_Request();
-  $req->set_param('tagId', $id);
-  $res = $tagLinkController->getTagRanking($req)->data; //タグランキングのデータをゲット
-
+  $tagLinkGetService = self::$di->get(TagLinkGetService::class);
+  $res = $tagLinkGetService->getTagRanking((string)$id);
   foreach($res as $r){
     $html .= "<h3>".$r['name']."</h3>";
-    $html .= "[singleReview detail_id=".$r['itemId']." is_review=".$is_review."]";
+    $html .= "[singleReview detail_id=".$r['adDetailId']." is_review=".$is_review."]";
   }
   $html = do_shortcode($html);
 

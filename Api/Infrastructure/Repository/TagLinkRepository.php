@@ -46,7 +46,7 @@ class TagLinkRepository implements ITagLinkRepository
   {
     $res = $this->db->replace(
       $this->table,
-     $tagLink->entity()
+      $tagLink->entity()
     );
     return new TagLinkId($this->db->insert_id);
   }
@@ -81,5 +81,14 @@ class TagLinkRepository implements ITagLinkRepository
       return $r->ad_detail_id;
     })->toArray();
 
+  }
+
+  public function getAdDetailIdsByTagString(string $ids) : array
+  {
+    $sql = "SELECT DISTINCT ad_detail_id FROM ".$this->table." where tag_id in (".$ids.") group by ad_detail_id having count(*) >= ".count(explode(",", $ids));
+    $res = $this->db->get_results($sql);
+    return collect($res)->map(function($r){
+      return $r->ad_detail_id;
+    })->toArray();
   }
 }
