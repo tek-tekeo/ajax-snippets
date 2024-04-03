@@ -132,12 +132,12 @@ public function tagRanking($atts){
 
   $tagLinkGetService = self::$di->get(TagLinkGetService::class);
   $res = $tagLinkGetService->getTagRanking((string)$id);
+
   foreach($res as $r){
     $html .= "<h3>".$r['name']."</h3>";
-    $html .= "[singleReview detail_id=".$r['adDetailId']." is_review=".$is_review."]";
+    $html .= self::toEditPage($r['adDetailId']); 
+    $html .= self::$query->singleReview($r['adDetailId'], '', '', 1);
   }
-  $html = do_shortcode($html);
-
   return $html;
 }
 

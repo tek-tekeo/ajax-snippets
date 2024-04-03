@@ -33,6 +33,6 @@ if (!defined('ABSPATH')) exit; ?>
 </table>
 <?php if ($isReview) : ?>
 <span>
-<?= wpautop($adDetail->getReview()) ?>
+<?= wpautop(do_shortcode($adDetail->getReview())) ?>
 </span>
 <?php endif; ?>
