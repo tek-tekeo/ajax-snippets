@@ -92,7 +92,7 @@ class AffiLinkQueryService
     if($cmd->getBtnColor()){
       $color = $cmd->getBtnColor();
       $btn =<<<EOT
-        <button class="ajax_btn $color-ajax_btn'">{$content}</button>
+        <button class="ajax_btn $color-ajax_btn">{$content}</button>
       EOT;
       return $btn;
     }else{
