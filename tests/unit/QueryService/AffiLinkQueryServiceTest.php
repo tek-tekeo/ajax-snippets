@@ -86,7 +86,7 @@ final class AffiLinkQueryServiceTest extends WP_UnitTestCase
       href="https://px.a8.net/svt/ejp?a8mat=3TNU86+EEKKOI+4VTQ+C0B9T"
       target="_blank"
     >
-      <button class="ajax_btn blue-ajax_btn'">記載する内容</button>
+      <button class="ajax_btn blue-ajax_btn">記載する内容</button>
     </a>
     <img
       border="0"
@@ -113,7 +113,7 @@ final class AffiLinkQueryServiceTest extends WP_UnitTestCase
       href="https://px.a8.net/svt/ejp?a8mat=3TNU86+EEKKOI+4VTQ+C0B9T"
       target="_self"
     >
-      <button class="ajax_btn red-ajax_btn'">記載する内容</button>
+      <button class="ajax_btn red-ajax_btn">記載する内容</button>
     </a>
     <img
       border="0"
@@ -199,7 +199,7 @@ final class AffiLinkQueryServiceTest extends WP_UnitTestCase
       href="https://px.a8.net/svt/ejp?a8mat=35SE0F+1AG0WQ+2SIW+BW8O2&a8ejpredirect=%E5%85%AC%E5%BC%8F%E5%95%86%E5%93%81%E3%83%AA%E3%83%B3%E3%82%AF2"
       target="_blank"
     >
-      <button class="ajax_btn blue-ajax_btn'">記載する内容</button>
+      <button class="ajax_btn blue-ajax_btn">記載する内容</button>
     </a>
     <img
       border="0"
@@ -226,7 +226,7 @@ final class AffiLinkQueryServiceTest extends WP_UnitTestCase
       href="https://px.a8.net/svt/ejp?a8mat=35SE0F+1AG0WQ+2SIW+BW8O2&a8ejpredirect=%E5%85%AC%E5%BC%8F%E5%95%86%E5%93%81%E3%83%AA%E3%83%B3%E3%82%AF2"
       target="_self"
     >
-      <button class="ajax_btn red-ajax_btn'">記載する内容</button>
+      <button class="ajax_btn red-ajax_btn">記載する内容</button>
     </a>
     <img
       border="0"
@@ -312,7 +312,7 @@ final class AffiLinkQueryServiceTest extends WP_UnitTestCase
       href="https://px.a8.net/svt/ejp?a8mat=3TNU86+EEKKOI+4VTQ+C0B9T"
       target="_blank"
     >
-      <button class="ajax_btn blue-ajax_btn'"> 公式商品リンク</button>
+      <button class="ajax_btn blue-ajax_btn"> 公式商品リンク</button>
     </a>
     <img
       border="0"
@@ -339,7 +339,7 @@ final class AffiLinkQueryServiceTest extends WP_UnitTestCase
       href="https://px.a8.net/svt/ejp?a8mat=3TNU86+EEKKOI+4VTQ+C0B9T"
       target="_self"
     >
-      <button class="ajax_btn red-ajax_btn'"> 公式商品リンク</button>
+      <button class="ajax_btn red-ajax_btn"> 公式商品リンク</button>
     </a>
     <img
       border="0"
