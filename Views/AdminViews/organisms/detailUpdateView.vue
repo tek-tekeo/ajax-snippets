@@ -17,7 +17,7 @@
           color="primary"
           @click="updateDetail"
         >
-          更新する
+          更新
         </v-btn>
 
         <confirm-dialog

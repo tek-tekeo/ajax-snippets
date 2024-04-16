@@ -14,7 +14,7 @@
           color="primary"
           @click="updateBase"
         >
-          更新する
+          更新
         </v-btn>
 
 

@@ -9,12 +9,14 @@
         <v-btn
           color="error"
           dark
+          :block="block"
           :fixed="fixed"
           :bottom="bottom"
           v-bind="attrs"
           v-on="on"
         >
-          削除する
+        <span v-if="icon"><v-icon>mdi-delete</v-icon></span>
+            削除
         </v-btn>
       </template>
       <v-card>
@@ -61,7 +63,9 @@ module.exports = {
   },
   props: {
     fixed: Boolean,
-    bottom: Boolean
+    bottom: Boolean,
+    block: Boolean,
+    icon: Boolean
   }
 }
 </script>

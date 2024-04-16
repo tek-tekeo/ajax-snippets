@@ -14,7 +14,7 @@
           color="primary"
           @click="updateApp"
         >
-          更新する
+          更新
         </v-btn>
         <confirm-dialog
           fixed

@@ -40,7 +40,7 @@
             dark
             color="teal"
           >
-            更新する
+            更新
           </v-btn>
           <confirm-dialog
             @execute="deleteTag(t.id)"
