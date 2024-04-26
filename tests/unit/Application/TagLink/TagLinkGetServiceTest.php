@@ -40,8 +40,6 @@ class TagLinkGetServiceTest extends WP_UnitTestCase
       'detail_img' => 'detail_img',
       'amazon_asin' => 'amazon_asin',
       'rakuten_id' => 'rakuten_id',
-      'rchart' => 'rchart',
-      'info' => 'info',
       'review' => 'review',
       'is_show_url' => 1,
       'same_parent' => 0
@@ -56,8 +54,6 @@ class TagLinkGetServiceTest extends WP_UnitTestCase
       'detail_img' => 'detail_img',
       'amazon_asin' => 'amazon_asin',
       'rakuten_id' => 'rakuten_id',
-      'rchart' => 'rchart',
-      'info' => 'info',
       'review' => 'review',
       'is_show_url' => 1,
       'same_parent' => 0

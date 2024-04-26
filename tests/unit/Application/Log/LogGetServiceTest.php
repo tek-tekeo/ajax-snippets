@@ -49,8 +49,6 @@ class LogGetServiceTest extends WP_UnitTestCase
       'detail_img' => 'https://www.example.com',
       'amazon_asin' => 'アマゾンASIN',
       'rakuten_id' => '楽天ID',
-      'rchart' => '評価チャート',
-      'info' => '商品情報',
       'review' => '商品レビュー',
       'is_show_url' => 1,
       'same_parent' => 1

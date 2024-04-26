@@ -90,8 +90,6 @@ class AdCreateServiceTest extends WP_UnitTestCase
       '',
       '',
       '',
-      '[]',
-      '[]',
       '',
       0,
       1

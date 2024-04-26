@@ -119,8 +119,6 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
       'detailImg',
       'amazonAsin',
       'rakutenId',
-      '',
-      '',
       'review',
       1,
       1

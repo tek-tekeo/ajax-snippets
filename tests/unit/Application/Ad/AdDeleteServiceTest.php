@@ -62,8 +62,6 @@ class AdDeleteServiceTest extends WP_UnitTestCase
       'detail image',
       'amazon asin',
       'rakuten id',
-      '[]',
-      '[]',
       'review',
       1,
       1

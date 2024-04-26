@@ -64,8 +64,6 @@ final class RedirectSystemTest extends WP_UnitTestCase
       'detail_img' => '',
       'amazon_asin' => '',
       'rakuten_id' => '',
-      'rchart' => '',
-      'info' => '',
       'review' => '',
       'is_show_url' => 0,
       'same_parent' => 1
@@ -79,8 +77,6 @@ final class RedirectSystemTest extends WP_UnitTestCase
       'detail_img' => '',
       'amazon_asin' => '',
       'rakuten_id' => '',
-      'rchart' => '',
-      'info' => '',
       'review' => 'ファイテン ネックレスのレビュー',
       'is_show_url' => 1,
       'same_parent' => 1
@@ -94,8 +90,6 @@ final class RedirectSystemTest extends WP_UnitTestCase
       'detail_img' => 'https://www.phiten-store.com/client_info/PHITEN/itemimage/0424TU604000/0424TU604000_01.jpg',
       'amazon_asin' => 'B07QKJZ3ZP',
       'rakuten_id' => 'phiten:10000001',
-      'rchart' => '',
-      'info' => '',
       'review' => 'ファイテン ネックレスのレビュー',
       'is_show_url' => 1,
       'same_parent' => 0

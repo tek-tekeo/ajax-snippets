@@ -41,8 +41,6 @@ class AdDetailUpdateService implements IAdDetailUpdateService
       ($cmd->getDetailImg()) ? $cmd->getDetailImg() : $adDetail->getDetailImg(),
       ($cmd->getAmazonAsin()) ? $cmd->getAmazonAsin() : $adDetail->getAmazonAsin(),
       ($cmd->getRakutenId()) ? $cmd->getRakutenId() : $adDetail->getRakutenId(),
-      '',//($cmd->getRchart()) ? $cmd->getRchart() : $adDetail->getRchart(),
-      '',//($cmd->getInfo()) ? $cmd->getInfo() : $adDetail->getInfo(),
       ($cmd->getReview()) ? $cmd->getReview() : $adDetail->getReview(),
       $cmd->getIsShowUrl(),
       $cmd->getSameParent()

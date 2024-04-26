@@ -86,8 +86,6 @@ class AdDetailUpdateServiceTest extends WP_UnitTestCase
       'detailImg',
       'amazonAsin',
       'rakutenId',
-      '[]',
-      '[]',
       'review',
       1,
       1
@@ -159,8 +157,6 @@ class AdDetailUpdateServiceTest extends WP_UnitTestCase
       'detailImg',
       'asin',
       'rakutenId',
-      '',
-      '',
       'review',
       0,
       0

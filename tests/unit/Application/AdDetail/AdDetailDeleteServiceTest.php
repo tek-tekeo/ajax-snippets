@@ -41,8 +41,6 @@ class AdDetailDeleteServiceTest extends WP_UnitTestCase
         'detailImg',
         'amazonAsin',
         'rakutenId',
-        'rchart',
-        'info',
         'review',
         1,
         1

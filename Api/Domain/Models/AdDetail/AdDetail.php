@@ -16,8 +16,6 @@ class AdDetail
     private string $detailImg = '',
     private string $amazonAsin = '',
     private string $rakutenId = '',
-    private string $rchart = '[]',
-    private string $info = '[]',
     private string $review = '',
     private int $isShowUrl = 0,
     private int $sameParent = 1
@@ -63,16 +61,6 @@ class AdDetail
     return $this->rakutenId;
   }
 
-  public function getRchart(): string
-  {
-    return $this->rchart;
-  }
-
-  public function getInfo(): string
-  {
-    return $this->info;
-  }
-
   public function getReview(): string
   {
     return $this->review;
@@ -99,8 +87,6 @@ class AdDetail
       'detail_img' => $this->detailImg,
       'amazon_asin' => $this->amazonAsin,
       'rakuten_id' => $this->rakutenId,
-      'rchart' => $this->rchart,
-      'info' => $this->info,
       'review' => $this->review,
       'is_show_url' => $this->isShowUrl,
       'same_parent' => $this->sameParent

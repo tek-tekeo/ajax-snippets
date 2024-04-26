@@ -34,8 +34,6 @@ class AdDetailRepository implements IAdDetailRepository
         (string)$r->detail_img,
         (string)$r->amazon_asin,
         (string)$r->rakuten_id,
-        (string)$r->rchart,
-        (string)$r->info,
         (string)$r->review,
         (int)$r->is_show_url,
         (int)$r->same_parent
@@ -56,8 +54,6 @@ class AdDetailRepository implements IAdDetailRepository
         (string)$res->detail_img,
         (string)$res->amazon_asin,
         (string)$res->rakuten_id,
-        (string)$res->rchart,
-        (string)$res->info,
         (string)$res->review,
         (int)$res->is_show_url,
         (int)$res->same_parent
@@ -78,8 +74,6 @@ class AdDetailRepository implements IAdDetailRepository
         (string)$res->detail_img,
         (string)$res->amazon_asin,
         (string)$res->rakuten_id,
-        (string)$res->rchart,
-        (string)$res->info,
         (string)$res->review,
         (int)$res->is_show_url,
         (int)$res->same_parent
@@ -101,8 +95,6 @@ class AdDetailRepository implements IAdDetailRepository
         (string)$r->detail_img,
         (string)$r->amazon_asin,
         (string)$r->rakuten_id,
-        (string)$r->rchart,
-        (string)$r->info,
         (string)$r->review,
         (int)$r->is_show_url,
         (int)$r->same_parent

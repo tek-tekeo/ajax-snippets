@@ -36,8 +36,6 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
       'detail image',
       'amazon asin',
       'rakuten id',
-      '[]',
-      '[]',
       'review',
       1,
       1
@@ -61,8 +59,6 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
       'detail image',
       'amazon asin',
       'rakuten id',
-      '[]',
-      '[]',
       'review',
       1,
       1
@@ -92,8 +88,6 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
       'detail image',
       'amazon asin',
       'rakuten id',
-      '[]',
-      '[]',
       'review',
       1,
       1
@@ -118,8 +112,6 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
       'detail image',
       'amazon asin',
       'rakuten id',
-      '[]',
-      '[]',
       'review',
       1,
       1
@@ -140,8 +132,6 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
         'detail image',
         'amazon asin',
         'rakuten id',
-        '[]',
-        '[]',
         'review',
         1,
         1
@@ -155,8 +145,6 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
         'detail image',
         'amazon asin',
         'rakuten id',
-        '[]',
-        '[]',
         'review',
         1,
         1
@@ -177,8 +165,6 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
       'detail image',
       'amazon asin',
       'rakuten id',
-      '[]',
-      '[]',
       'review',
       1,
       1

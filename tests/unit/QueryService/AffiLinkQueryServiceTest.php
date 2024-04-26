@@ -452,8 +452,6 @@ final class AffiLinkQueryServiceTest extends WP_UnitTestCase
       'detail_img' => 'https://www.example.com',
       'amazon_asin' => 'アマゾンASIN',
       'rakuten_id' => '楽天ID',
-      'rchart' => '評価チャート',
-      'info' => '商品情報',
       'review' => '商品レビュー',
       'is_show_url' => 1,
       'same_parent' => 1
@@ -467,8 +465,6 @@ final class AffiLinkQueryServiceTest extends WP_UnitTestCase
       'detail_img' => 'https://www.example.com',
       'amazon_asin' => 'アマゾンASIN2',
       'rakuten_id' => '楽天ID2',
-      'rchart' => '評価チャート2',
-      'info' => '商品情報2',
       'review' => '商品レビュー2',
       'is_show_url' => 1,
       'same_parent' => 0

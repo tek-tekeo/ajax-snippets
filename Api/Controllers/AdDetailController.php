@@ -83,12 +83,6 @@ class AdDetailController
     return new WP_REST_Response($res, 200);
   }
 
-  public function fukki(): WP_REST_Response
-  {
-    $res = $this->adDetailGetService->getFukki();
-    return new WP_REST_Response($res, 200);
-  }
-
   public function storeRchart(WP_REST_Request $req) : WP_REST_Response
   {
     $json = $req->get_param('json');

@@ -35,8 +35,6 @@ class AdDetailCreateService implements IAdDetailCreateService
       $cmd->getDetailImg(),
       $cmd->getAmazonAsin(),
       $cmd->getRakutenId(),
-      '',//$cmd->getRchart(),
-      '',//$cmd->getInfo(),
       $cmd->getReview(),
       $cmd->getIsShowUrl(),
       $cmd->getSameParent()
