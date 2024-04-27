@@ -4,6 +4,8 @@ namespace AjaxSnippets\Api\Application\DTO\Ad;
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetail;
 use AjaxSnippets\Api\Domain\Models\Asp\Asp;
+use AjaxSnippets\Api\Domain\Models\ValueObject\RedirectURL;
+use AjaxSnippets\Api\Domain\Models\ValueObject\ClickLogURL;
 
 class EditDetailData
 {
@@ -21,11 +23,11 @@ class EditDetailData
     $this->id = $detail->getId()->getId();
     $this->name = $ad->getName() . ' ' . $detail->getItemName();
     $this->officialItemLink = $detail->getOfficialItemLink();
-    // $this->affiLink = $detail->getRedirectUrl();
+    $this->affiLink = (new RedirectURL($ad, $detail, $asp))->getRedirectUrl();
     $this->aspName = $asp->getAspName();
     $this->amazonAsin = $detail->getAmazonAsin();
     $this->rakutenId = $detail->getRakutenId();
-    // $this->directLink = $detail->getDirectUrl();
+    $this->directLink = (new ClickLogURL($ad, $detail))->getUrl();
   }
   
 }

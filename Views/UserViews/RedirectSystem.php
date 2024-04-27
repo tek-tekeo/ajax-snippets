@@ -15,6 +15,7 @@ use AjaxSnippets\Api\Domain\Models\Log\Log;
 use AjaxSnippets\Api\Domain\Models\Log\LogId;
 use AjaxSnippets\Api\Domain\Models\Asp\Asp;
 use AjaxSnippets\Api\Domain\Services\AdService;
+use AjaxSnippets\Api\Domain\Models\ValueObject\RedirectURL;
 
 class RedirectSystem
 {
@@ -99,34 +100,4 @@ class RedirectSystem
     wp_redirect($url, 302);
     exit;
   }
-}
-
-class RedirectURL
-{
-  public function __construct(
-    private Ad $ad,
-    private AdDetail $adDetail,
-    private Asp $asp
-  ) {
-  }
-
-  public function getRedirectUrl(): string
-  {
-    // 親要素のリンクが指定されている場合、親要素のリンクを返す
-    if ($this->adDetail->getSameParent()) {
-      return $this->ad->getAffiLink();
-    }
-
-    // a8の子要素の場合、リンクを作って返す
-    if ($this->asp->getAspName() === 'a8') {
-      return $this->ad->getSLink() . 
-      $this->asp->getConnectString() . 
-      urlencode($this->adDetail->getOfficialItemLink());
-    }
-
-    // その他のASPの場合、リンクを作って返す
-    return $this->adDetail->getAffiItemLink();
-    return 'リダイレクト';
-  }
-
 }

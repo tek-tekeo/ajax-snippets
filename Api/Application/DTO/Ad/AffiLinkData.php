@@ -3,6 +3,7 @@ namespace AjaxSnippets\Api\Application\DTO\Ad;
 
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetail;
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
+use AjaxSnippets\Api\Domain\Models\ValueObject\RedirectURL;
 
 class AffiLinkData
 {
@@ -25,7 +26,7 @@ class AffiLinkData
   {
     $this->itemId = $detail->getId();
     $this->content = $detail->getOfficialItemLink();
-    $this->url = 'リダイレクトURL';//$detail->getRedirectUrl();
+    // $this->url = $detail->getRedirectUrl();
     $this->officialItemLink = $detail->getOfficialItemLink();
     if($detail->getSameParent() == 1){
       $this->imgSrc = $ad->getAffiImg();
