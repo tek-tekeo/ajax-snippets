@@ -51,7 +51,7 @@ class AffiLinkQueryService
     $content = $this->getContent($cmd, $ad, $adDetail);
     // アフィリエイトリンクを生成、返却する
     ob_start(); // 出力バッファリングを開始
-    require dirname(__FILE__, 4) . '/Views/UserViews/components/AffiLinkComponent.php';
+    require dirname(__FILE__, 4) . '/Views/UserViews/Components/AffiLinkComponent.php';
     $html = ob_get_clean(); 
     return $this->wrapClickLog(
       $adDetail->getId(),
@@ -162,7 +162,7 @@ class AffiLinkQueryService
     })->toArray();
 
     ob_start(); // 出力バッファリングを開始
-    require dirname(__FILE__, 4) . '/Views/UserViews/components/SingleReviewComponent.php';
+    require dirname(__FILE__, 4) . '/Views/UserViews/Components/SingleReviewComponent.php';
     return ob_get_clean(); 
   }
 
