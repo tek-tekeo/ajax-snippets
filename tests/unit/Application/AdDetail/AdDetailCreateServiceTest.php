@@ -9,6 +9,7 @@ use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailRepository;
 use AjaxSnippets\Api\Domain\Models\TagLink\ITagLinkRepository;
 use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailChartRepository;
 use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailInfoRepository;
+use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailReviewRepository;
 
 class AdDetailCreateServiceTest extends WP_UnitTestCase
 {
@@ -16,6 +17,7 @@ class AdDetailCreateServiceTest extends WP_UnitTestCase
   private AdDetailCreateService $adDetailCreateService;
   private IAdDetailChartRepository $adDetailChartRepository;
   private IAdDetailInfoRepository $adDetailInfoRepository;
+  private IAdDetailReviewRepository $adDetailReviewRepository;
   private ITagLinkRepository  $tagLinkRepository;
   private \WP_REST_Request $req;
 
@@ -28,6 +30,7 @@ class AdDetailCreateServiceTest extends WP_UnitTestCase
     $this->tagLinkRepository = $diContainer->get(ITagLinkRepository::class);
     $this->adDetailChartRepository = $diContainer->get(IAdDetailChartRepository::class);
     $this->adDetailInfoRepository = $diContainer->get(IAdDetailInfoRepository::class);
+    $this->adDetailReviewRepository = $diContainer->get(IAdDetailReviewRepository::class);
 		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
     $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "tag_link");
     $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details_chart");
@@ -36,6 +39,7 @@ class AdDetailCreateServiceTest extends WP_UnitTestCase
       $this->adDetailRepository,
       $this->adDetailChartRepository,
       $this->adDetailInfoRepository,
+      $this->adDetailReviewRepository,
       $this->tagLinkRepository
     );
 

@@ -13,7 +13,9 @@ use AjaxSnippets\Api\Infrastructure\Repository\AspRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\AppRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\AdDetailInfoRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\AdDetailChartRepository;
+use AjaxSnippets\Api\Infrastructure\Repository\AdDetailReviewRepository;
 use AjaxSnippets\Views\UserViews\Components\AppLinkComponent;
+use AjaxSnippets\Api\Application\DTO\Ad\AdDetailReviewData;
 
 class AffiLinkQueryService
 {
@@ -23,6 +25,7 @@ class AffiLinkQueryService
   private $appRepository;
   private $adDetailInfoRepo;
   private $adDetailChartRepo;
+  private $adDetailReviewRepo;
 
   public function __construct(){
     $this->adRepository = new AdRepository();
@@ -31,6 +34,7 @@ class AffiLinkQueryService
     $this->appRepository = new AppRepository();
     $this->adDetailInfoRepo = new AdDetailInfoRepository();
     $this->adDetailChartRepo = new AdDetailChartRepository();
+    $this->adDetailReviewRepo = new AdDetailReviewRepository();
   }
 
   // アフィリエイトテキスト、バナーの生成
@@ -164,6 +168,30 @@ class AffiLinkQueryService
     ob_start(); // 出力バッファリングを開始
     require dirname(__FILE__, 4) . '/Views/UserViews/Components/SingleReviewComponent.php';
     return ob_get_clean(); 
+  }
+
+  public function createReviewForm(int $adDetailId)
+  {
+    $rep =<<<EOT
+    <v-app v-cloak>
+    <reviews
+    ad-detail-id="{$adDetailId}"
+    ></reviews>
+    </v-app>
+    EOT;
+
+    add_action('wp_footer', function() use ($adDetailId) {
+      $adDetail = $this->adDetailRepository->findById(new AdDetailId($adDetailId));
+      $ad = $this->adRepository->findById($adDetail->getAdId());
+      $reviews = $this->adDetailReviewRepo->findByAdDetailId(new AdDetailId($adDetailId));
+      $data = (new AdDetailReviewData($reviews))->handle();
+      ob_start(); // 出力バッファリングを開始
+      require dirname(__FILE__, 4) . '/Views/UserViews/Components/ReviewSnippetJsonLD.php';
+      $script = ob_get_clean(); 
+      echo $script;
+    });
+
+    return $rep;
   }
 
   public function getRakutenIdFromAdDetailId(int $adDetailId){

@@ -14,7 +14,11 @@ use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailRepository;
 use AjaxSnippets\Api\Domain\Models\Ad\IAdRepository;
 use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailChartRepository;
 use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailInfoRepository;
+use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailReviewRepository;
 use AjaxSnippets\Api\Domain\Models\TagLink\ITagLinkRepository;
+use AjaxSnippets\Api\Application\AdDetail\AdDetailReviewUpdateCommand;
+use AjaxSnippets\Api\Application\AdDetail\IAdDetailUpdateService;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailReview;
 
 class AdDetailUpdateService implements IAdDetailUpdateService
 {
@@ -24,6 +28,7 @@ class AdDetailUpdateService implements IAdDetailUpdateService
     private IAdDetailRepository $adDetailRepository,
     private IAdDetailChartRepository $adDetailChartRepository,
     private IAdDetailInfoRepository $adDetailInfoRepository,
+    private IAdDetailReviewRepository $adDetailReviewRepository,
     private ITagLinkRepository $tagLinkRepository
   ){}
 
@@ -83,5 +88,30 @@ class AdDetailUpdateService implements IAdDetailUpdateService
     })->toArray();
 
     return $insertAdDetailId;
+  }
+
+  public function handleReview(AdDetailReviewUpdateCommand $cmd): int
+  {
+    $reviewId = $cmd->getId();
+    $review = $this->adDetailReviewRepository->findById($reviewId);
+
+    $updateAdDetailReview = new AdDetailReview(
+      $cmd->getId(),
+      new AdDetailId($cmd->getAdDetailId()),
+      $cmd->getName(),
+      $cmd->getAge(),
+      $cmd->getSex(),
+      $cmd->getRatingValue(),
+      $cmd->getContent(),
+      $cmd->getQuoteName(),
+      $cmd->getQuoteUrl(),
+      $cmd->getIsPublished(),
+      $review->getCreatedAt(),
+      date("Y-m-d H:i:s")
+    );
+
+    $insertAdDetaiReviewlId = $this->adDetailReviewRepository->save($updateAdDetailReview);
+
+    return $insertAdDetaiReviewlId;
   }
 }

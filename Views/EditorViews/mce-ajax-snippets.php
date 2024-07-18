@@ -53,6 +53,9 @@ require_once dirname(__FILE__) . '/../../../../../wp-load.php';; ?>
               <v-btn @click="quoteLink" small>
                 引用
               </v-btn>
+              <v-btn color="pink" class="ma-2 white--text" @click="kuchikomi" small>
+                みんなの口コミ
+              </v-btn>
               <v-radio-group v-model="itemNo">
                 <v-virtual-scroll :items="searchList" height="400" item-height="40">
                   <template v-slot:default="{ item }">
@@ -207,6 +210,13 @@ require_once dirname(__FILE__) . '/../../../../../wp-load.php';; ?>
         let inputTag = "[appLinkG detail_id=" + this.itemNo + " noaf=0 text='" + item.name + "']";
         this.closeTinymce(inputTag);
 
+      },
+      async kuchikomi() {
+        if (this.itemNo == null) {
+          return;
+        }
+        const inputTag = "[reviewFrom id=" + this.itemNo + "]";
+        this.closeTinymce(inputTag);
       },
       async quoteLink() {
         if (this.itemNo == null) {

@@ -150,6 +150,13 @@ function createEndPoints()
   Route::get('/detail/prevData', 'AjaxSnippets\Api\Controllers\AdDetailController@getPrevDetail');
   Route::post('/detail/editor', 'AjaxSnippets\Api\Controllers\AdDetailController@getEditorList'); //編集画面に表示する用のリスト
 
+  // 子要素のレビュー関連
+  Route::post('/posts/details/(?P<adDetailId>\d+)/reviews', 'AjaxSnippets\Api\Controllers\AdDetailController@postReview', false); //指定子要素のレビューを投稿
+  Route::get('/posts/details/(?P<id>\d+)/reviews', 'AjaxSnippets\Api\Controllers\AdDetailController@getReview', false); //指定の子要素のレビューを取得
+  Route::get('/details/(?P<id>\d+)/reviews', 'AjaxSnippets\Api\Controllers\AdDetailController@getReviewsByAdDetailId');
+  Route::put('/details/(?P<adDetailId>\d+)/reviews/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdDetailController@updateReview');
+  Route::delete('/details/(?P<adDetailId>\d+)/reviews/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdDetailController@deleteReview');
+
   //タグ関連
   Route::post('/tag', 'AjaxSnippets\Api\Controllers\TagController@create');
   Route::put('/tag/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\TagController@update');

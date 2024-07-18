@@ -7,6 +7,8 @@ use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailChartRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\AdDetailChartRepository;
 use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailInfoRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\AdDetailInfoRepository;
+use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailReviewRepository;
+use AjaxSnippets\Api\Infrastructure\Repository\AdDetailReviewRepository;
 use AjaxSnippets\Api\Domain\Models\App\IAppRepository;
 use AjaxSnippets\Api\Infrastructure\Repository\AppRepository;
 use AjaxSnippets\Api\Domain\Models\Asp\IAspRepository;
@@ -84,6 +86,7 @@ return [
   IAdDetailRepository::class => DI\autowire(AdDetailRepository::class),
   IAdDetailChartRepository::class => DI\autowire(AdDetailChartRepository::class),
   IAdDetailInfoRepository::class => DI\autowire(AdDetailInfoRepository::class),
+  IAdDetailReviewRepository::class => DI\autowire(AdDetailReviewRepository::class),
   IAppRepository::class => DI\autowire(AppRepository::class),
   IAspRepository::class => DI\autowire(AspRepository::class),
   ITagRepository::class => DI\autowire(TagRepository::class),

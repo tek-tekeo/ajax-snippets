@@ -5,6 +5,7 @@ use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailRepository;
 use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailChartRepository;
 use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailInfoRepository;
+use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailReviewRepository;
 use AjaxSnippets\Api\Domain\Models\Ad\IAdRepository;
 use AjaxSnippets\Api\Domain\Models\Asp\IAspRepository;
 use AjaxSnippets\Api\Domain\Models\TagLink\ITagLinkRepository;
@@ -12,6 +13,7 @@ use AjaxSnippets\Api\Application\DTO\Ad\AdDetailData;
 use AjaxSnippets\Api\Application\DTO\Ad\EditDetailData;
 use AjaxSnippets\Api\Application\DTO\Ad\AffiLinkData;
 use AjaxSnippets\Api\Application\DTO\Ad\AdDetailDataIndex;
+use AjaxSnippets\Api\Application\DTO\Ad\AdDetailReviewData;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailInfo;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailChart;
 use AjaxSnippets\Api\Domain\Models\Asp\Asp;
@@ -24,6 +26,7 @@ class AdDetailGetService implements IAdDetailGetService
     private IAdDetailRepository $adDetailRepository,
     private IAdDetailChartRepository $adDetailChartRepository,
     private IAdDetailInfoRepository $adDetailInfoRepository,
+    private IAdDetailReviewRepository $adDetailReviewRepository,
     private IAspRepository $aspRepository,
     private ITagLinkRepository $tagLinkRepository
   ){}
@@ -76,4 +79,27 @@ class AdDetailGetService implements IAdDetailGetService
     return new AdDetailData($ad, $detail, $adDetailChart, $adDetailInfo, $tags);
   }
 
+  public function getReview(AdDetailGetCommand $cmd)
+  {
+    $adDetailReviews = $this->adDetailReviewRepository->findByAdDetailId(new AdDetailId($cmd->getId()));
+    return (new AdDetailReviewData($adDetailReviews))->handle();
+  }
+
+  public function getReviewsByAdDetailId(AdDetailGetCommand $cmd)
+  {
+    $adDetailReviews = $this->adDetailReviewRepository->findByAdDetailId(new AdDetailId($cmd->getId()));
+    return collect($adDetailReviews)->map(function($review){
+      return (object)[
+        'id' => $review->getId(),
+        'ratingValue' => $review->getRatingValue(),
+        'name'  => $review->getName(),
+        'age'   => $review->getAge(),
+        'sex' => $review->getSex(),
+        'content' => $review->getContent(),
+        'quoteName' => $review->getQuoteName(),
+        'quoteUrl' => $review->getQuoteUrl(),
+        'isPublished' => $review->getIsPublished()
+      ];
+    })->toArray();
+  }
 }

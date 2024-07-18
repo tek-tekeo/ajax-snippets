@@ -11,12 +11,14 @@ class AdDetailRepository implements IAdDetailRepository
 {
   private $db;
   private $table;
+  private $reviewTable;
 
   public function __construct()
   {
     global $wpdb;
     $this->db = $wpdb;
     $this->table = PLUGIN_DB_PREFIX.'ad_details';
+    $this->reviewTable = PLUGIN_DB_PREFIX.'ad_detail_reviews';
   }
 
   public function findByName(string $name) : array
@@ -125,6 +127,15 @@ class AdDetailRepository implements IAdDetailRepository
     $res = $this->db->delete( 
       $this->table, 
       array( 'ad_id' => $adId->getId() )
+    );
+    return $res;
+  }
+
+  public function deleteReview(int $reviewId): bool
+  {
+    $res = $this->db->delete( 
+      $this->reviewTable, 
+      array( 'id' => $reviewId)
     );
     return $res;
   }

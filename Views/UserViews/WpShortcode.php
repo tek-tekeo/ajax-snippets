@@ -124,6 +124,15 @@ EOT;
     return $res->data->officialItemLink;
   }
 
+//テキストリンク
+public function reviewForm($atts, $content = null) {
+  extract( shortcode_atts( array(
+    'id' => '1'
+  ), $atts ) );
+
+  return self::$query->createReviewForm($id);
+}
+
 public function tagRanking($atts){
   extract( shortcode_atts( array(
     'id' => '1',

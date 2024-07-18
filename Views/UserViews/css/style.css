@@ -284,3 +284,8 @@ table.singleReview_table td{
   background-color: #eee;
   padding: 5px 20px;
 }
+
+/* レビュー表示ののスタイル調整 */
+.v-application--wrap {
+  min-height: 0 !important;
+}

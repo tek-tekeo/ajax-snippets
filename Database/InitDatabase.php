@@ -54,6 +54,9 @@ class InitDatabase
   {
     $sql = $this->createSqlOfDetailTable();
     dbDelta($sql);
+
+    $sql = $this->createSqlOfAdDetailReviewTable();
+    dbDelta($sql);
   }
   private function initDetailChartTable()
   {
@@ -145,6 +148,30 @@ class InitDatabase
       same_parent tinyint DEFAULT 0 NOT NULL,
       PRIMARY KEY id (id)
       ){$this->charsetCollate};";
+
+    return $sql;
+  }
+
+  private function createSqlOfAdDetailReviewTable()
+  {
+    $tableName = $this->getTableName('ad_detail_reviews');
+
+    $sql = "
+    CREATE TABLE {$tableName} (
+    id int(11) NOT NULL AUTO_INCREMENT,
+    ad_detail_id int(11) NOT NULL,
+    name varchar(255) DEFAULT '匿名' NOT NULL,
+    age int(11),
+    sex varchar(255) DEFAULT '' NOT NULL,
+    rate float(11),
+    content text DEFAULT '' NOT NULL,
+    quote_name varchar(1000) DEFAULT '当ブログ口コミ' NOT NULL,
+    quote_url varchar(1000) DEFAULT '' NOT NULL,
+    is_published tinyint DEFAULT 0 NOT NULL,
+    created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+    PRIMARY KEY id (id)
+    ){$this->charsetCollate};";
 
     return $sql;
   }
