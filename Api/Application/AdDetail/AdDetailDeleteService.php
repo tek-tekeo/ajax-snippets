@@ -21,4 +21,10 @@ class AdDetailDeleteService implements IAdDetailDeleteService
     $this->tagLinkRepository->delete($adDetailId);
     return $this->adDetailRepository->delete($adDetailId);
   }
+
+  public function handleReview(AdDetailDeleteCommand $cmd): bool
+  {
+    $reviewId = $cmd->getId();
+    return $this->adDetailRepository->deleteReview($reviewId);
+  }
 }

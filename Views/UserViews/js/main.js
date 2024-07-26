@@ -28,6 +28,7 @@ axios.defaults.baseURL = WP_API_Settings.root+'?rest_route=/ajax_snippets_path/v
       // 'appLink': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/UserViews/js/appLink.vue'),
       'chartJs': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/UserViews/js/chartJs.vue'),
       'clickLog': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/UserViews/js/clickLog.vue'),
+      'reviews': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/UserViews/js/review/reviews.vue')
     },
     methods:{
       async clickRecord(logData) {

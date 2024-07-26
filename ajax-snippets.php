@@ -84,6 +84,7 @@ class AjaxSneppets
     // wp_enqueue_style( 'google-font', 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
     // wp_enqueue_style( 'material-design-icon', 'https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css');
     // wp_enqueue_style( 'vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css');
+    // wp_enqueue_style( 'reset-vuetify', plugins_url('ajax-snippets/Views/UserViews/css/reset-vuetify.css'), array( 'vuetify' )  );
   }
 
   private function registerJS()
@@ -148,6 +149,13 @@ function createEndPoints()
   Route::get('/detail/prev', 'AjaxSnippets\Api\Controllers\AdDetailController@getPrevId');
   Route::get('/detail/prevData', 'AjaxSnippets\Api\Controllers\AdDetailController@getPrevDetail');
   Route::post('/detail/editor', 'AjaxSnippets\Api\Controllers\AdDetailController@getEditorList'); //編集画面に表示する用のリスト
+
+  // 子要素のレビュー関連
+  Route::post('/posts/details/(?P<adDetailId>\d+)/reviews', 'AjaxSnippets\Api\Controllers\AdDetailController@postReview', false); //指定子要素のレビューを投稿
+  Route::get('/posts/details/(?P<id>\d+)/reviews', 'AjaxSnippets\Api\Controllers\AdDetailController@getReview', false); //指定の子要素のレビューを取得
+  Route::get('/details/(?P<id>\d+)/reviews', 'AjaxSnippets\Api\Controllers\AdDetailController@getReviewsByAdDetailId');
+  Route::put('/details/(?P<adDetailId>\d+)/reviews/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdDetailController@updateReview');
+  Route::delete('/details/(?P<adDetailId>\d+)/reviews/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdDetailController@deleteReview');
 
   //タグ関連
   Route::post('/tag', 'AjaxSnippets\Api\Controllers\TagController@create');

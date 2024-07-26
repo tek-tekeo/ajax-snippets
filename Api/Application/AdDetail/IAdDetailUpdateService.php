@@ -118,3 +118,85 @@ class AdDetailUpdateCommand
     return $this->tagIds;
   }
 }
+
+class AdDetailReviewUpdateCommand
+{
+  private int $id;
+  private int $adDetailId;
+  private string $name;
+  private int|null $age;
+  private string $sex;
+  private float $ratingValue;
+  private string $content;
+  private string $quoteName;
+  private string $quoteUrl;
+  private bool $isPublished;
+
+  public function __construct(\WP_REST_Request $req)
+  {
+    $this->id = (int)$req->get_param('id');
+    $this->adDetailId = (int)$req->get_param('adDetailId');
+    $this->name = $req->get_param('name');
+    $this->age = $req->get_param('age');
+    $this->sex = $req->get_param('sex');
+    $this->ratingValue = (float)$req->get_param('ratingValue');
+    $this->content = (string)$req->get_param('content');
+    $this->quoteName = (string)$req->get_param('quoteName');
+    $this->quoteUrl = (string)$req->get_param('quoteUrl');
+    $this->isPublished = (bool)$req->get_param('isPublished');
+  }
+
+  public function getId(): int
+  {
+    return $this->id;
+  }
+
+  public function getAdDetailId(): int
+  {
+    return $this->adDetailId;
+  }
+
+  public function getName(): string
+  {
+    if($this->name == '')
+    {
+      return '匿名';
+    }
+    return $this->name;
+  }
+
+  public function getAge(): int|null
+  {
+    return $this->age;
+  }
+
+  public function getSex(): string
+  {
+    return $this->sex;
+  }
+
+  public function getRatingValue(): float
+  {
+    return $this->ratingValue;
+  }
+
+  public function getContent(): string
+  {
+    return $this->content;
+  }
+
+  public function getQuoteName(): string
+  {
+    return $this->quoteName;
+  }
+
+  public function getQuoteUrl(): string
+  {
+    return $this->quoteUrl;
+  }
+
+  public function getIsPublished(): bool
+  {
+    return (bool)$this->isPublished;
+  }
+}

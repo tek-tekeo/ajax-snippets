@@ -7,6 +7,7 @@ use AjaxSnippets\Api\Domain\Models\Asp\IAspRepository;
 use AjaxSnippets\Api\Domain\Models\TagLink\ITagLinkRepository;
 use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailChartRepository;
 use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailInfoRepository;
+use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailReviewRepository;
 use AjaxSnippets\Api\Domain\Models\Ad\AdId;
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
@@ -25,6 +26,7 @@ use AjaxSnippets\Api\Domain\Models\TagLink\TagLinkId;
 use AjaxSnippets\Api\Domain\Models\Tag\TagId;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailChart;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailInfo;
+use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailReview;
 
 class AdDetailGetServiceTest extends WP_UnitTestCase
 {
@@ -33,6 +35,7 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
   private IAdRepository $adRepository;
   private IAdDetailChartRepository $adDetailChartRepository;
   private IAdDetailInfoRepository $adDetailInfoRepository;
+  private IAdDetailReviewRepository $adDetailReviewRepository;
   private AdDetailGetService $adDetailGetService;
   private AdDetail $adDetail;
   private array $columns;
@@ -50,9 +53,35 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
     $this->tagLinkRepository = $diContainer->get(ITagLinkRepository::class);
     $this->adDetailChartRepository = $diContainer->get(IAdDetailChartRepository::class);
     $this->adDetailInfoRepository = $diContainer->get(IAdDetailInfoRepository::class);
+    $this->adDetailReviewRepository = $diContainer->get(IAdDetailReviewRepository::class);
 		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "asps");
 		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
     $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details_chart");
+    $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_detail_reviews");
+    $wpdb->insert(PLUGIN_DB_PREFIX . 'ad_detail_reviews', [
+      'id' => 0,
+      'ad_detail_id' => 2,
+      'name' => '匿名1',
+      'age' => 10,
+      'sex' => '男性',
+      'rate' => 5,
+      'content' => 'コンテンツ1',
+      'quote_name' => 'google',
+      'quote_url' => 'https://google.com',
+      'is_published' => true
+    ]);
+    $wpdb->insert(PLUGIN_DB_PREFIX . 'ad_detail_reviews', [
+      'id' => 0,
+      'ad_detail_id' => 2,
+      'name' => '匿名2',
+      'sex' => '女性',
+      'age' => 20,
+      'rate' => 4,
+      'content' => 'コンテンツ2',
+      'quote_name' => 'google',
+      'quote_url' => 'https://google.com',
+      'is_published' => true
+    ]);
     $wpdb->insert(PLUGIN_DB_PREFIX . 'ad_details_chart', [
       'id' => 1,
       'ad_detail_id' => 2,
@@ -88,6 +117,7 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
       $this->adDetailRepository,
       $this->adDetailChartRepository,
       $this->adDetailInfoRepository,
+      $this->adDetailReviewRepository,
       $this->aspRepository,
       $this->tagLinkRepository
     );
@@ -310,4 +340,37 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
     $this->assertEquals(new AdDetailData($this->ad, $expected), $actualAdDetailData);
   }
 
+  public function testGetAdDetailReview()
+  {
+    $request = new \WP_REST_Request();
+    $request->set_param('id', 2);
+    $cmd = new AdDetailGetCommand($request);
+    $actualAdDetailData = $this->adDetailGetService->getReview($cmd);
+    $expected = (object)[
+          'ratingValue' => 9.0,
+          'bestRating' => 10.0,
+          'ratingCount' => 2,
+          'reviews' =>[
+              (object)[
+              'name' => '匿名1',
+              'sex' => '男性',
+              'age' => 10,
+              'ratingValue' => 5.0,
+              'content' =>'コンテンツ1',
+              'quoteName' => 'google',
+              'quoteUrl' => 'https://google.com'
+              ],
+              (object)[
+                'name' => '匿名2',
+                'sex' => '女性',
+                'age' => 20,
+                'ratingValue' => 4.0,
+                'content' =>'コンテンツ2',
+                'quoteName' => 'google',
+                'quoteUrl' => 'https://google.com'
+                ],
+          ]
+        ];
+    $this->assertEquals($expected, $actualAdDetailData);
+  }
 }

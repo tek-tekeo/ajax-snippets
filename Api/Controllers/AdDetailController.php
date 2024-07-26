@@ -5,6 +5,8 @@ use \WP_REST_Request;
 use \WP_REST_Response;
 use AjaxSnippets\Api\Application\AdDetail\IAdDetailCreateService;
 use AjaxSnippets\Api\Application\AdDetail\AdDetailCreateCommand;
+use AjaxSnippets\Api\Application\AdDetail\AdDetailReviewCreateCommand;
+use AjaxSnippets\Api\Application\AdDetail\AdDetailReviewUpdateCommand;
 use AjaxSnippets\Api\Application\AdDetail\IAdDetailUpdateService;
 use AjaxSnippets\Api\Application\AdDetail\AdDetailUpdateCommand;
 use AjaxSnippets\Api\Application\AdDetail\IAdDetailGetService;
@@ -131,6 +133,41 @@ class AdDetailController
   public function getPrevDetail() : WP_REST_Response
   {
     $res = $this->adDetailGetService->getLatestDetail();
+    return new WP_REST_Response($res, 200);
+  }
+
+  public function postReview(WP_REST_Request $req) : WP_REST_Response
+  {
+    $cmd = new AdDetailReviewCreateCommand($req);
+    $res = $this->adDetailCreateService->handleReview($cmd);
+    return new WP_REST_Response($res, 200);
+  }
+
+  public function updateReview(WP_REST_Request $req) : WP_REST_Response
+  {
+    $cmd = new AdDetailReviewUpdateCommand($req);
+    $res = $this->adDetailUpdateService->handleReview($cmd);
+    return new WP_REST_Response($res, 200);
+  }
+
+  public function getReview(WP_REST_Request $req) : WP_REST_Response
+  {
+    $cmd = new AdDetailGetCommand($req);
+    $res = $this->adDetailGetService->getReview($cmd);
+    return new WP_REST_Response($res, 200);
+  }
+
+  public function getReviewsByAdDetailId(WP_REST_Request $req) : WP_REST_Response
+  {
+    $cmd = new AdDetailGetCommand($req);
+    $res = $this->adDetailGetService->getReviewsByAdDetailId($cmd);
+    return new WP_REST_Response($res, 200);
+  }
+
+  public function deleteReview(WP_REST_Request $req) : WP_REST_Response
+  {
+    $cmd = new AdDetailDeleteCommand($req);
+    $res = $this->adDetailDeleteService->handleReview($cmd);
     return new WP_REST_Response($res, 200);
   }
 }
