@@ -92,8 +92,8 @@ class AdDetailCreateService implements IAdDetailCreateService
       $cmd->getQuoteName(),
       $cmd->getQuoteUrl(),
       false,
-      date("Y-m-d H:i:s"),
-      date("Y-m-d H:i:s")
+      $cmd->getCreatedAt(),
+      $cmd->getUpdatedAt()
     );
     return $this->adDetailReviewRepository->save($review);
   }

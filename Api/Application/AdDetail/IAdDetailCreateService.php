@@ -126,6 +126,8 @@ class AdDetailReviewCreateCommand
   private string $content;
   private string $quoteName;
   private string $quoteUrl;
+  private string $createdAt;
+  private string $updatedAt;
 
   public function __construct(\WP_REST_Request $req)
   {
@@ -138,6 +140,8 @@ class AdDetailReviewCreateCommand
     $this->content = (string)$req->get_param('content');
     $this->quoteName = (string)$req->get_param('quoteName');
     $this->quoteUrl = (string)$req->get_param('quoteUrl');
+    $this->createdAt = (string)$req->get_param('createdAt');
+    $this->updatedAt = (string)$req->get_param('updatedAt');
   }
 
   public function getId(): int
@@ -187,5 +191,15 @@ class AdDetailReviewCreateCommand
   public function getQuoteUrl(): string
   {
     return $this->quoteUrl;
+  }
+
+  public function getCreatedAt(): string
+  {
+    return ($this->createdAt =='') ? date('Y-m-d H:i:s') : $this->createdAt;
+  }
+
+  public function getUpdatedAt(): string
+  {
+    return ($this->updatedAt =='') ? date('Y-m-d H:i:s') : $this->updatedAt;
   }
 }
