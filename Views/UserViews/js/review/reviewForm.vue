@@ -94,12 +94,12 @@
         <v-textarea v-model="review.content" outlined placeholder="口コミを入力してください"></v-textarea>
       </v-col>
     </v-row>
-    <v-btn class="success" elevation="5" @click="createReview" block>
+    <!-- <v-btn class="success" elevation="5" @click="createReview" block>
       口コミを投稿
       <v-icon right>
         mdi-chevron-right
       </v-icon>
-    </v-btn>
+    </v-btn> -->
     <button class="ajax_btn green-ajax_btn" @click="createReview">口コミを投稿</button>
     <v-dialog
       v-model="overlay"

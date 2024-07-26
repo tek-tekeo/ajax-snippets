@@ -81,10 +81,10 @@ class AjaxSneppets
   public function registerCSS()
   {
     wp_enqueue_style('ajax-snippets-style', plugins_url('ajax-snippets/Views/UserViews/css/style.css'));
-    wp_enqueue_style( 'google-font', 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
-    wp_enqueue_style( 'material-design-icon', 'https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css');
-    wp_enqueue_style( 'vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css');
-    wp_enqueue_style( 'reset-vuetify', plugins_url('ajax-snippets/Views/UserViews/css/reset-vuetify.css'), array( 'vuetify' )  );
+    // wp_enqueue_style( 'google-font', 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
+    // wp_enqueue_style( 'material-design-icon', 'https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css');
+    // wp_enqueue_style( 'vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css');
+    // wp_enqueue_style( 'reset-vuetify', plugins_url('ajax-snippets/Views/UserViews/css/reset-vuetify.css'), array( 'vuetify' )  );
   }
 
   private function registerJS()
@@ -94,7 +94,7 @@ class AjaxSneppets
     wp_enqueue_script('chartjs', '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js', ['jquery', 'vue'], date('U'), true);
     wp_enqueue_script('vue-loader', 'https://unpkg.com/http-vue-loader', array('vue'), false, true);
     wp_enqueue_script('axios', 'https://unpkg.com/axios/dist/axios.min.js', array('vue', 'vue-loader', 'wp-api-path'), false, true);
-    wp_enqueue_script('vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js', array('vue', 'vue-loader', 'axios', 'wp-api-path'), false, true);
+    // wp_enqueue_script('vuetify', 'https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js', array('vue', 'vue-loader', 'axios', 'wp-api-path'), false, true);
     wp_enqueue_script('vue-log-record', plugins_url('ajax-snippets/Views/UserViews/js/main.js'), ['axios', 'vue-loader', 'vue', 'wp-api-path'], false, true);
   }
 } // end of class

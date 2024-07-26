@@ -173,11 +173,9 @@ class AffiLinkQueryService
   public function createReviewForm(int $adDetailId)
   {
     $rep =<<<EOT
-    <v-app v-cloak>
     <reviews
     ad-detail-id="{$adDetailId}"
     ></reviews>
-    </v-app>
     EOT;
 
     add_action('wp_footer', function() use ($adDetailId) {
