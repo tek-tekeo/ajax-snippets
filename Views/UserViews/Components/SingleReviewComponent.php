@@ -6,33 +6,37 @@ if (!defined('ABSPATH')) exit; ?>
   <?= $banner ?>
   <chart-js
     class="secondItem"
-    :rchart='<?=json_encode($rchart)?>'
-    name="<?=$name?>"
-    color="<?=$color?>"
-    title="<?=$title?>"
-  >
+    :rchart='<?= json_encode($rchart) ?>'
+    name="<?= $name ?>"
+    color="<?= $color ?>"
+    title="<?= $title ?>">
   </chart-js>
 </div>
 <table class="singleReview_table">
   <tbody>
-  <?php foreach ($info as $item) : ?>
-    <tr>
-      <th><?= wpautop($item['title'])?></th>
-      <td><?= wpautop($item['content'])?></td>
-    </tr>
-  <?php endforeach; ?>
-  <?php if ($adDetail->getIsShowUrl()) : ?>
-    <tr>
-      <th>公式サイト</th>
-      <td>
-        <?= $text ?>
-      </td>
-    </tr>
-  <?php endif; ?>
+    <?php foreach ($info as $item) : ?>
+      <tr>
+        <th><?= wpautop($item['title']) ?></th>
+        <td><?= wpautop($item['content']) ?></td>
+      </tr>
+    <?php endforeach; ?>
+    <?php if ($adDetail->getIsShowUrl()) : ?>
+      <tr>
+        <th>公式サイト</th>
+        <td>
+          <?= $text ?>
+        </td>
+      </tr>
+    <?php endif; ?>
   </tbody>
 </table>
 <?php if ($isReview) : ?>
-<span>
-<?= wpautop(do_shortcode($adDetail->getReview())) ?>
-</span>
+  <span>
+    <?= wpautop(do_shortcode($adDetail->getReview())) ?>
+  </span>
+<?php endif; ?>
+<?php if ($isItemCard) : ?>
+  <span>
+    <?= do_shortcode($itemCardShortCode) ?>
+  </span>
 <?php endif; ?>

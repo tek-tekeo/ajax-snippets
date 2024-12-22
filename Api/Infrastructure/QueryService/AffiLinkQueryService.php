@@ -1,4 +1,5 @@
 <?php
+
 namespace AjaxSnippets\Api\Infrastructure\QueryService;
 
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
@@ -27,7 +28,8 @@ class AffiLinkQueryService
   private $adDetailChartRepo;
   private $adDetailReviewRepo;
 
-  public function __construct(){
+  public function __construct()
+  {
     $this->adRepository = new AdRepository();
     $this->adDetailRepository = new AdDetailRepository();
     $this->aspRepository = new AspRepository();
@@ -38,16 +40,17 @@ class AffiLinkQueryService
   }
 
   // アフィリエイトテキスト、バナーの生成
-  public function affiLink(AffiLinkCommand $cmd){
+  public function affiLink(AffiLinkCommand $cmd)
+  {
     $adDetail = $this->adDetailRepository->findById(new AdDetailId($cmd->getId()));
     $ad = $this->adRepository->findById($adDetail->getAdId());
-    try{
+    try {
       $asp = $this->aspRepository->findById($ad->getAspId());
-    }catch(\Exception $e){
+    } catch (\Exception $e) {
       $asp = new Asp(new AspId(0), '未設定', '');
     }
     // URLを返す場合
-    if($cmd->getReUrl()){
+    if ($cmd->getReUrl()) {
       return $adDetail->getOfficialItemLink();
     }
 
@@ -56,7 +59,7 @@ class AffiLinkQueryService
     // アフィリエイトリンクを生成、返却する
     ob_start(); // 出力バッファリングを開始
     require dirname(__FILE__, 4) . '/Views/UserViews/Components/AffiLinkComponent.php';
-    $html = ob_get_clean(); 
+    $html = ob_get_clean();
     return $this->wrapClickLog(
       $adDetail->getId(),
       $cmd->getPlace(),
@@ -66,9 +69,9 @@ class AffiLinkQueryService
 
   private function getContent($cmd, $ad, $adDetail)
   {
-    if($cmd->isBanner){
-      if($adDetail->getSameParent()){
-        $image =<<<EOT
+    if ($cmd->isBanner) {
+      if ($adDetail->getSameParent()) {
+        $image = <<<EOT
         <img
           border="0"
           width="{$ad->getAffiImgWidth()}"
@@ -77,8 +80,8 @@ class AffiLinkQueryService
           src="{$ad->getAffiImg()}"
         >
         EOT;
-      }else{
-        $image =<<<EOT
+      } else {
+        $image = <<<EOT
         <img
           border="0"
           width="{$ad->getAffiImgWidth()}"
@@ -91,15 +94,15 @@ class AffiLinkQueryService
       return $image;
     }
 
-    $content = $cmd->getContent() ? $cmd->getContent() : ' ' .$adDetail->getOfficialItemLink();
+    $content = $cmd->getContent() ? $cmd->getContent() : ' ' . $adDetail->getOfficialItemLink();
     // ボタンがある場合
-    if($cmd->getBtnColor()){
+    if ($cmd->getBtnColor()) {
       $color = $cmd->getBtnColor();
-      $btn =<<<EOT
+      $btn = <<<EOT
         <button class="ajax_btn $color-ajax_btn">{$content}</button>
       EOT;
       return $btn;
-    }else{
+    } else {
       return $content;
     }
   }
@@ -114,9 +117,9 @@ class AffiLinkQueryService
 
     // a8の子要素の場合、リンクを作って返す
     if ($asp->getAspName() === 'a8') {
-      return $ad->getSLink() . 
-      $asp->getConnectString() . 
-      urlencode($adDetail->getOfficialItemLink());
+      return $ad->getSLink() .
+        $asp->getConnectString() .
+        urlencode($adDetail->getOfficialItemLink());
     }
 
     // その他のASPの場合、リンクを作って返す
@@ -134,7 +137,6 @@ class AffiLinkQueryService
       'app', // TODO: 場所の指定をする
       $html
     );
-
   }
 
   // レビューアイテムの生成
@@ -142,23 +144,25 @@ class AffiLinkQueryService
     int $adDetailId,
     string $color = 'blue',
     string $title = '0',
-    bool $isReview = false
-  ){
+    bool $isReview = false,
+    bool $isItemCard = false
+  ) {
     $cmd = new AffiLinkCommand($adDetailId, 'single_review_official_link');
     $text = $this->affiLink($cmd);
     $cmd = new AffiLinkCommand($adDetailId, 'single_review_image', 0, '', 0, '', true);
     $banner = $this->affiLink($cmd);
     $adDetail = $this->adDetailRepository->findById(new AdDetailId($adDetailId));
+    $itemCardShortCode = $this->getItemCardShortCode(new AdDetailId($adDetailId));
     $adDetailInfo = $this->adDetailInfoRepo->findByAdDetailId($adDetail->getId());
-    $info = collect($adDetailInfo)->map(function($info){
+    $info = collect($adDetailInfo)->map(function ($info) {
       return [
         'title' => $info->getTitle(),
         'content' => $info->getContent()
       ];
     })->toArray();
-    
+
     $adDetailChart = $this->adDetailChartRepo->findByAdDetailId($adDetail->getId());
-    $rchart = collect($adDetailChart)->map(function($chart){
+    $rchart = collect($adDetailChart)->map(function ($chart) {
       return [
         'factor' => $chart->getFactor(),
         'value' => $chart->getRate()
@@ -167,37 +171,52 @@ class AffiLinkQueryService
 
     ob_start(); // 出力バッファリングを開始
     require dirname(__FILE__, 4) . '/Views/UserViews/Components/SingleReviewComponent.php';
-    return ob_get_clean(); 
+    return ob_get_clean();
   }
 
   public function createReviewForm(int $adDetailId)
   {
-    $rep =<<<EOT
+    $rep = <<<EOT
     <reviews
     ad-detail-id="{$adDetailId}"
     ></reviews>
     EOT;
 
-    add_action('wp_footer', function() use ($adDetailId) {
+    add_action('wp_footer', function () use ($adDetailId) {
       $adDetail = $this->adDetailRepository->findById(new AdDetailId($adDetailId));
       $ad = $this->adRepository->findById($adDetail->getAdId());
       $reviews = $this->adDetailReviewRepo->findByAdDetailId(new AdDetailId($adDetailId));
       $data = (new AdDetailReviewData($reviews))->handle();
       ob_start(); // 出力バッファリングを開始
       require dirname(__FILE__, 4) . '/Views/UserViews/Components/ReviewSnippetJsonLD.php';
-      $script = ob_get_clean(); 
+      $script = ob_get_clean();
       echo $script;
     });
 
     return $rep;
   }
 
-  public function getRakutenIdFromAdDetailId(int $adDetailId){
+  public function getItemCardShortCode(AdDetailId $adDetailId)
+  {
+    $adDetail = $this->adDetailRepository->findById($adDetailId);
+    if ($adDetail->getRakutenId()) {
+      // 楽天アフィコードがある場合
+      return '[rakuten2 id="' . $adDetail->getRakutenId() . '" kw="' . $adDetail->getItemName() . '" title="' . $adDetail->getItemName() . '" pl=tagranking detail_id="' . $adDetail->getId()->getId() . '"]';
+    } else if ($adDetail->getAmazonAsin()) {
+      return  '[amazon id="' . $adDetail->getAmazonAsin() . '" kw="' . $adDetail->getItemName() . '"]';
+    }
+    // どちらもない場合
+    return false;
+  }
+
+  public function getRakutenIdFromAdDetailId(int $adDetailId)
+  {
     $adDetail = $this->adDetailRepository->findById(new AdDetailId($adDetailId));
     return $adDetail->getRakutenId();
   }
 
-  public function getOfficialNameFromAdDetailId(int $adDetailId){
+  public function getOfficialNameFromAdDetailId(int $adDetailId)
+  {
     $adDetail = $this->adDetailRepository->findById(new AdDetailId($adDetailId));
     $ad = $this->adRepository->findById($adDetail->getAdId());
     return $ad->getName();
@@ -205,7 +224,7 @@ class AffiLinkQueryService
 
   private function wrapClickLog(AdDetailId $adDetailId, string $place, string $item)
   {
-    $rep =<<<EOT
+    $rep = <<<EOT
     <click-log
     @click-record="clickRecord"
     ad-detail-id="{$adDetailId->getId()}"
@@ -216,7 +235,6 @@ class AffiLinkQueryService
     EOT;
     return $rep;
   }
-
 }
 
 class AffiLinkCommand

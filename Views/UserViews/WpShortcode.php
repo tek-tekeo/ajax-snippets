@@ -148,12 +148,10 @@ EOT;
 
     $tagLinkGetService = self::$di->get(TagLinkGetService::class);
     $res = $tagLinkGetService->getTagRanking((string)$id);
-    var_dump($res);
-    die;
     foreach ($res as $r) {
       $html .= "<h3>" . $r['name'] . "</h3>";
       $html .= self::toEditPage($r['adDetailId']);
-      $html .= self::$query->singleReview($r['adDetailId'], '', '', 1);
+      $html .= self::$query->singleReview($r['adDetailId'], '', '', 1, 1);
     }
     return $html;
   }
