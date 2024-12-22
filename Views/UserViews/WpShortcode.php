@@ -148,11 +148,10 @@ EOT;
 
     $tagLinkGetService = self::$di->get(TagLinkGetService::class);
     $res = $tagLinkGetService->getTagRanking((string)$id);
-
     foreach ($res as $r) {
       $html .= "<h3>" . $r['name'] . "</h3>";
       $html .= self::toEditPage($r['adDetailId']);
-      $html .= self::$query->singleReview($r['adDetailId'], '', '', 1);
+      $html .= self::$query->singleReview($r['adDetailId'], '', '', 1, 1);
     }
     return $html;
   }
@@ -625,7 +624,12 @@ EOT;
               '<div class="rakuten-item-content product-item-content cf">' .
               '<div class="rakuten-item-title product-item-title">' . $text_link_tag . '</div>' .
               '<div class="rakuten-item-snippet product-item-snippet">' .
-              '<div class="rakuten-item-maker product-item-maker">' . $shopName . '</div>' . $item_price_tag . $description_tag . '</div>' . $buttons_tag . '</div>' .
+              '<div class="rakuten-item-maker product-item-maker">' . $shopName . '</div>' .
+              $item_price_tag .
+              $description_tag .
+              '</div>' .
+              $buttons_tag .
+              '</div>' .
               $product_item_admin_tag .
               '</div>';
 
