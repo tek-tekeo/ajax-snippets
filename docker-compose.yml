@@ -3,7 +3,7 @@ services:
     image: mysql:5.7
     platform: linux/x86_64 # M1チップ対応のため追記
     volumes:
-      - wpdb:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
     restart: always
     ports:
       - "${DB_PORT}:3306"
@@ -74,5 +74,4 @@ services:
       - ./volumes/phpmyadmin/sessions:/sessions
 
 volumes:
-  wpdb:
   wordpress:
