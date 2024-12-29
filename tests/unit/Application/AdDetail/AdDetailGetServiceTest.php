@@ -54,8 +54,8 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
     $this->adDetailChartRepository = $diContainer->get(IAdDetailChartRepository::class);
     $this->adDetailInfoRepository = $diContainer->get(IAdDetailInfoRepository::class);
     $this->adDetailReviewRepository = $diContainer->get(IAdDetailReviewRepository::class);
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "asps");
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
+    $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "asps");
+    $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
     $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details_chart");
     $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_detail_reviews");
     $wpdb->insert(PLUGIN_DB_PREFIX . 'ad_detail_reviews', [
@@ -123,7 +123,7 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
     );
 
     $this->adRepository = $diContainer->get(IAdRepository::class);
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ads");
+    $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ads");
 
     $this->ad = new Ad(
       new AdId(1),
@@ -185,49 +185,49 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
     $request->set_param('id', 2);
     $command = new AdDetailGetCommand($request);
     $actualAdDetailData = $this->adDetailGetService->handle($command);
-    
+
     $expected =  new AdDetailData(
-        $this->ad, 
-        new AdDetail(
+      $this->ad,
+      new AdDetail(
+        new AdDetailId(2),
+        ...$this->columns
+      ),
+      [
+        new AdDetailChart(
+          2,
           new AdDetailId(2),
-          ...$this->columns
+          'ダメダメ度',
+          1.1,
+          1
         ),
-        [
-          new AdDetailChart(
-            2,
-            new AdDetailId(2),
-            'ダメダメ度',
-            1.1,
-            1
-          ),
-          new AdDetailChart(
-            1,
-            new AdDetailId(2),
-            'おすすめ度',
-            4.4,
-            2
-          ),
-        ],
-        [
-          new AdDetailInfo(
-            2,
-            new AdDetailId(2),
-            '販売元',
-            'まるまる商会',
-            1
-          ),
-          new AdDetailInfo(
-            1,
-            new AdDetailId(2),
-            'URL',
-            'https://www.example.com',
-            2
-          )
-        ],
-        [
-          new TagLink(new TagLinkId(1), new AdDetailId(2), new TagId(1)),
-          new TagLink(new TagLinkId(2), new AdDetailId(2), new TagId(2))
-        ]
+        new AdDetailChart(
+          1,
+          new AdDetailId(2),
+          'おすすめ度',
+          4.4,
+          2
+        ),
+      ],
+      [
+        new AdDetailInfo(
+          2,
+          new AdDetailId(2),
+          '販売元',
+          'まるまる商会',
+          1
+        ),
+        new AdDetailInfo(
+          1,
+          new AdDetailId(2),
+          'URL',
+          'https://www.example.com',
+          2
+        )
+      ],
+      [
+        new TagLink(new TagLinkId(1), new AdDetailId(2), new TagId(1)),
+        new TagLink(new TagLinkId(2), new AdDetailId(2), new TagId(2))
+      ]
     );
     $this->assertEquals($expected, $actualAdDetailData);
   }
@@ -240,15 +240,15 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
     $actualAdDetailData = $this->adDetailGetService->getAdDetailsFindByName('');
     $this->assertEquals(
       [
-        new AdDetailDataIndex($this->ad,new AdDetail(
+        new AdDetailDataIndex($this->ad, new AdDetail(
           new AdDetailId(1),
           ...$this->columns
         )),
-        new AdDetailDataIndex($this->ad,new AdDetail(
+        new AdDetailDataIndex($this->ad, new AdDetail(
           new AdDetailId(2),
           ...$this->columns
         )),
-        new AdDetailDataIndex($this->ad,new AdDetail(
+        new AdDetailDataIndex($this->ad, new AdDetail(
           new AdDetailId(3),
           ...$this->columns
         ))
@@ -260,7 +260,7 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
   public function testGetEditorAnkenList()
   {
     global $wpdb;
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "asps");
+    $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "asps");
 
     $asp = new Asp(
       new AspId(1),
@@ -308,7 +308,6 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
       )
     ];
     $this->assertEquals($expected, $actualAdDetailData);
-
   }
 
   public function testGetLinkMaker()
@@ -347,30 +346,30 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
     $cmd = new AdDetailGetCommand($request);
     $actualAdDetailData = $this->adDetailGetService->getReview($cmd);
     $expected = (object)[
-          'ratingValue' => 9.0,
-          'bestRating' => 10.0,
-          'ratingCount' => 2,
-          'reviews' =>[
-              (object)[
-              'name' => '匿名1',
-              'sex' => '男性',
-              'age' => 10,
-              'ratingValue' => 5.0,
-              'content' =>'コンテンツ1',
-              'quoteName' => 'google',
-              'quoteUrl' => 'https://google.com'
-              ],
-              (object)[
-                'name' => '匿名2',
-                'sex' => '女性',
-                'age' => 20,
-                'ratingValue' => 4.0,
-                'content' =>'コンテンツ2',
-                'quoteName' => 'google',
-                'quoteUrl' => 'https://google.com'
-                ],
-          ]
-        ];
+      'ratingValue' => 9.0,
+      'bestRating' => 10.0,
+      'ratingCount' => 2,
+      'reviews' => [
+        (object)[
+          'name' => '匿名1',
+          'sex' => '男性',
+          'age' => 10,
+          'ratingValue' => 5.0,
+          'content' => 'コンテンツ1',
+          'quoteName' => 'google',
+          'quoteUrl' => 'https://google.com'
+        ],
+        (object)[
+          'name' => '匿名2',
+          'sex' => '女性',
+          'age' => 20,
+          'ratingValue' => 4.0,
+          'content' => 'コンテンツ2',
+          'quoteName' => 'google',
+          'quoteUrl' => 'https://google.com'
+        ],
+      ]
+    ];
     $this->assertEquals($expected, $actualAdDetailData);
   }
 }

@@ -16,11 +16,11 @@ use AjaxSnippets\Views\EditorViews\AjaxSnippetsMce;
 use AjaxSnippets\Views\UserViews\RedirectSystem;
 use AjaxSnippets\Views\UserViews\WpShortcode;
 
-require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 require_once dirname(__FILE__) . "/loader.php";
 
 global $wpdb;
-define('VERSION', '0.7');
+define('VERSION', '0.8');
 define('PLUGIN_DB_PREFIX', $wpdb->prefix . 'ajax_snippets_');
 
 class AjaxSneppets
@@ -39,7 +39,7 @@ class AjaxSneppets
 
     $wpShortcode = WpShortcode::getInstance($diContainer);
     $wpShortcode->handle();
-    
+
     // add_action('init', [WpShortcode::getInstance($diContainer), 'handle']);
 
     //スクリプト 、スタイルシートの追加 (公開ページにのみ反映)
@@ -149,6 +149,9 @@ function createEndPoints()
   Route::get('/detail/prev', 'AjaxSnippets\Api\Controllers\AdDetailController@getPrevId');
   Route::get('/detail/prevData', 'AjaxSnippets\Api\Controllers\AdDetailController@getPrevDetail');
   Route::post('/detail/editor', 'AjaxSnippets\Api\Controllers\AdDetailController@getEditorList'); //編集画面に表示する用のリスト
+  Route::post('/detail/rakutenLinkCheck', 'AjaxSnippets\Api\Controllers\AdDetailController@rakutenLinkCheck');
+  Route::get('/detail/rakutenLinkExpired', 'AjaxSnippets\Api\Controllers\AdDetailController@rakutenLinkExpired');
+  Route::post('/detail/rakutenLinkUpdate', 'AjaxSnippets\Api\Controllers\AdDetailController@rakutenLinkUpdate');
 
   // 子要素のレビュー関連
   Route::post('/posts/details/(?P<adDetailId>\d+)/reviews', 'AjaxSnippets\Api\Controllers\AdDetailController@postReview', false); //指定子要素のレビューを投稿

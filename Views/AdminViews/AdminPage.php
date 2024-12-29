@@ -87,6 +87,10 @@ if (!defined('ABSPATH')) exit; ?>
       path: '/app/update/:id',
       component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/organisms/appUpdateView.vue')
     },
+    {
+      path: '/rakutenLink',
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/pages/rakutenLinkPage.vue')
+    },
   ];
 
   Vue.use(Toasted);
@@ -124,6 +128,10 @@ if (!defined('ABSPATH')) exit; ?>
             name: 'アプリ登録',
             to: '/app'
           },
+          {
+            name: '楽天リンク',
+            to: '/rakutenLink'
+          }
         ],
       }
     }
