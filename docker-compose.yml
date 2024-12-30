@@ -44,6 +44,7 @@ services:
       WORDPRESS_DB_USER: "${WORDPRESS_DB_USER}"
       WORDPRESS_DB_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
       WORDPRESS_DEBUG: "${WORDPRESS_DEBUG}"
+      WP_ENV: development # 開発環境の識別用の環境変数
 
   test_phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest

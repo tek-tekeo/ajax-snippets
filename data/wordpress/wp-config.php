@@ -117,6 +117,7 @@ define('WP_DEBUG', !!getenv_docker('WORDPRESS_DEBUG', ''));
 define('WP_DEBUG_LOG', true);            // エラーログを wp-content/debug.log に記録する
 define('WP_DEBUG_DISPLAY', false);       // エラーを画面に表示しない
 @ini_set('display_errors', 0);           // PHPのエラー表示を無効化
+define('WP_ENV', getenv('WP_ENV'));  // Docker環境で設定した環境変数を取得
 /* Add any custom values between this line and the "stop editing" line. */
 
 // If we're behind a proxy server and using HTTPS, we need to alert WordPress of that fact

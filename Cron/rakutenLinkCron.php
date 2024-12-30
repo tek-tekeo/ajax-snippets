@@ -14,7 +14,6 @@ class RakutenLinkCron
 
   private function __construct()
   {
-    define('DISABLE_WP_CRON', true); // WP-Cronを無効化
 
     // 1. カスタムスケジュールの追加（1秒間隔） // TODO: 最終的にdailyに変更
     add_filter('cron_schedules', function ($schedules) {
@@ -41,13 +40,20 @@ class RakutenLinkCron
 
   public static function handle()
   {
+    // $timestamp = wp_next_scheduled('rakuten_link_active_check_hook');
+    // wp_unschedule_event($timestamp, 'rakuten_link_active_check_hook');
+    // if ($timestamp) {
+
+    //   error_log('スケジュールが削除されました。');
+    // }
     if (!wp_next_scheduled('rakuten_link_active_check_hook')) {
-      wp_schedule_event(time() + 10, 'every_one_second', 'rakuten_link_active_check_hook'); // TODO: 最終的にdailyに変更
+      wp_schedule_event(time() + 10, 'daily', 'rakuten_link_active_check_hook'); // TODO: 最終的にdailyに変更
     }
   }
 
   public function rakutenLinkActiveCheck()
   {
+    error_log('実行中');
     // 楽天IDが入力されている商品のみを取得
     $adDetailRepository = new AdDetailRepository();
     $adDetails = $adDetailRepository->findAllWithNonEmptyRakutenId();
@@ -56,7 +62,6 @@ class RakutenLinkCron
     // それぞれのリンクに対してアクセスを行う。
     collect($adDetails)->each(function ($adDetail) use ($rakutenAffiliateService, $adDetailRepository) {
       $res = $rakutenAffiliateService->checkRakutenId($adDetail->getRakutenId());
-      // 正常であれば次へ
       error_log('ID:' . $adDetail->getId()->getId() . 'は' . $res['text']);
       if ($res['success']) {
         // 一応expired_atをnullに更新しておく
@@ -95,5 +100,6 @@ class RakutenLinkCron
       );
       $adDetailRepository->save($updateAdDetail);
     });
+    error_log('実行終了');
   }
 }

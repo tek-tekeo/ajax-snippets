@@ -178,5 +178,15 @@ function createEndPoints()
 }
 add_action('rest_api_init', 'createEndPoints');
 
+function change_cron_port($cron_request)
+{
+  $port = parse_url($cron_request['url'], PHP_URL_PORT);
+  $cron_request['url'] = str_replace($port, '80', $cron_request['url']);
+  return $cron_request;
+}
+// Docker環境の場合のみCRONのポートを80へ変更するフィルタを適用
+if (defined('WP_ENV') && WP_ENV === 'development') {
+  add_filter('cron_request', 'change_cron_port', 9999);
+}
 //クロンの設定
-add_action('admin_init', [RakutenLinkCron::getInstance(), 'handle']);
+add_action('wp', [RakutenLinkCron::getInstance(), 'handle']);
