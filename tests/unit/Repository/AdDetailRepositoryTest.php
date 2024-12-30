@@ -25,8 +25,8 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
   protected function resetDatabase()
   {
     global $wpdb;
-    $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
     $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ads");
+    $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
   }
 
   public function testSaveAdDetail()
@@ -45,7 +45,9 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
       'review',
       1,
       1,
-      '2021-01-01 00:00:00'
+      '2021-01-01 00:00:00',
+      '2022-01-01 00:00:00',
+      '2022-02-01 00:00:00',
     );
 
     $insertId = $this->repository->save($adDetail);
@@ -65,7 +67,10 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
         'review' => 'review',
         'is_show_url' => 1,
         'same_parent' => 1,
-        'rakuten_expired_at' => '2021-01-01 00:00:00'
+        'rakuten_expired_at' => '2021-01-01 00:00:00',
+        'created_at' => '2022-01-01 00:00:00',
+        'updated_at' => '2022-02-01 00:00:00',
+        'deleted_at' => null
       ],
       $savedAdDetail->entity()
     );

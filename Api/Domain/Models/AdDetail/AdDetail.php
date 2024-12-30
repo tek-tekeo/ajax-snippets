@@ -7,7 +7,6 @@ use AjaxSnippets\Api\Domain\Models\Ad\AdId;
 
 class AdDetail
 {
-
   public function __construct(
     private AdDetailId $id,
     private AdId $adId,
@@ -20,8 +19,14 @@ class AdDetail
     private string $review = '',
     private int $isShowUrl = 0,
     private int $sameParent = 1,
-    private ?string $rakutenExpiredAt = null
-  ) {}
+    private ?string $rakutenExpiredAt = null,
+    private string $createdAt = '',
+    private string $updatedAt = '',
+    private ?string $deletedAt = null
+  ) {
+    $this->createdAt = $this->createdAt ?: date('Y-m-d H:i:s');
+    $this->updatedAt = $this->updatedAt ?: date('Y-m-d H:i:s');
+  }
 
   public function getId(): AdDetailId
   {
@@ -83,6 +88,21 @@ class AdDetail
     return $this->rakutenExpiredAt;
   }
 
+  public function getCreatedAt(): string
+  {
+    return $this->createdAt;
+  }
+
+  public function getUpdatedAt(): string
+  {
+    return $this->updatedAt;
+  }
+
+  public function getDeletedAt(): ?string
+  {
+    return $this->deletedAt;
+  }
+
   public function entity(): array
   {
     return [
@@ -97,7 +117,10 @@ class AdDetail
       'review' => $this->review,
       'is_show_url' => $this->isShowUrl,
       'same_parent' => $this->sameParent,
-      'rakuten_expired_at' => $this->rakutenExpiredAt
+      'rakuten_expired_at' => $this->rakutenExpiredAt,
+      'created_at' => $this->createdAt,
+      'updated_at' => $this->updatedAt,
+      'deleted_at' => $this->deletedAt
     ];
   }
 }

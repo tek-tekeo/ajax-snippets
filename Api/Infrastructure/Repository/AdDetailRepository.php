@@ -42,14 +42,17 @@ class AdDetailRepository implements IAdDetailRepository
         (string)$r->review,
         (int)$r->is_show_url,
         (int)$r->same_parent,
-        (string)$r->rakuten_expired_at
+        $r->rakuten_expired_at,
+        (string)$r->created_at,
+        (string)$r->updated_at,
+        $r->deleted_at
       );
     })->toArray();
   }
 
   public function findById(AdDetailId $adDetailId): AdDetail
   {
-    $res = $this->db->get_row("SELECT * FROM " . $this->table . " WHERE id=" . $adDetailId->getId());
+    $res = $this->db->get_row("SELECT * FROM " . $this->table . " WHERE id=" . $adDetailId->getId() . " AND deleted_at IS NULL");
     if (!$res == null) {
       return new AdDetail(
         new AdDetailId((int)$res->id),
@@ -63,7 +66,10 @@ class AdDetailRepository implements IAdDetailRepository
         (string)$res->review,
         (int)$res->is_show_url,
         (int)$res->same_parent,
-        (string)$res->rakuten_expired_at
+        $res->rakuten_expired_at,
+        (string)$res->created_at,
+        (string)$res->updated_at,
+        $res->deleted_at
       );
     }
     throw new \Exception('Ad Detail IDに該当するデータが存在しません。', 500);
@@ -85,7 +91,10 @@ class AdDetailRepository implements IAdDetailRepository
         (string)$res->review,
         (int)$res->is_show_url,
         (int)$res->same_parent,
-        (string)$res->rakuten_expired_at
+        $res->rakuten_expired_at,
+        (string)$res->created_at,
+        (string)$res->updated_at,
+        $res->deleted_at
       );
     }
     throw new Exception('Detail IDに該当するデータが存在しません。');
@@ -107,14 +116,20 @@ class AdDetailRepository implements IAdDetailRepository
         (string)$r->review,
         (int)$r->is_show_url,
         (int)$r->same_parent,
-        (string)$r->rakuten_expired_at
+        $r->rakuten_expired_at,
+        (string)$r->created_at,
+        (string)$r->updated_at,
+        $r->deleted_at
       );
     })->toArray();
   }
 
-  public function findRakutenLinkExpired(): array
+  public function findRakutenLinkExpired($hasDeletedAt = true): array
   {
     $sql = "SELECT ad_details.*, ad.name FROM $this->table as ad_details, $this->adTable as ad WHERE ad_details.ad_id = ad.id AND ad_details.rakuten_expired_at IS NOT NULL";
+    if (!$hasDeletedAt) {
+      $sql .= " AND ad_details.deleted_at IS NULL";
+    }
     $res = $this->db->get_results($sql);
     return collect($res)->map(function ($r) {
       return new AdDetail(
@@ -129,7 +144,10 @@ class AdDetailRepository implements IAdDetailRepository
         (string)$r->review,
         (int)$r->is_show_url,
         (int)$r->same_parent,
-        (string)$r->rakuten_expired_at
+        $r->rakuten_expired_at,
+        (string)$r->created_at,
+        (string)$r->updated_at,
+        $r->deleted_at
       );
     })->toArray();
   }
@@ -150,7 +168,10 @@ class AdDetailRepository implements IAdDetailRepository
         (string)$r->review,
         (int)$r->is_show_url,
         (int)$r->same_parent,
-        $r->rakuten_expired_at
+        $r->rakuten_expired_at,
+        (string)$r->created_at,
+        (string)$r->updated_at,
+        $r->deleted_at
       );
     })->toArray();
   }
@@ -166,11 +187,13 @@ class AdDetailRepository implements IAdDetailRepository
 
   public function delete(AdDetailId $adDetailId): bool
   {
-    $res = $this->db->delete(
-      $this->table,
-      array('id' => $adDetailId->getId())
+    return $this->db->update(
+      $this->table, // テーブル名
+      ['deleted_at' => date('Y-m-d H:i:s')],  // 更新するデータ
+      ['id' => $adDetailId->getId()], // 条件
+      array('%s'), // データのフォーマット（%s は文字列）
+      array('%d')  // 条件のフォーマット（%d は整数）
     );
-    return $res;
   }
 
   public function deleteByAdId(AdId $adId): bool

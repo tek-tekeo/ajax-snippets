@@ -148,6 +148,9 @@ class InitDatabase
       review varchar(3000) DEFAULT '' NOT NULL,
       is_show_url tinyint DEFAULT 1 NOT NULL,
       same_parent tinyint DEFAULT 0 NOT NULL,
+      created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+      updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+      deleted_at datetime DEFAULT NULL,
       PRIMARY KEY id (id)
       ){$this->charsetCollate};";
 
