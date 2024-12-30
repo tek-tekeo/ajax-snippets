@@ -1,4 +1,5 @@
 <?php
+
 namespace AjaxSnippets\Api\Application\AdDetail;
 
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
@@ -29,7 +30,7 @@ class AdDetailGetService implements IAdDetailGetService
     private IAdDetailReviewRepository $adDetailReviewRepository,
     private IAspRepository $aspRepository,
     private ITagLinkRepository $tagLinkRepository
-  ){}
+  ) {}
 
   public function handle(AdDetailGetCommand $cmd)
   {
@@ -38,39 +39,42 @@ class AdDetailGetService implements IAdDetailGetService
     $adDetailInfo = $this->adDetailInfoRepository->findByAdDetailId($detail->getId());
     $adDetailChart = $this->adDetailChartRepository->findByAdDetailId($detail->getId());
     $tags = $this->tagLinkRepository->findByAdDetailId($detail->getId());
-    return new AdDetailData($ad, $detail,$adDetailChart, $adDetailInfo, $tags);
+    return new AdDetailData($ad, $detail, $adDetailChart, $adDetailInfo, $tags);
   }
 
-  public function getAdDetailsFindByName(string $name){
+  public function getAdDetailsFindByName(string $name)
+  {
     $details = $this->adDetailRepository->findByName($name);
 
-    return collect($details)->map(function($adDetail){
+    return collect($details)->map(function ($adDetail) {
       $ad = $this->adRepository->findById($adDetail->getAdId());
       return new AdDetailDataIndex($ad, $adDetail);
     })->toArray();
   }
 
-  public function getEditorAnkenList(string $name){
+  public function getEditorAnkenList(string $name)
+  {
     $details = $this->adDetailRepository->findByName($name);
-    return collect($details)->map(function($adDetail){
+    return collect($details)->map(function ($adDetail) {
       $ad = $this->adRepository->findById($adDetail->getAdId());
-      try{
+      try {
         $asp = $this->aspRepository->findById($ad->getAspId());
-      }catch(\Exception $e){
+      } catch (\Exception $e) {
         $asp = new Asp(new AspId(0), '未設定', '');
       }
       return new EditDetailData($ad, $adDetail, $asp);
     })->toArray();
-
   }
 
-  public function getLinkMaker(AdDetailGetCommand $cmd){
+  public function getLinkMaker(AdDetailGetCommand $cmd)
+  {
     $adDetail = $this->adDetailRepository->findById(new AdDetailId($cmd->getId()));
     $ad = $this->adRepository->findById($adDetail->getAdId());
     return new AffiLinkData($ad, $adDetail);
   }
 
-  public function getLatestDetail(){
+  public function getLatestDetail()
+  {
     $detail = $this->adDetailRepository->findLatest();
     $ad = $this->adRepository->findById($detail->getAdId());
     $adDetailInfo = $this->adDetailInfoRepository->findByAdDetailId($detail->getId());
@@ -88,7 +92,7 @@ class AdDetailGetService implements IAdDetailGetService
   public function getReviewsByAdDetailId(AdDetailGetCommand $cmd)
   {
     $adDetailReviews = $this->adDetailReviewRepository->findByAdDetailId(new AdDetailId($cmd->getId()));
-    return collect($adDetailReviews)->map(function($review){
+    return collect($adDetailReviews)->map(function ($review) {
       return (object)[
         'id' => $review->getId(),
         'ratingValue' => $review->getRatingValue(),
@@ -99,6 +103,19 @@ class AdDetailGetService implements IAdDetailGetService
         'quoteName' => $review->getQuoteName(),
         'quoteUrl' => $review->getQuoteUrl(),
         'isPublished' => $review->getIsPublished()
+      ];
+    })->toArray();
+  }
+
+  public function getRakutenLinkExpired()
+  {
+    $adDetails = $this->adDetailRepository->findRakutenLinkExpired();
+    return collect($adDetails)->map(function ($adDetail) {
+      return (object)[
+        'id' => $adDetail->getId()->getId(),
+        'itemName' => $adDetail->getItemName(),
+        'rakutenId' => $adDetail->getRakutenId(),
+        'rakutenExpiredAt' => $adDetail->getRakutenExpiredAt()
       ];
     })->toArray();
   }

@@ -1,4 +1,5 @@
 <?php
+
 namespace AjaxSnippets\Database;
 
 class InitDatabase
@@ -9,13 +10,14 @@ class InitDatabase
   private $charsetCollate;
   private $repository;
 
-  private function __construct(){
+  private function __construct()
+  {
     global $wpdb;
 
     $this->repository = $wpdb;
     $this->charsetCollate = $this->repository->get_charset_collate();
   }
-  
+
   //インスタンスを一つしか持てないように制約
   public static function getInstance()
   {
@@ -30,8 +32,8 @@ class InitDatabase
   public function handle()
   {
 
-    $installed_ver = get_option( "jal_db_version" );
-    if ( $installed_ver != VERSION ) {
+    $installed_ver = get_option("jal_db_version");
+    if ($installed_ver != VERSION) {
       $this->initBaseTable();
       $this->initDetailTable();
       $this->initDetailChartTable();
@@ -41,7 +43,7 @@ class InitDatabase
       $this->initTagTable();
       $this->initAppsTable();
       $this->initAspTable();
-      add_option( 'jal_db_version', VERSION);
+      add_option('jal_db_version', VERSION);
     }
   }
 
@@ -87,7 +89,6 @@ class InitDatabase
   {
     $sql = $this->createSqlOfAppsTable();
     dbDelta($sql);
-
   }
   private function initAspTable()
   {
@@ -143,6 +144,7 @@ class InitDatabase
       detail_img varchar(1025) DEFAULT '' NOT NULL,
       amazon_asin varchar(255) DEFAULT '' NOT NULL,
       rakuten_id varchar(255) DEFAULT '' NOT NULL,
+      rakuten_expired_at datetime DEFAULT NULL,
       review varchar(3000) DEFAULT '' NOT NULL,
       is_show_url tinyint DEFAULT 1 NOT NULL,
       same_parent tinyint DEFAULT 0 NOT NULL,
@@ -164,7 +166,7 @@ class InitDatabase
     age int(11),
     sex varchar(255) DEFAULT '' NOT NULL,
     rate float(11),
-    content text DEFAULT '' NOT NULL,
+    content text NOT NULL,
     quote_name varchar(1000) DEFAULT '当ブログ口コミ' NOT NULL,
     quote_url varchar(1000) DEFAULT '' NOT NULL,
     is_published tinyint DEFAULT 0 NOT NULL,
@@ -208,7 +210,6 @@ class InitDatabase
       ){$this->charsetCollate};";
 
     return $sql;
-
   }
 
   //ログデータのクエリを取得
@@ -311,9 +312,9 @@ class InitDatabase
     $this->repository->replace(
       $this->getTableName('asps'),
       array(
-        'id'=>1,
-        'asp_name'=>'a8',
-        'connect_string'=>'&a8ejpredirect='
+        'id' => 1,
+        'asp_name' => 'a8',
+        'connect_string' => '&a8ejpredirect='
       ),
       array(
         '%d',
@@ -324,9 +325,9 @@ class InitDatabase
     $this->repository->replace(
       $this->getTableName('asps'),
       array(
-        'id'=>2,
-        'asp_name'=>'afb',
-        'connect_string'=>''
+        'id' => 2,
+        'asp_name' => 'afb',
+        'connect_string' => ''
       ),
       array(
         '%d',

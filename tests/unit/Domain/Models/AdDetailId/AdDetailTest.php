@@ -1,5 +1,6 @@
 
 <?php
+
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 use AjaxSnippets\Api\Domain\Models\Ad\AdId;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetail;
@@ -41,7 +42,8 @@ final class AdDetailTest extends WP_UnitTestCase
         'rakuten_id' => 'rakuten id',
         'review' => 'review',
         'is_show_url' => 1,
-        'same_parent' => 1
+        'same_parent' => 1,
+        'rakuten_expired_at' => null
       ],
       $adDetail->entity()
     );

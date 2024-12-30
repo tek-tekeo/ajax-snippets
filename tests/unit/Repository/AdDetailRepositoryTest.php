@@ -1,4 +1,5 @@
 <?php
+
 use AjaxSnippets\Api\Domain\Models\Ad\AdId;
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
@@ -10,23 +11,23 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
 {
   private $repository;
 
-	public function setUp():void
-	{
-		parent::setUp();
-		$this->resetDatabase();
-		$this->repository = new AdDetailRepository();
-	}
+  public function setUp(): void
+  {
+    parent::setUp();
+    $this->resetDatabase();
+    $this->repository = new AdDetailRepository();
+  }
 
-	protected function resetDatabase()
-	{
-		global $wpdb;
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
-	}
+  protected function resetDatabase()
+  {
+    global $wpdb;
+    $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
+  }
 
   public function testSaveAdDetail()
   {
     $adDetailId = new AdDetailId();
-    $adId = new AdId();
+    $adId = new AdId(1);
     $adDetail = new AdDetail(
       $adDetailId,
       $adId,
@@ -38,11 +39,31 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
       'rakuten id',
       'review',
       1,
-      1
+      1,
+      '2021-01-01 00:00:00'
     );
 
     $insertId = $this->repository->save($adDetail);
     $this->assertEquals(new AdDetailId(1), $insertId);
+
+    $savedAdDetail = $this->repository->findById($insertId);
+    $this->assertEquals(
+      [
+        'id' => 1,
+        'ad_id' => 1,
+        'item_name' => 'item name',
+        'official_item_link' => 'official item link',
+        'affi_item_link' => 'affi item link',
+        'detail_img' => 'detail image',
+        'amazon_asin' => 'amazon asin',
+        'rakuten_id' => 'rakuten id',
+        'review' => 'review',
+        'is_show_url' => 1,
+        'same_parent' => 1,
+        'rakuten_expired_at' => '2021-01-01 00:00:00'
+      ],
+      $savedAdDetail->entity()
+    );
   }
 
   public function testFindById()
@@ -154,7 +175,7 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
 
   public function testDeleteByAdId()
   {
-        $adId = new AdId(1);
+    $adId = new AdId(1);
     $adDetailId = new AdDetailId();
     $adDetail = new AdDetail(
       $adDetailId,
@@ -176,5 +197,89 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
     $this->assertTrue($result);
     $adDetails = $this->repository->findByAdId(new AdId(1));
     $this->assertCount(0, $adDetails);
+  }
+
+  public function testRakutenLinkExpired(): void
+  {
+    $adDetailId = new AdDetailId(2);
+    $adId = new AdId();
+    $adDetail = new AdDetail(
+      $adDetailId,
+      $adId,
+      'item name',
+      'official item link',
+      'affi item link',
+      'detail image',
+      'amazon asin',
+      'rakuten id',
+      'review',
+      1,
+      1
+    );
+
+    $this->repository->save($adDetail);
+
+    $adDetailId = new AdDetailId(1);
+    $adId = new AdId();
+    $adDetail = new AdDetail(
+      $adDetailId,
+      $adId,
+      'item name',
+      'official item link',
+      'affi item link',
+      'detail image',
+      'amazon asin',
+      'rakuten id',
+      'review',
+      1,
+      1,
+      '2021-01-01 00:00:00'
+    );
+
+    $this->repository->save($adDetail);
+    $res = $this->repository->findRakutenLinkExpired();
+    $this->assertCount(1, $res);
+    $this->assertEquals($adDetail, $res[0]);
+  }
+
+  public function testFindAllWithNonEmptyRakutenId()
+  {
+    $adDetailId = new AdDetailId(1);
+    $adId = new AdId();
+    $adDetail1 = new AdDetail(
+      $adDetailId,
+      $adId,
+      'item name',
+      'official item link',
+      'affi item link',
+      'detail image',
+      'amazon asin',
+      'rakuten id',
+      'review',
+      1,
+      1
+    );
+
+    $this->repository->save($adDetail1);
+    $adDetailId = new AdDetailId(2);
+    $adId = new AdId();
+    $adDetail2 = new AdDetail(
+      $adDetailId,
+      $adId,
+      'item name',
+      'official item link',
+      'affi item link',
+      'detail image',
+      'amazon asin',
+      '',
+      'review',
+      1,
+      1
+    );
+
+    $this->repository->save($adDetail2);
+    $res = $this->repository->findAllWithNonEmptyRakutenId();
+    $this->assertCount(1, $res);
+    $this->assertEquals($adDetail1, $res[0]);
   }
 }

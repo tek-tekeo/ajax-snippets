@@ -1,11 +1,12 @@
 <?php
+
 namespace AjaxSnippets\Api\Domain\Models\AdDetail;
 
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 use AjaxSnippets\Api\Domain\Models\Ad\AdId;
 
 class AdDetail
-{  													
+{
 
   public function __construct(
     private AdDetailId $id,
@@ -18,8 +19,9 @@ class AdDetail
     private string $rakutenId = '',
     private string $review = '',
     private int $isShowUrl = 0,
-    private int $sameParent = 1
-  ){}
+    private int $sameParent = 1,
+    private ?string $rakutenExpiredAt = null
+  ) {}
 
   public function getId(): AdDetailId
   {
@@ -76,6 +78,11 @@ class AdDetail
     return $this->sameParent;
   }
 
+  public function getRakutenExpiredAt(): ?string
+  {
+    return $this->rakutenExpiredAt;
+  }
+
   public function entity(): array
   {
     return [
@@ -89,9 +96,8 @@ class AdDetail
       'rakuten_id' => $this->rakutenId,
       'review' => $this->review,
       'is_show_url' => $this->isShowUrl,
-      'same_parent' => $this->sameParent
+      'same_parent' => $this->sameParent,
+      'rakuten_expired_at' => $this->rakutenExpiredAt
     ];
   }
 }
-
-?>

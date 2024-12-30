@@ -6,7 +6,11 @@ DIR="/var/www/html/wp-content/plugins/$PLUGIN_NAME"
 
 docker compose down
 docker compose up -d --build
-sleep 5 # wait for mysql to start
+until docker compose exec wpdb mysqladmin ping -u root -pmyrootpass --silent; do
+  echo "Waiting for database connection..."
+  sleep 3
+done
+sleep 5
 docker compose exec -it wordpress /bin/bash -c "wp core install --url='http://localhost:$WEB_PORT' --title='new site' --admin_user='$WORDPRESS_ADMIN_USER' --admin_password='$WORDPRESS_ADMIN_PASSWORD' --admin_email='$WORDPRESS_ADMIN_EMAIL' --allow-root"
 docker compose exec -it wordpress /bin/bash -c "wp language core install ja --activate --allow-root"
 

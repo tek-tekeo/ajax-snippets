@@ -1,4 +1,5 @@
 <?php
+
 namespace AjaxSnippets\Api\Application\AdDetail;
 
 use AjaxSnippets\Api\Domain\Models\TagLink\TagLink;
@@ -19,6 +20,7 @@ use AjaxSnippets\Api\Domain\Models\TagLink\ITagLinkRepository;
 use AjaxSnippets\Api\Application\AdDetail\AdDetailReviewUpdateCommand;
 use AjaxSnippets\Api\Application\AdDetail\IAdDetailUpdateService;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailReview;
+use AjaxSnippets\Api\Application\Services\RakutenAffiliateService;
 
 class AdDetailUpdateService implements IAdDetailUpdateService
 {
@@ -30,9 +32,9 @@ class AdDetailUpdateService implements IAdDetailUpdateService
     private IAdDetailInfoRepository $adDetailInfoRepository,
     private IAdDetailReviewRepository $adDetailReviewRepository,
     private ITagLinkRepository $tagLinkRepository
-  ){}
+  ) {}
 
-  public function handle(AdDetailUpdateCommand $cmd) : AdDetailId
+  public function handle(AdDetailUpdateCommand $cmd): AdDetailId
   {
     $adDetailId = new AdDetailId($cmd->getId());
     $adDetail = $this->adDetailRepository->findById($adDetailId);
@@ -54,7 +56,7 @@ class AdDetailUpdateService implements IAdDetailUpdateService
     $insertAdDetailId = $this->adDetailRepository->save($updateAdDetail);
 
     $this->tagLinkRepository->delete($insertAdDetailId);
-    $res = collect($cmd->getTagIds())->map(function($tagId) use ($insertAdDetailId){
+    $res = collect($cmd->getTagIds())->map(function ($tagId) use ($insertAdDetailId) {
       $tagLink = new TagLink(
         new TagLinkId(),
         $insertAdDetailId,
@@ -64,7 +66,7 @@ class AdDetailUpdateService implements IAdDetailUpdateService
     })->toArray();
 
     $this->adDetailChartRepository->deleteByAdDetailId($insertAdDetailId);
-    $res = collect($cmd->getRates())->map(function($chart) use ($insertAdDetailId){
+    $res = collect($cmd->getRates())->map(function ($chart) use ($insertAdDetailId) {
       $adDetailChart = new AdDetailChart(
         0,
         $insertAdDetailId,
@@ -76,7 +78,7 @@ class AdDetailUpdateService implements IAdDetailUpdateService
     })->toArray();
 
     $this->adDetailInfoRepository->deleteByAdDetailId($insertAdDetailId);
-    $res = collect($cmd->getInfos())->map(function($info) use ($insertAdDetailId){
+    $res = collect($cmd->getInfos())->map(function ($info) use ($insertAdDetailId) {
       $adDetailInfo = new AdDetailInfo(
         0,
         $insertAdDetailId,
@@ -113,5 +115,36 @@ class AdDetailUpdateService implements IAdDetailUpdateService
     $insertAdDetaiReviewlId = $this->adDetailReviewRepository->save($updateAdDetailReview);
 
     return $insertAdDetaiReviewlId;
+  }
+
+  public function updateRakutenExpiredAt($id, $rakutenId)
+  {
+    if ($rakutenId !== '') {
+      // 楽天商品リンクが正常かチェックする
+      $rakutenAffiliateService = new RakutenAffiliateService();
+      $res = $rakutenAffiliateService->checkRakutenId($rakutenId);
+      if ($res['success'] === false) {
+        return $res;
+      }
+    } else {
+      $res = ['success' => true, 'text' => '楽天商品リンクを空にして更新しました'];
+    }
+    // 楽天商品リンクが正常であれば、楽天商品リンクの有効期限を更新する
+    $adDetail = $this->adDetailRepository->findById(new AdDetailId($id));
+    $newAdDetail = new AdDetail(
+      $adDetail->getId(),
+      $adDetail->getAdId(),
+      $adDetail->getItemName(),
+      $adDetail->getOfficialItemLink(),
+      $adDetail->getAffiItemLink(),
+      $adDetail->getDetailImg(),
+      $adDetail->getAmazonAsin(),
+      $rakutenId,
+      $adDetail->getReview(),
+      $adDetail->getIsShowUrl(),
+      $adDetail->getSameParent()
+    );
+    $this->adDetailRepository->save($newAdDetail);
+    return $res;
   }
 }
