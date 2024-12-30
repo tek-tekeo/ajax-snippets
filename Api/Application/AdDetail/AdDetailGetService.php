@@ -114,6 +114,7 @@ class AdDetailGetService implements IAdDetailGetService
       return (object)[
         'id' => $adDetail->getId()->getId(),
         'itemName' => $adDetail->getItemName(),
+        'officialItemLink' => $adDetail->getOfficialItemLink(),
         'rakutenId' => $adDetail->getRakutenId(),
         'rakutenExpiredAt' => $adDetail->getRakutenExpiredAt()
       ];

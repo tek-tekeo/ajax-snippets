@@ -12,6 +12,7 @@ class AdDetailRepository implements IAdDetailRepository
 {
   private $db;
   private $table;
+  private $adTable;
   private $reviewTable;
 
   public function __construct()
@@ -19,6 +20,7 @@ class AdDetailRepository implements IAdDetailRepository
     global $wpdb;
     $this->db = $wpdb;
     $this->table = PLUGIN_DB_PREFIX . 'ad_details';
+    $this->adTable = PLUGIN_DB_PREFIX . 'ads';
     $this->reviewTable = PLUGIN_DB_PREFIX . 'ad_detail_reviews';
   }
 
@@ -112,12 +114,13 @@ class AdDetailRepository implements IAdDetailRepository
 
   public function findRakutenLinkExpired(): array
   {
-    $res = $this->db->get_results("SELECT * FROM " . $this->table . " WHERE rakuten_expired_at IS NOT NULL");
+    $sql = "SELECT ad_details.*, ad.name FROM $this->table as ad_details, $this->adTable as ad WHERE ad_details.ad_id = ad.id AND ad_details.rakuten_expired_at IS NOT NULL";
+    $res = $this->db->get_results($sql);
     return collect($res)->map(function ($r) {
       return new AdDetail(
         new AdDetailId((int)$r->id),
         new AdId((int)$r->ad_id),
-        (string)$r->item_name,
+        (string)$r->name . ' ' . (string)$r->item_name,
         (string)$r->official_item_link,
         (string)$r->affi_item_link,
         (string)$r->detail_img,

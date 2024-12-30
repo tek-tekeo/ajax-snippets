@@ -5,23 +5,28 @@ use AjaxSnippets\Api\Domain\Models\Ad\Ad;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetail;
 use AjaxSnippets\Api\Infrastructure\Repository\AdDetailRepository;
+use AjaxSnippets\Api\Infrastructure\Repository\AdRepository;
 use AjaxSnippets\Api\Domain\Models\App\AppId;
+use AjaxSnippets\Api\Domain\Models\Asp\AspId;
 
 final class AdDetailRepositoryTest extends WP_UnitTestCase
 {
   private $repository;
+  private $adRepository;
 
   public function setUp(): void
   {
     parent::setUp();
     $this->resetDatabase();
     $this->repository = new AdDetailRepository();
+    $this->adRepository = new AdRepository();
   }
 
   protected function resetDatabase()
   {
     global $wpdb;
     $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
+    $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ads");
   }
 
   public function testSaveAdDetail()
@@ -201,8 +206,24 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
 
   public function testRakutenLinkExpired(): void
   {
+    $ad = new Ad(
+      new AdId(1),
+      'Main Ad Name',
+      'anken-link',
+      'https://www.anken.com',
+      'https://www.item-link.com',
+      new AspId(1),
+      'banner-image.jpg',
+      'image-tag-url',
+      'item-image-tag-url',
+      300,
+      250,
+      new AppId(1)
+    );
+    $this->adRepository->save($ad);
+
     $adDetailId = new AdDetailId(2);
-    $adId = new AdId();
+    $adId = new AdId(1);
     $adDetail = new AdDetail(
       $adDetailId,
       $adId,
@@ -220,7 +241,7 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
     $this->repository->save($adDetail);
 
     $adDetailId = new AdDetailId(1);
-    $adId = new AdId();
+    $adId = new AdId(1);
     $adDetail = new AdDetail(
       $adDetailId,
       $adId,
@@ -239,7 +260,20 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
     $this->repository->save($adDetail);
     $res = $this->repository->findRakutenLinkExpired();
     $this->assertCount(1, $res);
-    $this->assertEquals($adDetail, $res[0]);
+    $this->assertEquals(new AdDetail(
+      $adDetailId,
+      $adId,
+      'Main Ad Name item name',
+      'official item link',
+      'affi item link',
+      'detail image',
+      'amazon asin',
+      'rakuten id',
+      'review',
+      1,
+      1,
+      '2021-01-01 00:00:00'
+    ), $res[0]);
   }
 
   public function testFindAllWithNonEmptyRakutenId()

@@ -3,22 +3,32 @@
     <v-row>
       <v-col cols="1">ID</v-col>
       <v-col cols="1">状態</v-col>
+      <v-col cols="1">掲載</v-col>
       <v-col cols="1">日時</v-col>
-      <v-col cols="5">商品名</v-col>
+      <v-col cols="4">商品名</v-col>
       <v-col cols="3">楽天商品ID</v-col>
       <v-col cols="1"></v-col>
     </v-row>
     <v-row v-for="l in rakutenLinks" :key="'rakuten-link-' + l.id">
-      <v-col cols="1">{{ l.id }}</v-col>
-      <v-col cols="1">
+      <v-col cols="1"><router-link :to="'/detail/update/' + l.id" target="_blank">{{ l.id }}</router-link></v-col>
+      <v-col cols=" 1">
         <v-checkbox v-model="l.isLinkActive" disabled color="blue"></v-checkbox>
       </v-col>
+      <v-col cols="1">
+        <a
+          :href="`/wp-admin/edit.php?s=%5Brakuten2+id%3D%22` + l.rakutenId + `&post_status=all&post_type=post&action=-1&m=0&cat=0&author=0&paged=1&action2=-1`">
+          一覧
+        </a>
+      </v-col>
       <v-col cols="1">{{ l.rakutenExpiredAt }}</v-col>
-      <v-col cols="5">
-        <wp-text-box v-model="l.itemName">
+      <v-col cols="4">
+        <wp-text-box v-model="l.itemName" readonly>
         </wp-text-box>
         <v-btn text color="blue" target="_blank" :href="`https://search.rakuten.co.jp/search/mall/` + l.itemName">
           楽天で調べる
+        </v-btn>
+        <v-btn text color="green" target="_blank" :href="l.officialItemLink">
+          公式サイト
         </v-btn>
       </v-col>
       <v-col cols="3">
