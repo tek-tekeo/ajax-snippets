@@ -20,4 +20,4 @@ node_modules/
 *.tar.gz
 *.zip
 
-/data/phpmyadmin/sessions/*
+/data/phpmyadmin/*
