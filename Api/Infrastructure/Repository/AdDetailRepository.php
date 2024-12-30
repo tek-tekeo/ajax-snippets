@@ -131,6 +131,27 @@ class AdDetailRepository implements IAdDetailRepository
     })->toArray();
   }
 
+  public function findAllWithNonEmptyRakutenId(): array
+  {
+    $res = $this->db->get_results("SELECT * FROM " . $this->table . " WHERE rakuten_id IS NOT NULL AND rakuten_id != '' AND id < 30");
+    return collect($res)->map(function ($r) {
+      return new AdDetail(
+        new AdDetailId((int)$r->id),
+        new AdId((int)$r->ad_id),
+        (string)$r->item_name,
+        (string)$r->official_item_link,
+        (string)$r->affi_item_link,
+        (string)$r->detail_img,
+        (string)$r->amazon_asin,
+        (string)$r->rakuten_id,
+        (string)$r->review,
+        (int)$r->is_show_url,
+        (int)$r->same_parent,
+        $r->rakuten_expired_at
+      );
+    })->toArray();
+  }
+
   public function save(AdDetail $adDetail): AdDetailId
   {
     $res = $this->db->replace(

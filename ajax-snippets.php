@@ -15,6 +15,7 @@ use AjaxSnippets\Database\InitDatabase;
 use AjaxSnippets\Views\EditorViews\AjaxSnippetsMce;
 use AjaxSnippets\Views\UserViews\RedirectSystem;
 use AjaxSnippets\Views\UserViews\WpShortcode;
+use AjaxSnippets\Cron\RakutenLinkCron;
 
 require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 require_once dirname(__FILE__) . "/loader.php";
@@ -176,3 +177,6 @@ function createEndPoints()
   Route::post('/log', 'AjaxSnippets\Api\Controllers\LogController@create', false); //外部からのアクセスを許可する
 }
 add_action('rest_api_init', 'createEndPoints');
+
+//クロンの設定
+add_action('admin_init', [RakutenLinkCron::getInstance(), 'handle']);

@@ -241,4 +241,45 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
     $this->assertCount(1, $res);
     $this->assertEquals($adDetail, $res[0]);
   }
+
+  public function testFindAllWithNonEmptyRakutenId()
+  {
+    $adDetailId = new AdDetailId(1);
+    $adId = new AdId();
+    $adDetail1 = new AdDetail(
+      $adDetailId,
+      $adId,
+      'item name',
+      'official item link',
+      'affi item link',
+      'detail image',
+      'amazon asin',
+      'rakuten id',
+      'review',
+      1,
+      1
+    );
+
+    $this->repository->save($adDetail1);
+    $adDetailId = new AdDetailId(2);
+    $adId = new AdId();
+    $adDetail2 = new AdDetail(
+      $adDetailId,
+      $adId,
+      'item name',
+      'official item link',
+      'affi item link',
+      'detail image',
+      'amazon asin',
+      '',
+      'review',
+      1,
+      1
+    );
+
+    $this->repository->save($adDetail2);
+    $res = $this->repository->findAllWithNonEmptyRakutenId();
+    $this->assertCount(1, $res);
+    $this->assertEquals($adDetail1, $res[0]);
+  }
 }

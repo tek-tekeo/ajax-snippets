@@ -4,7 +4,41 @@ namespace AjaxSnippets\Api\Application\Services;
 
 class RakutenAffiliateService
 {
+  private function isLimitRakutenApiRequest($data)
+  {
+    return isset($data['error']) && $data['error'] === 'too_many_requests';
+  }
+
   public function checkRakutenId($rakutenId)
+  {
+
+    $maxRequestCount = 0;  // 最大リクエスト回数
+    do {
+      $data = $this->fetchRakutenItem($rakutenId);
+      sleep(1);
+
+      if ($this->isLimitRakutenApiRequest($data)) {
+        error_log('楽天APIのリクエスト制限に引っかかっています。');
+        sleep(2);
+
+        if ($maxRequestCount > 5) {
+          break; // ループを終了
+        }
+        $maxRequestCount++;
+      }
+    } while ($this->isLimitRakutenApiRequest($data));
+
+    if ($data['Items'] == null) {
+      return ['text' => 'リンク切れです', 'success' => false];
+    }
+    if (count($data['Items'])) {
+      return ['text' => 'リンクは正常です', 'success' => true];
+    } else {
+      return ['text' => 'そのリンクは存在しません', 'success' => false];
+    }
+  }
+
+  private function fetchRakutenItem($rakutenId)
   {
     // 楽天アプリケーションID
     $rakutenApplicationId = trim(get_rakuten_application_id());
@@ -34,13 +68,6 @@ class RakutenAffiliateService
 
     // JSONレスポンスを配列に変換
     $data = json_decode($response, true);
-    if ($data['Items'] == null) {
-      return ['text' => 'リンク切れです', 'success' => false];
-    }
-    if (count($data['Items'])) {
-      return ['text' => 'リンクは正常です', 'success' => true];
-    } else {
-      return ['text' => 'そのリンクは存在しません', 'success' => false];
-    }
+    return $data;
   }
 }
