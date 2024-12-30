@@ -43,7 +43,10 @@ final class AdDetailTest extends WP_UnitTestCase
         'review' => 'review',
         'is_show_url' => 1,
         'same_parent' => 1,
-        'rakuten_expired_at' => null
+        'rakuten_expired_at' => null,
+        'created_at' => $adDetail->getCreatedAt(),
+        'updated_at' => $adDetail->getUpdatedAt(),
+        'deleted_at' => null
       ],
       $adDetail->entity()
     );

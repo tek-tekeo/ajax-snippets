@@ -184,7 +184,8 @@ class AdDetailController
 
   public function rakutenLinkExpired(WP_REST_Request $req): WP_REST_Response
   {
-    $res = $this->adDetailGetService->getRakutenLinkExpired();
+    $hasDeletedAt = (bool)$req->get_param('hasDeletedAt');
+    $res = $this->adDetailGetService->getRakutenLinkExpired($hasDeletedAt);
     return new WP_REST_Response($res, 200);
   }
 

@@ -1,4 +1,5 @@
 <?php
+
 use AjaxSnippets\Api\Domain\Models\Ad\AdId;
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
 use AjaxSnippets\Api\Infrastructure\Repository\AdRepository;
@@ -11,20 +12,20 @@ final class AdRepositoryTest extends WP_UnitTestCase
   private $table;
   private $db;
 
-	public function setUp():void
-	{
-		parent::setUp();
-		$this->resetDatabase();
-		$this->repository = new AdRepository();
-	}
+  public function setUp(): void
+  {
+    parent::setUp();
+    $this->resetDatabase();
+    $this->repository = new AdRepository();
+  }
 
-	protected function resetDatabase()
-	{
-		global $wpdb;
+  protected function resetDatabase()
+  {
+    global $wpdb;
     $this->db = $wpdb;
     $this->table = PLUGIN_DB_PREFIX . 'ads';
-		$wpdb->query("TRUNCATE TABLE " . $this->table);
-	}
+    $wpdb->query("TRUNCATE TABLE " . $this->table);
+  }
 
   public function testSaveAd()
   {
@@ -50,7 +51,7 @@ final class AdRepositoryTest extends WP_UnitTestCase
     // 削除の確認
     $res = $this->repository->delete($insertId);
     $this->assertTrue($res);
-    $res = $this->db->get_row("SELECT * FROM ".$this->table." WHERE id = ".$insertId->getId());
+    $res = $this->db->get_row("SELECT * FROM " . $this->table . " WHERE id = " . $insertId->getId());
     $this->assertEquals(
       [
         'id' => 1,
@@ -66,8 +67,9 @@ final class AdRepositoryTest extends WP_UnitTestCase
         'affi_img_height' => 250,
         'app_id' => 0,
         'deleted_at' => date('Y-m-d')
-      ]
-      , (array)$res);
+      ],
+      (array)$res
+    );
   }
 
   public function testFindAllAds()
@@ -172,8 +174,8 @@ final class AdRepositoryTest extends WP_UnitTestCase
         300,
         250,
         new AppId()
-      )
-      , $findAdById
+      ),
+      $findAdById
     );
 
     $secondAd = new Ad(

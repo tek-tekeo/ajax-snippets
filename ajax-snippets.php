@@ -151,7 +151,7 @@ function createEndPoints()
   Route::get('/detail/prevData', 'AjaxSnippets\Api\Controllers\AdDetailController@getPrevDetail');
   Route::post('/detail/editor', 'AjaxSnippets\Api\Controllers\AdDetailController@getEditorList'); //編集画面に表示する用のリスト
   Route::post('/detail/rakutenLinkCheck', 'AjaxSnippets\Api\Controllers\AdDetailController@rakutenLinkCheck');
-  Route::get('/detail/rakutenLinkExpired', 'AjaxSnippets\Api\Controllers\AdDetailController@rakutenLinkExpired');
+  Route::post('/detail/rakutenLinkExpired', 'AjaxSnippets\Api\Controllers\AdDetailController@rakutenLinkExpired');
   Route::post('/detail/rakutenLinkUpdate', 'AjaxSnippets\Api\Controllers\AdDetailController@rakutenLinkUpdate');
 
   // 子要素のレビュー関連

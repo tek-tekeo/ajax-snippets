@@ -1,6 +1,14 @@
 <template>
   <v-container>
     <v-row>
+      <v-btn-toggle v-model="hasDeletedAt" color="primary" dense group>
+        <v-btn :value="true" text>
+          <v-icon>mdi-format-bold</v-icon>
+          削除済みも含める
+        </v-btn>
+      </v-btn-toggle>
+    </v-row>
+    <v-row>
       <v-col cols="1">ID</v-col>
       <v-col cols="1">状態</v-col>
       <v-col cols="1">掲載</v-col>
@@ -39,6 +47,9 @@
         <v-btn v-show="!l.isLinkActive" @click="rakutenLinkUpdate(l)" dark color="teal">
           更新
         </v-btn>
+        <confirm-dialog v-show="!(l.deletedAt)" @execute="deleteAdDetail(l.id)">
+        </confirm-dialog>
+        <v-chip v-if="l.deletedAt" class="ma-2" color="orange" text-color="white" label x-small>削除済</v-chip>
       </v-col>
     </v-row>
   </v-container>
@@ -48,20 +59,34 @@
 module.exports = {
   components: {
     'WpTextBox': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/atoms/wpTextBox.vue'),
+    'ConfirmDialog': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/confirmDialog.vue'),
   },
   data() {
     return {
-      rakutenLinks: []
+      rakutenLinks: [],
+      hasDeletedAt: false
     }
   },
   async created() {
-    const res = await axios.get('detail/rakutenLinkExpired');
-    this.rakutenLinks = res.data.map((l) => {
-      l.isLinkActive = false;
-      return l;
-    });
+    await this.getRakutenLinks();
+  },
+  watch: {
+    async hasDeletedAt() {
+      await this.getRakutenLinks();
+    }
   },
   methods: {
+    async deleteAdDetail(id) {
+      const res = await axios.delete('detail/' + id);
+      console.log(res.data)
+    },
+    async getRakutenLinks() {
+      const res = await axios.post('detail/rakutenLinkExpired', { hasDeletedAt: this.hasDeletedAt });
+      this.rakutenLinks = res.data.map((l) => {
+        l.isLinkActive = false;
+        return l;
+      });
+    },
     async rakutenLinkUpdate(obj) {
       const res = await axios.post('detail/rakutenLinkUpdate', obj);
       const options = {

@@ -107,16 +107,17 @@ class AdDetailGetService implements IAdDetailGetService
     })->toArray();
   }
 
-  public function getRakutenLinkExpired()
+  public function getRakutenLinkExpired($hasDeletedAt = true)
   {
-    $adDetails = $this->adDetailRepository->findRakutenLinkExpired();
+    $adDetails = $this->adDetailRepository->findRakutenLinkExpired($hasDeletedAt);
     return collect($adDetails)->map(function ($adDetail) {
       return (object)[
         'id' => $adDetail->getId()->getId(),
         'itemName' => $adDetail->getItemName(),
         'officialItemLink' => $adDetail->getOfficialItemLink(),
         'rakutenId' => $adDetail->getRakutenId(),
-        'rakutenExpiredAt' => $adDetail->getRakutenExpiredAt()
+        'rakutenExpiredAt' => $adDetail->getRakutenExpiredAt(),
+        'deletedAt' => $adDetail->getDeletedAt()
       ];
     })->toArray();
   }

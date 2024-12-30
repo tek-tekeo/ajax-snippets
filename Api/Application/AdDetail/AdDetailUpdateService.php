@@ -50,7 +50,11 @@ class AdDetailUpdateService implements IAdDetailUpdateService
       ($cmd->getRakutenId()) ? $cmd->getRakutenId() : $adDetail->getRakutenId(),
       ($cmd->getReview()) ? $cmd->getReview() : $adDetail->getReview(),
       $cmd->getIsShowUrl(),
-      $cmd->getSameParent()
+      $cmd->getSameParent(),
+      ($adDetail->getRakutenExpiredAt()) ? $adDetail->getRakutenExpiredAt() : null,
+      $adDetail->getCreatedAt(),
+      date("Y-m-d H:i:s"),
+      $adDetail->getDeletedAt()
     );
 
     $insertAdDetailId = $this->adDetailRepository->save($updateAdDetail);
@@ -142,7 +146,11 @@ class AdDetailUpdateService implements IAdDetailUpdateService
       $rakutenId,
       $adDetail->getReview(),
       $adDetail->getIsShowUrl(),
-      $adDetail->getSameParent()
+      $adDetail->getSameParent(),
+      null,
+      $adDetail->getCreatedAt(),
+      date('Y-m-d H:i:s'),
+      $adDetail->getDeletedAt()
     );
     $this->adDetailRepository->save($newAdDetail);
     return $res;

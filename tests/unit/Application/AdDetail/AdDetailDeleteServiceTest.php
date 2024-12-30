@@ -24,7 +24,7 @@ class AdDetailDeleteServiceTest extends WP_UnitTestCase
     parent::setUp();
     $this->adDetailRepository = $diContainer->get(IAdDetailRepository::class);
     $this->tagLinkRepository = $diContainer->get(ITagLinkRepository::class);
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
+    $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
     $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "tag_link");
     $this->adDetailDeleteService = new AdDetailDeleteService($this->adDetailRepository, $this->tagLinkRepository);
   }
@@ -61,7 +61,7 @@ class AdDetailDeleteServiceTest extends WP_UnitTestCase
         new TagId(2)
       )
     );
-    
+
     $request = new \WP_REST_Request();
     $request->set_param('id', 1);
     $command = new AdDetailDeleteCommand($request);
@@ -75,6 +75,5 @@ class AdDetailDeleteServiceTest extends WP_UnitTestCase
     $this->expectExceptionMessage('Ad Detail IDに該当するデータが存在しません。');
     $this->expectExceptionCode(500);
     $res = $this->adDetailRepository->findById(new AdDetailId(1));
-    
   }
 }
