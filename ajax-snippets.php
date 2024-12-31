@@ -154,6 +154,8 @@ function createEndPoints()
   Route::post('/detail/rakutenLinkExpired', 'AjaxSnippets\Api\Controllers\AdDetailController@rakutenLinkExpired');
   Route::post('/detail/rakutenLinkUpdate', 'AjaxSnippets\Api\Controllers\AdDetailController@rakutenLinkUpdate');
 
+  Route::post('/images/getAdDetailImage', 'AjaxSnippets\Api\Controllers\WpImageController@getAdDetailImage');
+
   // 子要素のレビュー関連
   Route::post('/posts/details/(?P<adDetailId>\d+)/reviews', 'AjaxSnippets\Api\Controllers\AdDetailController@postReview', false); //指定子要素のレビューを投稿
   Route::get('/posts/details/(?P<id>\d+)/reviews', 'AjaxSnippets\Api\Controllers\AdDetailController@getReview', false); //指定の子要素のレビューを取得

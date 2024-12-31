@@ -11,10 +11,16 @@ class downloadImage
   public static function handle($downloadImageUrl, $saveDir)
   {
     $saveImagePath = $saveDir . '/' . basename($downloadImageUrl);
+
+    // ブランド用のディレクトリが存在しない場合、作成する
+    if (!is_dir($saveDir)) {
+      mkdir($saveDir, 0777, true);
+    }
+
     // 画像ファイルが存在する場合何もしない
     if (file_exists($saveImagePath)) {
-      echo '画像ファイルが存在します。';
-      // return $this->uploadImage($saveImagePath);
+      // echo '画像ファイルが存在します。';
+      return $saveImagePath;
     }
 
     $ch = curl_init($downloadImageUrl);
@@ -28,15 +34,10 @@ class downloadImage
     $raw = curl_exec($ch);
     curl_close($ch);
 
-    // ブランド用のディレクトリが存在しない場合、作成する
-    if (!is_dir($saveDir)) {
-      mkdir($saveDir, 0777, true);
-    }
-
     // 画像ファイルを保存する
     $fp = fopen($saveImagePath, 'w');
     fwrite($fp, $raw);
     fclose($fp);
-    return true;
+    return $saveImagePath;
   }
 }
