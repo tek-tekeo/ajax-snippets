@@ -114,6 +114,23 @@ class AdDetailGetService implements IAdDetailGetService
       return (object)[
         'id' => $adDetail->getId()->getId(),
         'itemName' => $adDetail->getItemName(),
+        'imageUrl' => $adDetail->getDetailImg() ? $adDetail->getDetailImg() : 'https://picsum.photos/id/11/10/6',
+        'officialItemLink' => $adDetail->getOfficialItemLink(),
+        'rakutenId' => $adDetail->getRakutenId(),
+        'rakutenExpiredAt' => $adDetail->getRakutenExpiredAt(),
+        'deletedAt' => $adDetail->getDeletedAt()
+      ];
+    })->toArray();
+  }
+
+  public function getDeletedItems()
+  {
+    $adDetails = $this->adDetailRepository->findDeletedItems();
+    return collect($adDetails)->map(function ($adDetail) {
+      return (object)[
+        'id' => $adDetail->getId()->getId(),
+        'itemName' => $adDetail->getItemName(),
+        'imageUrl' => $adDetail->getDetailImg() ? $adDetail->getDetailImg() : 'https://picsum.photos/id/11/10/6',
         'officialItemLink' => $adDetail->getOfficialItemLink(),
         'rakutenId' => $adDetail->getRakutenId(),
         'rakutenExpiredAt' => $adDetail->getRakutenExpiredAt(),

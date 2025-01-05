@@ -83,6 +83,12 @@ class AdDetailController
     return new WP_REST_Response($res, 200);
   }
 
+  public function getDeletedItems(WP_REST_Request $req): WP_REST_Response
+  {
+    $res = $this->adDetailGetService->getDeletedItems();
+    return new WP_REST_Response($res, 200);
+  }
+
   public function getEditorList(WP_REST_Request $req): WP_REST_Response
   {
     $res = $this->adDetailGetService->getEditorAnkenList((string)$req->get_param('name'));
@@ -175,14 +181,6 @@ class AdDetailController
     return new WP_REST_Response($res, 200);
   }
 
-  public function rakutenLinkCheck(WP_REST_Request $req): WP_REST_Response
-  {
-    $rakutenId = (string)$req->get_param('rakutenId');
-    $rakutenAffiliateService = new RakutenAffiliateService();
-    $res = $rakutenAffiliateService->checkRakutenId($rakutenId);
-    return new WP_REST_Response($res, 200);
-  }
-
   public function rakutenLinkExpired(WP_REST_Request $req): WP_REST_Response
   {
     $hasDeletedAt = (bool)$req->get_param('hasDeletedAt');
@@ -203,6 +201,13 @@ class AdDetailController
     $affiLinkQueryService = new AffiLinkQueryService();
     $adDetail = (int)$req->get_param('id');
     $res = $affiLinkQueryService->getItemCard($adDetail);
+    return new WP_REST_Response($res, 200);
+  }
+
+  public function restoreItem(WP_REST_Request $req): WP_REST_Response
+  {
+    $cmd = new AdDetailDeleteCommand($req);
+    $res = $this->adDetailDeleteService->restoreItem($cmd);
     return new WP_REST_Response($res, 200);
   }
 }

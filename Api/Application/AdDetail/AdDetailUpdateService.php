@@ -37,17 +37,19 @@ class AdDetailUpdateService implements IAdDetailUpdateService
   public function handle(AdDetailUpdateCommand $cmd): int
   {
     $adDetailId = new AdDetailId($cmd->getId());
-    $adDetail = $this->adDetailRepository->findById($adDetailId);
+    $adDetail = $this->adDetailRepository->findByIdWithDelete($adDetailId);
 
     $rakutenId = $cmd->getRakutenId();
     $rakutenAffiliateUrl = $adDetail->getRakutenAffiliateUrl();
 
-    if ($cmd->getRakutenId() == $adDetail->getRakutenId() || $cmd->getRakutenId() !== '') {
+    if ($cmd->getRakutenId() == '') {
+      $rakutenAffiliateUrl = '';
+    } elseif ($rakutenId === $adDetail->getRakutenId()) {
+      $rakutenAffiliateUrl = $adDetail->getRakutenAffiliateUrl();
+    } else {
       $rakutenAffiliateService = new RakutenAffiliateService();
       $res = $rakutenAffiliateService->checkRakutenId($rakutenId);
       $rakutenAffiliateUrl = $res['affiliateUrl'];
-    } else if ($cmd->getRakutenId() == '') {
-      $rakutenAffiliateUrl = '';
     }
 
     $updateAdDetail = new AdDetail(
@@ -135,7 +137,12 @@ class AdDetailUpdateService implements IAdDetailUpdateService
 
   public function updateRakutenExpiredAt($id, $rakutenId)
   {
-    if ($rakutenId !== '') {
+    $adDetail = $this->adDetailRepository->findByIdWithDelete(new AdDetailId($id));
+
+    if ($rakutenId === $adDetail->getRakutenId()) {
+      $res = ['success' => true, 'text' => '変更点はありませんでした。'];
+      return $res;
+    } else if ($rakutenId !== '') {
       // 楽天商品リンクが正常かチェックする
       $rakutenAffiliateService = new RakutenAffiliateService();
       $res = $rakutenAffiliateService->checkRakutenId($rakutenId);
@@ -143,10 +150,10 @@ class AdDetailUpdateService implements IAdDetailUpdateService
         return $res;
       }
     } else {
-      $res = ['success' => true, 'text' => '楽天商品リンクを空にして更新しました'];
+      $res = ['success' => true, 'text' => '楽天商品リンクを空にして更新しました', 'affiliateUrl' => ''];
     }
     // 楽天商品リンクが正常であれば、楽天商品リンクの有効期限を更新する
-    $adDetail = $this->adDetailRepository->findById(new AdDetailId($id));
+
     $newAdDetail = new AdDetail(
       $adDetail->getId(),
       $adDetail->getAdId(),
