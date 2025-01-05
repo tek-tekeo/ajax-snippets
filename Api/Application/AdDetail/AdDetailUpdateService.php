@@ -44,7 +44,7 @@ class AdDetailUpdateService implements IAdDetailUpdateService
 
     if ($cmd->getRakutenId() == '') {
       $rakutenAffiliateUrl = '';
-    } elseif ($rakutenId === $adDetail->getRakutenId()) {
+    } elseif ($adDetail->getRakutenExpiredAt() == null) { // 楽天リンク切れが報告されている場合
       $rakutenAffiliateUrl = $adDetail->getRakutenAffiliateUrl();
     } else {
       $rakutenAffiliateService = new RakutenAffiliateService();
@@ -139,19 +139,16 @@ class AdDetailUpdateService implements IAdDetailUpdateService
   {
     $adDetail = $this->adDetailRepository->findByIdWithDelete(new AdDetailId($id));
 
-    if ($rakutenId === $adDetail->getRakutenId()) {
-      $res = ['success' => true, 'text' => '変更点はありませんでした。'];
-      return $res;
-    } else if ($rakutenId !== '') {
-      // 楽天商品リンクが正常かチェックする
+    if ($rakutenId == '') {
+      $res = ['success' => true, 'text' => '楽天商品リンクを空にして更新しました', 'affiliateUrl' => ''];
+    } else if ($adDetail->getRakutenExpiredAt() != null) {
       $rakutenAffiliateService = new RakutenAffiliateService();
       $res = $rakutenAffiliateService->checkRakutenId($rakutenId);
-      if ($res['success'] === false) {
-        return $res;
-      }
     } else {
-      $res = ['success' => true, 'text' => '楽天商品リンクを空にして更新しました', 'affiliateUrl' => ''];
+      $res = ['success' => true, 'text' => '以前と同じ楽天商品リンクです'];
+      return $res;
     }
+
     // 楽天商品リンクが正常であれば、楽天商品リンクの有効期限を更新する
 
     $newAdDetail = new AdDetail(
