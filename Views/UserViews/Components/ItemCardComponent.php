@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) exit; ?>
 
 <div class="item-card__container">
   <?php if (!$itemCard['onSale']): ?>
-    <div class="item-card__label">販売終了</div>
+    <div class="item-card__label">公式は販売終了</div>
   <?php endif; ?>
   <div class="item-card__image">
     <?= $itemCard['image'] ?>
