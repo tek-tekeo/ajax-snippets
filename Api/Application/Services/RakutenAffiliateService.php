@@ -32,7 +32,7 @@ class RakutenAffiliateService
       return ['text' => 'リンク切れです', 'success' => false];
     }
     if (count($data['Items'])) {
-      return ['text' => 'リンクは正常です', 'success' => true];
+      return ['text' => 'リンクは正常です', 'success' => true, 'affiliateUrl' => $data['Items'][0]['Item']['itemUrl']];
     } else {
       return ['text' => 'そのリンクは存在しません', 'success' => false];
     }
@@ -42,11 +42,16 @@ class RakutenAffiliateService
   {
     // 楽天アプリケーションID
     $rakutenApplicationId = trim(get_rakuten_application_id());
+    // 楽天アフィリエイトID
+    $rakutenAffiliateId = trim(get_rakuten_affiliate_id());
     if ($rakutenApplicationId == '') {
       return ['text' => '楽天アプリケーションIDが設定されていません。', 'success' => false];
     }
     $encodeRakutenId = urlencode($rakutenId);
-    $url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601?format=json&itemCode=$encodeRakutenId&applicationId=$rakutenApplicationId";
+
+    $url = <<<EOT
+    https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601?applicationId=$rakutenApplicationId&affiliateId=$rakutenAffiliateId&imageFlag=1&sort=standard&hits=1&itemCode=$encodeRakutenId
+    EOT;
     // cURLセッションを初期化
     $ch = curl_init();
 

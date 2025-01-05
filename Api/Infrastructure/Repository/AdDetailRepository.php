@@ -26,7 +26,7 @@ class AdDetailRepository implements IAdDetailRepository
 
   public function findByName(string $name): array
   {
-    $sql = "SELECT D.*, A.name as name FROM " . PLUGIN_DB_PREFIX . "ads AS A, " . PLUGIN_DB_PREFIX . "ad_details AS D where A.id=D.ad_id AND (D.item_name LIKE '%" . $name . "%' OR A.name LIKE '%" . $name . "%') order by A.name asc, D.item_name asc, D.id asc";
+    $sql = "SELECT D.*, A.name as name FROM " . PLUGIN_DB_PREFIX . "ads AS A, " . PLUGIN_DB_PREFIX . "ad_details AS D where D.deleted_at IS NULL AND A.id=D.ad_id AND (D.item_name LIKE '%" . $name . "%' OR A.name LIKE '%" . $name . "%') order by A.name asc, D.item_name asc, D.id asc";
 
     $res = $this->db->get_results($sql);
     return collect($res)->map(function ($r) {
@@ -39,6 +39,7 @@ class AdDetailRepository implements IAdDetailRepository
         (string)$r->detail_img,
         (string)$r->amazon_asin,
         (string)$r->rakuten_id,
+        (string)$r->rakuten_affiliate_url,
         (string)$r->review,
         (int)$r->is_show_url,
         (int)$r->same_parent,
@@ -63,6 +64,33 @@ class AdDetailRepository implements IAdDetailRepository
         (string)$res->detail_img,
         (string)$res->amazon_asin,
         (string)$res->rakuten_id,
+        (string)$res->rakuten_affiliate_url,
+        (string)$res->review,
+        (int)$res->is_show_url,
+        (int)$res->same_parent,
+        $res->rakuten_expired_at,
+        (string)$res->created_at,
+        (string)$res->updated_at,
+        $res->deleted_at
+      );
+    }
+    throw new \Exception('Ad Detail IDに該当するデータが存在しません。', 500);
+  }
+
+  public function findByIdWithDelete(AdDetailId $adDetailId): AdDetail
+  {
+    $res = $this->db->get_row("SELECT * FROM " . $this->table . " WHERE id=" . $adDetailId->getId());
+    if (!$res == null) {
+      return new AdDetail(
+        new AdDetailId((int)$res->id),
+        new AdId((int)$res->ad_id),
+        (string)$res->item_name,
+        (string)$res->official_item_link,
+        (string)$res->affi_item_link,
+        (string)$res->detail_img,
+        (string)$res->amazon_asin,
+        (string)$res->rakuten_id,
+        (string)$res->rakuten_affiliate_url,
         (string)$res->review,
         (int)$res->is_show_url,
         (int)$res->same_parent,
@@ -88,6 +116,7 @@ class AdDetailRepository implements IAdDetailRepository
         (string)$res->detail_img,
         (string)$res->amazon_asin,
         (string)$res->rakuten_id,
+        (string)$res->rakuten_affiliate_url,
         (string)$res->review,
         (int)$res->is_show_url,
         (int)$res->same_parent,
@@ -113,6 +142,7 @@ class AdDetailRepository implements IAdDetailRepository
         (string)$r->detail_img,
         (string)$r->amazon_asin,
         (string)$r->rakuten_id,
+        (string)$r->rakuten_affiliate_url,
         (string)$r->review,
         (int)$r->is_show_url,
         (int)$r->same_parent,
@@ -141,6 +171,7 @@ class AdDetailRepository implements IAdDetailRepository
         (string)$r->detail_img,
         (string)$r->amazon_asin,
         (string)$r->rakuten_id,
+        (string)$r->rakuten_affiliate_url,
         (string)$r->review,
         (int)$r->is_show_url,
         (int)$r->same_parent,
@@ -165,6 +196,7 @@ class AdDetailRepository implements IAdDetailRepository
         (string)$r->detail_img,
         (string)$r->amazon_asin,
         (string)$r->rakuten_id,
+        (string)$r->rakuten_affiliate_url,
         (string)$r->review,
         (int)$r->is_show_url,
         (int)$r->same_parent,

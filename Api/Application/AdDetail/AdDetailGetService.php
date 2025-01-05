@@ -34,7 +34,7 @@ class AdDetailGetService implements IAdDetailGetService
 
   public function handle(AdDetailGetCommand $cmd)
   {
-    $detail = $this->adDetailRepository->findById(new AdDetailId($cmd->getId()));
+    $detail = $this->adDetailRepository->findByIdWithDelete(new AdDetailId($cmd->getId()));
     $ad = $this->adRepository->findById($detail->getAdId());
     $adDetailInfo = $this->adDetailInfoRepository->findByAdDetailId($detail->getId());
     $adDetailChart = $this->adDetailChartRepository->findByAdDetailId($detail->getId());

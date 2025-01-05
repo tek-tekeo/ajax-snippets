@@ -18,6 +18,7 @@ use AjaxSnippets\Api\Application\TagLink\ITagLinkUpdateService;
 use AjaxSnippets\Api\Application\TagLink\TagLinkUpdateCommand;
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
 use AjaxSnippets\Api\Application\Services\RakutenAffiliateService;
+use AjaxSnippets\Api\Infrastructure\QueryService\AffiLinkQueryService;
 
 
 class AdDetailController
@@ -194,6 +195,14 @@ class AdDetailController
     $adDetailId = (int)$req->get_param('id');
     $rakutenId = (string)$req->get_param('rakutenId');
     $res = $this->adDetailUpdateService->updateRakutenExpiredAt($adDetailId, $rakutenId);
+    return new WP_REST_Response($res, 200);
+  }
+
+  public function getItemCard(WP_REST_Request $req): WP_REST_Response
+  {
+    $affiLinkQueryService = new AffiLinkQueryService();
+    $adDetail = (int)$req->get_param('id');
+    $res = $affiLinkQueryService->getItemCard($adDetail);
     return new WP_REST_Response($res, 200);
   }
 }

@@ -28,7 +28,7 @@ class AdDetailUpdateServiceTest extends WP_UnitTestCase
   private AdDetailUpdateService $adDetailUpdateService;
   private \WP_REST_Request $req;
   private AdDetail $adDetail;
-  
+
   public function setUp(): void
   {
     global $wpdb;
@@ -90,6 +90,7 @@ class AdDetailUpdateServiceTest extends WP_UnitTestCase
       'detailImg',
       'amazonAsin',
       'rakutenId',
+      'rakutenAffiliateUrl',
       'review',
       1,
       1
@@ -136,8 +137,12 @@ class AdDetailUpdateServiceTest extends WP_UnitTestCase
     $request = new \WP_REST_Request();
     $request->set_param('id', 3);
     $request->set_param('itemName', 'adName100');
+    $request->set_param('detailImg', 'detailImg');
     $request->set_param('amazonAsin', 'asin');
-    $request->set_param('tagIds', [2,3]);
+    $request->set_param('rakutenId', '');
+    $request->set_param('rakutenAffiliateUrl', '');
+    $request->set_param('review', 'review');
+    $request->set_param('tagIds', [2, 3]);
     $request->set_param('rchart', [
       ['factor' => 'はちゃめちゃ度', 'value' => 2.3, 'sortOrder' => 2],
       ['factor' => 'オラオラ度', 'value' => 4.1, 'sortOrder' => 1]
@@ -148,7 +153,7 @@ class AdDetailUpdateServiceTest extends WP_UnitTestCase
     ]);
     $command = new AdDetailUpdateCommand($request);
     $adDetailId = $this->adDetailUpdateService->handle($command);
-    $this->assertEquals(new AdDetailId(3), $adDetailId);
+    $this->assertEquals(3, $adDetailId);
 
     // きちんと更新されたか確認
     $res = $this->adDetailRepository->findById(new AdDetailId(3));
@@ -160,7 +165,8 @@ class AdDetailUpdateServiceTest extends WP_UnitTestCase
       'affiItemLink',
       'detailImg',
       'asin',
-      'rakutenId',
+      '',
+      '',
       'review',
       0,
       0
@@ -189,6 +195,5 @@ class AdDetailUpdateServiceTest extends WP_UnitTestCase
       new AdDetailInfo(3, new AdDetailId(3), 'URL', 'https://www.sample.com', 2),
     ];
     $this->assertEquals($expected, $res);
-
   }
 }

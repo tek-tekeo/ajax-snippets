@@ -13,10 +13,10 @@ div.applink_box{
   display: flex;
   background-color: #fafafa;
   border: double 5px #e5e5e5;
-   padding: 5px;
-   max-width:500px;
-   margin-left:auto;
-   margin-right:auto;
+  padding: 5px;
+  max-width:500px;
+  margin-left:auto;
+  margin-right:auto;
 }
 div.applink_box_item1{
   min-width:12%;
@@ -288,4 +288,114 @@ table.singleReview_table td{
 /* レビュー表示ののスタイル調整 */
 .v-application--wrap {
   min-height: 0 !important;
+}
+
+.item-card__container {
+  position:relative;
+  border: 3px solid #dfdfdf;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 160px 1fr 1fr 1fr;
+  align-items: center;
+}
+.item-card__image {
+  height:140px;
+  margin: 10px;
+  grid-column-start: 1;
+  grid-row-start: 1;
+  grid-row-end: 4;
+}
+.item-card__title {
+  grid-column-start: 2;
+  grid-column-end: 5;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+.item-card__saler {
+  grid-column-start: 2;
+  grid-column-end: 5;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  align-self: start; /* このアイテムだけ縦方向で中央寄せ */
+  font-size: 12px;
+}
+
+
+
+a.item-card__button{
+  display: block;
+  margin: 0 0.5% !important;
+  padding: 6px 12px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  border-radius: 3px;
+}
+a.item-card__button:hover{
+  opacity: 0.6;
+}
+
+.shoplinkofficial{
+  background: #192f60;
+}
+
+.shoplinkamazon{
+  background: #f79901;
+}
+
+.shoplinkrakuten{
+  background: #bf0000;
+}
+
+.item-card__label {
+  position: absolute; /* 親要素の基準に配置 */
+  top: 0px;
+  left: 0px;
+  background-color: #ff6347;
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: rotate(-10deg);
+}
+
+@media screen and (max-width: 600px){
+  .item-card__container {
+    grid-template-columns: 100px 1fr;
+    align-items: start;
+  }
+  .item-card__image {
+    height: 100px;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 3;
+
+  }
+  .item-card__title {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 2;
+  }
+
+  .item-card__saler {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    align-self: start;
+    font-size: 12px;
+  }
+  .item-card__button__wrap{
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+  a.item-card__button{
+    margin: 0.5% 0 !important;
+  }
 }

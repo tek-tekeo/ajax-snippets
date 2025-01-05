@@ -34,10 +34,21 @@ class AdDetailUpdateService implements IAdDetailUpdateService
     private ITagLinkRepository $tagLinkRepository
   ) {}
 
-  public function handle(AdDetailUpdateCommand $cmd): AdDetailId
+  public function handle(AdDetailUpdateCommand $cmd): int
   {
     $adDetailId = new AdDetailId($cmd->getId());
     $adDetail = $this->adDetailRepository->findById($adDetailId);
+
+    $rakutenId = $cmd->getRakutenId();
+    $rakutenAffiliateUrl = $adDetail->getRakutenAffiliateUrl();
+
+    if ($cmd->getRakutenId() == $adDetail->getRakutenId() || $cmd->getRakutenId() !== '') {
+      $rakutenAffiliateService = new RakutenAffiliateService();
+      $res = $rakutenAffiliateService->checkRakutenId($rakutenId);
+      $rakutenAffiliateUrl = $res['affiliateUrl'];
+    } else if ($cmd->getRakutenId() == '') {
+      $rakutenAffiliateUrl = '';
+    }
 
     $updateAdDetail = new AdDetail(
       $adDetailId,
@@ -45,10 +56,11 @@ class AdDetailUpdateService implements IAdDetailUpdateService
       ($cmd->getItemName()) ? $cmd->getItemName() : $adDetail->getItemName(),
       ($cmd->getOfficialItemLink()) ? $cmd->getOfficialItemLink() : $adDetail->getOfficialItemLink(),
       ($cmd->getAffiItemLink()) ? $cmd->getAffiItemLink() : $adDetail->getAffiItemLink(),
-      ($cmd->getDetailImg()) ? $cmd->getDetailImg() : $adDetail->getDetailImg(),
-      ($cmd->getAmazonAsin()) ? $cmd->getAmazonAsin() : $adDetail->getAmazonAsin(),
-      ($cmd->getRakutenId()) ? $cmd->getRakutenId() : $adDetail->getRakutenId(),
-      ($cmd->getReview()) ? $cmd->getReview() : $adDetail->getReview(),
+      $cmd->getDetailImg(),
+      $cmd->getAmazonAsin(),
+      $rakutenId,
+      $rakutenAffiliateUrl,
+      $cmd->getReview(),
       $cmd->getIsShowUrl(),
       $cmd->getSameParent(),
       ($adDetail->getRakutenExpiredAt()) ? $adDetail->getRakutenExpiredAt() : null,
@@ -93,7 +105,7 @@ class AdDetailUpdateService implements IAdDetailUpdateService
       return $this->adDetailInfoRepository->save($adDetailInfo);
     })->toArray();
 
-    return $insertAdDetailId;
+    return $insertAdDetailId->getId();
   }
 
   public function handleReview(AdDetailReviewUpdateCommand $cmd): int
@@ -144,6 +156,7 @@ class AdDetailUpdateService implements IAdDetailUpdateService
       $adDetail->getDetailImg(),
       $adDetail->getAmazonAsin(),
       $rakutenId,
+      $res['affiliateUrl'],
       $adDetail->getReview(),
       $adDetail->getIsShowUrl(),
       $adDetail->getSameParent(),
