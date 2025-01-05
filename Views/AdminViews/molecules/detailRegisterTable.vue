@@ -114,7 +114,7 @@ module.exports = {
       const res = await axios.post('detail/info', { 'json': JSON.stringify(target) });
     },
     async linkCheck() {
-      const res = await axios.post('detail/rakutenLinkCheck', { 'rakutenId': this.detail.rakutenId })
+      const res = await axios.put('detail/rakutenLinkUpdate', { 'rakutenId': this.detail.rakutenId, 'id': this.detail.id });
       if (res.data.success) {
         var options = {
           position: 'bottom-right',

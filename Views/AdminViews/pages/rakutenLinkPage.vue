@@ -1,20 +1,21 @@
 <template>
-  <v-container>
+  <v-container id="rakuten-link-page">
     <v-row>
       <v-btn-toggle v-model="hasDeletedAt" color="primary" dense group>
         <v-btn :value="true" text>
           <v-icon>mdi-format-bold</v-icon>
-          削除済みも含める
+          削除済みを表示
         </v-btn>
       </v-btn-toggle>
     </v-row>
     <v-row>
       <v-col cols="1">ID</v-col>
       <v-col cols="1">状態</v-col>
-      <v-col cols="1">掲載</v-col>
+      <v-col cols="1">掲載数</v-col>
       <v-col cols="1">日時</v-col>
+      <v-col cols="1">画像</v-col>
       <v-col cols="4">商品名</v-col>
-      <v-col cols="3">楽天商品ID</v-col>
+      <v-col cols="2">楽天商品ID</v-col>
       <v-col cols="1"></v-col>
     </v-row>
     <v-row v-for="l in rakutenLinks" :key="'rakuten-link-' + l.id">
@@ -29,6 +30,7 @@
         </a>
       </v-col>
       <v-col cols="1">{{ l.rakutenExpiredAt }}</v-col>
+      <v-col cols="1"><img :src="l.imageUrl" width=100 height=100 /></v-col>
       <v-col cols="4">
         <wp-text-box v-model="l.itemName" readonly>
         </wp-text-box>
@@ -39,7 +41,7 @@
           公式サイト
         </v-btn>
       </v-col>
-      <v-col cols="3">
+      <v-col cols="2">
         <wp-text-box v-model="l.rakutenId">
         </wp-text-box>
       </v-col>
@@ -47,9 +49,10 @@
         <v-btn v-show="!l.isLinkActive" @click="rakutenLinkUpdate(l)" dark color="teal">
           更新
         </v-btn>
-        <confirm-dialog v-show="!(l.deletedAt)" @execute="deleteAdDetail(l.id)">
+        <confirm-dialog v-show="!(l.deletedAt)" @execute="deleteAdDetail(l)">
         </confirm-dialog>
-        <v-chip v-if="l.deletedAt" class="ma-2" color="orange" text-color="white" label x-small>削除済</v-chip>
+        <confirm-dialog v-show="(l.deletedAt)" @execute="restoreAdDetail(l)" label="復元">
+        </confirm-dialog>
       </v-col>
     </v-row>
   </v-container>
@@ -72,13 +75,49 @@ module.exports = {
   },
   watch: {
     async hasDeletedAt() {
-      await this.getRakutenLinks();
+      if (this.hasDeletedAt) {
+        const res = await axios.get('detail/deletedItems');
+        this.rakutenLinks = res.data.map((l) => {
+          l.isLinkActive = false;
+          return l;
+        });
+      } else {
+        await this.getRakutenLinks();
+      }
     }
   },
   methods: {
-    async deleteAdDetail(id) {
-      const res = await axios.delete('detail/' + id);
-      console.log(res.data)
+    async restoreAdDetail(obj) {
+      const res = await axios.get('detail/' + obj.id + '/restore');
+      if (res.data) {
+        const res = await axios.get('detail/deletedItems');
+        this.rakutenLinks = res.data.map((l) => {
+          l.isLinkActive = false;
+          return l;
+        });
+        const options = {
+          position: 'bottom-right',
+          duration: 2000,
+          fullWidth: false,
+          type: 'success'
+        }
+        console.log(this.hasDeletedAt);
+        this.$toasted.show('復元しました', options);
+      }
+    },
+    async deleteAdDetail(obj) {
+      const res = await axios.delete('detail/' + obj.id);
+
+      if (res.data) {
+        await this.getRakutenLinks();
+        const options = {
+          position: 'bottom-right',
+          duration: 2000,
+          fullWidth: false,
+          type: 'success'
+        }
+        this.$toasted.show('削除しました', options);
+      }
     },
     async getRakutenLinks() {
       const res = await axios.post('detail/rakutenLinkExpired', { hasDeletedAt: this.hasDeletedAt });
@@ -88,7 +127,7 @@ module.exports = {
       });
     },
     async rakutenLinkUpdate(obj) {
-      const res = await axios.post('detail/rakutenLinkUpdate', obj);
+      const res = await axios.put('detail/rakutenLinkUpdate', obj);
       const options = {
         position: 'bottom-right',
         duration: 2000,
@@ -106,3 +145,9 @@ module.exports = {
   }
 }
 </script>
+
+<style scoped>
+#rakuten-link-page .col-2>div {
+  width: 100% !important;
+}
+</style>

@@ -208,6 +208,31 @@ class AdDetailRepository implements IAdDetailRepository
     })->toArray();
   }
 
+  public function findDeletedItems(): array
+  {
+    $res = $this->db->get_results("SELECT * FROM " . $this->table . " WHERE deleted_at IS NOT NULL");
+    return collect($res)->map(function ($r) {
+      return new AdDetail(
+        new AdDetailId((int)$r->id),
+        new AdId((int)$r->ad_id),
+        (string)$r->item_name,
+        (string)$r->official_item_link,
+        (string)$r->affi_item_link,
+        (string)$r->detail_img,
+        (string)$r->amazon_asin,
+        (string)$r->rakuten_id,
+        (string)$r->rakuten_affiliate_url,
+        (string)$r->review,
+        (int)$r->is_show_url,
+        (int)$r->same_parent,
+        $r->rakuten_expired_at,
+        (string)$r->created_at,
+        (string)$r->updated_at,
+        $r->deleted_at
+      );
+    })->toArray();
+  }
+
   public function save(AdDetail $adDetail): AdDetailId
   {
     $res = $this->db->replace(
@@ -221,7 +246,22 @@ class AdDetailRepository implements IAdDetailRepository
   {
     return $this->db->update(
       $this->table, // テーブル名
-      ['deleted_at' => date('Y-m-d H:i:s')],  // 更新するデータ
+      [
+        'deleted_at' => date('Y-m-d H:i:s')
+      ],  // 更新するデータ
+      ['id' => $adDetailId->getId()], // 条件
+      array('%s'), // データのフォーマット（%s は文字列）
+      array('%d')  // 条件のフォーマット（%d は整数）
+    );
+  }
+
+  public function restoreItem(AdDetailId $adDetailId): bool
+  {
+    return $this->db->update(
+      $this->table, // テーブル名
+      [
+        'deleted_at' => null
+      ],  // 更新するデータ
       ['id' => $adDetailId->getId()], // 条件
       array('%s'), // データのフォーマット（%s は文字列）
       array('%d')  // 条件のフォーマット（%d は整数）

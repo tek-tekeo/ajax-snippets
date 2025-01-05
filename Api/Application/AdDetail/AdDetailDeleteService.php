@@ -1,4 +1,5 @@
 <?php
+
 namespace AjaxSnippets\Api\Application\AdDetail;
 
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetail;
@@ -13,7 +14,7 @@ class AdDetailDeleteService implements IAdDetailDeleteService
   public function __construct(
     private IAdDetailRepository $adDetailRepository,
     private ITagLinkRepository $tagLinkRepository
-  ){}
+  ) {}
 
   public function handle(AdDetailDeleteCommand $cmd): bool
   {
@@ -26,5 +27,11 @@ class AdDetailDeleteService implements IAdDetailDeleteService
   {
     $reviewId = $cmd->getId();
     return $this->adDetailRepository->deleteReview($reviewId);
+  }
+
+  public function restoreItem(AdDetailDeleteCommand $cmd): bool
+  {
+    $adDetailId = new AdDetailId($cmd->getId());
+    return $this->adDetailRepository->restoreItem($adDetailId);
   }
 }
