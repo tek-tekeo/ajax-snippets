@@ -6,7 +6,7 @@ class WpUploadImage
 {
   public function __construct() {}
 
-  public static function handle($imagePath)
+  public static function handle($imagePath, $itemName = '')
   {
     // ファイル名を生成
     $fileName = basename($imagePath);
@@ -35,6 +35,9 @@ class WpUploadImage
 
     // 画像のメタデータを更新
     wp_update_attachment_metadata($attachmentId, $attachmentData);
+
+    // 代替テキスト（alt属性）を追加
+    update_post_meta($attachmentId, '_wp_attachment_image_alt', $itemName);
 
     // アップロードされた画像のURLを取得
     return wp_get_attachment_url($attachmentId);

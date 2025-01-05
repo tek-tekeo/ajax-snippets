@@ -42,7 +42,7 @@ class AffiLinkQueryService
   // アフィリエイトテキスト、バナーの生成
   public function affiLink(AffiLinkCommand $cmd)
   {
-    $adDetail = $this->adDetailRepository->findById(new AdDetailId($cmd->getId()));
+    $adDetail = $this->adDetailRepository->findByIdWithDelete(new AdDetailId($cmd->getId()));
     $ad = $this->adRepository->findById($adDetail->getAdId());
     try {
       $asp = $this->aspRepository->findById($ad->getAspId());
@@ -71,6 +71,16 @@ class AffiLinkQueryService
   {
     if ($cmd->isBanner) {
       if ($adDetail->getSameParent()) {
+        $image = <<<EOT
+        <img
+          border="0"
+          width="{$ad->getAffiImgWidth()}"
+          height="{$ad->getAffiImgHeight()}"
+          alt="{$ad->getName()}"
+          src="{$ad->getAffiImg()}"
+        >
+        EOT;
+      } else if ($adDetail->getDetailImg() === '') {
         $image = <<<EOT
         <img
           border="0"
@@ -128,7 +138,7 @@ class AffiLinkQueryService
   // スマホアプリリンクの生成
   public function appLink(int $adDetailId, bool $noAffi = false)
   {
-    $adDetail = $this->adDetailRepository->findById(new AdDetailId($adDetailId));
+    $adDetail = $this->adDetailRepository->findByIdWithDelete(new AdDetailId($adDetailId));
     $ad = $this->adRepository->findById($adDetail->getAdId());
     $app = $this->appRepository->findById($ad->getAppId());
     $html = (new AppLinkComponent($app, $ad, $noAffi))->getAppLinkCode();
@@ -151,7 +161,7 @@ class AffiLinkQueryService
     $text = $this->affiLink($cmd);
     $cmd = new AffiLinkCommand($adDetailId, 'single_review_image', 0, '', 0, '', true);
     $banner = $this->affiLink($cmd);
-    $adDetail = $this->adDetailRepository->findById(new AdDetailId($adDetailId));
+    $adDetail = $this->adDetailRepository->findByIdWithDelete(new AdDetailId($adDetailId));
     $itemCardShortCode = $this->getItemCardShortCode(new AdDetailId($adDetailId));
     $adDetailInfo = $this->adDetailInfoRepo->findByAdDetailId($adDetail->getId());
     $info = collect($adDetailInfo)->map(function ($info) {
@@ -183,7 +193,7 @@ class AffiLinkQueryService
     EOT;
 
     add_action('wp_footer', function () use ($adDetailId) {
-      $adDetail = $this->adDetailRepository->findById(new AdDetailId($adDetailId));
+      $adDetail = $this->adDetailRepository->findByIdWithDelete(new AdDetailId($adDetailId));
       $ad = $this->adRepository->findById($adDetail->getAdId());
       $reviews = $this->adDetailReviewRepo->findByAdDetailId(new AdDetailId($adDetailId));
       $data = (new AdDetailReviewData($reviews))->handle();
@@ -196,9 +206,48 @@ class AffiLinkQueryService
     return $rep;
   }
 
+  /*
+    削除がされている場合は、販売終了のバッジを表示する　画像のリンクは公式サイト or 楽天商品リンク or Amazon商品リンク
+    公式リンクが削除されている場合、親要素のアフィリエイトリンクを表示する。
+    楽天商品リンクがある場合はアフィリエイトリンク、ない場合は名前で検索リンク
+    Amazon商品リンクがある場合は名前で検索リンク
+  */
+  public function ItemCard(int $adDetailId)
+  {
+    $adDetail = $this->adDetailRepository->findByIdWithDelete(new AdDetailId($adDetailId));
+    $ad = $this->adRepository->findById($adDetail->getAdId());
+    $asp = $this->aspRepository->findById($ad->getAspId());
+    $itemCard = [];
+    $itemCard['onSale'] = ($adDetail->getDeletedAt()) ? false : true;
+
+    $cmd = new AffiLinkCommand($adDetailId, 'item_card_image', 1, '', 0, '', true);
+    $itemCard['id'] = $adDetail->getId()->getId();
+    $itemCard['image'] = $this->affiLink($cmd);
+    $itemCard['title'] = $ad->getName() . ' ' . $adDetail->getItemName();
+    $itemCard['saler'] = $ad->getName();
+
+    $itemCard['officialLink'] = $this->getAffiLink($ad, $adDetail, $asp);
+    $itemCard['officialLinkTag'] = $ad->getSImgTag();
+    $itemCardTiltleEncode = urlencode(preg_replace('/[\s　]+/u', '+', $itemCard['title']));
+    //アソシエイトタグ
+    $associate_tracking_id = trim(get_amazon_associate_tracking_id());
+    $itemCard['amazonLink'] = "https://www.amazon.co.jp/gp/search?keywords={$itemCardTiltleEncode}&tag={$associate_tracking_id}";
+    $itemCard['rakutenLink'] = ($adDetail->getRakutenAffiliateUrl()) ? $adDetail->getRakutenAffiliateUrl() : "https://hb.afl.rakuten.co.jp/hgc/15bebd34.d876b432.15bebd35.0fea234b/?pc=https://search.rakuten.co.jp/search/mall/{$itemCardTiltleEncode}/&m=https://search.rakuten.co.jp/search/mall/{$itemCardTiltleEncode}/";
+
+    // 販売終了の場合
+    if (!$itemCard['onSale']) {
+      $itemCard['officialLink'] =  $itemCard['rakutenLink'];
+    }
+
+    ob_start(); // 出力バッファリングを開始
+    require dirname(__FILE__, 4) . '/Views/UserViews/Components/ItemCardComponent.php';
+    $html = ob_get_clean();
+    return $html;
+  }
+
   public function getItemCardShortCode(AdDetailId $adDetailId)
   {
-    $adDetail = $this->adDetailRepository->findById($adDetailId);
+    $adDetail = $this->adDetailRepository->findByIdWithDelete($adDetailId);
     if ($adDetail->getRakutenId()) {
       // 楽天アフィコードがある場合
       return '[rakuten2 id="' . $adDetail->getRakutenId() . '" kw="' . $adDetail->getItemName() . '" title="' . $adDetail->getItemName() . '" pl=tagranking detail_id="' . $adDetail->getId()->getId() . '"]';
@@ -211,13 +260,13 @@ class AffiLinkQueryService
 
   public function getRakutenIdFromAdDetailId(int $adDetailId)
   {
-    $adDetail = $this->adDetailRepository->findById(new AdDetailId($adDetailId));
+    $adDetail = $this->adDetailRepository->findByIdWithDelete(new AdDetailId($adDetailId));
     return $adDetail->getRakutenId();
   }
 
   public function getOfficialNameFromAdDetailId(int $adDetailId)
   {
-    $adDetail = $this->adDetailRepository->findById(new AdDetailId($adDetailId));
+    $adDetail = $this->adDetailRepository->findByIdWithDelete(new AdDetailId($adDetailId));
     $ad = $this->adRepository->findById($adDetail->getAdId());
     return $ad->getName();
   }

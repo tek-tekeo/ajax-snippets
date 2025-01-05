@@ -26,8 +26,8 @@ class AdCreateServiceTest extends WP_UnitTestCase
     parent::setUp();
     $this->adRepository = $diContainer->get(IAdRepository::class);
     $this->adDetailRepository = $diContainer->get(IAdDetailRepository::class);
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ads");
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
+    $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ads");
+    $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
     $this->adCreateService = new AdCreateService($this->adRepository, $this->adDetailRepository);
 
     $this->req = new \WP_REST_Request();
@@ -43,7 +43,7 @@ class AdCreateServiceTest extends WP_UnitTestCase
     $this->req->set_param('sImgTag', 'sImgTag');
     $this->req->set_param('affiImgWidth', 300);
     $this->req->set_param('affiImgHeight', 250);
-    
+
     // 広告の商品リンクに使用するURL
     $this->req->set_param('homeUrl', 'homeUrl');
   }
@@ -51,8 +51,17 @@ class AdCreateServiceTest extends WP_UnitTestCase
   public function testCommand()
   {
     $cmd = new AdCreateCommand($this->req);
-    $this->assertEquals(['name', 'anken', 'affiLink', 'sLink',
-      1, 'affiImg', 'imgTag', 'sImgTag', 300, 250
+    $this->assertEquals([
+      'name',
+      'anken',
+      'affiLink',
+      'sLink',
+      1,
+      'affiImg',
+      'imgTag',
+      'sImgTag',
+      300,
+      250
     ], $cmd->getAdInfo());
 
     $this->assertEquals('homeUrl', $cmd->getHomeUrl());
@@ -91,9 +100,10 @@ class AdCreateServiceTest extends WP_UnitTestCase
       '',
       '',
       '',
+      '',
       0,
       1
-    
+
     ), $adDetails[0]);
 
     // 同じad名で登録されたら登録失敗となる

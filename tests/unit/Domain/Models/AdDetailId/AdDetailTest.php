@@ -22,6 +22,7 @@ final class AdDetailTest extends WP_UnitTestCase
       'detail image',
       'amazon asin',
       'rakuten id',
+      'rakuten affiliate url',
       'review',
       1,
       1
@@ -40,6 +41,7 @@ final class AdDetailTest extends WP_UnitTestCase
         'detail_img' => 'detail image',
         'amazon_asin' => 'amazon asin',
         'rakuten_id' => 'rakuten id',
+        'rakuten_affiliate_url' => 'rakuten affiliate url',
         'review' => 'review',
         'is_show_url' => 1,
         'same_parent' => 1,

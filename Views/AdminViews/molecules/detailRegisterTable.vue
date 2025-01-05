@@ -36,6 +36,10 @@
     <v-row>
       <v-col cols="6">
         <v-checkbox v-model="detail.isShowUrl" label="公式URLを表示" color="blue"></v-checkbox>
+        <wp-text-box label="画像URLからアイテム別画像を取得" v-model="externalImageUrl"></wp-text-box>
+        <v-btn color="green white--text" @click="getExternalImage">
+          画像取得
+        </v-btn>
       </v-col>
       <v-col cols="6">
         <wp-media-upload label="アイテム別の画像" v-model="detail.detailImg"></wp-media-upload>
@@ -81,9 +85,15 @@ module.exports = {
   },
   data() {
     return {
+      // 外部画像URL
+      externalImageUrl: '',
     }
   },
   methods: {
+    async getExternalImage() {
+      const res = await axios.post('images/getAdDetailImage', { url: this.externalImageUrl, name: this.detail.itemName });
+      this.$set(this.detail, 'detailImg', res.data)
+    },
     async updateDetail() {
       this.$emit("updated-item", this.base);
     },

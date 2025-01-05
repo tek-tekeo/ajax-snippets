@@ -144,6 +144,7 @@ class InitDatabase
       detail_img varchar(1025) DEFAULT '' NOT NULL,
       amazon_asin varchar(255) DEFAULT '' NOT NULL,
       rakuten_id varchar(255) DEFAULT '' NOT NULL,
+      rakuten_affiliate_url varchar(1025) DEFAULT '' NOT NULL,
       rakuten_expired_at datetime DEFAULT NULL,
       review varchar(3000) DEFAULT '' NOT NULL,
       is_show_url tinyint DEFAULT 1 NOT NULL,
@@ -229,7 +230,7 @@ class InitDatabase
     post_addr varchar(1025) DEFAULT '' NOT NULL,
     place varchar(255) DEFAULT '' NOT NULL,
     ip varchar(1025) DEFAULT '' NOT NULL,
-    UNIQUE KEY id (id)
+    PRIMARY KEY id (id)
     ){$this->charsetCollate};";
 
     return $sql;

@@ -16,6 +16,7 @@ class AdDetail
     private string $detailImg = '',
     private string $amazonAsin = '',
     private string $rakutenId = '',
+    private string $rakutenAffiliateUrl = '',
     private string $review = '',
     private int $isShowUrl = 0,
     private int $sameParent = 1,
@@ -68,6 +69,11 @@ class AdDetail
     return $this->rakutenId;
   }
 
+  public function getRakutenAffiliateUrl(): string
+  {
+    return $this->rakutenAffiliateUrl;
+  }
+
   public function getReview(): string
   {
     return $this->review;
@@ -114,6 +120,7 @@ class AdDetail
       'detail_img' => $this->detailImg,
       'amazon_asin' => $this->amazonAsin,
       'rakuten_id' => $this->rakutenId,
+      'rakuten_affiliate_url' => $this->rakutenAffiliateUrl,
       'review' => $this->review,
       'is_show_url' => $this->isShowUrl,
       'same_parent' => $this->sameParent,
