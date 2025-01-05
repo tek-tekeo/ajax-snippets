@@ -29,12 +29,12 @@ class RakutenAffiliateService
     } while ($this->isLimitRakutenApiRequest($data));
 
     if ($data['Items'] == null) {
-      return ['text' => 'リンク切れです', 'success' => false];
+      return ['text' => 'リンク切れです', 'success' => false, 'affiliateUrl' => ''];
     }
     if (count($data['Items'])) {
       return ['text' => 'リンクは正常です', 'success' => true, 'affiliateUrl' => $data['Items'][0]['Item']['itemUrl']];
     } else {
-      return ['text' => 'そのリンクは存在しません', 'success' => false];
+      return ['text' => 'そのリンクは存在しません', 'success' => false, 'affiliateUrl' => ''];
     }
   }
 
@@ -68,7 +68,7 @@ class RakutenAffiliateService
     // エラーチェック
     if ($response === false) {
       // echo "cURLエラー: " . curl_error($ch);
-      return ['text' => 'cURLエラー', 'success' => false];
+      return ['text' => 'cURLエラー', 'success' => false, 'affiliateUrl' => ''];
     }
 
     // JSONレスポンスを配列に変換
