@@ -10,7 +10,12 @@ class downloadImage
 
   public static function handle($downloadImageUrl, $saveDir)
   {
-    $saveImagePath = $saveDir . '/' . basename($downloadImageUrl);
+    $parsedUrl = parse_url($downloadImageUrl);
+    $parsedDownloadImageUrl = isset($parsedUrl['scheme']) && isset($parsedUrl['host'])
+      ? $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . (isset($parsedUrl['path']) ? $parsedUrl['path'] : '')
+      : $downloadImageUrl;
+
+    $saveImagePath = $saveDir . '/' . basename($parsedDownloadImageUrl);
 
     // ブランド用のディレクトリが存在しない場合、作成する
     if (!is_dir($saveDir)) {
@@ -23,7 +28,7 @@ class downloadImage
       return $saveImagePath;
     }
 
-    $ch = curl_init($downloadImageUrl);
+    $ch = curl_init($parsedDownloadImageUrl);
     curl_setopt($ch, CURLOPT_HEADER, 0); // ヘッダーを取得しない
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // 結果を文字列として返す
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // リダイレクトを許可
