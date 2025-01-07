@@ -1,4 +1,5 @@
 <?php
+
 namespace AjaxSnippets\Api\Domain\Services;
 
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
@@ -12,7 +13,7 @@ class AdService
   public function __construct(
     private IAdRepository $adRepository,
     private IAdDetailRepository $adDetailRepository
-  ){}
+  ) {}
 
   public function exists(Ad $ad): bool
   {
@@ -21,7 +22,7 @@ class AdService
 
   public function getFullNameByAdDetailId(AdDetailId $adDetailId): string
   {
-    $adDetail = $this->adDetailRepository->findById($adDetailId);
+    $adDetail = $this->adDetailRepository->findByIdWithDelete($adDetailId);
     $ad = $this->adRepository->findById($adDetail->getAdId());
     return $ad->getName() . ' ' . $adDetail->getItemName();
   }
