@@ -11,7 +11,7 @@
     <v-row>
       <v-col cols="1">ID</v-col>
       <v-col cols="1">掲載数</v-col>
-      <v-col cols="2">日時</v-col>
+      <v-col cols="2">期限切れ日時</v-col>
       <v-col cols="1">画像</v-col>
       <v-col cols="4">商品名</v-col>
       <v-col cols="2">楽天商品ID</v-col>
@@ -120,7 +120,12 @@ module.exports = {
         fullWidth: false
       }
       if (res.data.success) {
-        await this.getRakutenLinks();
+        if (this.hasDeletedAt) {
+          const res = await axios.get('detail/deletedItems');
+          this.rakutenLinks = res.data
+        } else {
+          await this.getRakutenLinks();
+        }
 
         options.type = 'success';
         this.$toasted.show(res.data.text, options);
