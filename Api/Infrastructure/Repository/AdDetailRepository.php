@@ -100,7 +100,7 @@ class AdDetailRepository implements IAdDetailRepository
         $res->deleted_at
       );
     }
-    throw new \Exception('Ad Detail IDに該当するデータが存在しません。', 500);
+    throw new \Exception('Ad Detail ID”' . $adDetailId->getId() . '”に該当するデータが存在しません。', 500);
   }
 
   public function findLatest()
