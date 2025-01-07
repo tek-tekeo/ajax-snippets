@@ -83,6 +83,16 @@ class AdDetailController
     return new WP_REST_Response($res, 200);
   }
 
+  public function deleteWithRakutenLink(WP_REST_Request $req): WP_REST_Response
+  {
+    $adDetailId = (int)$req->get_param('id');
+    $rakutenId = (string)$req->get_param('rakutenId');
+    $res = $this->adDetailUpdateService->updateRakutenExpiredAt($adDetailId, $rakutenId);
+    $cmd = new AdDetailDeleteCommand($req);
+    $res = $this->adDetailDeleteService->handle($cmd);
+    return new WP_REST_Response($res, 200);
+  }
+
   public function getDeletedItems(WP_REST_Request $req): WP_REST_Response
   {
     $res = $this->adDetailGetService->getDeletedItems();
@@ -206,6 +216,9 @@ class AdDetailController
 
   public function restoreItem(WP_REST_Request $req): WP_REST_Response
   {
+    $adDetailId = (int)$req->get_param('id');
+    $rakutenId = (string)$req->get_param('rakutenId');
+    $res = $this->adDetailUpdateService->updateRakutenExpiredAt($adDetailId, $rakutenId);
     $cmd = new AdDetailDeleteCommand($req);
     $res = $this->adDetailDeleteService->restoreItem($cmd);
     return new WP_REST_Response($res, 200);

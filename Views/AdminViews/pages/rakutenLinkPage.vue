@@ -38,7 +38,7 @@
         </v-btn>
       </v-col>
       <v-col cols="2">
-        <wp-text-box v-model="l.rakutenId">
+        <wp-text-box v-model="l.rakutenId" clearable>
         </wp-text-box>
       </v-col>
       <v-col cols="1">
@@ -81,7 +81,7 @@ module.exports = {
   },
   methods: {
     async restoreAdDetail(obj) {
-      const res = await axios.get('detail/' + obj.id + '/restore');
+      const res = await axios.put('detail/' + obj.id + '/restore', obj);
       if (res.data) {
         const res = await axios.get('detail/deletedItems');
         this.rakutenLinks = res.data
@@ -91,12 +91,11 @@ module.exports = {
           fullWidth: false,
           type: 'success'
         }
-        console.log(this.hasDeletedAt);
         this.$toasted.show('復元しました', options);
       }
     },
     async deleteAdDetail(obj) {
-      const res = await axios.delete('detail/' + obj.id);
+      const res = await axios.put('detail/' + obj.id + '/withRakutenLink/', obj);
 
       if (res.data) {
         await this.getRakutenLinks();

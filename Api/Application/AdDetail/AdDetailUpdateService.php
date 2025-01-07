@@ -41,15 +41,23 @@ class AdDetailUpdateService implements IAdDetailUpdateService
 
     $rakutenId = $cmd->getRakutenId();
     $rakutenAffiliateUrl = $adDetail->getRakutenAffiliateUrl();
+    $rakutenExpredAt = $adDetail->getRakutenExpiredAt();
 
     if ($cmd->getRakutenId() == '') {
       $rakutenAffiliateUrl = '';
-    } elseif ($adDetail->getRakutenExpiredAt() == null && $rakutenId == $adDetail->getRakutenId()) { // 楽天リンク切れが報告されている場合
+      $rakutenExpredAt = null;
+    } elseif ($adDetail->getRakutenExpiredAt() == null && $rakutenId == $adDetail->getRakutenId()) {
       $rakutenAffiliateUrl = $adDetail->getRakutenAffiliateUrl();
+      $rakutenExpredAt = null;
     } else {
       $rakutenAffiliateService = new RakutenAffiliateService();
       $res = $rakutenAffiliateService->checkRakutenId($rakutenId);
       $rakutenAffiliateUrl = $res['affiliateUrl'];
+      if ($res['success']) {
+        $rakutenExpredAt = null;
+      } else {
+        $rakutenExpredAt = date('Y-m-d H:i:s');
+      }
     }
 
     $updateAdDetail = new AdDetail(
@@ -65,7 +73,7 @@ class AdDetailUpdateService implements IAdDetailUpdateService
       $cmd->getReview(),
       $cmd->getIsShowUrl(),
       $cmd->getSameParent(),
-      ($adDetail->getRakutenExpiredAt()) ? $adDetail->getRakutenExpiredAt() : null,
+      $rakutenExpredAt,
       $adDetail->getCreatedAt(),
       date("Y-m-d H:i:s"),
       $adDetail->getDeletedAt()
@@ -138,15 +146,21 @@ class AdDetailUpdateService implements IAdDetailUpdateService
   public function updateRakutenExpiredAt($id, $rakutenId)
   {
     $adDetail = $this->adDetailRepository->findByIdWithDelete(new AdDetailId($id));
-
+    $rakutenExpredAt = $adDetail->getRakutenExpiredAt();
     if ($rakutenId == '') {
       $res = ['success' => true, 'text' => '楽天商品リンクを空にして更新しました', 'affiliateUrl' => ''];
+      $rakutenExpredAt = null;
     } else if ($adDetail->getRakutenExpiredAt() == null && $rakutenId == $adDetail->getRakutenId()) {
       $res = ['success' => true, 'text' => '以前と同じ楽天商品リンクです'];
       return $res;
     } else {
       $rakutenAffiliateService = new RakutenAffiliateService();
       $res = $rakutenAffiliateService->checkRakutenId($rakutenId);
+      if ($res['success']) {
+        $rakutenExpredAt = null;
+      } else {
+        $rakutenExpredAt = date('Y-m-d H:i:s');
+      }
     }
 
     // 楽天商品リンクが正常であれば、楽天商品リンクの有効期限を更新する
@@ -164,7 +178,7 @@ class AdDetailUpdateService implements IAdDetailUpdateService
       $adDetail->getReview(),
       $adDetail->getIsShowUrl(),
       $adDetail->getSameParent(),
-      null,
+      $rakutenExpredAt,
       $adDetail->getCreatedAt(),
       date('Y-m-d H:i:s'),
       $adDetail->getDeletedAt()

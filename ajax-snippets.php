@@ -140,6 +140,7 @@ function createEndPoints()
   Route::post('/detail/search', 'AjaxSnippets\Api\Controllers\AdDetailController@search'); //名前検索
   Route::get('/detail/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdDetailController@get', false); //指定ID検索
   Route::delete('/detail/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdDetailController@delete');
+  Route::put('/detail/(?P<id>\d+)/withRakutenLink', 'AjaxSnippets\Api\Controllers\AdDetailController@deleteWithRakutenLink');
   Route::get('/detail/link/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdDetailController@getLinkMaker', false); //指定ID検索
   Route::put('/detail/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdDetailController@update');
   Route::post('/detail/rchart', 'AjaxSnippets\Api\Controllers\AdDetailController@storeRchart');
@@ -153,7 +154,7 @@ function createEndPoints()
   Route::post('/detail/rakutenLinkExpired', 'AjaxSnippets\Api\Controllers\AdDetailController@rakutenLinkExpired');
   Route::put('/detail/rakutenLinkUpdate', 'AjaxSnippets\Api\Controllers\AdDetailController@rakutenLinkUpdate');
   Route::get('/detail/deletedItems', 'AjaxSnippets\Api\Controllers\AdDetailController@getDeletedItems');
-  Route::get('/detail/(?P<id>\d+)/restore', 'AjaxSnippets\Api\Controllers\AdDetailController@restoreItem');
+  Route::put('/detail/(?P<id>\d+)/restore', 'AjaxSnippets\Api\Controllers\AdDetailController@restoreItem');
 
   Route::post('/images/getAdDetailImage', 'AjaxSnippets\Api\Controllers\WpImageController@getAdDetailImage');
 
