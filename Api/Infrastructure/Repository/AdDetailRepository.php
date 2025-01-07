@@ -185,7 +185,7 @@ class AdDetailRepository implements IAdDetailRepository
 
   public function findAllWithNonEmptyRakutenId(): array
   {
-    $res = $this->db->get_results("SELECT * FROM " . $this->table . " WHERE rakuten_id IS NOT NULL AND rakuten_id != ''");
+    $res = $this->db->get_results("SELECT * FROM " . $this->table . " WHERE rakuten_id != '' AND deleted_at IS NULL");
     return collect($res)->map(function ($r) {
       return new AdDetail(
         new AdDetailId((int)$r->id),

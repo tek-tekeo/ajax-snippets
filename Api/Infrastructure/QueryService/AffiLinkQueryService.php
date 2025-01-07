@@ -232,7 +232,7 @@ class AffiLinkQueryService
     //アソシエイトタグ
     $associate_tracking_id = trim(get_amazon_associate_tracking_id());
     $itemCard['amazonLink'] = "https://www.amazon.co.jp/gp/search?keywords={$itemCardTiltleEncode}&tag={$associate_tracking_id}";
-    $itemCard['rakutenLink'] = ($adDetail->getRakutenAffiliateUrl()) ? $adDetail->getRakutenAffiliateUrl() : "https://hb.afl.rakuten.co.jp/hgc/15bebd34.d876b432.15bebd35.0fea234b/?pc=https://search.rakuten.co.jp/search/mall/{$itemCardTiltleEncode}/&m=https://search.rakuten.co.jp/search/mall/{$itemCardTiltleEncode}/";
+    $itemCard['rakutenLink'] = ($adDetail->getRakutenAffiliateUrl() && !($adDetail->getDeletedAt())) ? $adDetail->getRakutenAffiliateUrl() : "https://hb.afl.rakuten.co.jp/hgc/15bebd34.d876b432.15bebd35.0fea234b/?pc=https://search.rakuten.co.jp/search/mall/{$itemCardTiltleEncode}/&m=https://search.rakuten.co.jp/search/mall/{$itemCardTiltleEncode}/";
 
     // 販売終了の場合
     if (!$itemCard['onSale']) {

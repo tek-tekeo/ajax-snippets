@@ -114,7 +114,7 @@ class AdDetailGetService implements IAdDetailGetService
       return (object)[
         'id' => $adDetail->getId()->getId(),
         'itemName' => $adDetail->getItemName(),
-        'imageUrl' => $adDetail->getDetailImg() ? $adDetail->getDetailImg() : 'https://picsum.photos/id/11/10/6',
+        'imageUrl' => $this->getImageUrl($adDetail),
         'officialItemLink' => $adDetail->getOfficialItemLink(),
         'rakutenId' => $adDetail->getRakutenId(),
         'rakutenExpiredAt' => $adDetail->getRakutenExpiredAt(),
@@ -130,12 +130,25 @@ class AdDetailGetService implements IAdDetailGetService
       return (object)[
         'id' => $adDetail->getId()->getId(),
         'itemName' => $adDetail->getItemName(),
-        'imageUrl' => $adDetail->getDetailImg() ? $adDetail->getDetailImg() : 'https://picsum.photos/id/11/10/6',
+        'imageUrl' => $this->getImageUrl($adDetail),
         'officialItemLink' => $adDetail->getOfficialItemLink(),
         'rakutenId' => $adDetail->getRakutenId(),
         'rakutenExpiredAt' => $adDetail->getRakutenExpiredAt(),
         'deletedAt' => $adDetail->getDeletedAt()
       ];
     })->toArray();
+  }
+
+  private function getImageUrl($adDetail)
+  {
+    if (!!($adDetail->getDetailImg())) {
+      return $adDetail->getDetailImg();
+    } else {
+      $ad = $this->adRepository->findById($adDetail->getAdId());
+      if (!!($ad->getAffiImg())) {
+        return $ad->getAffiImg();
+      }
+      return 'https://picsum.photos/id/11/10/6';
+    }
   }
 }
