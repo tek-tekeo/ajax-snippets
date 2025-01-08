@@ -5,7 +5,7 @@ services:
     volumes:
       - wpdb_data:/var/lib/mysql
       - ./data/mysql-init:/docker-entrypoint-initdb.d
-    restart: always
+    restart: on-failure
     ports:
       - "${DB_PORT}:3306"
     environment:
@@ -18,7 +18,7 @@ services:
   test_db:
     image: mysql:5.7
     platform: linux/x86_64
-    restart: always
+    restart: on-failure
     environment:
       MYSQL_ROOT_PASSWORD: myrootpass
       MYSQL_DATABASE: "${WORDPRESS_TEST_DB_NAME}"
@@ -33,7 +33,7 @@ services:
       - ./debug.log:/var/www/html/wp-content/debug.log
       - ./data/php/php.ini:/usr/local/etc/php/conf.d/php.ini
       - ./data/wordpress/wp-config.php:/var/www/html/wp-config.php
-    restart: always
+    restart: on-failure
     depends_on:
       - wpdb
     ports:
@@ -49,7 +49,7 @@ services:
   test_phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     platform: linux/x86_64 # M1チップ対応のため追記
-    restart: always
+    restart: on-failure
     environment:
       PMA_ARBITRARY: 1
       PMA_HOST: test_db
@@ -65,7 +65,7 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     platform: linux/x86_64 # M1チップ対応のため追記
-    restart: always
+    restart: on-failure
     environment:
       PMA_ARBITRARY: 1
       PMA_HOST: wpdb
