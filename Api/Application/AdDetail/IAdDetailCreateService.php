@@ -1,11 +1,12 @@
 <?php
+
 namespace AjaxSnippets\Api\Application\AdDetail;
 
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 
 interface IAdDetailCreateService
 {
-  public function handle(AdDetailCreateCommand $cmd): AdDetailId;
+  public function handle(AdDetailCreateCommand $cmd): array;
   public function handleReview(AdDetailReviewCreateCommand $cmd): int;
 }
 
@@ -156,8 +157,7 @@ class AdDetailReviewCreateCommand
 
   public function getName(): string
   {
-    if($this->name == '')
-    {
+    if ($this->name == '') {
       return '匿名';
     }
     return $this->name;
@@ -195,11 +195,11 @@ class AdDetailReviewCreateCommand
 
   public function getCreatedAt(): string
   {
-    return ($this->createdAt =='') ? date('Y-m-d H:i:s') : $this->createdAt;
+    return ($this->createdAt == '') ? date('Y-m-d H:i:s') : $this->createdAt;
   }
 
   public function getUpdatedAt(): string
   {
-    return ($this->updatedAt =='') ? date('Y-m-d H:i:s') : $this->updatedAt;
+    return ($this->updatedAt == '') ? date('Y-m-d H:i:s') : $this->updatedAt;
   }
 }

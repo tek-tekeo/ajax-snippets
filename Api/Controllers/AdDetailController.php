@@ -59,7 +59,17 @@ class AdDetailController
   {
     $cmd = new AdDetailCreateCommand($req);
     $res = $this->adDetailCreateService->handle($cmd);
-    return new WP_REST_Response($res, 200);
+
+    if ($res['success'] === false) {
+      return new WP_REST_Response([
+        'success' => false,
+        'message' => '既に登録されている商品です',
+      ], 200);
+    }
+    return new WP_REST_Response([
+      'success' => true,
+      'message' => 'ユーザー登録が成功しました',
+    ], 200);
   }
 
   public function update(WP_REST_Request $req): WP_REST_Response

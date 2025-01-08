@@ -30,8 +30,14 @@ class AdDetailCreateService implements IAdDetailCreateService
     private ITagLinkRepository $tagLinkRepository
   ) {}
 
-  public function handle(AdDetailCreateCommand $cmd): AdDetailId
+  public function handle(AdDetailCreateCommand $cmd): array
   {
+    $existedItem = $this->detailRepository->existOfficialItemLink($cmd->getOfficialItemLink());
+    if ($existedItem) {
+      // 存在する場合は何もしない
+      return ['adDetailId' => '', 'success' => false];
+    }
+
     $rakutenId = $cmd->getRakutenId();
     $rakutenAffiliateUrl = '';
     $rakutenExpredAt = null;
@@ -99,7 +105,7 @@ class AdDetailCreateService implements IAdDetailCreateService
       return $this->adDetailInfoRepository->save($adDetailInfo);
     })->toArray();
 
-    return $insertAdDetailId;
+    return ['adDetailId' => $insertAdDetailId->getId(), 'success' => true];
   }
 
   public function handleReview(AdDetailReviewCreateCommand $cmd): int

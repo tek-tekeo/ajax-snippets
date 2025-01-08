@@ -24,6 +24,13 @@ class AdDetailRepository implements IAdDetailRepository
     $this->reviewTable = PLUGIN_DB_PREFIX . 'ad_detail_reviews';
   }
 
+  public function existOfficialItemLink(string $url): bool
+  {
+    $prepared = $this->db->prepare("SELECT * FROM " . $this->table . " WHERE official_item_link=%s", $url);
+    $res = $this->db->get_row($prepared);
+    return $res != null;
+  }
+
   public function findByName(string $name): array
   {
     $sql = "SELECT D.*, A.name as name FROM " . PLUGIN_DB_PREFIX . "ads AS A, " . PLUGIN_DB_PREFIX . "ad_details AS D where D.deleted_at IS NULL AND A.id=D.ad_id AND (D.item_name LIKE '%" . $name . "%' OR A.name LIKE '%" . $name . "%') order by A.name asc, D.item_name asc, D.id asc";

@@ -31,7 +31,7 @@ class AdDetailCreateServiceTest extends WP_UnitTestCase
     $this->adDetailChartRepository = $diContainer->get(IAdDetailChartRepository::class);
     $this->adDetailInfoRepository = $diContainer->get(IAdDetailInfoRepository::class);
     $this->adDetailReviewRepository = $diContainer->get(IAdDetailReviewRepository::class);
-		$wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
+    $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details");
     $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "tag_link");
     $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details_chart");
     $wpdb->query("TRUNCATE TABLE " . PLUGIN_DB_PREFIX . "ad_details_info");
@@ -52,7 +52,7 @@ class AdDetailCreateServiceTest extends WP_UnitTestCase
     $this->req->set_param('affiItemLink', 'affiItemLink');
     $this->req->set_param('detailImg', 'detailImg');
     $this->req->set_param('amazonAsin', 'amazonAsin');
-    $this->req->set_param('rakutenId', 'rakutenId');
+    $this->req->set_param('rakutenId', '');
     $this->req->set_param('rchart', [
       ['factor' => 'おすすめ度', 'value' => 4.4],
       ['factor' => 'ダメダメ度', 'value' => 1.1]
@@ -64,7 +64,7 @@ class AdDetailCreateServiceTest extends WP_UnitTestCase
     $this->req->set_param('review', 'review');
     $this->req->set_param('isShowUrl', 1);
     $this->req->set_param('sameParent', 1);
-    $this->req->set_param('tagIds', [1,2]);
+    $this->req->set_param('tagIds', [1, 2]);
   }
 
   public function testCommand()
@@ -77,7 +77,7 @@ class AdDetailCreateServiceTest extends WP_UnitTestCase
     $this->assertEquals('affiItemLink', $cmd->getAffiItemLink());
     $this->assertEquals('detailImg', $cmd->getDetailImg());
     $this->assertEquals('amazonAsin', $cmd->getAmazonAsin());
-    $this->assertEquals('rakutenId', $cmd->getRakutenId());
+    $this->assertEquals('', $cmd->getRakutenId());
     $this->assertEquals([
       ['factor' => 'おすすめ度', 'value' => 4.4],
       ['factor' => 'ダメダメ度', 'value' => 1.1]
@@ -89,8 +89,7 @@ class AdDetailCreateServiceTest extends WP_UnitTestCase
     $this->assertEquals('review', $cmd->getReview());
     $this->assertEquals(1, $cmd->getIsShowUrl());
     $this->assertEquals(1, $cmd->getSameParent());
-    $this->assertEquals([1,2], $cmd->getTagIds());
-    
+    $this->assertEquals([1, 2], $cmd->getTagIds());
   }
 
   public function test_create()
@@ -98,7 +97,7 @@ class AdDetailCreateServiceTest extends WP_UnitTestCase
     $cmd = new AdDetailCreateCommand($this->req);
     // 新規登録されたら登録IDが返る
     $adDetailId = $this->adDetailCreateService->handle($cmd);
-    $this->assertEquals(new AdDetailId(1), $adDetailId);
+    $this->assertEquals(['adDetailId' => 1, 'success' => true], $adDetailId);
 
     $res = $this->tagLinkRepository->findByAdDetailId(new AdDetailId(1));
     $this->assertEquals(2, count($res));
