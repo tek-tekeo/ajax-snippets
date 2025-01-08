@@ -1,4 +1,5 @@
 <?php
+
 namespace AjaxSnippets\Api\Application\AdDetail;
 
 use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailRepository;
@@ -17,6 +18,7 @@ use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailReviewRepository;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailChart;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailInfo;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailReview;
+use AjaxSnippets\Api\Infrastructure\Services\RakutenAffiliateService;
 
 class AdDetailCreateService implements IAdDetailCreateService
 {
@@ -26,10 +28,25 @@ class AdDetailCreateService implements IAdDetailCreateService
     private IAdDetailInfoRepository $adDetailInfoRepository,
     private IAdDetailReviewRepository $adDetailReviewRepository,
     private ITagLinkRepository $tagLinkRepository
-  ){}
+  ) {}
 
   public function handle(AdDetailCreateCommand $cmd): AdDetailId
   {
+    $rakutenId = $cmd->getRakutenId();
+    $rakutenAffiliateUrl = '';
+    $rakutenExpredAt = null;
+
+    if ($rakutenId != '') {
+      $rakutenAffiliateService = new RakutenAffiliateService();
+      $res = $rakutenAffiliateService->checkRakutenId($rakutenId);
+      $rakutenAffiliateUrl = $res['affiliateUrl'];
+      if ($res['success']) {
+        $rakutenExpredAt = null;
+      } else {
+        $rakutenExpredAt = date('Y-m-d H:i:s');
+      }
+    }
+
     $adDetail = new AdDetail(
       new AdDetailId(),
       new AdId($cmd->getAdId()),
@@ -39,12 +56,18 @@ class AdDetailCreateService implements IAdDetailCreateService
       $cmd->getDetailImg(),
       $cmd->getAmazonAsin(),
       $cmd->getRakutenId(),
+      $rakutenAffiliateUrl,
       $cmd->getReview(),
       $cmd->getIsShowUrl(),
-      $cmd->getSameParent()
+      $cmd->getSameParent(),
+      $rakutenExpredAt,
+      date('Y-m-d H:i:s'),
+      date('Y-m-d H:i:s'),
+      null
     );
+
     $insertAdDetailId = $this->detailRepository->save($adDetail);
-    collect($cmd->getTagIds())->map(function($tagId) use ($insertAdDetailId){
+    collect($cmd->getTagIds())->map(function ($tagId) use ($insertAdDetailId) {
       $this->tagLinkRepository->save(
         new TagLink(
           new TagLinkId(),
@@ -54,7 +77,7 @@ class AdDetailCreateService implements IAdDetailCreateService
       );
     });
 
-    $res = collect($cmd->getRates())->map(function($chart) use ($insertAdDetailId){
+    $res = collect($cmd->getRates())->map(function ($chart) use ($insertAdDetailId) {
       $adDetailChart = new AdDetailChart(
         0,
         $insertAdDetailId,
@@ -65,7 +88,7 @@ class AdDetailCreateService implements IAdDetailCreateService
       return $this->adDetailChartRepository->save($adDetailChart);
     })->toArray();
 
-    $res = collect($cmd->getInfos())->map(function($info) use ($insertAdDetailId){
+    $res = collect($cmd->getInfos())->map(function ($info) use ($insertAdDetailId) {
       $adDetailInfo = new AdDetailInfo(
         0,
         $insertAdDetailId,
