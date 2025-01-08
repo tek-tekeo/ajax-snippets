@@ -4,7 +4,7 @@ namespace AjaxSnippets\Cron;
 
 use AjaxSnippets\Api\Infrastructure\Repository\AdDetailRepository;
 use AjaxSnippets\Api\Application\AdDetail\AdDetailUpdateService;
-use AjaxSnippets\Api\Application\Services\RakutenAffiliateService;
+use AjaxSnippets\Api\Infrastructure\Services\RakutenAffiliateService;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetail;
 
 class RakutenLinkCron

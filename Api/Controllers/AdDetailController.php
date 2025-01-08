@@ -17,7 +17,7 @@ use AjaxSnippets\Api\Application\AdDetail\IAdDetailDeleteService;
 use AjaxSnippets\Api\Application\TagLink\ITagLinkUpdateService;
 use AjaxSnippets\Api\Application\TagLink\TagLinkUpdateCommand;
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
-use AjaxSnippets\Api\Application\Services\RakutenAffiliateService;
+use AjaxSnippets\Api\Infrastructure\Services\RakutenAffiliateService;
 use AjaxSnippets\Api\Infrastructure\QueryService\AffiLinkQueryService;
 
 

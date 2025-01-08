@@ -20,7 +20,7 @@ use AjaxSnippets\Api\Domain\Models\TagLink\ITagLinkRepository;
 use AjaxSnippets\Api\Application\AdDetail\AdDetailReviewUpdateCommand;
 use AjaxSnippets\Api\Application\AdDetail\IAdDetailUpdateService;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailReview;
-use AjaxSnippets\Api\Application\Services\RakutenAffiliateService;
+use AjaxSnippets\Api\Infrastructure\Services\RakutenAffiliateService;
 
 class AdDetailUpdateService implements IAdDetailUpdateService
 {

@@ -1,6 +1,6 @@
 <?php
 
-use AjaxSnippets\Api\Application\Services\DownloadImage;
+use AjaxSnippets\Api\Infrastructure\Services\DownloadImage;
 
 class DownloadImageTest extends WP_UnitTestCase
 {

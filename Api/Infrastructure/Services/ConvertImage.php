@@ -1,6 +1,6 @@
 <?php
 
-namespace AjaxSnippets\Api\Application\Services;
+namespace AjaxSnippets\Api\Infrastructure\Services;
 
 class ConvertImage
 {

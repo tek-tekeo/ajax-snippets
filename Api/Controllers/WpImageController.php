@@ -2,9 +2,9 @@
 
 namespace AjaxSnippets\Api\Controllers;
 
-use AjaxSnippets\Api\Application\Services\ConvertImage;
-use AjaxSnippets\Api\Application\Services\DownloadImage;
-use AjaxSnippets\Api\Application\Services\WpUploadImage;
+use AjaxSnippets\Api\Infrastructure\Services\ConvertImage;
+use AjaxSnippets\Api\Infrastructure\Services\DownloadImage;
+use AjaxSnippets\Api\Infrastructure\Services\WpUploadImage;
 
 
 class WpImageController
@@ -32,7 +32,7 @@ class WpImageController
     $fileInfo = pathinfo($saveImagePath);
     $convertedImagePath = plugin_dir_path(__FILE__) . '../Store/tmp/' . $fileInfo['filename'] . '.webp';
 
-    ConvertImage::cropToSquareAndResize($saveImagePath, $convertedImagePath, $quality = 100, $max_width = 100);
+    ConvertImage::cropToSquareAndResize($saveImagePath, $convertedImagePath, $quality = 100, $max_width = 300);
     $res = WpUploadImage::handle($convertedImagePath, $itemName);
 
     $this->clearDirectory($downLoadImageDir);
