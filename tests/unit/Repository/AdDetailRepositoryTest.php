@@ -104,7 +104,7 @@ final class AdDetailRepositoryTest extends WP_UnitTestCase
     $this->assertEquals($adDetail, $getAdDetail);
 
     $this->expectException(\Exception::class);
-    $this->expectExceptionMessage('Ad Detail IDに該当するデータが存在しません。');
+    $this->expectExceptionMessage('Ad Detail ID”3”に該当するデータが存在しません。');
     $this->expectExceptionCode(500);
     $getAdDetail = $this->repository->findById(new AdDetailId(3));
   }

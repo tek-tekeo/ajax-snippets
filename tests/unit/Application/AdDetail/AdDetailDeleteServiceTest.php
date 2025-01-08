@@ -72,7 +72,7 @@ class AdDetailDeleteServiceTest extends WP_UnitTestCase
     $this->assertEquals(0, count($tagLinks));
 
     $this->expectException(\Exception::class);
-    $this->expectExceptionMessage('Ad Detail IDに該当するデータが存在しません。');
+    $this->expectExceptionMessage('Ad Detail ID”1”に該当するデータが存在しません。');
     $this->expectExceptionCode(500);
     $res = $this->adDetailRepository->findById(new AdDetailId(1));
   }
