@@ -8,9 +8,6 @@ class ConvertImage
 
   public static function webpWithResize($source_path, $destination_path, $quality = 80, $max_width = 1080)
   {
-    // STEP1 元画像をダウンロード
-
-
     // 画像のファイル拡張子を取得
     $ext = pathinfo($source_path, PATHINFO_EXTENSION);
 
@@ -54,9 +51,6 @@ class ConvertImage
 
     // WebP形式に変換して保存
     $result = imagewebp($image, $destination_path, $quality);
-
-    // STEP2 画像をワードプレスにアップロード
-
     // メモリを解放
     imagedestroy($image);
 

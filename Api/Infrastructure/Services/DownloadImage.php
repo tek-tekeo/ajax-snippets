@@ -15,7 +15,7 @@ class downloadImage
       ? $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . (isset($parsedUrl['path']) ? $parsedUrl['path'] : '')
       : $downloadImageUrl;
 
-    $saveImagePath = $saveDir . '/' . basename($parsedDownloadImageUrl);
+    $saveImagePath = $saveDir . '/' . rawurldecode(basename($parsedDownloadImageUrl));
 
     // ブランド用のディレクトリが存在しない場合、作成する
     if (!is_dir($saveDir)) {
