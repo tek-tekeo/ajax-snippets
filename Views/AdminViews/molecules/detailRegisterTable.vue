@@ -14,6 +14,9 @@
       <v-col cols="6">
         <wp-text-box label="商品ページのURL" v-model="detail.officialItemLink" :required="true" :is-url="true"></wp-text-box>
         <v-checkbox v-model="detail.sameParent" label="親と同じページを表示" color="red"></v-checkbox>
+        <v-btn outlined color="blue" target="_blank" :href="detail.officialItemLink">
+          商品URLを確認
+        </v-btn>
       </v-col>
       <v-col cols="6">
         <wp-text-box label="アフィリエイトURL(a8以外のURL)" v-model="detail.affiItemLink" :is-url="true"></wp-text-box>

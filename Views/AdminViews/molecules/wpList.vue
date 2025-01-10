@@ -1,22 +1,10 @@
 <template>
   <v-list nav dense>
     <v-subheader>{{ label }}</v-subheader>
-    <v-list-item-group
-      v-model="selectedItem"
-      color="primary"
-    >
-      <v-list-item
-        v-for="(item, i) in items"
-        :key="i"
-        :value="item.id"
-        :draggable="true"
-        @dragstart="onDragStart(i)"
-        @dragover.prevent
-        @drop="onDrop(i)"
-      >
-        <v-list-item-avatar
-          tile
-        >
+    <v-list-item-group v-model="selectedItem" color="primary">
+      <v-list-item v-for="(item, i) in items" :key="i" :value="item.id" :draggable="true" @dragstart="onDragStart(i)"
+        @dragover.prevent @drop="onDrop(i)">
+        <v-list-item-avatar tile>
           <v-img :src="item.icon"></v-img>
         </v-list-item-avatar>
         <v-list-item-content>
@@ -28,7 +16,7 @@
 </template>
 
 <script>
-module.exports ={
+module.exports = {
   props: {
     label: {
       type: String,
@@ -45,7 +33,7 @@ module.exports ={
   },
   data() {
     return {
-      selectedItem: null,
+      selectedItem: parseInt(this.value) ?? null,
       dragIndex: null,
     }
   },
@@ -55,8 +43,10 @@ module.exports ={
       this.$emit('input', id)
     },
     value(val) {
-      if(val === 0){
+      if (val === 0) {
         this.selectedItem = null
+      } else {
+        this.selectedItem = parseInt(val)
       }
     }
   },
@@ -78,10 +68,11 @@ module.exports ={
 
 <style scoped>
 .col-2 {
-    display: initial;
+  display: initial;
 }
-.col-2 > div {
-    width: 100%;
-    padding: 10px;
+
+.col-2>div {
+  width: 100%;
+  padding: 10px;
 }
 </style>

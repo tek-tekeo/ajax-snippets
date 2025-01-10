@@ -53,7 +53,7 @@ if (!defined('ABSPATH')) exit; ?>
     },
     {
       path: '/parent/update/:id',
-      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/organisms/baseUpdateView.vue')
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/organisms/baseUpdateView.vue'),
     },
     {
       path: '/detail',
@@ -65,7 +65,25 @@ if (!defined('ABSPATH')) exit; ?>
     },
     {
       path: '/detail/update/:id',
-      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/organisms/detailUpdateView.vue')
+      component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/organisms/detailUpdateView.vue'),
+      children: [{
+          path: '',
+          component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/organisms/detailUpdateInfoView.vue')
+        }, {
+          path: 'info',
+          name: 'info',
+          component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/organisms/detailUpdateInfoView.vue')
+        },
+        {
+          path: 'reviews',
+          name: 'reviews',
+          component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/organisms/detailUpdateReviewView.vue'),
+          children: [{
+            path: ':reviewId',
+            component: httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/organisms/detailUpdateReviewView.vue')
+          }]
+        }
+      ]
     },
     {
       path: '/tag',

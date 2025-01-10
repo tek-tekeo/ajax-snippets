@@ -135,8 +135,24 @@ EOT;
       'id' => '1'
     ), $atts));
     $rep = self::$query->createReviewForm($id);
-    $rep .= self::toEditPage($id);
+    $rep .= self::toEditReviewPage($id);
     return $rep;
+  }
+
+  private function toEditReviewPage(int $itemId)
+  {
+    if (current_user_can('administrator') || current_user_can('editor') || current_user_can('author')) {
+      $thisUrl = admin_url('') . "admin.php?page=ajax-snippets#/detail/update/{$itemId}/reviews";
+      return "<a href={$thisUrl} target='_blank' style='font-size:12px;'>商品のレビュー編集</a>";
+    }
+  }
+
+  private function toEditReviewItemPage(int $itemId, int $reviewId)
+  {
+    if (current_user_can('administrator') || current_user_can('editor') || current_user_can('author')) {
+      $thisUrl = admin_url('') . "admin.php?page=ajax-snippets#/detail/update/{$itemId}/reviews/{$reviewId}";
+      return "<a href={$thisUrl} target='_blank' style='font-size:12px;'>このレビューを編集</a>";
+    }
   }
 
   public function tagRanking($atts)
@@ -156,7 +172,7 @@ EOT;
     return $html;
   }
 
-  public function itemCard($atts)
+  public function ItemCard($atts)
   {
     extract(shortcode_atts(array(
       'id' => '1'
