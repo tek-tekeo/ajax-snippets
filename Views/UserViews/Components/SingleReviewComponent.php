@@ -1,16 +1,19 @@
 <?php
+$showChart = (count($rchart) >= 3);
 
 if (!defined('ABSPATH')) exit; ?>
 
 <div class="singleReview">
   <?= $banner ?>
-  <chart-js
-    class="secondItem"
-    :rchart='<?= json_encode($rchart) ?>'
-    name="<?= $name ?>"
-    color="<?= $color ?>"
-    title="<?= $title ?>">
-  </chart-js>
+  <?php if ($showChart) : ?>
+    <chart-js
+      class="secondItem"
+      :rchart='<?= json_encode($rchart) ?>'
+      name="<?= $name ?>"
+      color="<?= $color ?>"
+      title="<?= $title ?>">
+    </chart-js>
+  <?php endif; ?>
 </div>
 <table class="singleReview_table">
   <tbody>
