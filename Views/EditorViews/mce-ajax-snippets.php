@@ -216,7 +216,7 @@ require_once dirname(__FILE__) . '/../../../../../wp-load.php';; ?>
         if (this.itemNo == null) {
           return;
         }
-        const inputTag = "[reviewFrom id=" + this.itemNo + "]";
+        const inputTag = "[reviewForm id=" + this.itemNo + "]";
         this.closeTinymce(inputTag);
       },
       async quoteLink() {
