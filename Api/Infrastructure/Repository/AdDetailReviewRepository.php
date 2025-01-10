@@ -1,4 +1,5 @@
 <?php
+
 namespace AjaxSnippets\Api\Infrastructure\Repository;
 
 use AjaxSnippets\Api\Domain\Models\AdDetail\IAdDetailReviewRepository;
@@ -14,22 +15,28 @@ class AdDetailReviewRepository implements IAdDetailReviewRepository
   {
     global $wpdb;
     $this->db = $wpdb;
-    $this->table = PLUGIN_DB_PREFIX.'ad_detail_reviews';
+    $this->table = PLUGIN_DB_PREFIX . 'ad_detail_reviews';
   }
 
   public function save(AdDetailReview $adDetailReview): int
   {
-    $res = $this->db->replace( 
-      $this->table, 
+    $res = $this->db->replace(
+      $this->table,
       $adDetailReview->entity()
     );
     return $this->db->insert_id;
   }
 
+  public function existByContent(string $content): bool
+  {
+    $res = $this->db->get_row("SELECT * FROM " . $this->table . " WHERE content = '" . $content . "'");
+    return (bool)$res;
+  }
+
   public function findByAdDetailId(AdDetailId $adDetailId): array
   {
-    $res = $this->db->get_results("SELECT * FROM ". $this->table." WHERE ad_detail_id = ".$adDetailId->getId());
-    return collect($res)->map(function($r){
+    $res = $this->db->get_results("SELECT * FROM " . $this->table . " WHERE ad_detail_id = " . $adDetailId->getId());
+    return collect($res)->map(function ($r) {
       return new AdDetailReview(
         $r->id,
         new AdDetailId($r->ad_detail_id),
@@ -47,7 +54,7 @@ class AdDetailReviewRepository implements IAdDetailReviewRepository
 
   public function findById(int $id): AdDetailReview
   {
-    $res = $this->db->get_row("SELECT * FROM ". $this->table." WHERE id = ".$id);
+    $res = $this->db->get_row("SELECT * FROM " . $this->table . " WHERE id = " . $id);
     return new AdDetailReview(
       $res->id,
       new AdDetailId($res->ad_detail_id),
