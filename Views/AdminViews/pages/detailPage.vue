@@ -8,12 +8,7 @@
       </v-row>
       <v-row>
         <v-col cols="12">
-          <search-list
-            :items="items"
-            path="/detail/update/"
-            @search-text="searchDetailText"
-            @select-id="selectDetail"
-          >
+          <search-list :items="items" path="/detail/update/" @search-text="searchDetailText" @select-id="selectDetail">
           </search-list>
         </v-col>
       </v-row>
@@ -24,14 +19,14 @@
 <script>
 module.exports = {
   components: {
-      'SearchList': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/searchList.vue')
-    },
-  data(){
+    'SearchList': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/AdminViews/molecules/searchList.vue')
+  },
+  data() {
     return {
-      detailList:[]
+      detailList: []
     }
   },
-  async created(){
+  async created() {
     try {
       // TODO: URL
       const res = await axios.get('detail');
@@ -41,27 +36,27 @@ module.exports = {
       console.log(err);
     }
   },
-  computed:{
-    items(){
-      return this.detailList.map(function(detail){
-        return {id:detail.id, name: detail.name};
+  computed: {
+    items() {
+      return this.detailList.map(function (detail) {
+        return { id: detail.id, name: detail.name };
       });
     }
   },
-  methods:{
-    async searchDetailText(name){
+  methods: {
+    async searchDetailText(name) {
       try {
-      // TODO: URL
-      const res = await axios.post('/detail/search',{
-        'name':name
-      });
-      this.detailList = res.data;
+        // TODO: URL
+        const res = await axios.post('/detail/search', {
+          'name': name
+        });
+        this.detailList = res.data;
       } catch (err) {
         // TODO: エラー処理
         console.log(err);
       }
     },
-    async selectDetail(id){
+    async selectDetail(id) {
       try {
         // TODO: URL
         const res = await axios.get('detail/' + id);
