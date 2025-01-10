@@ -189,6 +189,6 @@ EOT;
       'detail_id' => 1,
     ), $atts, 'rakuten'));
 
-    return do_shortcode("[itemCard id={$detail_id}]");
+    return do_shortcode("[ItemCard id={$detail_id}]");
   }
 }
