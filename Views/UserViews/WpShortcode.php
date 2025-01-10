@@ -156,7 +156,7 @@ EOT;
     return $html;
   }
 
-  public function itemCard($atts)
+  public function ItemCard($atts)
   {
     extract(shortcode_atts(array(
       'id' => '1'

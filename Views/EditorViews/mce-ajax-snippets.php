@@ -168,8 +168,9 @@ require_once dirname(__FILE__) . '/../../../../../wp-load.php';; ?>
         const item = this.returnItem();
         const kw = item.name;
         if (item.rakutenId != "") {
-          inputTag = "[rakuten2 id=\"" + item.rakutenId + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
-          inputTag = inputTag + " detail_id=" + item.id + " pl=" + this.randomNo() + "]";
+          // inputTag = "[rakuten2 id=\"" + item.rakutenId + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
+          // inputTag = inputTag + " detail_id=" + item.id + " pl=" + this.randomNo() + "]";
+          inputTag = "[ItemCard id=\"" + item.id + "\" pl=\"" + this.randomNo() + "\"]";
         } else if (item.amazonAsin != "") {
           inputTag = "[amazon asin=\"" + item.amazonAsin + "\" kw=\"" + kw + "\" title=\"" + kw + "\"";
           inputTag = inputTag + " btn1_url=\"" + item.affiLink + "\" btn1_text=\"" + item.parent.name + "公式\"]";
