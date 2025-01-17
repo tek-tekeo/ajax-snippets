@@ -29,7 +29,7 @@ module.exports = {
   data() {
     return {
       detailId: parseInt(this.$route.params['id']),
-      detailReview: { id: 0, name: '匿名', age: 0, sex: '', content: '', ratingValue: 0, quoteName: '', quoteUrl: '', isPublished: false, adDetailId: parseInt(this.$route.params['id']) },
+      detailReview: { id: 0, name: '匿名', age: 0, sex: '', content: '', ratingValue: 3, quoteName: '', quoteUrl: '', isPublished: false, adDetailId: parseInt(this.$route.params['id']) },
       reviewId: parseInt(this.$route.params['reviewId']) ?? 0,
       reviews: [],
       valid: true
@@ -77,6 +77,7 @@ module.exports = {
     },
     async updateDetailReview() {
       // console.log(this.detailReview);
+      // return;
       // this.validate();
       // if(!this.valid){return;}
       if (this.detailReview.id == 0) {

@@ -1,42 +1,31 @@
 <template>
   <div>
-    <div class="d-flex justify-start ms-4">
-      <div>{{ averageRating }}</div>
-      <v-rating
-        :value="averageRating"
-        readonly
-        half-increments
-        color="amber"
-        background-color="amber lighten-3"
-      ></v-rating>
+    <div class="average-rating-container" style="font-size: 30px;">
+      総合評価：
+      <div class="average-stars" :style="{ '--rating': averageRating }">
+        ☆☆☆☆☆
+      </div>
+      {{ averageRating }}
     </div>
-    <div  class="grey--text ms-4 overline">
+    <div style="font-size: 0.8rem; margin-left: 1rem; color: #666;">
       {{ raviewInfo }}
     </div>
-    <v-row v-for="rating in eachRatings">
-      <v-col cols="3" class="text-caption">{{ rating.label }}</v-col>
-      <v-col>
-        <v-progress-linear
-          :value="rating.percentage"
-          color="amber"
-          height="20"
-        ></v-progress-linear>
-      </v-col>
-      <v-col cols="2" class="text-caption">{{rating.percentage}}</v-col>
-    </v-row>
-    <div class="d-flex justify-end blue-grey--text overline">
-      スクロールできます→
+    <div class="rating-container">
+      <div class="rating-row" v-for="rating in eachRatings" :key="rating.label">
+        <div class="rating-label">{{ rating.label }}</div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" :style="{ width: parseInt(rating.percentage) + '%' }"></div>
+        </div>
+        <div class="rating-percentage">{{ rating.percentage }}</div>
+      </div>
+    </div>
+    <div style="font-size: 0.8rem;">
+      ※スクロールできます→
     </div>
     <div class="horizontal-scroll">
-      <div class="d-flex justify-start no-wrap">
-        <div
-          v-for="review in data.reviews"
-          :key="review.name"
-          class="d-flex align-self-start"
-        >
-        <review-card
-         :review="review"
-        ></review-card>
+      <div class="no-wrap">
+        <div v-for="review in data.reviews" :key="review.name">
+          <review-card :review="review"></review-card>
         </div>
       </div>
     </div>
@@ -48,8 +37,8 @@ module.exports = {
   components: {
     'reviewCard': httpVueLoader('/wp-content/plugins/ajax-snippets/Views/UserViews/js/review/reviewCard.vue'),
   },
-  data(){
-    return{
+  data() {
+    return {
       isExpanded: false, // テキストの表示状態を管理するフラグ
       maxLength: 120 // 部分表示時の最大文字数
     }
@@ -61,28 +50,29 @@ module.exports = {
         ? this.review.content.substring(0, this.maxLength) + '...'
         : this.review.content;
     },
-    averageRating(){
-      if(this.data.bestRating === 0) return 0;
+    averageRating() {
+      if (this.data.bestRating === 0) return 0;
       const ave = this.data.ratingValue / this.data.bestRating * 5;
       return ave.toFixed(1);
     },
-    raviewInfo(){
-      if(this.data.bestRating === 0) return 'まだレビューはありません';
+    raviewInfo() {
+      if (this.data.bestRating === 0) return 'まだレビューはありません';
       const ave = this.data.ratingValue / this.data.bestRating * 5;
       const averageRating = ave.toFixed(1);
-      if(this.data.ratingCount === 0) return 'まだレビューはありません';
+      if (this.data.ratingCount === 0) return 'まだレビューはありません';
       return ` 5つ星のうち${averageRating}つ星（${this.data.ratingCount}件のレビューに基づく）`;
     },
     eachRatings() {
       if (!this.data || !this.data.reviews) return;
 
-      const ratingCount = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+      const ratingCount = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
       this.data.reviews.forEach(item => {
         ratingCount[item.ratingValue]++;
       });
 
       const total = Object.values(ratingCount).reduce((sum, count) => sum + count, 0);
       const labels = {
+        0: "未評価",
         1: "大変不満",
         2: "不満",
         3: "普通",
@@ -95,8 +85,8 @@ module.exports = {
           label: labels[rating],
           percentage: total > 0 ? Math.round((count / total) * 100) + '%' : '0%'
         }))
-        .reverse();
-}
+        .reverse().filter(item => item.label !== '未評価');
+    }
   },
   methods: {
     toggleReadMore() {
@@ -104,11 +94,11 @@ module.exports = {
       this.isExpanded = !this.isExpanded;
     },
     formatAgeSex(age, sex) {
-      if(age != null && sex != null){
+      if (age != null && sex != null) {
         return `${age}代${sex}`;
-      }else if(sex != null){
+      } else if (sex != null) {
         return `${sex}`
-      }else if(age != null){
+      } else if (age != null) {
         return `${age}代`
       }
       return '';
@@ -121,14 +111,53 @@ module.exports = {
 
 <style scoped>
 /* ratingのスタイル */
+.rating-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rating-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rating-label {
+  width: 80px;
+  font-size: 12px;
+  text-align: right;
+}
+
+.progress-bar-container {
+  flex-grow: 1;
+  height: 20px;
+  background-color: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: orange;
+}
+
+.rating-percentage {
+  width: 50px;
+  font-size: 12px;
+  text-align: left;
+}
+
 .v-rating .v-icon {
-    padding: 0.2rem;
+  padding: 0.2rem;
 }
 
 .horizontal-scroll {
   overflow-x: auto;
+  overflow-y: hidden;
   white-space: nowrap;
 }
+
 .no-wrap {
   display: flex;
   flex-wrap: nowrap;

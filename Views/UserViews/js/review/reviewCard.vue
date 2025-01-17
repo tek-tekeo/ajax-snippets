@@ -1,46 +1,34 @@
 <template>
-  <blockquote class="review-form-card-quote ajax-snippets-quote" :cite="review.quoteUrl">
-    <v-card class="ma-2 fixed-card d-flex flex-column">
-      <v-card-title>
-        <v-rating
-        :value="review.ratingValue"
-        readonly
-        half-increments
-        color="amber"
-        background-color="amber lighten-3"
-        small
-        size="14"
-      ></v-rating>
-      </v-card-title>
-      <v-card-subtitle class="d-flex justify-space-between">
-        <div>{{review.name}}</div>
-        <div>{{ formatAgeSex(review.age, review.sex) }}</div>
-      </v-card-subtitle>
-      <v-card-text class="d-flex flex-column">
-        <v-fade-transition>
-          <!-- 部分表示か全文表示かによって表示するテキストを切り替える -->
-          <div v-if="isExpanded">
-            {{ review.content }}
-          </div>
-          <div v-else>
-            {{ truncatedText }}
-          </div>
-        </v-fade-transition>
-        <v-btn v-if="needMore" color="indigo" text @click="toggleReadMore">
-          {{ isExpanded ? '----閉じる----' : '----もっと読む----' }}
-        </v-btn>
-      </v-card-text>
-    <cite class="pa-2 ml-auto text-caption grey--text font-italic" style="margin-top:auto;">
-      <a :href="review.quoteUrl">{{ review.quoteName }}</a>
-    </cite>
-    </v-card>
+  <blockquote :cite="review.quoteUrl" class="review-card fixed-card">
+    <div>
+      <div class="review-card__rating">
+        <div class="rating-star" :style="{ '--rating': review.ratingValue }">
+          ☆☆☆☆☆
+        </div>
+      </div>
+      <div class="review-card__attribute">
+        <span class="review-card__name">{{ review.name }}</span>
+        <span class="review-card__sex">{{ formatAgeSex(review.age, review.sex) }}</span>
+      </div>
+      <div v-if="isExpanded" class="review-card__content">
+        {{ review.content }}
+      </div>
+      <div v-else class="review-card__content">
+        {{ truncatedText }}
+      </div>
+      <div v-if="needMore" class="review-card__content__readmore" @click="toggleReadMore">
+        {{ isExpanded ? '閉じる' : 'もっと読む' }}
+      </div>
+    </div>
+    <cite v-if="!!review.quoteUrl" class="review-card__cite">引用：<a :href="review.quoteUrl">{{ review.quoteName
+        }}</a></cite>
   </blockquote>
 </template>
-
 <script>
 module.exports = {
-  data(){
-    return{
+  data() {
+    return {
+      isAdminUser: true,
       isExpanded: false, // テキストの表示状態を管理するフラグ
       maxLength: 100 // 部分表示時の最大文字数
     }
@@ -56,16 +44,16 @@ module.exports = {
         ? this.review.content.substring(0, this.maxLength) + '...'
         : this.review.content;
     },
-    averageRating(){
-      if(this.data.bestRating === 0) return 0;
+    averageRating() {
+      if (this.data.bestRating === 0) return 0;
       const ave = this.data.ratingValue / this.data.bestRating * 5;
       return ave.toFixed(1);
     },
-    raviewInfo(){
-      if(this.data.bestRating === 0) return 'まだレビューはありません';
+    raviewInfo() {
+      if (this.data.bestRating === 0) return 'まだレビューはありません';
       const ave = this.data.ratingValue / this.data.bestRating * 5;
       const averageRating = ave.toFixed(1);
-      if(this.data.ratingCount === 0) return 'まだレビューはありません';
+      if (this.data.ratingCount === 0) return 'まだレビューはありません';
       return ` 5つ星のうち${averageRating}つ星（${this.data.ratingCount}件のレビューに基づく）`;
     },
     eachRatings() {
@@ -91,7 +79,7 @@ module.exports = {
           percentage: total > 0 ? Math.round((count / total) * 100) + '%' : '0%'
         }))
         .reverse();
-}
+    }
   },
   methods: {
     toggleReadMore() {
@@ -99,12 +87,13 @@ module.exports = {
       this.isExpanded = !this.isExpanded;
     },
     formatAgeSex(age, sex) {
-      if(age != null && sex != null){
-        return `${age}代${sex}`;
-      }else if(sex != null){
+      ageInt = parseInt(age);
+      if ((ageInt != null && ageInt != 0) && sex != null) {
+        return `${ageInt}代${sex}`;
+      } else if (sex != null) {
         return `${sex}`
-      }else if(age != null){
-        return `${age}代`
+      } else if ((ageInt != null && ageInt != 0)) {
+        return `${ageInt}代`
       }
       return '';
     }
@@ -113,47 +102,90 @@ module.exports = {
 };
 </script>
 
-
 <style scoped>
-/* ratingのスタイル */
-.v-rating .v-icon {
-    padding: 0.2rem;
+blockquote.review-card {
+  display: grid;
+  position: relative;
+  height: 100%;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  border-radius: 5px;
+  padding: 10px;
+  color: rgba(0, 0, 0, .6);
+  margin-left: 10px;
 }
 
-.horizontal-scroll {
-  overflow-x: auto;
+blockquote.fixed-card {
+  width: 320px;
+}
+
+blockquote.review-card::before,
+blockquote.review-card::after {
+  color: transparent !important;
+  font-family: serif;
+  position: absolute;
+  font-size: 300%;
+}
+
+
+.review-card__attribute {
+  display: flex !important;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.review-card__content {
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  white-space: pre-line;
+  overflow-x: hidden;
+  font-size: 14px;
+}
+
+.review-card__content__readmore {
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  color: #1f1dab;
+  border: dashed 1px #1f1dab;
+  font-size: 14px;
+}
+
+.review-card__sex {
+  right: 0;
+}
+
+.review-card__cite {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 10px;
+}
+
+.review-card__rating {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  position: relative;
+  width: fit-content;
+  font-style: italic;
+}
+
+.rating-star {
+  color: #ffecb3;
+  /* Vuetify の amber lighten-3 */
+  position: relative;
+  display: inline-block;
   white-space: nowrap;
 }
-.no-wrap {
-  display: flex;
-  flex-wrap: nowrap;
-}
-.fixed-card {
-  width: 320px; /* 固定横幅 */
-  min-height: 280px; /* 固定縦幅 */
-}
-blockquote.review-form-card-quote {
-    background-color: transparent !important;
-    border: none;
-    padding: 0;
-    position: relative;
-}
-blockquote.review-form-card-quote::before {
-    content: "";
-    line-height: 1.1;
-    left: 10px;
-    top: 0;
-}
-blockquote.review-form-card-quote::after {
-    content: "";
-    line-height: 0;
-    right: 0px;
-    bottom: 0px;
-}
-blockquote.review-form-card-quote::before, blockquote.review-form-card-quote::after {
-    color: transparent !important;
-    font-family: serif;
-    position: absolute;
-    font-size: 300%;
+
+.rating-star::before {
+  content: "★★★★★";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--rating) / 5 * 100%);
+  overflow: hidden;
+  color: #ffc107;
 }
 </style>

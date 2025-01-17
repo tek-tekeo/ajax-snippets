@@ -128,7 +128,6 @@ EOT;
     return $res->data->officialItemLink;
   }
 
-  //テキストリンク
   public function reviewForm($atts, $content = null)
   {
     extract(shortcode_atts(array(
