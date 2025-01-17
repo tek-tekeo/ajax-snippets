@@ -10,7 +10,7 @@
     </v-row>
     <v-row>
       <v-col cols="2">
-        <v-btn fixed color="primary" @click="updateDetail">
+        <v-btn fixed color="success" @click="updateDetail">
           更新
         </v-btn>
         <confirm-dialog fixed bottom @execute="deleteDetail(detail.id)"></confirm-dialog>
