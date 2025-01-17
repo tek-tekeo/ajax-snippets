@@ -275,6 +275,7 @@ table.singleReview_table th:after{
   border-left: 10px solid #262b2c;
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
+  z-index:1;
 }
 
 table.singleReview_table td{
