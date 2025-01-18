@@ -109,7 +109,6 @@ require_once dirname(__FILE__) . '/../../../../../wp-load.php';; ?>
         const res = await axios.post('/detail/editor', {
           'name': ''
         });
-        console.log(res.data);
         this.searchList = res.data;
         const tags = await axios.get('/tag');
         this.tagList = tags.data;

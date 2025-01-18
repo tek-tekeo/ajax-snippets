@@ -70,7 +70,7 @@ module.exports = {
 
     },
     handleReviewPlanOrder(items) {
-      console.log(items);
+      // console.log(items);
     },
     validate() {
       this.valid = this.$refs.form.validate();
