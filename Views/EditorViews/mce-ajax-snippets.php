@@ -59,7 +59,7 @@ require_once dirname(__FILE__) . '/../../../../../wp-load.php';; ?>
               <v-radio-group v-model="itemNo">
                 <v-virtual-scroll :items="searchList" height="400" item-height="40">
                   <template v-slot:default="{ item }">
-                    <v-radio :label="item.name" :value="item.id"></v-radio>
+                    <v-radio :label="item.id +' '+ item.name" :value="item.id"></v-radio>
                   </template>
                 </v-virtual-scroll>
               </v-radio-group>
@@ -109,6 +109,7 @@ require_once dirname(__FILE__) . '/../../../../../wp-load.php';; ?>
         const res = await axios.post('/detail/editor', {
           'name': ''
         });
+        console.log(res.data);
         this.searchList = res.data;
         const tags = await axios.get('/tag');
         this.tagList = tags.data;

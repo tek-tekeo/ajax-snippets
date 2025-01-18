@@ -137,7 +137,7 @@ function createEndPoints()
   //子要素関連
   Route::post('/detail', 'AjaxSnippets\Api\Controllers\AdDetailController@create'); //新規追加
   Route::get('/detail', 'AjaxSnippets\Api\Controllers\AdDetailController@index'); //全件取得
-  Route::post('/detail/search', 'AjaxSnippets\Api\Controllers\AdDetailController@search'); //名前検索
+  Route::post('/detail/search', 'AjaxSnippets\Api\Controllers\AdDetailController@search'); //ID or 名前検索
   Route::get('/detail/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdDetailController@get', false); //指定ID検索
   Route::delete('/detail/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdDetailController@delete');
   Route::put('/detail/(?P<id>\d+)/withRakutenLink', 'AjaxSnippets\Api\Controllers\AdDetailController@deleteWithRakutenLink');

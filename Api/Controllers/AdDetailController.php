@@ -39,7 +39,7 @@ class AdDetailController
 
   public function search(WP_REST_Request $req): WP_REST_Response
   {
-    $res = $this->adDetailGetService->getAdDetailsFindByName((string)$req->get_param('name'));
+    $res = $this->adDetailGetService->getAdDetailsFindByIdOrName((string)$req->get_param('name'));
     return new WP_REST_Response($res, 200);
   }
 

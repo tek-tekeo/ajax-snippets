@@ -58,6 +58,33 @@ class AdDetailRepository implements IAdDetailRepository
     })->toArray();
   }
 
+  public function findByIdOrName(string $name): array
+  {
+    $sql = "SELECT D.*, A.name as name FROM " . PLUGIN_DB_PREFIX . "ads AS A, " . PLUGIN_DB_PREFIX . "ad_details AS D where D.deleted_at IS NULL AND A.id=D.ad_id AND (D.item_name LIKE '%" . $name . "%' OR A.name LIKE '%" . $name . "%' OR D.id=" . $name . ") order by A.name asc, D.item_name asc, D.id asc";
+
+    $res = $this->db->get_results($sql);
+    return collect($res)->map(function ($r) {
+      return new AdDetail(
+        new AdDetailId((int)$r->id),
+        new AdId((int)$r->ad_id),
+        (string)$r->item_name,
+        (string)$r->official_item_link,
+        (string)$r->affi_item_link,
+        (string)$r->detail_img,
+        (string)$r->amazon_asin,
+        (string)$r->rakuten_id,
+        (string)$r->rakuten_affiliate_url,
+        (string)$r->review,
+        (int)$r->is_show_url,
+        (int)$r->same_parent,
+        $r->rakuten_expired_at,
+        (string)$r->created_at,
+        (string)$r->updated_at,
+        $r->deleted_at
+      );
+    })->toArray();
+  }
+
   public function findById(AdDetailId $adDetailId): AdDetail
   {
     $res = $this->db->get_row("SELECT * FROM " . $this->table . " WHERE id=" . $adDetailId->getId() . " AND deleted_at IS NULL");

@@ -52,9 +52,19 @@ class AdDetailGetService implements IAdDetailGetService
     })->toArray();
   }
 
+  public function getAdDetailsFindByIdOrName(string $name)
+  {
+    $details = $this->adDetailRepository->findByIdOrName($name);
+
+    return collect($details)->map(function ($adDetail) {
+      $ad = $this->adRepository->findById($adDetail->getAdId());
+      return new AdDetailDataIndex($ad, $adDetail);
+    })->toArray();
+  }
+
   public function getEditorAnkenList(string $name)
   {
-    $details = $this->adDetailRepository->findByName($name);
+    $details = $this->adDetailRepository->findByIdOrName($name);
     return collect($details)->map(function ($adDetail) {
       $ad = $this->adRepository->findById($adDetail->getAdId());
       try {
