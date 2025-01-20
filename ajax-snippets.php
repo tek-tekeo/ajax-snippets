@@ -160,7 +160,8 @@ function createEndPoints()
 
   // 子要素のレビュー関連
   Route::post('/posts/details/(?P<adDetailId>\d+)/reviews', 'AjaxSnippets\Api\Controllers\AdDetailController@postReview', false); //指定子要素のレビューを投稿
-  Route::get('/posts/details/(?P<id>\d+)/reviews', 'AjaxSnippets\Api\Controllers\AdDetailController@getReview', false); //指定の子要素のレビューを取得
+  Route::get('/posts/details/(?P<id>\d+)/reviews/good', 'AjaxSnippets\Api\Controllers\AdDetailController@getGoodReview', false); //指定の子要素のレビューを取得
+  Route::get('/posts/details/(?P<id>\d+)/reviews/bad', 'AjaxSnippets\Api\Controllers\AdDetailController@getBadReview', false); //指定の子要素のレビューを取得
   Route::get('/details/(?P<id>\d+)/reviews', 'AjaxSnippets\Api\Controllers\AdDetailController@getReviewsByAdDetailId');
   Route::put('/details/(?P<adDetailId>\d+)/reviews/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdDetailController@updateReview');
   Route::delete('/details/(?P<adDetailId>\d+)/reviews/(?P<id>\d+)', 'AjaxSnippets\Api\Controllers\AdDetailController@deleteReview');

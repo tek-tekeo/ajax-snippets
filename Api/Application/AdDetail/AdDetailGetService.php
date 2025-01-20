@@ -93,9 +93,10 @@ class AdDetailGetService implements IAdDetailGetService
     return new AdDetailData($ad, $detail, $adDetailChart, $adDetailInfo, $tags);
   }
 
-  public function getReview(AdDetailGetCommand $cmd)
+  public function getReview(AdDetailGetCommand $cmd, string $sortType = 'good')
   {
-    $adDetailReviews = $this->adDetailReviewRepository->findByAdDetailId(new AdDetailId($cmd->getId()));
+    $sortOrder = $sortType === 'good' ? 'desc' : 'asc';
+    $adDetailReviews = $this->adDetailReviewRepository->findByAdDetailId(new AdDetailId($cmd->getId()), 'rate', $sortOrder);
     return (new AdDetailReviewData($adDetailReviews))->handle();
   }
 

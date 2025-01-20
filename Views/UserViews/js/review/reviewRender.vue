@@ -19,15 +19,22 @@
         <div class="rating-percentage">{{ rating.percentage }}</div>
       </div>
     </div>
-    <div style="font-size: 0.8rem;">
-      ※スクロールできます→
+    <div style="font-size: 0.8rem;margin-top: 1rem;" class="good-bad-sort-button">
+      <label style="background-color: var(--cocoon-teal-color);"><input value="good" v-model="sortOrder" type="radio"
+          @click="changeSort('good')">高評価順</label>
+      <label style="background-color: var(--cocoon-red-color);"><input value="bad" v-model="sortOrder" type="radio"
+          @click="changeSort('bad')">低評価順</label>
+      <span>上位5件が表示されます</span>
     </div>
     <div class="horizontal-scroll">
       <div class="no-wrap">
-        <div v-for="review in data.reviews" :key="review.name">
+        <div v-for="review in reviewCards" :key="review.name">
           <review-card :review="review"></review-card>
         </div>
       </div>
+    </div>
+    <div style="font-size: 0.8rem;">
+      ※スクロールできます→
     </div>
   </div>
 </template>
@@ -40,10 +47,14 @@ module.exports = {
   data() {
     return {
       isExpanded: false, // テキストの表示状態を管理するフラグ
-      maxLength: 120 // 部分表示時の最大文字数
+      maxLength: 120, // 部分表示時の最大文字数
+      sortOrder: 'good'
     }
   },
   computed: {
+    reviewCards() {
+      return this.data.reviews?.slice(0, 5) || [];
+    },
     truncatedText() {
       // 部分表示か全文表示かに応じて表示するテキストを切り替える
       return this.review.content.length > this.maxLength
@@ -89,6 +100,11 @@ module.exports = {
     }
   },
   methods: {
+    changeSort(sort) {
+      if (this.sortOrder === sort) return;
+      this.sortOrder = sort;
+      this.$emit('change-sort', sort);
+    },
     toggleReadMore() {
       // フラグを切り替えるメソッド
       this.isExpanded = !this.isExpanded;
@@ -104,7 +120,7 @@ module.exports = {
       return '';
     }
   },
-  props: ['data'],
+  props: ['data', 'sort'],
 };
 </script>
 
@@ -161,5 +177,47 @@ module.exports = {
 .no-wrap {
   display: flex;
   flex-wrap: nowrap;
+}
+
+.good-bad-sort-button {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 10px;
+  max-width: 300px;
+  margin-left: 10px;
+}
+
+.good-bad-sort-button>label {
+  flex: 1 1;
+  order: -1;
+  opacity: .5;
+  min-width: 70px;
+  padding: .6em 1em;
+  border-radius: 5px 5px 0 0;
+  background-color: #256fd0;
+  color: #fff;
+  font-size: .9em;
+  text-align: center;
+  cursor: pointer;
+  opacity: .5;
+}
+
+.good-bad-sort-button input {
+  display: none;
+}
+
+.good-bad-sort-button>div {
+  display: none;
+  width: 100%;
+  padding: 1.5em 1em;
+  background-color: #fff;
+}
+
+.good-bad-sort-button label:has(:checked) {
+  opacity: 1;
+}
+
+.good-bad-sort-button label:has(:checked)+div {
+  display: block;
 }
 </style>

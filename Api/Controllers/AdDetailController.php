@@ -179,11 +179,17 @@ class AdDetailController
     $res = $this->adDetailUpdateService->handleReview($cmd);
     return new WP_REST_Response($res, 200);
   }
-
-  public function getReview(WP_REST_Request $req): WP_REST_Response
+  public function getGoodReview(WP_REST_Request $req): WP_REST_Response
   {
     $cmd = new AdDetailGetCommand($req);
-    $res = $this->adDetailGetService->getReview($cmd);
+    $res = $this->adDetailGetService->getReview($cmd, 'good');
+    return new WP_REST_Response($res, 200);
+  }
+
+  public function getBadReview(WP_REST_Request $req): WP_REST_Response
+  {
+    $cmd = new AdDetailGetCommand($req);
+    $res = $this->adDetailGetService->getReview($cmd, 'bad');
     return new WP_REST_Response($res, 200);
   }
 

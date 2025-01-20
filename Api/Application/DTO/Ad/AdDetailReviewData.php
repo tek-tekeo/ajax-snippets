@@ -1,4 +1,5 @@
 <?php
+
 namespace AjaxSnippets\Api\Application\DTO\Ad;
 
 use AjaxSnippets\Api\Domain\Models\Ad\Ad;
@@ -7,7 +8,7 @@ use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailReview;
 class AdDetailReviewData
 {
 
-  public function __construct(private array $reviews = []){}
+  public function __construct(private array $reviews = []) {}
 
   public function handle(): object
   {
@@ -19,9 +20,9 @@ class AdDetailReviewData
       'bestRating' => count($availableReviews) * 5, // 5 is the maximum rating　修正が必要
       'ratingCount' => count($availableReviews),
       'reviews' => collect($availableReviews)
-      ->map(function($review){
-        return $this->getReviewCard($review);
-      })->values()->all()
+        ->map(function ($review) {
+          return $this->getReviewCard($review);
+        })->values()->all()
     ];
   }
 
@@ -37,5 +38,4 @@ class AdDetailReviewData
       'quoteUrl' => $review->getQuoteUrl()
     ];
   }
-
 }
