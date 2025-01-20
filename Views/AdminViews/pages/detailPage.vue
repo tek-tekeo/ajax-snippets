@@ -29,7 +29,12 @@ module.exports = {
   async created() {
     try {
       // TODO: URL
-      const res = await axios.get('detail');
+      // const res = await axios.get('detail');
+      const searchText = localStorage.getItem('savedText') || '';
+      const res = await axios.post('/detail/search', {
+        'name': searchText
+      });
+      this.detailList = res.data;
       this.detailList = res.data;
     } catch (err) {
       // TODO: エラー処理
