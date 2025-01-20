@@ -69,7 +69,7 @@ module.exports = {
       return { id: r.id, name: r.name };
     });
     this.tagList = res[1].data.map(function (r) {
-      return { id: r.id, name: r.tagName };
+      return { id: r.id, name: r.tagName, tagOrder: r.tagOrder };
     });
     this.detail = res[2].data;
   },

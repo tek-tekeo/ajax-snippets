@@ -1,11 +1,12 @@
 <?php
+
 namespace AjaxSnippets\Api\Infrastructure\Repository;
 
 use AjaxSnippets\Api\Domain\Models\Tag\Tag;
 use AjaxSnippets\Api\Domain\Models\Tag\TagId;
 use AjaxSnippets\Api\Domain\Models\Tag\ITagRepository;
 
-class TagRepository implements ITagRepository 
+class TagRepository implements ITagRepository
 {
   private $db;
   private $table;
@@ -14,13 +15,13 @@ class TagRepository implements ITagRepository
   {
     global $wpdb;
     $this->db = $wpdb;
-    $this->table = PLUGIN_DB_PREFIX.'tags';
+    $this->table = PLUGIN_DB_PREFIX . 'tags';
   }
 
-  public function save(Tag $tag) : TagId
+  public function save(Tag $tag): TagId
   {
-    $res = $this->db->replace( 
-      $this->table, 
+    $res = $this->db->replace(
+      $this->table,
       $tag->entity()
     );
     return new TagId($this->db->insert_id);
@@ -28,8 +29,8 @@ class TagRepository implements ITagRepository
 
   public function findById(TagId $id)
   {
-    $row = $this->db->get_row("SELECT * FROM ".$this->table." WHERE id = ".$id->getId());
-    if(!$row == null){
+    $row = $this->db->get_row("SELECT * FROM " . $this->table . " WHERE id = " . $id->getId());
+    if (!$row == null) {
       $tag = new Tag(
         new TagId($row->id),
         $row->tag_name,
@@ -41,12 +42,12 @@ class TagRepository implements ITagRepository
     return null;
   }
 
-  public function findByName(string $name = '') : array
+  public function findByName(string $name = ''): array
   {
-    $res = $this->db->get_results("SELECT * FROM " . $this->table . " where tag_name LIKE '%".$name."%'");
+    $res = $this->db->get_results("SELECT * FROM " . $this->table . " where tag_name LIKE '%" . $name . "%' order by tag_order");
     $tags = array();
-    if(!$res == null){
-      foreach($res as $r){
+    if (!$res == null) {
+      foreach ($res as $r) {
         $tag = new Tag(
           new TagId($r->id),
           $r->tag_name,
@@ -59,11 +60,11 @@ class TagRepository implements ITagRepository
     return array();
   }
 
-  public function delete(tagId $tagId) : bool
+  public function delete(tagId $tagId): bool
   {
     $res = $this->db->delete(
       $this->table,
-      array( 'id' => $tagId->getId() )
+      array('id' => $tagId->getId())
     );
 
     return $res;

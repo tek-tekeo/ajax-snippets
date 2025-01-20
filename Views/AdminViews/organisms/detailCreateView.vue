@@ -60,7 +60,7 @@ module.exports = {
     ]);
     this.baseList = res[0].data;
     this.tagList = res[1].data.map(function (r) {
-      return { id: r.id, name: r.tagName };
+      return { id: r.id, name: r.tagName, tagOrder: r.tagOrder };
     });
 
     const prevRegisterId = await axios.get('detail/prev');
