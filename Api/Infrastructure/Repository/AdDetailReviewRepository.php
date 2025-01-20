@@ -33,9 +33,10 @@ class AdDetailReviewRepository implements IAdDetailReviewRepository
     return (bool)$res;
   }
 
-  public function findByAdDetailId(AdDetailId $adDetailId): array
+  public function findByAdDetailId(AdDetailId $adDetailId, string $sortColumn = 'id', string $sortOrder = 'asc'): array
   {
-    $res = $this->db->get_results("SELECT * FROM " . $this->table . " WHERE ad_detail_id = " . $adDetailId->getId());
+    $res = $this->db->get_results("SELECT * FROM " . $this->table . " WHERE ad_detail_id = " . $adDetailId->getId() . " ORDER BY " . $sortColumn . " " . $sortOrder);
+
     return collect($res)->map(function ($r) {
       return new AdDetailReview(
         $r->id,

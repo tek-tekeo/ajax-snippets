@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="background-color: rgba(255, 255, 128, .1); padding:2%;">
-      <review-render :data="data"></review-render>
+      <review-render :data="data" @change-sort="changeSort"></review-render>
       <!-- <a @click="expand = !expand" style="cursor: pointer;">
         >>口コミの投稿はこちらから
       </a>
@@ -24,12 +24,18 @@ module.exports = {
     }
   },
   async created() {
-    const res = await axios.get('posts/details/' + this.adDetailId + '/reviews');
-    this.data = res.data;
+    await this.fetchData('good');
   },
   methods: {
+    async changeSort(sort) {
+      await this.fetchData(sort);
+    },
     createReview() {
       this.overlay = true;
+    },
+    async fetchData(sort) {
+      const res = await axios.get('posts/details/' + this.adDetailId + '/reviews/' + sort);
+      this.data = res.data;
     }
   },
   props: ['adDetailId'],
