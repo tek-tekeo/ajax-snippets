@@ -89,6 +89,7 @@ require_once dirname(__FILE__) . '/../../../../../wp-load.php';; ?>
 <script>
   Vue.use(Toasted);
   axios.defaults.baseURL = '<?php echo site_url(); ?>' + '/?rest_route=/ajax_snippets_path/v1/';
+  const savedText = localStorage.getItem('savedText') || '';
   new Vue({
     el: '#vue-edit-page',
     vuetify: new Vuetify(),
@@ -107,7 +108,7 @@ require_once dirname(__FILE__) . '/../../../../../wp-load.php';; ?>
     async created() {
       try {
         const res = await axios.post('/detail/editor', {
-          'name': ''
+          'name': savedText
         });
         this.searchList = res.data;
         const tags = await axios.get('/tag');
