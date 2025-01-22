@@ -1,10 +1,11 @@
 <?php
+
 namespace AjaxSnippets\Api\Domain\Models\AdDetail;
 
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 
 class AdDetailReview
-{  													
+{
 
   public function __construct(
     private int $id,
@@ -13,13 +14,14 @@ class AdDetailReview
     private int|null $age,
     private string $sex,
     private float $ratingValue,
+    private string $title,
     private string $content,
     private string $quoteName = '',
     private string $quoteUrl = '',
     private bool $isPublished = false,
     private string $createdAt = '',
     private string $updatedAt = ''
-  ){}
+  ) {}
 
   public function getId(): int
   {
@@ -49,6 +51,11 @@ class AdDetailReview
   public function getRatingValue(): float
   {
     return $this->ratingValue;
+  }
+
+  public function getTitle(): string
+  {
+    return $this->title;
   }
 
   public function getContent(): string
@@ -90,6 +97,7 @@ class AdDetailReview
       'sex' => $this->sex,
       'age' => $this->age,
       'rate' => $this->ratingValue,
+      'title' => $this->title,
       'content' => $this->content,
       'quote_name' => $this->quoteName,
       'quote_url' => $this->quoteUrl,
@@ -99,5 +107,3 @@ class AdDetailReview
     ];
   }
 }
-
-?>

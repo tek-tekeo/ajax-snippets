@@ -130,6 +130,7 @@ class AdDetailUpdateService implements IAdDetailUpdateService
       $cmd->getAge(),
       $cmd->getSex(),
       $cmd->getRatingValue(),
+      $cmd->getTitle(),
       $cmd->getContent(),
       $cmd->getQuoteName(),
       $cmd->getQuoteUrl(),

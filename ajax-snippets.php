@@ -21,7 +21,7 @@ require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 require_once dirname(__FILE__) . "/loader.php";
 
 global $wpdb;
-define('VERSION', '0.8');
+define('VERSION', '0.9.0');
 define('PLUGIN_DB_PREFIX', $wpdb->prefix . 'ajax_snippets_');
 
 class AjaxSneppets

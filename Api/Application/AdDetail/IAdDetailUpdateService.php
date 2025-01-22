@@ -1,4 +1,5 @@
 <?php
+
 namespace AjaxSnippets\Api\Application\AdDetail;
 
 interface IAdDetailUpdateService
@@ -127,6 +128,7 @@ class AdDetailReviewUpdateCommand
   private int|null $age;
   private string $sex;
   private float $ratingValue;
+  private string $title;
   private string $content;
   private string $quoteName;
   private string $quoteUrl;
@@ -140,6 +142,7 @@ class AdDetailReviewUpdateCommand
     $this->age = $req->get_param('age');
     $this->sex = $req->get_param('sex');
     $this->ratingValue = (float)$req->get_param('ratingValue');
+    $this->title = (string)$req->get_param('title');
     $this->content = (string)$req->get_param('content');
     $this->quoteName = (string)$req->get_param('quoteName');
     $this->quoteUrl = (string)$req->get_param('quoteUrl');
@@ -158,8 +161,7 @@ class AdDetailReviewUpdateCommand
 
   public function getName(): string
   {
-    if($this->name == '')
-    {
+    if ($this->name == '') {
       return '匿名';
     }
     return $this->name;
@@ -178,6 +180,11 @@ class AdDetailReviewUpdateCommand
   public function getRatingValue(): float
   {
     return $this->ratingValue;
+  }
+
+  public function getTitle(): string
+  {
+    return $this->title;
   }
 
   public function getContent(): string

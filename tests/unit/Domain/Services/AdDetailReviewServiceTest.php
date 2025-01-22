@@ -26,6 +26,7 @@ class AdDetailReviewServiceTest extends WP_UnitTestCase
       10,
       'sex',
       4.4,
+      'title',
       'content',
       'quoteName',
       'quoteUrl',

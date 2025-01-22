@@ -1,5 +1,6 @@
 
 <?php
+
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailId;
 use AjaxSnippets\Api\Domain\Models\AdDetail\AdDetailReview;
 
@@ -15,6 +16,7 @@ final class AdDetailReviewTest extends WP_UnitTestCase
       20,
       '男性',
       4.5,
+      'タイトル',
       'コンテンツ',
       'google',
       'https://google.com',
@@ -28,12 +30,15 @@ final class AdDetailReviewTest extends WP_UnitTestCase
         'sex' => '男性',
         'age' => 20,
         'rate' => 4.5,
+        'title' => 'タイトル',
         'content' => 'コンテンツ',
         'quote_name' => 'google',
         'quote_url' => 'https://google.com',
         'is_published' => true,
         'created_at' => '',
-        'updated_at' =>''
-      ], $review->entity());
+        'updated_at' => ''
+      ],
+      $review->entity()
+    );
   }
 }

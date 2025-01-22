@@ -5,6 +5,7 @@
         <div class="rating-star" :style="{ '--rating': review.ratingValue }">
           ☆☆☆☆☆
         </div>
+        <span style="font-weight: normal;">　{{ review.title }} </span>
       </div>
       <div class="review-card__attribute">
         <span class="review-card__name">{{ review.name }}</span>

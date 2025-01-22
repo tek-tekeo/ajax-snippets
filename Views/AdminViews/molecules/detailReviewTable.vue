@@ -27,7 +27,10 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12">
+        <v-col cols="6">
+          <wp-text-box label="タイトル" v-model="review.title"></wp-text-box>
+        </v-col>
+        <v-col cols="6">
           <wp-select-box :items="starSelectList" v-model="review.ratingValue" label=""
             :rules="[v => v != null || '選択してください']">
           </wp-select-box>
@@ -50,7 +53,6 @@
           <wp-text-box label="引用元URL" v-model="review.quoteUrl"></wp-text-box>
         </v-col>
       </v-row>
-      {{ review }}
     </v-container>
   </div>
 </template>

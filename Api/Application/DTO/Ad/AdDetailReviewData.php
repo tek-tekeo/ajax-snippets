@@ -33,6 +33,7 @@ class AdDetailReviewData
       'name'  => $review->getName(),
       'age'   => $review->getAge(),
       'sex' => $review->getSex(),
+      'title' => $review->getTitle(),
       'content' => $review->getContent(),
       'quoteName' => $review->getQuoteName(),
       'quoteUrl' => $review->getQuoteUrl()

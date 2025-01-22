@@ -355,6 +355,7 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
           'sex' => '男性',
           'age' => 10,
           'ratingValue' => 5.0,
+          'title' => '',
           'content' => 'コンテンツ1',
           'quoteName' => 'google',
           'quoteUrl' => 'https://google.com'
@@ -364,6 +365,7 @@ class AdDetailGetServiceTest extends WP_UnitTestCase
           'sex' => '女性',
           'age' => 20,
           'ratingValue' => 4.0,
+          'title' => '',
           'content' => 'コンテンツ2',
           'quoteName' => 'google',
           'quoteUrl' => 'https://google.com'

@@ -170,6 +170,7 @@ class InitDatabase
     age int(11),
     sex varchar(255) DEFAULT '' NOT NULL,
     rate float(11),
+    title varchar(255) DEFAULT '' NOT NULL,
     content text NOT NULL,
     quote_name varchar(1000) DEFAULT '当ブログ口コミ' NOT NULL,
     quote_url varchar(1000) DEFAULT '' NOT NULL,

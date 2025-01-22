@@ -117,6 +117,7 @@ class AdDetailCreateService implements IAdDetailCreateService
       $cmd->getAge(),
       $cmd->getSex(),
       (float)$cmd->getRatingValue(),
+      $cmd->getTitle(),
       $cmd->getContent(),
       $cmd->getQuoteName(),
       $cmd->getQuoteUrl(),
