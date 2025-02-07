@@ -21,25 +21,25 @@ class Route
     self::registerMethods($path, $callback, 'GET', $adminPermission);
   }
 
-  static public function post(string $path, string $callback, bool $adminPermission =true)
+  static public function post(string $path, string $callback, bool $adminPermission = true)
   {
     // エンドポイントの登録
     self::registerMethods($path, $callback, 'POST', $adminPermission);
   }
 
-  static public function put(string $path, string $callback, bool $adminPermission =true)
+  static public function put(string $path, string $callback, bool $adminPermission = true)
   {
     // エンドポイントの登録
     self::registerMethods($path, $callback, 'PUT', $adminPermission);
   }
 
-  static public function delete(string $path, string $callback, bool $adminPermission =true)
+  static public function delete(string $path, string $callback, bool $adminPermission = true)
   {
     // エンドポイントの登録
     self::registerMethods($path, $callback, 'DELETE', $adminPermission);
   }
 
-  static public function resource(string $path, string $callbackClass, bool $adminPermission =true)
+  static public function resource(string $path, string $callbackClass, bool $adminPermission = true)
   {
     // index, show
     self::get($path, $callbackClass . '@index', $adminPermission);
@@ -55,10 +55,10 @@ class Route
     self::delete($path . '/(?P<id>\d)', $callbackClass . '@delete', $adminPermission);
   }
 
-  static private function registerMethods(string $path, string $callback, string $method, bool $adminPermission =true)
+  static private function registerMethods(string $path, string $callback, string $method, bool $adminPermission = true)
   {
     $requestMethod = '';
-    
+
     switch (strtoupper($method)) {
       case 'GET':
         $requestMethod = 'GET';
@@ -80,7 +80,7 @@ class Route
     $options = [
       'methods' => $requestMethod,
       'callback' => self::parseMethod($callback),
-      'permission_callback' => self::rest_permission($adminPermission),//Closure::fromCallable([new Authorization(), 'handle'])
+      'permission_callback' => self::rest_permission($adminPermission), //Closure::fromCallable([new Authorization(), 'handle'])
     ];
 
     // エンドポイントの登録
@@ -89,10 +89,12 @@ class Route
 
   static private function rest_permission(bool $adminPermission)
   {
-    if(!$adminPermission){
+    if (!$adminPermission) {
       return '__return_true';
     }
-    return !current_user_can('manage_options');
+    return function () {
+      return current_user_can('manage_options');
+    };
   }
 
   static private function parseMethod(string $method): Closure
@@ -111,7 +113,7 @@ class Route
     $actions = explode('@', $str);
     $className = $actions[0];
     $actionName = $actions[1];
-    
+
     //DI対応
     return [$diContainer->get($className), $actionName];
   }
