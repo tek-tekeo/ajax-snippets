@@ -1,5 +1,5 @@
 axios.defaults.baseURL = WP_API_Settings.root+'?rest_route=/ajax_snippets_path/v1/';
-// axios.defaults.headers.common = {'X-WP-Nonce':WP_API_Settings.rest_nonce};
+axios.defaults.headers.common = {'X-WP-Nonce':WP_API_Settings.rest_nonce};
 
 // ↓v-appがないとvuetifyが適用されないので領域をラップする
 //vuetifyの適用領域をラップする

@@ -113,6 +113,9 @@ if (!defined('ABSPATH')) exit; ?>
 
   Vue.use(Toasted);
   axios.defaults.baseURL = '<?= site_url() ?>/' + '?rest_route=/ajax_snippets_path/v1/';
+  axios.defaults.headers.common = {
+    'X-WP-Nonce': WP_API_Settings.rest_nonce
+  };
   new Vue({
     el: '#vue-app',
     vuetify: new Vuetify(),
