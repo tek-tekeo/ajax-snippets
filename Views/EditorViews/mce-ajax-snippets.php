@@ -1,5 +1,7 @@
 <?php
-require_once dirname(__FILE__) . '/../../../../../wp-load.php';; ?>
+require_once dirname(__FILE__) . '/../../../../../wp-load.php';
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -87,8 +89,15 @@ require_once dirname(__FILE__) . '/../../../../../wp-load.php';; ?>
 <script src="https://unpkg.com/vue-toasted"></script>
 
 <script>
+  var WP_API_Settings = {
+    root: "<?php echo esc_url_raw(site_url()) ?>",
+    rest_nonce: "<?php echo wp_create_nonce('wp_rest') ?>"
+  };
   Vue.use(Toasted);
-  axios.defaults.baseURL = '<?php echo site_url(); ?>' + '/?rest_route=/ajax_snippets_path/v1/';
+  axios.defaults.baseURL = '<?= site_url() ?>/' + '?rest_route=/ajax_snippets_path/v1/';
+  axios.defaults.headers.common = {
+    'X-WP-Nonce': WP_API_Settings.rest_nonce
+  };
   const savedText = localStorage.getItem('savedText') || '';
   new Vue({
     el: '#vue-edit-page',
