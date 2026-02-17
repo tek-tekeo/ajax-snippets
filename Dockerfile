@@ -1,4 +1,4 @@
-FROM wordpress:latest
+FROM wordpress:php8.1-apache
 
 #wp-cli, phpunit
 RUN apt update && apt install -y wget vim unzip sudo git default-mysql-client subversion && \
