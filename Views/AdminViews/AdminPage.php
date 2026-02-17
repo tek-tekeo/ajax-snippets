@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) exit; ?>
   <v-app v-cloak>
     <v-main>
       <v-container fluid>
-        <v-toolbar-title>アフィリンクメーカー</v-toolbar-title>
+        <v-toolbar-title>外部リンク管理</v-toolbar-title>
         <p>※キャッシュ系のプラグイン動作しているとうまく動きません</p>
         <v-tabs>
           <v-tabs-slider color="cyan"></v-tabs-slider>

@@ -13,6 +13,11 @@ services:
       MYSQL_DATABASE: "${WORDPRESS_DB_NAME}"
       MYSQL_USER: "${WORDPRESS_DB_USER}"
       MYSQL_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "--ssl=0", "ping", "-h", "127.0.0.1", "-pmyrootpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     command: mysqld --innodb_use_native_aio=0
 
   test_db:
@@ -35,7 +40,8 @@ services:
       - ./data/wordpress/wp-config.php:/var/www/html/wp-config.php
     restart: on-failure
     depends_on:
-      - wpdb
+      wpdb:
+        condition: service_healthy
     ports:
       - "${WEB_PORT}:80"
     environment:

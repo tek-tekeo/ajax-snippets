@@ -59,7 +59,7 @@ class AjaxSneppets
   {
     add_menu_page(
       'Ajax Snippets',        /* ページタイトル*/
-      'アフィリンクメーカー', /* メニュータイトル */
+      '外部リンク管理', /* メニュータイトル */
       'manage_options',       /* 権限 */
       'ajax-snippets',        /* ページを開いたときのURL */
       /* メニューに紐づく画面を描画するcallback関数 */
